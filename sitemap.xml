@@ -1,69 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/404.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/404.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/CODE_OF_CONDUCT.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/LICENSE.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/aio.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/images.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/images.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/index.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/index.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/404.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/404.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/CODE_OF_CONDUCT.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/LICENSE.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/aio.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/images.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/images.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/index.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/index.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/instructor-notes.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/instructor-notes.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/introduction.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/introduction.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/key-points.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/introduction_to_medical_imaging.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/profiles.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/introduction_to_mri.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor/reference.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/key-points.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/instructor-notes.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/profiles.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/introduction.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/reference.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/key-points.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor-notes.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/profiles.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/introduction.html</loc>
   </url>
   <url>
-    <loc>https://carpentries.github.io/workbench-template-md/reference.html</loc>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/introduction_to_medical_imaging.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/introduction_to_mri.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/profiles.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/reference.html</loc>
   </url>
 </urlset>
