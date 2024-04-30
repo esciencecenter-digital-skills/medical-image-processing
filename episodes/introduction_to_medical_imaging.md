@@ -20,7 +20,7 @@ exercises: 2
 
 ## Introduction
 
-Medical imaging uses many technologies including X-rays, computed tomography (CT),
+Medical imaging uses many technologies including X-rays, computed tomography (Ct),
 magnetic resonance imaging (MRI),
 Ultrasound(US),
 positron emmision tomography(PET+) and microscopy. 
@@ -65,7 +65,24 @@ associated with the lessons. They appear in the "Instructor View"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: question 
 
+## Question 1: Can you do it?
+
+````Where is the signal in MRI coming from?```
+
+
+
+:::::::::::::::::::::::: solution 
+
+
+## Awnser
+ 
+```awnser
+The signal in MRI comes from the patient him or herself (her hydrogen atoms).
+```
+
+:::::::::::::::::::::::::::::::::
 
 
 
