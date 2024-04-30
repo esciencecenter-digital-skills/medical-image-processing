@@ -58,7 +58,7 @@ Do not peek, try to solve it yourself. The effort will pay off.
 
 ## Figures
 
-You can use standard markdown for static figures with the following syntax:
+Figures and data presented are open source and open lisence.
 
 `![optional caption that appears below the figure](figure url){alt='alt text for
 accessibility purposes'}`
@@ -67,31 +67,25 @@ accessibility purposes'}`
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-Callout sections can highlight information.
+Callout sections will be used to highlight information.
 
-They are sometimes used to emphasise particularly important points
-but are also used in some lessons to present "asides": 
-content that is not central to the narrative of the lesson,
+They are  used to emphasise particularly important points
 e.g. by providing the answer to a commonly-asked question.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Math
+## Lectures
 
-One of our episodes contains $\LaTeX$ equations when describing how to create
-dynamic reports with {knitr}, so we now use mathjax to describe this:
+Soome of our episodes are based on presentations. Most episodes involve real useable code.
 
-`$\alpha = \dfrac{1}{(1 - \beta)^2}$` becomes: $\alpha = \dfrac{1}{(1 - \beta)^2}$
-
-Cool, right?
+Not everyone uses all forms of medical images, but you can learn a lot even with image types you will not use.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Use `.md` files for episodes when you want static content
-- Use `.Rmd` files for episodes when you need to generate output
-- Run `sandpaper::check_lesson()` to identify any issues with your lesson
-- Run `sandpaper::build_lesson()` to preview your lesson locally
+- Use questions to challenge yourself
+- This course is in development
+- Lectures often provide materials not yet in the notes
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
