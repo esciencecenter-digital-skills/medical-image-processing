@@ -58,20 +58,18 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
-
-
-
-
 ::::::::::::::::::::::::: question
 
 ## Question : What are some disadvantages to ultrasound in terms of computational analysis?
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 :::::::::::::::::::::::: solution 
 
 ``Operator dependant, often with patient data burned in, settings vary, positions vary```
 
 :::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
