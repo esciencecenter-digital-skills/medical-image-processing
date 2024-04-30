@@ -62,9 +62,9 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
+::::::::::::::::::::::::: question
 
-
-## Question 2: What are some disadvantages to ultrasound in terms of computational analysis?
+## Question : What are some disadvantages to ultrasound in terms of computational analysis?
 
 :::::::::::::::::::::::: solution 
 
