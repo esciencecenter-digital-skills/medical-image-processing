@@ -38,7 +38,7 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 ## X-ray
 
 
-`![schematic of X-ray](fig/x_ray_dia.png){alt='schematic of X-rays'}`
+`![schematic of X-ray](/fig/x_ray_dia.png){alt='schematic of X-rays'}`
 
 ![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
@@ -76,8 +76,6 @@ associated with the lessons. They appear in the "Instructor View"
 :::::::::::::::::::::::: solution 
 
 
-
-
 ## Awnser
  
 ```awnser
@@ -85,6 +83,37 @@ The signal in MRI comes from the patient him or herself (her hydrogen atoms).
 ```
 
 :::::::::::::::::::::::::::::::::
+
+
+
+
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge 1: Can you do it?
+
+What is the output of this command?
+
+```r
+paste("This", "new", "lesson", "looks", "good")
+```
+
+:::::::::::::::::::::::: solution 
+
+## Output
+ 
+```output
+[1] "This new lesson looks good"
+```
+
+:::::::::::::::::::::::::::::::::
+
+
+
+
 
 
 ## Question 2: What are some disadvantages to ultrasound in terms of computational analysis?
