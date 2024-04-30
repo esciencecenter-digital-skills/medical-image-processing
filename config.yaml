@@ -60,7 +60,7 @@ contact: 'c.moore@esciencecenter.nl' # FIXME
 # Order of episodes in your lesson
 episodes: 
 - introduction.md
-- intoduction_to_medical_imaging.md
+#- intoduction_to_medical_imaging.md
 - introduction_to_mri.md
 
 # Information for Learners
