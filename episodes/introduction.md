@@ -20,15 +20,25 @@ exercises: 2
 ## Introduction
 
 This is a lesson created in the style of The Carpentries. It is written with the assumption
-that you already posess skills in terms of git, Python and basic image processing..
+that you already posess skills in terms of git, Python and basic image processing.
 
-The course has:
+The interpretation of medical images for clinical purposes involves skills that take
+highly trained professionals like nuclear medicine specialists and
+radiologists many years to master. This course does not aim to improve such
+interprative skills, rather to enhance the computational skills
+needed to awnser research questions with medical images.
 
- 1. how to use git to pull
- 2. `objectives` are the learning objectives for an episode displayed with
-    the questions.
- 3. `keypoints` are displayed at the end of the episode to reinforce the
-    objectives.
+Some examples of the kinds of research questions that can be awnsered are:
+
+- Can we predict from brain MRIs when patients will become demented before they do?
+
+- Can we build machine learning models on ultrasound data which can aid in the detection of neuromuscular diseases?
+
+- Can we use existing medical imaging to screen for underdiagnosed conditions like osteoporosis?
+
+You are in all likelyhood here because you have a research question which can be awnsered with
+the processing and analysis of medical images. This course is meant to aid you.
+
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -75,9 +85,28 @@ e.g. by providing the answer to a commonly-asked question.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
+::::::::::::::::::::::::::::::::::::: code
+
+## WHat will code look like?
+
+What is the output of this command?
+
+```python
+paste("This", "new", "lesson", "looks", "good")
+```
+
+:::::::::::::::::::::::: solution 
+
+## Output
+ 
+```output
+[1] "This new lesson looks good"
+```
+
+:::::::::::::::::::::::::::::::::
 ## Lectures
 
-Soome of our episodes are based on presentations. Most episodes involve real useable code.
+Some of our episodes are based on presentations. Most episodes involve real useable code.
 
 Not everyone uses all forms of medical images, but you can learn a lot even with image types you will not use.
 
