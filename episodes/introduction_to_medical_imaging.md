@@ -40,11 +40,11 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 
 ![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}
 
-![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
+![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}
 
 ## Tomography
 
-There are several kinds of tomography. You can think of this form of imaging as 
+There are several kinds of tomography. You can think of this form of imaging as... 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -55,25 +55,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
-::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1: Can you do it?
-
-What is the output of this command?
-
-```r
-paste("This", "new", "lesson", "looks", "good")
-```
-
-:::::::::::::::::::::::: solution 
-
-## Output
- 
-```output
-[1] "This new lesson looks good"
-```
-
-:::::::::::::::::::::::::::::::::
 
 
 
