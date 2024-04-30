@@ -1,39 +1,38 @@
 ---
-title: "Using Markdown"
+title: "Working with MRI"
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How do you write a lesson using Markdown and `{sandpaper}`?
+- How are MRI data represented digitally?
+- What file structures should I use around MRIs for neuroimaging?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain how to use markdown with The Carpentries Workbench
-- Demonstrate how to include pieces of code, figures, and nested challenge blocks
+- Learn common kinds of MRI imaging used in research
+- Understand the most common file formats for MRI
+- Understand what BIDS is
+- Understand advantages of working with nifti and BIDS
+- Know how to convert from DICOM to BIDS/nifti
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-This is a lesson created via The Carpentries Workbench. It is written in
-[Pandoc-flavored Markdown](https://pandoc.org/MANUAL.txt) for static files and
-[R Markdown][r-markdown] for dynamic files that can render code into output. 
-Please refer to the [Introduction to The Carpentries 
-Workbench](https://carpentries.github.io/sandpaper-docs/) for full documentation.
+This is a lesson created largely from other existing
+Carpentries lessons; namely:
 
-What you need to know is that there are three sections required for a valid
-Carpentries lesson:
-
- 1. `questions` are displayed at the beginning of the episode to prime the
-    learner for the content.
+ 1. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
  2. `objectives` are the learning objectives for an episode displayed with
     the questions.
  3. `keypoints` are displayed at the end of the episode to reinforce the
     objectives.
+
+We will not cover all the mateiral in these lessons, rather give an over view of key points.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
