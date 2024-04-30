@@ -11,13 +11,13 @@
 carpentry: 'incubator'
 
 # Overall title for pages.
-title: 'Lesson Title' # FIXME
+title: 'Medical Image Processing' # FIXME
 
 # Date the lesson was created (YYYY-MM-DD, this is empty by default)
 created: ~ # FIXME
 
 # Comma-separated list of keywords for the lesson
-keywords: 'software, data, lesson, The Carpentries' # FIXME
+keywords: 'python, software, lesson, medical images, DICOMs' # FIXME
 
 # Life cycle stage of the lesson
 # possible values: pre-alpha, alpha, beta, stable
@@ -27,13 +27,13 @@ life_cycle: 'pre-alpha' # FIXME
 license: 'CC-BY 4.0'
 
 # Link to the source repository for this lesson
-source: 'https://github.com/carpentries/workbench-template-md' # FIXME
+source: 'https://github.com/esciencecenter-digital-skills/medical-image-processing' # FIXME ??
 
 # Default branch of your lesson
 branch: 'main'
 
 # Who to contact if there are any issues
-contact: 'team@carpentries.org' # FIXME
+contact: 'c.moore@esciencecenter.nl' # FIXME
 
 # Navigation ------------------------------------------------
 #
@@ -60,6 +60,8 @@ contact: 'team@carpentries.org' # FIXME
 # Order of episodes in your lesson
 episodes: 
 - introduction.md
+- introduction_to_medical_imaging.md
+- introduction_to_mri.md
 
 # Information for Learners
 learners: 
