@@ -22,16 +22,13 @@ exercises: 2
 This is a lesson created in the style of The Carpentries. It is written with the assumption
 that you already posess skills in terms of git, Python and basic image processing..
 
-The course has several episodes:
+The course has:
 
  1. how to use git to pull
  2. `objectives` are the learning objectives for an episode displayed with
     the questions.
  3. `keypoints` are displayed at the end of the episode to reinforce the
     objectives.
-
-In addition to these episodes we encourage you to ask questions and present your own work.
-
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -40,16 +37,28 @@ associated with the lessons. They appear in the "Instructor View"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+::::::::::::::::::::::::::::::::::::: challenge 
 
+## Challenge 1: Can you do it?
+
+What is the way to use the challenges and question?
+
+
+
+:::::::::::::::::::::::: solution 
+
+## Best solution
+ 
+Do not peek, try to solve it yourself. The effort will pay off.
 
 :::::::::::::::::::::::::::::::::
 
 
-## Challenge 1: how do you best do questions?
+## Challenge 2: how do you nest solutions within challenge blocks?
 
 :::::::::::::::::::::::: solution 
 
-Don't peak, try to figure it out by yourself first.
+You can add a line with at least three colons and a `solution` tag.
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
