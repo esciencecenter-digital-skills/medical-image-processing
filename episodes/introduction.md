@@ -1,7 +1,7 @@
 ---
 title: "Course Introduction"
 teaching: 10
-exercises: 2
+exercises: 0
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -26,13 +26,15 @@ The interpretation of medical images for clinical purposes involves skills that 
 highly trained professionals like nuclear medicine specialists and
 radiologists many years to master. This course does not aim to improve such
 interprative skills, rather to enhance the computational skills
-needed to awnser research questions with medical images.
+needed to awnser research questions with that involve medical images.
 
 Some examples of the kinds of research questions that can be awnsered are:
 
 - Can we predict from brain MRIs when patients will become demented before they do?
 
 - Can we build machine learning models on ultrasound data which can aid in the detection of neuromuscular diseases?
+
+- Are there observable anatomical differences in the brains of autistic people at a population level? 
 
 - Can we use existing medical imaging to screen for underdiagnosed conditions like osteoporosis?
 
@@ -85,14 +87,23 @@ e.g. by providing the answer to a commonly-asked question.
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
+
+## Lectures
+
+Some of our episodes are based on presentations.
+Most episodes involve real useable code.
+You are expected to code along Jupyter lab. 
+
+Not everyone uses all forms of medical images, but you can learn a lot even with image types you will not use.
+
 ::::::::::::::::::::::::::::::::::::: code
 
-## WHat will code look like?
+## What will code look like?
 
-What is the output of this command?
+What is the style in these documents of code I need to type?
 
 ```python
-paste("This", "new", "lesson", "looks", "good")
+print("This", "new", "lesson", "looks", "good")
 ```
 
 :::::::::::::::::::::::: solution 
@@ -100,15 +111,10 @@ paste("This", "new", "lesson", "looks", "good")
 ## Output
  
 ```output
-[1] "This new lesson looks good"
+"This new lesson looks good"
 ```
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::
-## Lectures
-
-Some of our episodes are based on presentations. Most episodes involve real useable code.
-
-Not everyone uses all forms of medical images, but you can learn a lot even with image types you will not use.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
