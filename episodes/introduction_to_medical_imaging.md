@@ -20,7 +20,7 @@ exercises: 2
 
 ## Introduction
 
-Medical imaging uses many technologies including X-rays, computed tomography (Ct),
+Medical imaging uses many technologies including X-rays, computed tomography (CT),
 magnetic resonance imaging (MRI),
 Ultrasound(US),
 positron emmision tomography(PET+) and microscopy. 
@@ -38,7 +38,7 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 ## X-ray
 
 
-`![schematic of X-ray](/fig/x_ray_dia.png){alt='schematic of X-rays'}`
+![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}`
 
 ![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
@@ -65,24 +65,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: question 
 
-## Question 1: Can you do it?
-
-````Where is the signal in MRI coming from?```
-
-
-
-:::::::::::::::::::::::: solution 
-
-
-## Awnser
- 
-```awnser
-The signal in MRI comes from the patient him or herself (her hydrogen atoms).
-```
-
-:::::::::::::::::::::::::::::::::
 
 
 
