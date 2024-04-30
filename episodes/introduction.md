@@ -75,7 +75,7 @@ Figures and data presented are open source and open lisence.
 `![optional caption that appears below the figure](figure url){alt='alt text for
 accessibility purposes'}`
 
-![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
+![You belong here if you want to learn!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
 ::::::::::::::::::::::::::::::::::::: callout
 
@@ -103,7 +103,7 @@ Not everyone uses all forms of medical images, but you can learn a lot even with
 What is the style in these documents of code I need to type?
 
 ```python
-print("This", "new", "lesson", "looks", "good")
+print("This looks good")
 ```
 
 :::::::::::::::::::::::: solution 
@@ -111,7 +111,7 @@ print("This", "new", "lesson", "looks", "good")
 ## Output
  
 ```output
-"This new lesson looks good"
+"This looks good"
 ```
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::
