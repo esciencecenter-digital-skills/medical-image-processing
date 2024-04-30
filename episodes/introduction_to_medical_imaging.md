@@ -38,7 +38,7 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 ## X-ray
 
 
-![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}`
+`![schematic of X-ray](/fig/x_ray_dia.png){alt='schematic of X-rays'}`
 
 ![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
