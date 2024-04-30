@@ -30,8 +30,17 @@ of interest.
 We will recieve imaging in certain kinds of files. For example an X-ray will usually
 be kept at the hospital in DICOM format, but the image itself, the 2D arrays will be a JPEG inside the DICOM. 
 Understanding both the kinds of files we are dealing with and how the images inside them were generated can help us approach them computationally.
+We can think of medical images as signals. These signals need various kinds of processing
+before they are 'readable' to humans or many of the algorithms we write. 
+
+Historically X-rays were the first common form of medical imaging. The diagram below should help you visualize how they are made. The signal from an X-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an X-ray detector. 
+
+## X-ray
 
 
+`![schematic of X-ray](fig/x_ray_dia.png){alt='schematic of X-rays'}`
+
+![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
 This is a lesson created via The Carpentries Workbench. It is written in
 [Pandoc-flavored Markdown](https://pandoc.org/MANUAL.txt) for static files and
@@ -56,32 +65,30 @@ associated with the lessons. They appear in the "Instructor View"
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: challenge 
+::::::::::::::::::::::::::::::::::::: question 
 
-## Challenge 1: Can you do it?
+## Question 1: Can you do it?
 
 Where is the signal in MRI coming from?
 
-```r
-paste("This", "new", "lesson", "looks", "good")
-```
+
 
 :::::::::::::::::::::::: solution 
 
-## Output
+## Awnser
  
-```output
-[1] "This new lesson looks good"
+```awnser
+The signal in MRI comes from the patient him or herself.
 ```
 
 :::::::::::::::::::::::::::::::::
 
 
-## Challenge 2: how do you nest solutions within challenge blocks?
+## Question 2: What are some disadvantages to ultrasound in terms of computational analysis?
 
 :::::::::::::::::::::::: solution 
 
-You can add a line with at least three colons and a `solution` tag.
+Operator dependant, often with patient data burned in, settings vary
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
