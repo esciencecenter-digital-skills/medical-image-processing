@@ -52,7 +52,7 @@ associated with the lessons. They appear in the "Instructor View"
 ## Challenge 1: Can you do it?
 
 What is the way to use the challenges and question?
-
+:::::::::::::::::::::::::::::::::::::::::::::::
 
 
 :::::::::::::::::::::::: solution 
