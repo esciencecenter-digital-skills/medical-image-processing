@@ -7,14 +7,14 @@ exercises: 2
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What are the common different kinds of diagnostic imaging?
-- What computational challenges do they present?
+- What sorts of computational challenges do they present?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Explain various common kinds of medical images
-- Understand how data was created and is organized in these images at a high level
+- Understand how data for them was created and is organized in these images at a high level
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -26,11 +26,13 @@ Ultrasound(US),
 positron emmision tomography(PET+) and microscopy. 
 Although there are tendancies to use certain technologies, or modalities to
 awnser certain clinical questions, many modalities may provide information
-of interest. 
+of interest in terms of research questions. 
+In order to work with digital images at scale we need to use computing.
 We will recieve imaging in certain kinds of files. For example an X-ray will usually
-be kept at the hospital in DICOM format, but the image itself, the 2D arrays will be a JPEG inside the DICOM. 
-Understanding both the kinds of files we are dealing with and how the images inside them were generated can help us approach them computationally.
-We can think of medical images as signals. These signals need various kinds of processing
+be kept at the hospital in DICOM format, but the image itself, the 2D arrays will be in a JPEG inside the DICOM. 
+Understanding all the kinds of files we are dealing with and how the images inside them were generated can help us approach them computationally.
+
+Conceptually, we can think of medical images as signals. These signals need various kinds of processing
 before they are 'readable' to humans or many of the algorithms we write. 
 
 Historically X-rays were the first common form of medical imaging. The diagram below should help you visualize how they are made. The signal from an X-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an X-ray detector. 
@@ -40,11 +42,11 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 
 ![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}
 
-![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}
 
-## Tomography
+## Tomography and beyond...
 
-There are several kinds of tomography. You can think of this form of imaging as... 
+There are several kinds of tomography. This technique produces images that allow us to see structures within
+a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode. 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -55,21 +57,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
-::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1: Can you think about it?
-
-What is signal in MRI? What generates it?
-
-
-
-:::::::::::::::::::::::: solution 
-
-## sOLUTION
- 
-The signal comes from the patient's own hydrogen.
-
-:::::::::::::::::::::::::::::::::
 
 
 
@@ -83,44 +71,59 @@ The signal comes from the patient's own hydrogen.
 ``Operator dependant, often with patient data burned in, settings vary, positions vary```
 
 :::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge 1: Can you think of ways to reduce these problems?
+
+How would optimize research involving biceps brachii ultrasounds?
+
+
+
+:::::::::::::::::::::::: solution 
+
+## Solution
+ 
+Possible solutions include:
+- reviewing metadata on existing images so it can be matched by machine type
+- training technicians to use standardized settings only.
+- creating a machine set only on one power setting etc. 
+- OCR to get rid off burned in text
+- image harmonization/normalization algorithms 
+
+
+
+:::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Figures
 
-You can use standard markdown for static figures with the following syntax:
-
-`![optional caption that appears below the figure](figure url){alt='alt text for
-accessibility purposes'}`
-
-![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-Callout sections can highlight information.
+There is less standardization around file formats of certain kinds of imaging.
 
-They are sometimes used to emphasise particularly important points
-but are also used in some lessons to present "asides": 
-content that is not central to the narrative of the lesson,
-e.g. by providing the answer to a commonly-asked question.
+While typical radiological images have settled in how they are recorded in the DICOM
+even more novel sequences e.g. arterial spin labbeled sequences are not standardized in terms of how they are recoded in
+this file format. Pathology images are not neccesarily stored in DICOM at all, and there is
+some controversy as to what file format will come to dominate this important form of medical
+imaging. 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## Math
+## Visualization
 
-One of our episodes contains $\LaTeX$ equations when describing how to create
-dynamic reports with {knitr}, so we now use mathjax to describe this:
-
-`$\alpha = \dfrac{1}{(1 - \beta)^2}$` becomes: $\alpha = \dfrac{1}{(1 - \beta)^2}$
-
-Cool, right?
+There are increasing ways images can be visualized for human interpreters. 
+Optimizing visualization for humans and information for computer vision are
+very different processes. 
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Use `.md` files for episodes when you want static content
-- Use `.Rmd` files for episodes when you need to generate output
-- Run `sandpaper::check_lesson()` to identify any issues with your lesson
-- Run `sandpaper::build_lesson()` to preview your lesson locally
+- Every type and sequence of imaging gives you different and more information 
+- Computationally images have arrays but arrays are surrounded by other data
+- Research should be designed with human limitations in mind
+- We can expect more imaging modalities in the future
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
