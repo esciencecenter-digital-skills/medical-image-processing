@@ -69,16 +69,19 @@ associated with the lessons. They appear in the "Instructor View"
 
 ## Question 1: Can you do it?
 
-Where is the signal in MRI coming from?
+````Where is the signal in MRI coming from?```
 
 
 
 :::::::::::::::::::::::: solution 
 
+
+
+
 ## Awnser
  
 ```awnser
-The signal in MRI comes from the patient him or herself.
+The signal in MRI comes from the patient him or herself (her hydrogen atoms).
 ```
 
 :::::::::::::::::::::::::::::::::
@@ -88,7 +91,7 @@ The signal in MRI comes from the patient him or herself.
 
 :::::::::::::::::::::::: solution 
 
-Operator dependant, often with patient data burned in, settings vary
+``Operator dependant, often with patient data burned in, settings vary, positions vary```
 
 :::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
