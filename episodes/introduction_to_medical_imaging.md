@@ -55,6 +55,19 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
+::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge 1: Can you think about it?
+
+What is signal in MRI? What generates it?
+
+
+
+:::::::::::::::::::::::: solution 
+
+## sOLUTION
+ 
+The signal comes from the patient's own hydrogen.
 
 :::::::::::::::::::::::::::::::::
 
