@@ -20,7 +20,7 @@ exercises: 2
 
 ## Introduction
 
-Medical imaging uses many technologies including X-rays, computed tomography (Ct),
+Medical imaging uses many technologies including X-rays, computed tomography (CT),
 magnetic resonance imaging (MRI),
 Ultrasound(US),
 positron emmision tomography(PET+) and microscopy. 
@@ -38,25 +38,13 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 ## X-ray
 
 
-`![schematic of X-ray](/fig/x_ray_dia.png){alt='schematic of X-rays'}`
+![schematic of X-ray](https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/episodes/fig/x_ray_dia.png){alt='schematic of X-rays'}
 
 ![You belong in The Carpentries!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
 
-This is a lesson created via The Carpentries Workbench. It is written in
-[Pandoc-flavored Markdown](https://pandoc.org/MANUAL.txt) for static files and
-[R Markdown][r-markdown] for dynamic files that can render code into output. 
-Please refer to the [Introduction to The Carpentries 
-Workbench](https://carpentries.github.io/sandpaper-docs/) for full documentation.
+## Tomography
 
-What you need to know is that there are three sections required for a valid
-Carpentries lesson:
-
- 1. `questions` are displayed at the beginning of the episode to prime the
-    learner for the content.
- 2. `objectives` are the learning objectives for an episode displayed with
-    the questions.
- 3. `keypoints` are displayed at the end of the episode to reinforce the
-    objectives.
+There are several kinds of tomography. You can think of this form of imaging as 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
