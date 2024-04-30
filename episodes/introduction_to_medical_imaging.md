@@ -1,23 +1,37 @@
 ---
-title: "Using Markdown"
+title: "Introduction to Medical Imaging"
 teaching: 10
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How do you write a lesson using Markdown and `{sandpaper}`?
+- What are the common different kinds of diagnostic imaging?
+- What computational challenges do they present?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain how to use markdown with The Carpentries Workbench
-- Demonstrate how to include pieces of code, figures, and nested challenge blocks
+- Explain various common kinds of medical images
+- Understand how data was created and is organized in these images at a high level
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
+
+Medical imaging uses many technologies including X-rays, computed tomography (Ct),
+magnetic resonance imaging (MRI),
+Ultrasound(US),
+positron emmision tomography(PET+) and microscopy. 
+Although there are tendancies to use certain technologies, or modalities to
+awnser certain clinical questions, many modalities may provide information
+of interest. 
+We will recieve imaging in certain kinds of files. For example an X-ray will usually
+be kept at the hospital in DICOM format, but the image itself, the 2D arrays will be a JPEG inside the DICOM. 
+Understanding both the kinds of files we are dealing with and how the images inside them were generated can help us approach them computationally.
+
+
 
 This is a lesson created via The Carpentries Workbench. It is written in
 [Pandoc-flavored Markdown](https://pandoc.org/MANUAL.txt) for static files and
@@ -46,7 +60,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 ## Challenge 1: Can you do it?
 
-What is the output of this command?
+Where is the signal in MRI coming from?
 
 ```r
 paste("This", "new", "lesson", "looks", "good")
