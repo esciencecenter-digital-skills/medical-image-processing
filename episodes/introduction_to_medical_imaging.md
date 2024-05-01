@@ -40,8 +40,7 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 ## X-ray
 
 
-
-![schematic of x-ray](fig/x_ray_dia.png)
+![schematic of x-ray (to be replaced with better picture)](fig/x_ray_dia.png)
 
 
 ## Tomography and beyond...
