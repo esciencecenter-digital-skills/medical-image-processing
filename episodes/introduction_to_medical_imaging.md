@@ -45,8 +45,8 @@ Historically X-rays were the first common form of medical imaging. The diagram b
 
 ## Tomography and beyond...
 
-There are several kinds of tomography. This technique produces images that allow us to see structures within
-a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode. 
+There are several kinds of tomography. This technique produces three dimensional images that allow us to see structures within a subject. When we look at 3-D images we speak of voxels. 
+Computed tomographs (CTs) are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode.  
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -65,7 +65,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 :::::::::::::::::::::::: solution 
 
-``Operator dependant, often with patient data burned in, settings vary, positions vary```
+Operator dependant, often with patient data burned in, settings vary, positions vary
 
 :::::::::::::::::::::::::::::::::
 
