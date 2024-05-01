@@ -88,11 +88,11 @@ MRI can also be used for spectroscopy, but this is not covered as it isn't a tru
 
 | Format Name | File Extension | Origin/Group                                  | More info|
 | ----------- | -------------- | --------------------------------------------- |-----------
-| DICOM       | none or .dc    | ACR/NEMA Consortium                           |  https://www.dicomstandard.org/  |
-| Analyze     | .img/.hdr      | Analyze Software, Mayo Clinic                 | |
-| NIfTI       | .nii           | Neuroimaging Informatics Technology Initiative| https://brainder.org/2012/09/23/the-nifti-file-format/|
-| MINC        | .mnc           | Montreal Neurological Institute               | |
-| NRRD        | .nrrd          |                                               | |
+| DICOM       | none or .dc    | ACR/NEMA Consortium                           |https://www.dicomstandard.org/  |
+| Analyze     | .img/.hdr      | Analyze Software, Mayo Clinic                 |https://eeg.sourceforge.net/ANALYZE75.pdf|
+| NIfTI       | .nii           | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
+| MINC        | .mnc           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
+| NRRD        | .nrrd          |                                               |https://teem.sourceforge.net/nrrd/format.html|
 
 From the MRI scanner, images are initially collected in the DICOM format and can be converted to these other formats to make working with the data easier.
 
@@ -100,7 +100,6 @@ From the MRI scanner, images are initially collected in the DICOM format and can
 
 Let's look at an example DICOM data to see what it looks like.
 This data was [TO DO]
-
 
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
 We can convert our DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
