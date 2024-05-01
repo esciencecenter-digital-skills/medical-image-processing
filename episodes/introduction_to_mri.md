@@ -80,6 +80,10 @@ associated with the lessons. They appear in the "Instructor View"
 - 4D image (x, y, z + direction of diffusion)
 - need parameters about the strength of the diffusion "gradient" and its direction (`.bval` and `.bvec`)
 
+### Other
+
+MRI can also be used for spectroscopy, but this is not covered as it isn't a true image.
+
 ## Neuroimaging file formats
 
 | Format Name | File Extension | Origin                                         | 
@@ -93,6 +97,22 @@ associated with the lessons. They appear in the "Instructor View"
 From the MRI scanner, images are initially collected in the DICOM format and can be converted to these other formats to make working with the data easier.
 
 
+
+Let's look at some example DICOM data to see what it looks like.
+This data was
+
+![](fig/dicom_to_nifti.png){alt='dicom-to-nifti'}
+
+NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
+If you're interested in learning more about NIfTI images, we highly recommend [this blog post about the NIfTI format](https://brainder.org/2012/09/23/the-nifti-file-format/).
+We can convert our DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
+
+We can learn how to run `dcm2niix` by taking a look at its help menu.
+
+```bash
+dcm2niix -help
+```
+
 We'll now cover some details on working with NiFTIS.
 
 ## Reading NIfTI images
@@ -105,7 +125,7 @@ import nibabel as nib
 ```
 
 First, use the `load()` function to create a NiBabel image object from a NIfTI file.
-We'll load in an example image from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We have already packed it into your repository for the course.
+We'll load in an example image originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We have already packed it into your repository for the course.
 
 .
 
@@ -133,19 +153,20 @@ extents         : 0
 session_error   : 0
 regular         : b''
 dim_info        : 0
-dim             : [ 3 57 67 56  1  1  1  1]
+dim             : [  3 432 432  30   1   1   1   1]
 intent_p1       : 0.0
 intent_p2       : 0.0
 intent_p3       : 0.0
 intent_code     : none
-datatype        : uint8
-bitpix          : 8
+datatype        : int16
+bitpix          : 16
 slice_start     : 0
-pixdim          : [1.   2.75 2.75 2.75 1.   1.   1.   1.  ]
+pixdim          : [1.        0.9259259 0.9259259 5.7360578 0.        0.        0.
+ 0.       ]
 vox_offset      : 0.0
 scl_slope       : nan
 scl_inter       : nan
-slice_end       : 0
+slice_end       : 29
 slice_code      : unknown
 xyzt_units      : 2
 cal_max         : 0.0
@@ -154,19 +175,19 @@ slice_duration  : 0.0
 toffset         : 0.0
 glmax           : 0
 glmin           : 0
-descrip         : b''
+descrip         : b'Philips Healthcare Ingenia 5.4.1 '
 aux_file        : b''
-qform_code      : mni
-sform_code      : mni
-quatern_b       : 0.0
-quatern_c       : 0.0
-quatern_d       : 0.0
-qoffset_x       : -78.0
-qoffset_y       : -91.0
-qoffset_z       : -91.0
-srow_x          : [  2.75   0.     0.   -78.  ]
-srow_y          : [  0.     2.75   0.   -91.  ]
-srow_z          : [  0.     0.     2.75 -91.  ]
+qform_code      : scanner
+sform_code      : unknown
+quatern_b       : 0.008265011
+quatern_c       : 0.7070585
+quatern_d       : -0.7070585
+qoffset_x       : 180.81993
+qoffset_y       : 21.169691
+qoffset_z       : 384.01007
+srow_x          : [1. 0. 0. 0.]
+srow_y          : [0. 1. 0. 0.]
+srow_z          : [0. 0. 1. 0.]
 intent_name     : b''
 magic           : b'n+1'
 ```
@@ -412,6 +433,7 @@ t2_data.shape
 
 ```output
 (57, 67, 56)
+(432, 432, 30)
 ```
 
 :::::::::::::::::::::::::
@@ -419,10 +441,10 @@ t2_data.shape
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
 The 3 numbers given here represent the number of values *along a respective dimension (x,y,z)*.
-This image was scanned in 57 slices with a resolution of 67 x 56 voxels per slice.
+This image was scanned in 30 slices with a resolution of 432 x 432 voxels per slice.
 That means there are:
 
-`57 * 67 * 56 = 213864`
+`30 * 432 * 432 = 5,598,720`
 
 voxels in total!
 
@@ -612,6 +634,8 @@ This means that:
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
+- imaging MRIs commonly used for research can be anatomical, functional or diffusion
+- MRIs can be converted from DICOMs to Niftis
 - NIfTI image contain a header, which describes the contents, and the data.
 - The position of the NIfTI data in space is determined by the affine matrix.
 - NIfTI data is a multi-dimensional array of values.
