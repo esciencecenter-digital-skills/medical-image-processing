@@ -58,7 +58,7 @@ associated with the lessons. They appear in the "Instructor View"
 
 
 
-::::::::::::::::::::::::: question
+::::::::::::::::::::::::: challenge
 
 ## Question : What are some disadvantages to ultrasound in terms of computational analysis?
 
