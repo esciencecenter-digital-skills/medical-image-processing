@@ -98,10 +98,9 @@ From the MRI scanner, images are initially collected in the DICOM format and can
 
 
 
-Let's look at some example DICOM data to see what it looks like.
-This data was
+Let's look at an example DICOM data to see what it looks like.
+This data was [TO DO]
 
-![](fig/dicom_to_nifti.png){alt='dicom-to-nifti'}
 
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
 We can convert our DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
