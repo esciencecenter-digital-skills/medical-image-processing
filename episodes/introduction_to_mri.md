@@ -1,11 +1,12 @@
 ---
 title: "Working with MRI"
-teaching: 10
+teaching: 60
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
+- What kinds of MRI are there?
 - How are MRI data represented digitally?
 - What file structures should I use around MRIs for neuroimaging?
 
@@ -397,9 +398,9 @@ t2_data.ndim
 
 :::::::::::::::::::::::::
 
-While typical 2D pictures are made out of squares called **pixels**, a 3D MR image is made up of 3D cubes called **voxels**.
+Remember typical 2D pictures are made out of **pixels**, but a 3D MR image is made up of 3D cubes called **voxels**.
 ![](fig/mri_slices.jpg)  
-What about the how big each dimension is (shape)?
+How big each dimension is (shape)?
 
 :::::::::::::::  solution
 
