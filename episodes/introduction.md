@@ -20,15 +20,15 @@ exercises: 0
 ## Introduction
 
 This is a lesson created in the style of The Carpentries. It is written with the assumption
-that you already posess skills in terms of git, Python and basic image processing.
+that you already possess skills in terms of git, Python and basic image processing.
 
 The interpretation of medical images for clinical purposes involves skills that take
 highly trained professionals like nuclear medicine specialists and
 radiologists many years to master. This course does not aim to improve such
-interprative skills, rather to enhance the computational skills
-needed to awnser research questions with that involve medical images.
+interpretive skills, rather to enhance the computational skills
+needed to answer research questions with that involve medical images.
 
-Some examples of the kinds of research questions that can be awnsered are:
+Some examples of the kinds of research questions that can be answered are:
 
 - Can we predict from brain MRIs when patients will become demented before they do?
 
@@ -38,7 +38,7 @@ Some examples of the kinds of research questions that can be awnsered are:
 
 - Can we use existing medical imaging to screen for underdiagnosed conditions like osteoporosis?
 
-You are in all likelyhood here because you have a research question which can be awnsered with
+You are in all likelihood here because you have a research question which can be answered with
 the processing and analysis of medical images. This course is meant to aid you.
 
 
@@ -70,7 +70,7 @@ Do not peek, try to solve it yourself. The effort will pay off.
 
 ## Figures
 
-Figures and data presented are open source and open lisence.
+Figures and data presented are open source and open license.
 
 `![optional caption that appears below the figure](figure url){alt='alt text for
 accessibility purposes'}`
@@ -81,7 +81,7 @@ accessibility purposes'}`
 
 Callout sections will be used to highlight information.
 
-They are  used to emphasise particularly important points
+They are  used to emphasize particularly important points
 e.g. by providing the answer to a commonly-asked question.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
