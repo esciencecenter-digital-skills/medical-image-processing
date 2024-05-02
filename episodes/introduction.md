@@ -19,14 +19,14 @@ exercises: 0
 
 ## Introduction
 
-This is a lesson created in the style of The Carpentries. It is written with the assumption
+This is a lesson created in the style of [The Carpentries](https://datacarpentry.org/). It is written with the assumption
 that you already possess skills in terms of git, Python and basic image processing.
 
-The interpretation of medical images for clinical purposes involves skills that take
-highly trained professionals like nuclear medicine specialists and
+The interpretation of medical images for clinical purposes requires skills that take
+highly trained professionals such as nuclear medicine specialists and
 radiologists many years to master. This course does not aim to improve such
-interpretive skills, rather to enhance the computational skills
-needed to answer research questions with that involve medical images.
+interpretive skills, but rather to enhance the computational skills
+needed to answer research questions involving medical images.
 
 Some examples of the kinds of research questions that can be answered are:
 
@@ -79,41 +79,15 @@ accessibility purposes'}`
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-Callout sections will be used to highlight information.
+Callout sections will be used to highlight important information.
 
-They are  used to emphasize particularly important points
-e.g. by providing the answer to a commonly-asked question.
+.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
-## Lectures
 
-Some of our episodes are based on presentations.
-Most episodes involve real useable code.
-You are expected to code along Jupyter lab. 
-
-Not everyone uses all forms of medical images, but you can learn a lot even with image types you will not use.
-
-::::::::::::::::::::::::::::::::::::: code
-
-## What will code look like?
-
-What is the style in these documents of code I need to type?
-
-```python
-print("This looks good")
-```
-
-:::::::::::::::::::::::: solution 
-
-## Output
- 
-```output
-"This looks good"
-```
-:::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
