@@ -6,19 +6,18 @@ exercises: 2
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What are the common different kinds of diagnostic imaging?
+- What are the common different types of diagnostic imaging?
 - What sorts of computational challenges do they present?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain various common kinds of medical images
-- Understand how data for them was created and is organized in these images at a high level
+- Explain various common types of medical images
+- Explain at a high level how images' metadata is created and organized
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Introduction
 
 Medical imaging uses many technologies including X-rays, computed tomography (CT),
 magnetic resonance imaging (MRI),
@@ -27,13 +26,13 @@ positron emmision tomography(PET+) and microscopy.
 Although there are tendancies to use certain technologies, or modalities to
 awnser certain clinical questions, many modalities may provide information
 of interest in terms of research questions. 
-In order to work with digital images at scale we need to use computing.
+In order to work with digital images at scale we need to use information technology.
 We will recieve imaging in certain kinds of files. For example an X-ray will usually
 be kept at the hospital in DICOM format, but the image itself, the 2D arrays will be in a JPEG inside the DICOM. 
 Understanding all the kinds of files we are dealing with and how the images inside them were generated can help us approach them computationally.
 
 Conceptually, we can think of medical images as signals. These signals need various kinds of processing
-before they are 'readable' to humans or many of the algorithms we write. 
+before they are 'readable' by humans or by many of the algorithms we write. 
 
 While thinking about how the information from these signals are stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is neccesarry to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
 
@@ -42,7 +41,7 @@ Below we will mention a few details about image generation and capture, then pre
 ## X-rays
 
 
-Historically X-rays were the first common form of medical imaging. The diagram below should help you visualize how they are made. The signal from an X-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an X-ray detector. 
+Historically, X-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an X-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an X-ray detector. 
 
 
 
@@ -69,6 +68,10 @@ Ultrasound can produce multiple complex kinds of images. Typically sonographers 
 ## MRIs
 
 MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. The actual signal on an anatomical MRI needs to be processed via Fourier transforms and some other computational work before it is recognizable as anatomy, but the final product we are used to looking at is a 3D array. This array will typical be wrapped inside a DICOM file, but we can transform the image, and parts of the metadata, to a variety of file types. These will be covered in more detail in the next lecture.   
+
+## Other image types
+
+PET scans, nuclear medicine images in general and pathology images are also broadly available. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file tupes. Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities like contrast enhanced ultrasound. Others are novel in signal such as terahertz imaging which uses a previously 'unused' part of the electomagnetic radiation spectrum.
 
 
 
@@ -142,7 +145,7 @@ very different processes.
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
-- Every type and sequence of imaging gives you different and more information 
+- Every type of imaging e.g. MRI, CT, ultrasound etc. gives you different information 
 - Computationally images have arrays but arrays are surrounded by other data
 - Research should be designed with human limitations in mind
 - We can expect more imaging modalities in the future
