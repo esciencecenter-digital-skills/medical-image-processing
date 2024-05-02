@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Medical Imaging"
-teaching: 10
+teaching: 45
 exercises: 2
 ---
 
@@ -35,18 +35,42 @@ Understanding all the kinds of files we are dealing with and how the images insi
 Conceptually, we can think of medical images as signals. These signals need various kinds of processing
 before they are 'readable' to humans or many of the algorithms we write. 
 
+While thinking about how the information from these signals are stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is neccesarry to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
+
+Below we will mention a few details about image generation and capture, then present a table about file formats and information. 
+
+## X-rays
+
+
 Historically X-rays were the first common form of medical imaging. The diagram below should help you visualize how they are made. The signal from an X-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an X-ray detector. 
 
-## X-ray
+
 
 
 ![schematic of x-ray (to be replaced with better picture)](fig/x_ray_dia.png)
 
 
+Modern (at least increasingly in advanced centers for the last decade) X-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically the arrays could have been, and sometimes even are, put in PNG or other file types, but typically JPEGs are used for X-rays. We could use the metaphor of a wrapped present here. The DICOM file contains  metadata around the image data, wrapping it. The image data itself is a bunch of 2-D arrays, but these have been organized to a specific shape- they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no X-ray can be interpreted clinically without multiple perspectives. In chest X-rays this means a anteroposterior and a lateral. Of course we can take X-rays from any angle and even do them repeatedly. This allows for flouroscopy. Flouroscopy images will be stored in a DICOM but can be displayed as movies because they are typically cine files. Cine is a file format that lets you store images in sequence with a frame rate.
+
 ## Tomography and beyond...
 
-There are several kinds of tomography. This technique produces three dimensional images that allow us to see structures within a subject. When we look at 3-D images we speak of voxels. 
-Computed tomographs (CTs) are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode.  
+There are several kinds of tomography. This technique produces three dimensional images, made of voxels, that allow us to see structures within a subject. 
+Computed tomographs (CTs) are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode. Below are a few summaries about various common imaging types. 
+
+## CTs and tomosynthesis
+
+CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor oposite each other. Tomosynthesis uses a limited angle instead of going all the way around the patient. In both cases the image output is then made by processing this into a 3D array. We see again, similarly to X-ray, what tissues atentuated the radiation, and what tissues let it pass, but we can visualize it in either 3D or "slices," single layer slices of voxels. It is not uncommon to get CTs as DICOM files which contain raw image data i.e. the 3-D array, which is then processed before viewing, or in some cases stored off as other file types.
+
+## Ultrasounds
+
+Ultrasound can produce multiple complex kinds of images. Typically sonographers produce a lot of B-mode images. They use signal, high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get a two dimensional images. Just as different tissues attentuate radiation differently, different tissues attenuate these waves differently, and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they are often also frequently saved as cine files inside DICOMs. B-mode is far from the only type of ultrasound. M-mode can also capture motion, but puts it into a a single 2D array of one line of the image over time.    
+
+
+## MRIs
+
+MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. The actual signal on an anatomical MRI needs to be processed via Fourier transforms and some other computational work before it is recognizable as anatomy, but the final product we are used to looking at is a 3D array. This array will typical be wrapped inside a DICOM file, but we can transform the image, and parts of the metadata, to a variety of file types. These will be covered in more detail in the next lecture.   
+
+
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
