@@ -87,11 +87,6 @@ Callout sections will be used to highlight important information.
 
 
 
-
-
-:::::::::::::::::::::::::::::::::
-:::::::::::::::::::::::::::::::::
-
 ::::::::::::::::::::::::::::::::::::: keypoints 
 
 - Use questions to challenge yourself
