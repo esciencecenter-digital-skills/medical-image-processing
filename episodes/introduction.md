@@ -56,6 +56,7 @@ associated with the lessons. They appear in the "Instructor View"
 What is the way to use the challenges and question?
 
 
+:::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::: solution 
 
@@ -65,7 +66,6 @@ Do not peek, try to solve it yourself. The effort will pay off.
 
 :::::::::::::::::::::::::::::::::
 
-:::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
