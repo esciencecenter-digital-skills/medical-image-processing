@@ -56,7 +56,6 @@ associated with the lessons. They appear in the "Instructor View"
 What is the way to use the challenges and question?
 
 
-:::::::::::::::::::::::::::::::::
 
 :::::::::::::::::::::::: solution 
 
@@ -85,6 +84,7 @@ Callout sections will be used to highlight important information.
 .
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 
 
