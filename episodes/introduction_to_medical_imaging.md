@@ -55,7 +55,7 @@ Modern (at least increasingly in advanced centers for the last decade) X-rays ar
 ## Tomography and beyond...
 
 There are several kinds of tomography. This technique produces three dimensional images, made of voxels, that allow us to see structures within a subject. 
-Computed tomographs (CTs) are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode. Below are a few summaries about various common imaging types. 
+Computed tomographs (CTs) are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money but radiation to patients. Therefore many research protocols use existing CTs or non-radiating forms of images. The details of various forms of imaging will be covered in a lecture with slides that accompanies this chapter/episode. Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. He we will discuss what is common to get in terms of files given to researchers.
 
 ## CTs and tomosynthesis
 
