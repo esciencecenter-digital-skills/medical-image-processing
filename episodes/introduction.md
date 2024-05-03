@@ -17,8 +17,6 @@ exercises: 0
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Introduction
-
 This is a lesson created in the style of [The Carpentries](https://datacarpentry.org/). It is written with the assumption
 that you already possess skills in terms of git, Python and basic image processing.
 
@@ -41,21 +39,13 @@ Some examples of the kinds of research questions that can be answered are:
 You are in all likelihood here because you have a research question which can be answered with
 the processing and analysis of medical images. This course is meant to aid you.
 
-
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View"
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+*Note that all figures and data presented are licensed under open-source terms.*
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Challenge 1: Can you do it?
 
 What is the way to use the challenges and question?
-
-
 
 :::::::::::::::::::::::: solution 
 
@@ -65,34 +55,4 @@ Do not peek, try to solve it yourself. The effort will pay off.
 
 :::::::::::::::::::::::::::::::::
 
-
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
-## Figures
-
-Figures and data presented are open source and open license.
-
-`![optional caption that appears below the figure](figure url){alt='alt text for
-accessibility purposes'}`
-
-![You belong here if you want to learn!](https://raw.githubusercontent.com/carpentries/logo/master/Badge_Carpentries.svg){alt='Blue Carpentries hex person logo with no text.'}
-
-::::::::::::::::::::::::::::::::::::: callout
-
-Callout sections will be used to highlight important information.
-
-.
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-
-::::::::::::::::::::::::::::::::::::: keypoints 
-
-- Use questions to challenge yourself
-- This course is in development
-- Lectures often provide materials not yet in the notes
-
-::::::::::::::::::::::::::::::::::::::::::::::::
-
-[r-markdown]: https://rmarkdown.rstudio.com/
