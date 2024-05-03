@@ -64,7 +64,7 @@ CTs and tomosynthetic images are produced with the same technology. The differen
 
 Ultrasound can produce multiple complex kinds of images. Typically sonographers produce a lot of B-mode images. They use signal, high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get two dimensional images. Just as different tissues attentuate radiation differently, different tissues attenuate these waves differently, and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they can be saved as cine files inside DICOMs. On the other hand the sonographer can choose to record only a single 'frame', in which case a 2D array will ultimately be saved. B-mode is far from the only type of ultrasound. M-mode, like the cine files in B-mode, can also capture motion, but puts it into a a single 2D array of one line of the image over time. In the compound image below you can see a B-mode 2-D image and an M-mode made on the line in it.    
 
-![Image from Cafer Zorkum, mD, PhD on wikidoc.org with creative commons lisence](fig/Mitral_Valve_M_Mode.jpg)
+![Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence](fig/Mitral_Valve_M_Mode.jpg)
 
 ## MRIs
 
