@@ -36,7 +36,7 @@ before they are 'readable' by humans or by many of the algorithms we write.
 
 While thinking about how the information from these signals are stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is neccesarry to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
 
-Below we will mention a few details about image generation and capture, then present a table about file formats and information. 
+Below we will mention a few details about image generation,capture and files.
 
 ## X-rays
 
