@@ -39,8 +39,11 @@ We will not cover all the mateiral in these lessons, rather give an over view of
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes can help inform instructors of timing challenges
-associated with the lessons. They appear in the "Instructor View"
+Inline instructor notes :
+If Zenodo is unavailable steer students to 
+https://github.com/esciencecenter-digital-skills/med-image-ext
+then work in a notebook from there, so use the following:
+'../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii'
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -99,9 +102,9 @@ MRI can also be used for spectroscopy, but this is not covered as it isn't a tru
 From the MRI scanner, images are initially collected in the DICOM format and can be converted to these other formats to make working with the data easier.
 
 
-Let's look at an example DICOM data to see what it looks like.
-This data was [TO DO]
-
+We will in a later episode look more deeplu into DICOM data. The DICOM will have all kinds of data
+such as the patient's name. In this episode we want to get to the image.
+One way to do this retrieve out image data in a NIfTI file.
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
 We can convert our DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
 
@@ -123,7 +126,7 @@ import nibabel as nib
 ```
 
 First, use the `load()` function to create a NiBabel image object from a NIfTI file.
-We'll load in an example image originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We have already packed it into your repository for the course.
+We'll load in an example image originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We will use a wget command to get this from Zeonodo
 
 .
 
