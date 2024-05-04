@@ -55,12 +55,14 @@ Ultrasounds images are operator-dependent, often with embedded patient data, and
 
 :::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::: callout 
+::::::::::::::::::::::::::::::::::::: challenge
 
 ## How to reduce these problems?
 
 How can we optimize research involving e.g. biceps brachii ultrasounds?
- 
+
+:::::::::::::::  solution
+
 Possible solutions include:
 
 - Reviewing metadata on existing images so it can be matched by machine type
@@ -80,7 +82,7 @@ PET scans, nuclear medicine images in general and pathology images are also broa
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Images storage
+## Image storage
 
 There is less standardization around file formats of certain types of imaging.
 
