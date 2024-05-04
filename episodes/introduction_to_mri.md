@@ -120,6 +120,7 @@ We can learn how to run `dcm2niix` by taking a look at its help menu.
 ```bash
 dcm2niix -help
 ```
+One of the advaantages of working with dcm2niix is that it can be used to create BIDS structured files. Basically it will give you a NiFTI and a json  with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. Issues of how data and files are organized are actually critical in terms of working across research groups, or even from one researcher to another. We reccomend you use the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) to learn the basics if you need to learn the basics of this standard. 
 
 We'll now cover some details on working with NiFTIS.
 
