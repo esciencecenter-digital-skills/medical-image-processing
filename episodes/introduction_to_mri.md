@@ -54,8 +54,8 @@ associated with the lessons. They appear in the "Instructor View"
 
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
-- 3D image of anatomy (i.e., shape, volume, cortical thickness, brain region)
-- can differentiate tissue types
+- 3D images of anatomy 
+- different tissue types produce different intensities 
 
 ### Functional
 
@@ -65,10 +65,10 @@ associated with the lessons. They appear in the "Instructor View"
 
 *Sourced from Wagner and Lindquist, 2015*
 
-- tracks the blood oxygen level-dependant (BOLD) signal as an analogue of brain activity
-- 4D image (x, y, z + time)
+- reveals blood oxygen level-dependant (BOLD) signal 
+- four dimensional image (x, y, z and time)
 
-### Diffusion
+### Diffusion 
 
 ![](fig/dwi.gif)
 
@@ -77,10 +77,12 @@ associated with the lessons. They appear in the "Instructor View"
 *Sourced from [http://brainsuite.org/processing/diffusion/tractography/](https://brainsuite.org/processing/diffusion/tractography/)*
 
 - measures diffusion of water in order to model tissue microstructure
-- 4D image (x, y, z + direction of diffusion)
-- need parameters about the strength of the diffusion "gradient" and its direction (`.bval` and `.bvec`)
+- four dimensional images (x, y, z + direction of diffusion)
+- has parameters about the strength of the diffusion "gradient" and its direction in `.bval` and `.bvec` files
 
-### Other
+### Other types of MRI
+
+Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced  MR perfusion, dynamic susceptibility contrast  MR perfusion, and arterial spin labelled perfusion. 
 
 MRI can also be used for spectroscopy, but this is not covered as it isn't a true image.
 
@@ -95,7 +97,6 @@ MRI can also be used for spectroscopy, but this is not covered as it isn't a tru
 | NRRD        | .nrrd          |                                               |https://teem.sourceforge.net/nrrd/format.html|
 
 From the MRI scanner, images are initially collected in the DICOM format and can be converted to these other formats to make working with the data easier.
-
 
 
 Let's look at an example DICOM data to see what it looks like.
