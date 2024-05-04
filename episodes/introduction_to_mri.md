@@ -28,12 +28,12 @@ exercises: 2
 
 ## Introduction
 
-This is a lesson created largely from other existing
+This is a lesson created heavily drawing from other existing
 Carpentries lessons; namely:
 
  1. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
- 2. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
- 3. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
+ 2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
+ 3. [Functional Neuroimaging Analysis in Python ](https://carpentries-incubator.github.io/SDC-BIDS-fMRI/)
 
 We will not cover all the mateiral in these lessons, rather give an over view of key points.
 
@@ -120,7 +120,18 @@ We can learn how to run `dcm2niix` by taking a look at its help menu.
 ```bash
 dcm2niix -help
 ```
-One of the advaantages of working with dcm2niix is that it can be used to create BIDS structured files. Basically it will give you a NiFTI and a json  with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. Issues of how data and files are organized are actually critical in terms of working across research groups, or even from one researcher to another. We reccomend you use the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) to learn the basics if you need to learn the basics of this standard. 
+One of the advaantages of working with dcm2niix is that it can be used to create BIDS structured files. Basically it will give you a NiFTI and a json  with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. Issues of how data and files are organized are actually critical in terms of working across research groups, or even from one researcher to another. Some pipelines assume your data is organized in BIDS structure, and these are sometimes called [BIDS Apps](https://bids-apps.neuroimaging.io/apps/).
+
+Some of the more popular examples are:
+
+   
+    fmriprep
+    freesurfer
+    micapipe
+    SPM
+    MRtrix3_connectome
+
+ We reccomend you use the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) to learn the basics if you need to learn the basics of this standard. 
 
 We'll now cover some details on working with NiFTIS.
 
@@ -635,14 +646,40 @@ This means that:
 - Voxel 1 is `0.2 - 30.5 = -30.3` in the A axis. Negative values mean move posterior
 - Voxel 1 is `2.15 - 9.2 = -7.05` in the S axis. Negative values mean move inferior
 
+## Functional MRI data
 
+Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities,and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, fmriprep is still the go-to package for this difficult work. If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. 
+
+## Diffusion MRI data
+
+Diffusion MRIs have additional data when compared to anatomical MRIs.
+
+Diffusion sequences which are sensitive to the signals from the random, microscropic motion (i.e. diffusion) of water protons. The diffusion of water in anatomical structures is restricted due to barriers (e.g. cell membranes), resulting in a preferred direction of diffusion (anisotropy). A typical diffusion MRI scan will acquire multiple volumes with varying magnetic fields which are sensitive to diffusion along a particular direction and result in diffusion-weighted images.
+In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix .bval) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix .bvec) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
+
+Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
+A strong possible library for coding with diffusion images is [the DIPY (Diffusion Imaging in Python) package](https://dipy.org/index.html#)
+Adantages of DIPY:
+
+    Fully free and open source.
+    Allows Python coding
+    Implementations of many state-of-the art algorithms.
+    Has methods for diffusion tensor imaging.
+    High performance. Many algorithms actually implemented in Cython under the hood.
+
+Tractography is a reconstruction technique to assess neural fiber tracts using the data of diffusion tensor imaging.
+Tractography models axonal trajectories as 'streamlines' from local directional information. There are several families methods for tractopraphy. No known methods is exact and perfect, they all have biases and limitations. The streamlines generated by a tractography method and the required meta-data are usually saved into files called tractograms. 
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - imaging MRIs commonly used for research can be anatomical, functional or diffusion
 - MRIs can be converted from DICOMs to Niftis
-- NIfTI image contain a header, which describes the contents, and the data.
+- BIDS is a standard about organizing neuroimaging data
+- NIfTI images contain a header, which describes the contents, and the data.
 - The position of the NIfTI data in space is determined by the affine matrix.
 - NIfTI data is a multi-dimensional array of values.
+- diffusion MRI has b-values and b-vectors
+- there are many various tractography methods, each with imperfections
+- functional MRI requires heavy processing
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
