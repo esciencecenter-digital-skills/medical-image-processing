@@ -69,7 +69,7 @@ Possible solutions include:
 - Training technicians to use standardized settings only
 - Creating a machine set only on one power setting
 - Image harmonization/normalization algorithms
-
+::::::::::::::::::::::::::::::::::::::::::::::::
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Magnetic Resonance Imaging
