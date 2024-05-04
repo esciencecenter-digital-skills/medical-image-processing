@@ -648,7 +648,14 @@ This means that:
 
 ## Functional MRI data
 
-Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities,and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, fmriprep is still the go-to package for this difficult work. If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. 
+Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities,and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, fmriprep is still the go-to package for this difficult work. If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data.
+Adantages of nilearn:
+
+    Fully free and open source.
+    Extremely popular
+    Allows Python coding
+    Implementations of many state-of-the art algorithms.
+    Works on Nibabel objects
 
 ## Diffusion MRI data
 
