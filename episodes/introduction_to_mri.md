@@ -104,9 +104,16 @@ From the MRI scanner, images are initially collected in the DICOM format and can
 
 We will in a later episode look more deeplu into DICOM data. The DICOM will have all kinds of data
 such as the patient's name. In this episode we want to get to the image.
-One way to do this retrieve out image data in a NIfTI file.
+We'll load some example images originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We will use a **wget** command to get thess from Zeonodo.
+
+```python
+TODO: write wget command 
+```
+
+
+
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
-We can convert our DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
+We can convert DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
 
 We can learn how to run `dcm2niix` by taking a look at its help menu.
 
@@ -126,7 +133,7 @@ import nibabel as nib
 ```
 
 First, use the `load()` function to create a NiBabel image object from a NIfTI file.
-We'll load in an example image originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We will use a wget command to get this from Zeonodo
+
 
 .
 
@@ -490,10 +497,6 @@ t2_data[9, 19, 2]
 ```output
 32.40787395834923
 ```
-
-**NOTE**: Python uses **zero-based indexing**.
-The first item in the array is item 0.
-The second item is item 1, the third is item 2, etc.
 
 This yields a single value representing the intensity of the signal at a particular voxel!
 Next we'll see how to not just pull one voxel but a slice or an array of voxels for visualization and analysis!
