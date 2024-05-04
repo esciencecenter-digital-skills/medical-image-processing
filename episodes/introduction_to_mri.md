@@ -654,11 +654,11 @@ Functional MRI data is inherently noisy, as people move thier heads. Usually we 
 
 ### Adantages of nilearn:
 
-Fully free and open source.
-Extremely popular
-Allows Python coding
-Implementations of many state-of-the art algorithms.
-Works on Nibabel objects
+-Fully free and open source.
+-Extremely popular
+-Allows Python coding
+-Implementations of many state-of-the art algorithms.
+-Works on Nibabel objects
 
 ::::::::::::::
 ## Diffusion MRI data
@@ -675,11 +675,11 @@ A strong possible library for coding with diffusion images is [the DIPY (Diffusi
 
 ## Adantages of DIPY:
 
-Fully free and open source.
-Allows Python coding
-Implementations of many state-of-the art algorithms.
-Has methods for diffusion tensor imaging.
-High performance. Many algorithms actually implemented in Cython under the hood.
+-Fully free and open source.
+-Allows Python coding
+-Implementations of many state-of-the art algorithms.
+-Has methods for diffusion tensor imaging.
+-High performance. Many algorithms actually implemented in Cython under the hood.
 
 :::::::::::::::::::::
 
