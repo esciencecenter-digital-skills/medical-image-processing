@@ -650,7 +650,7 @@ This means that:
 
 Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities,and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, fmriprep is still the go-to package for this difficult work. If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data.
 ::::::::::::::: callout
-Adantages of nilearn:
+### Adantages of nilearn:
 
     Fully free and open source.
     Extremely popular
@@ -668,7 +668,7 @@ In addition to the acquired images, two files are collected as part of the diffu
 Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
 A strong possible library for coding with diffusion images is [the DIPY (Diffusion Imaging in Python) package](https://dipy.org/index.html#)
 ::::::::::::::: callout
-Adantages of DIPY:
+### Adantages of DIPY:
 
     Fully free and open source.
     Allows Python coding
