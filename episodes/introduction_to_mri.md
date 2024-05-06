@@ -484,12 +484,13 @@ Next we'll see how to not just pull one voxel but a slice or an array of voxels 
 ## Working with image data
 
 Slicing does exactly what it seems to imply.
-Giving our 3D volume, we pull out a 2D **slice** of our data.
+Given a 3D volume, we pull out a 2D **slice** of our data.
 
 ![](fig/T1w.gif)
-From left to right: sagittal, coronal and axial slices.
 
-Let's pull the 10th slice in the z axis.
+From left to right: sagittal, coronal and axial slices of a brain.
+
+Let's pull the 10th slice in the z axis of our data.
 
 ```python
 z_slice = t2_data[:, :, 9]
@@ -585,7 +586,7 @@ An important thing to note is that in reality in which order you have:
 - bottom/top
 - back/front
 
-Depends on how you've constructed the affine matrix; thankfully there is in depth coverage of the issue [the nibabel documentation] (https://nipy.org/nibabel/coordinate_systems.html)
+Depends on how you've constructed the affine matrix; thankfully there is in depth coverage of the issue [the nibabel documentation](https://nipy.org/nibabel/coordinate_systems.html)
 For most of the the data we're dealing with we use a RAS coordinate system so it always refers to:
 
 - Right
