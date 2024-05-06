@@ -117,6 +117,10 @@ print(img_volume.GetPixelIDTypeAsString())
 
 Just inspecting these accessors, we deduce that the file contains a volume made of 208 images, each made of 288x320 pixels and one channel only (grayscale).
 
+## Acknowledgements
+
+This episode was largely inspired by [the official SITK tutorial](https://simpleitk.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+
 ::::::::::::::::::::::::::::::::::::: callout
 
 #### SITK conventions
