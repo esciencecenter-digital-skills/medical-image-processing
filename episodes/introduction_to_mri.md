@@ -35,7 +35,7 @@ Carpentries lessons; namely:
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
  3. [Functional Neuroimaging Analysis in Python ](https://carpentries-incubator.github.io/SDC-BIDS-fMRI/)
 
-We will not cover all the mateiral in these lessons, rather give an over view of key points.
+We will not cover all the material in these lessons, rather give an over view of key points. 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -59,6 +59,7 @@ then work in a notebook from there, so use the following:
 
 - 3D images of anatomy 
 - different tissue types produce different intensities 
+- different sequences will produce different intensities for various phenomena and tissues
 
 ### Functional
 
@@ -85,7 +86,7 @@ then work in a notebook from there, so use the following:
 
 ### Other types of MRI
 
-Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced  MR perfusion, dynamic susceptibility contrast  MR perfusion, and arterial spin labelled perfusion. 
+Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced MR perfusion, dynamic susceptibility contrast MR perfusion, and arterial spin labelled perfusion. 
 
 MRI can also be used for spectroscopy, but this is not covered as it isn't a true image.
 
@@ -99,11 +100,11 @@ MRI can also be used for spectroscopy, but this is not covered as it isn't a tru
 | MINC        | .mnc           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
 | NRRD        | .nrrd          |                                               |https://teem.sourceforge.net/nrrd/format.html|
 
-From the MRI scanner, images are initially collected in the DICOM format and can be converted to these other formats to make working with the data easier.
+From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
 
 
-We will in a later episode look more deeplu into DICOM data. The DICOM will have all kinds of data
-such as the patient's name. In this episode we want to get to the image.
+We will, in a later episode, look more deeplu into DICOM data. The DICOM will have all kinds of data
+such as the patient's name. In this episode we want to get to the images.
 We'll load some example images originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We will use a **wget** command to get thess from Zeonodo.
 
 ```python
@@ -153,7 +154,7 @@ First, use the `load()` function to create a NiBabel image object from a NIfTI f
 t2_img = nib.load("../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii"")
 ```
 
-Loading in a NIfTI file with `NiBabel` gives us a special type of data object which encodes all the information in the file.Each bit of information is called an **attribute** in Python's terminology.
+Loading in a NIfTI file with `NiBabel` gives us a special type of data object which encodes all the information in the file. Each bit of information is called an **attribute** in Python's terminology.
 To see all of these attributes, type `t2_img.` followed by <kbd>Tab</kbd>.
 There are three main attributes that we'll discuss today:
 
@@ -273,7 +274,7 @@ The key difference between a method and an attribute is:
 - Attributes are stored *values* kept within an object
 - Methods are *processes* that we can run using the object. Usually a method takes attributes, performs an operation on them, then returns it for you to use.
 
-When you type in `t2_img.` followed by <kbd>Tab</kbd>, you'll see that attributes are highlighted in orange and methods highlighted in blue.
+When you type in `t2_img.` followed by <kbd>Tab</kbd>, you may see that attributes are highlighted in orange and methods highlighted in blue. 
 
 The output above is a list of **keys** you can use from `t2_hdr` to access **values**.
 We can access the value stored by a given key by typing:
@@ -297,7 +298,7 @@ t2_hdr['pixdim']
 ```
 
 ```output
-array([1.  , 2.75, 2.75, 2.75, 1.  , 1.  , 1.  , 1.  ], dtype=float32)
+array([1. , 0.9259259, 0.9259259, 5.7360578, 0. , 0. , 0. , 0. ], dtype=float32)
 ```
 
 :::::::::::::::::::::::::
@@ -316,94 +317,62 @@ t2_data
 ```
 
 ```output
-array([[[ 8.79311806,  8.79311806,  8.79311806, ...,  7.73574093,
-          7.73574093,  7.38328189],
-        [ 8.79311806,  9.1455771 ,  8.79311806, ...,  8.08819997,
-          8.08819997,  8.08819997],
-        [ 9.1455771 ,  8.79311806,  8.79311806, ...,  8.44065902,
-          8.44065902,  8.44065902],
+array([[[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 8.08819997,  8.44065902,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.38328189],
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.73574093,
-          7.38328189,  7.38328189],
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.03082284]],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]],
 
-       [[ 8.79311806,  9.1455771 ,  8.79311806, ...,  7.73574093,
-          7.38328189,  7.38328189],
-        [ 8.79311806,  9.1455771 ,  9.1455771 , ...,  8.08819997,
-          7.73574093,  8.08819997],
-        [ 8.79311806,  9.49803615,  9.1455771 , ...,  8.44065902,
-          8.44065902,  8.44065902],
+       [[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.03082284],
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.38328189],
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.73574093]],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]],
 
-       [[ 9.1455771 ,  9.1455771 ,  8.79311806, ...,  7.73574093,
-          7.38328189,  7.03082284],
-        [ 9.1455771 ,  9.49803615,  9.1455771 , ...,  8.08819997,
-          7.73574093,  7.38328189],
-        [ 9.1455771 ,  9.49803615,  9.1455771 , ...,  8.08819997,
-          8.08819997,  8.08819997],
+       [[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 8.08819997,  8.44065902,  8.44065902, ...,  7.73574093,
-          7.38328189,  7.38328189],
-        [ 8.44065902,  8.08819997,  8.44065902, ...,  7.38328189,
-          7.38328189,  7.38328189],
-        [ 8.08819997,  8.08819997,  8.08819997, ...,  7.38328189,
-          7.38328189,  7.38328189]],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]],
 
        ...,
 
-       [[ 9.49803615,  9.85049519,  9.85049519, ...,  7.38328189,
-          7.38328189,  7.03082284],
-        [ 9.85049519,  9.85049519,  9.85049519, ...,  7.38328189,
-          7.38328189,  7.73574093],
-        [ 9.85049519,  9.85049519, 10.20295423, ...,  8.08819997,
-          8.08819997,  8.08819997],
+       [[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 9.49803615,  9.1455771 ,  9.49803615, ...,  7.73574093,
-          7.73574093,  7.73574093],
-        [ 9.49803615,  9.49803615,  9.1455771 , ...,  7.73574093,
-          8.08819997,  7.73574093],
-        [ 9.49803615,  9.1455771 ,  8.79311806, ...,  8.08819997,
-          7.73574093,  7.73574093]],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]],
 
-       [[ 9.49803615,  9.85049519, 10.20295423, ...,  7.38328189,
-          7.38328189,  7.03082284],
-        [ 9.1455771 ,  9.85049519,  9.1455771 , ...,  7.73574093,
-          7.38328189,  7.38328189],
-        [ 9.85049519,  9.85049519,  9.49803615, ...,  8.08819997,
-          7.73574093,  8.08819997],
+       [[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 9.49803615,  8.79311806,  9.1455771 , ...,  8.08819997,
-          7.38328189,  7.73574093],
-        [ 9.1455771 ,  9.1455771 ,  9.1455771 , ...,  7.73574093,
-          8.08819997,  7.73574093],
-        [ 8.79311806,  9.1455771 ,  9.1455771 , ...,  7.73574093,
-          7.73574093,  7.38328189]],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]],
 
-       [[ 9.1455771 ,  8.79311806,  8.79311806, ...,  7.03082284,
-          7.03082284,  6.6783638 ],
-        [ 9.49803615,  9.85049519,  9.49803615, ...,  7.73574093,
-          7.73574093,  7.73574093],
-        [ 9.49803615,  9.49803615,  9.85049519, ...,  7.73574093,
-          8.08819997,  7.73574093],
+       [[0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
         ...,
-        [ 8.79311806,  9.1455771 ,  9.1455771 , ...,  8.08819997,
-          8.08819997,  8.08819997],
-        [ 9.1455771 ,  9.1455771 ,  9.1455771 , ...,  8.08819997,
-          8.08819997,  7.73574093],
-        [ 8.79311806,  9.1455771 ,  9.1455771 , ...,  8.08819997,
-          7.73574093,  7.73574093]]])
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.],
+        [0., 0., 0., ..., 0., 0., 0.]])
 ```
 
-What type of data is this exactly? We can determine this by calling the `type()` function on `t2_data`.
+The first thing you will notice is that we seem to have a lot of zeros here. You might be nervous about
+whether there is anyting in this picture at all. If you see this
+when working with radiolohical images, remember these images often have some air, which
+becomes black space, around the objects of interest.
+What type of data is this exactly in a computational sense? We can determine this by calling the `type()` function on `t2_data`.
 
 ```python
 type(t2_data)
@@ -452,7 +421,6 @@ t2_data.shape
 ```
 
 ```output
-(57, 67, 56)
 (432, 432, 30)
 ```
 
@@ -489,8 +457,8 @@ print(np.max(t2_data))
 ```
 
 ```output
-6.678363800048828
-96.55541983246803
+0.0
+630641.0785522461
 ```
 
 For our data, the range of intensity values goes from 0 (black) to more positive digits (whiter).
@@ -500,14 +468,14 @@ We can inspect the value of a voxel by selecting an index as follows:
 
 `data[x,y,z]`
 
-So for example we can inspect a voxel at coordinates (10,20,3) by doing the following:
+So for example we can inspect a voxel at coordinates (9,19,2) by doing the following:
 
 ```python
 t2_data[9, 19, 2]
 ```
 
 ```output
-32.40787395834923
+0.
 ```
 
 This yields a single value representing the intensity of the signal at a particular voxel!
@@ -521,10 +489,10 @@ Giving our 3D volume, we pull out a 2D **slice** of our data.
 ![](fig/T1w.gif)
 From left to right: sagittal, coronal and axial slices.
 
-Let's pull the 10th slice in the x axis.
+Let's pull the 10th slice in the z axis.
 
 ```python
-x_slice = t2_data[9, :, :]
+z_slice = t2_data[:, :, 9]
 ```
 
 This is similar to the indexing we did before to pull out a single voxel.
@@ -546,21 +514,21 @@ y_slice = t2_data[:, 19, :]
 
 :::::::::::::::::::::::::
 
-Finally, try grabbing the 3rd slice from the z axis
+Finally, try grabbing the 3rd slice from the x axis
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```python
-z_slice = t2_data[:, :, 2]
+x_slice = t2_data[3, :, :]
 ```
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-We've been slicing and dicing brain images but we have no idea what they look like! In the next section we'll show you how you can visualize brain slices!
+We've been slicing and dicing images but we have no idea what they look like! In the next section we'll show you one way you can visualize it all together!
 
 ## Visualizing the data
 
@@ -593,10 +561,14 @@ t2_affine
 ```
 
 ```output
-array([[  2.75,   0.  ,   0.  , -78.  ],
-       [  0.  ,   2.75,   0.  , -91.  ],
-       [  0.  ,   0.  ,   2.75, -91.  ],
-       [  0.  ,   0.  ,   0.  ,   1.  ]])
+array([[-9.25672975e-01,  2.16410652e-02, -1.74031337e-05,
+         1.80819931e+02],
+       [ 2.80924864e-06, -3.28338569e-08, -5.73605776e+00,
+         2.11696911e+01],
+       [-2.16410652e-02, -9.25672975e-01, -2.03403855e-07,
+         3.84010071e+02],
+       [ 0.00000000e+00,  0.00000000e+00,  0.00000000e+00,
+         1.00000000e+00]])
 ```
 
 To explain this concept, recall that we referred to coordinates in our data as (x,y,z) coordinates such that:
@@ -613,38 +585,36 @@ An important thing to note is that in reality in which order you have:
 - bottom/top
 - back/front
 
-Depends on how you've constructed the affine matrix, but for the data we're dealing with it always refers to:
+Depends on how you've constructed the affine matrix; thankfully there is in depth coverage of the issue [the nibabel documentation] (https://nipy.org/nibabel/coordinate_systems.html)
+For most of the the data we're dealing with we use a RAS coordinate system so it always refers to:
 
 - Right
 - Anterior
 - Superior
 
+Here we must note a practical point. Radiologists and nuclear medicine specialists like to look at images in a certain layout. The patient's right side will be on the physical left of the image. This is a display convention that is the opposite of how a lot of NiFTIs are set up by scientists. If you want your results to be used by actual medical specialists, you probably need to translate your images to thier conventions. Remember medical specialists may have to read hundreds of images a day, so they want thier process streamlined, not to worry about flipping around images so they can understand them. 
+
 Applying the affine matrix (`t2_affine`) is done through using a *linear map* (matrix multiplication) on voxel coordinates (defined in `t2_data`).
 
 ![](fig/coordinate_systems.png)
 
-The concept of an affine matrix may seem confusing at first but an example might help gain an intuition:
+The concept of an affine matrix may seem confusing at first but essentially it allows us to figure out real world distances and locations.
 
-Suppose we have two voxels located at the the following coordinates:
-$(64, 100, 2)$
 
-And we wanted to know what the distances between these two voxels are in terms of real world distances (millimetres).
+If we wanted to know what the distances between these two voxels are in terms of real world distances (millimetres).
 This information cannot be derived from using voxel coordinates so we turn to the **affine matrix**.
 
-Now, the affine matrix we'll be using happens to be encoded in **RAS**.
+NIfTI images, by definition, have an affine with the voxel coordinates relating to the real world coordinates in RAS+ encoded space. 
+So here the affine matrix we'll be using will be encoded in **RAS**.
 That means once we apply the matrix our coordinates are as follows:  
 `(Right, Anterior, Superior)`
 
-So increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned.
 
-Applying our affine matrix yields the following coordinates:
-$(10.25, 30.5, 9.2)$
+In the R axis, positive values mean move right, negative values mean move left.
+In the A axis, positive values mean move forward, negative values mean move posterior
+In the S axis, positive values mean move up, negative values mean move inferior
+So increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
 
-This means that:
-
-- Voxel 1 is `90.23 - 10.25 = 79.98` in the R axis. Positive values mean move right
-- Voxel 1 is `0.2 - 30.5 = -30.3` in the A axis. Negative values mean move posterior
-- Voxel 1 is `2.15 - 9.2 = -7.05` in the S axis. Negative values mean move inferior
 
 ## Functional MRI data
 
