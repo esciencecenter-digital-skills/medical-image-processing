@@ -203,7 +203,7 @@ Just inspecting these accessors, we deduce that the file contains a volume made 
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## SITK conventions
+#### SITK conventions
 
 * Image access is in x,y,z order, `image.GetPixel(x,y,z)` or `image[x,y,z]`, with zero based indexing.
 * If the output of an ITK filter has non-zero starting index, then the index will be set to 0, and the origin adjusted accordingly.
@@ -212,7 +212,7 @@ Just inspecting these accessors, we deduce that the file contains a volume made 
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Displaying images
+#### Displaying images
 
 While SimpleITK does not do visualization, it does contain a built in `Show` method. This function writes the image out to disk and than launches a program for visualization. By default it is configured to use ImageJ, because it is readily supports all the image types which SimpleITK has and load very quickly.
 
@@ -377,7 +377,7 @@ plt.imshow(nda, cmap="gray")
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Fix the error (optional)
+#### Fix the error (optional)
 
 By running the lines of code above for masking the slice with the grid, you will get an error. Can you guess what is it about?
 
@@ -467,7 +467,7 @@ Image Modality: XC
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Grayscale images stored as sRGB
+#### Grayscale images stored as sRGB
 
 "digital_xray.dcm" image is sRGB, even if an x-ray should be a single channel gray scale image. In some cases looks may be deceiving. Gray scale images are not always stored as a single channel image. In some cases an image that looks like a gray scale image is actually a three channel image with the intensity values repeated in each of the channels. Even worse, some gray scale images can be four channel images with the channels representing RGBA and the alpha channel set to all 255. This can result in a significant waste of memory and computation time. Always become familiar with your data.
 
@@ -598,7 +598,7 @@ ax3.set_title('Z slices')
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Distorted images
+#### Distorted images
 
 What is the main difference with the first image we plotted ("A1_grayT1.nrrd")? 
 
@@ -646,13 +646,219 @@ print(resampled_sitk_img.GetSpacing())
 (1.25, 1.25, 1.25)
 ```
 
-#### Additional resources
+### Additional resources
 
 To really understand the structure of SimpleITK images and how to work with them, we recommend some hands-on interaction using the [SimpleITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
 
 ## Registration
 
-TBD
+Image registration involves spatially transforming the source/moving image(s) to align with the target image. More specifically, the goal of registration is to estimate the transformation which maps points from one image to the corresponding points in another image. The transformation estimated via registration is said to map points from the **fixed image** (target image) coordinate system to the **moving image** (source image) coordinate system.
+
+SimpleITK provides a configurable multi-resolution registration framework, implemented in the [ImageRegistrationMethod](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html) class. In addition, a number of variations of the Demons registration algorithm are implemented independently from this class as they do not fit into the framework.
+
+The task of registration is formulated using non-linear optimization which requires an initial estimate. The two most common initialization approaches are (1) Use the identity transform (a.k.a. forgot to initialize). (2) Align the physical centers of the two images (see [CenteredTransformInitializerFilter](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1CenteredTransformInitializerFilter.html)). If after initialization there is no overlap between the images, registration will fail. The closer the initialization transformation is to the actual transformation, the higher the probability of convergence to the correct solution.
+
+If your registration involves the use of a global domain transform ([described here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#lbl-transforms)), you should also set an appropriate center of rotation. In many cases you want the center of rotation to be the physical center of the fixed image (the CenteredTransformCenteredTransformInitializerFilter ensures this). This is of significant importance for registration convergence due to the non-linear nature of rotation. When the center of rotation is far from our physical region of interest (ROI), a small rotational angle results in a large displacement. Think of moving the pivot/fulcrum point of a [lever](https://en.wikipedia.org/wiki/Lever). For the same rotation angle, the farther you are from the fulcrum the larger the displacement. For numerical stability we do not want our computations to be sensitive to very small variations in the rotation angle, thus the ideal center of rotation is the point which minimizes the distance to the farthest point in our ROI:
+
+$p_{center} = arg_{p_{rotation}} min dist (p_{rotation}, \{p_{roi}\})$
+
+Without additional knowledge we can only assume that the ROI is the whole fixed image. If your ROI is only in a sub region of the image, a more appropriate point would be the center of the oriented bounding box of that ROI.
+
+To create a specific registration instance using the ImageRegistrationMethod you need to select several components which together define the registration instance:
+
+1. Transformation
+   - It defines the mapping between the two images.
+2. Similarity metric
+   -  It reflects the relationship between the intensities of the images (identity, affine, stochastic...).
+3. Optimizer.
+   - When selecting the optimizer you will also need to configure it (e.g. set the number of iterations). 
+4. Interpolator.
+   - In most cases linear interpolation, the default setting, is sufficient. 
+
+Let's see now an example where we want to use registration for aligning two volumes relative to the same patient, one being a CT scan and the second being a MRI sequence T1-weighted scan. We first read the images, casting the pixel type to that required for registration (Float32 or Float64) and look at them:
+
+```python
+from ipywidgets import interact, fixed
+from IPython.display import clear_output
+import os
+
+OUTPUT_DIR = "episodes/data"
+fixed_image =  sitk.ReadImage("episodes/data/training_001_ct.mha", sitk.sitkFloat32)
+moving_image = sitk.ReadImage("episodes/data/training_001_mr_T1.mha", sitk.sitkFloat32)
+
+# Callback invoked by the interact IPython method for scrolling through the image stacks of
+# the two images (moving and fixed).
+def display_images(fixed_image_z, moving_image_z, fixed_npa, moving_npa):
+    # Create a figure with two subplots and the specified size.
+    plt.subplots(1,2,figsize=(10,8))
+    
+    # Draw the fixed image in the first subplot.
+    plt.subplot(1,2,1)
+    plt.imshow(fixed_npa[fixed_image_z,:,:],cmap=plt.cm.Greys_r)
+    plt.title('fixed/target image')
+    plt.axis('off')
+    
+    # Draw the moving image in the second subplot.
+    plt.subplot(1,2,2)
+    plt.imshow(moving_npa[moving_image_z,:,:],cmap=plt.cm.Greys_r)
+    plt.title('moving/source image')
+    plt.axis('off')
+    
+    plt.show()
+
+interact(
+    display_images,
+    fixed_image_z=(0,fixed_image.GetSize()[2]-1),
+    moving_image_z=(0,moving_image.GetSize()[2]-1),
+    fixed_npa = fixed(sitk.GetArrayViewFromImage(fixed_image)),
+    moving_npa=fixed(sitk.GetArrayViewFromImage(moving_image)))
+```
+
+![](episodes/fig/ct_mri_registration.png){alt='CT and MRI volumes before being aligned.'}
+
+We can use the `CenteredTransformInitializer` to align the centers of the two volumes and set the center of rotation to the center of the fixed image:
+
+```python
+# Callback invoked by the IPython interact method for scrolling and modifying the alpha blending
+# of an image stack of two images that occupy the same physical space. 
+def display_images_with_alpha(image_z, alpha, fixed, moving):
+    img = (1.0 - alpha)*fixed[:,:,image_z] + alpha*moving[:,:,image_z] 
+    plt.imshow(sitk.GetArrayViewFromImage(img),cmap=plt.cm.Greys_r)
+    plt.axis('off')
+    plt.show()
+
+initial_transform = sitk.CenteredTransformInitializer(fixed_image, 
+                                                      moving_image, 
+                                                      sitk.Euler3DTransform(), 
+                                                      sitk.CenteredTransformInitializerFilter.GEOMETRY)
+
+moving_resampled = sitk.Resample(moving_image, fixed_image, initial_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelID())
+
+interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2]-1), alpha=(0.0,1.0,0.05), fixed = fixed(fixed_image), moving=fixed(moving_resampled))
+```
+
+![](episodes/fig/ct_mri_registration2.png){alt='CT and MRI volumes overimposed.'}
+
+The specific registration task at hand estimates a 3D rigid transformation between images of different modalities. There are multiple components from each group (optimizers, similarity metrics, interpolators) that are appropriate for the task. Note that each component selection requires setting some parameter values. We have made the following choices:
+
+- Similarity metric, mutual information (Mattes MI):
+  - Number of histogram bins, 50.
+  - Sampling strategy, random.
+  - Sampling percentage, 1%.
+- Interpolator, `sitkLinear`.
+- Optimizer, gradient descent:
+  - Learning rate, step size along traversal direction in parameter space, 1.0 .
+  - Number of iterations, maximal number of iterations, 100.
+  - Convergence minimum value, value used for convergence checking in conjunction with the energy profile of the similarity metric that is estimated in the given window size, 1e-6.
+  - Convergence window size, number of values of the similarity metric which are used to estimate the energy profile of the similarity metric, 10.
+
+We perform registration using the settings given above, and by taking advantage of the built in multi-resolution framework, we use a three tier pyramid.
+
+In this example we plot the similarity metric's value during registration. Note that the change of scales in the multi-resolution framework is readily visible.
+
+```python
+# Callback invoked when the StartEvent happens, sets up our new data.
+def start_plot():
+    global metric_values, multires_iterations
+    
+    metric_values = []
+    multires_iterations = []
+
+# Callback invoked when the EndEvent happens, do cleanup of data and figure.
+def end_plot():
+    global metric_values, multires_iterations
+    
+    del metric_values
+    del multires_iterations
+    # Close figure, we don't want to get a duplicate of the plot latter on.
+    plt.close()
+
+# Callback invoked when the sitkMultiResolutionIterationEvent happens, update the index into the 
+# metric_values list. 
+def update_multires_iterations():
+    global metric_values, multires_iterations
+    multires_iterations.append(len(metric_values))
+
+# Callback invoked when the IterationEvent happens, update our data and display new figure.
+def plot_values(registration_method):
+    global metric_values, multires_iterations
+    
+    metric_values.append(registration_method.GetMetricValue())                                       
+    # Clear the output area (wait=True, to reduce flickering), and plot current data
+    clear_output(wait=True)
+    # Plot the similarity metric values
+    plt.plot(metric_values, 'r')
+    plt.plot(multires_iterations, [metric_values[index] for index in multires_iterations], 'b*')
+    plt.xlabel('Iteration Number',fontsize=12)
+    plt.ylabel('Metric Value',fontsize=12)
+    plt.show()
+
+
+registration_method = sitk.ImageRegistrationMethod()
+
+# Similarity metric settings.
+registration_method.SetMetricAsMattesMutualInformation(numberOfHistogramBins=50)
+registration_method.SetMetricSamplingStrategy(registration_method.RANDOM)
+registration_method.SetMetricSamplingPercentage(0.01)
+
+registration_method.SetInterpolator(sitk.sitkLinear)
+
+# Optimizer settings.
+registration_method.SetOptimizerAsGradientDescent(learningRate=1.0, numberOfIterations=100, convergenceMinimumValue=1e-6, convergenceWindowSize=10)
+registration_method.SetOptimizerScalesFromPhysicalShift()
+
+# Setup for the multi-resolution framework.            
+registration_method.SetShrinkFactorsPerLevel(shrinkFactors = [4,2,1])
+registration_method.SetSmoothingSigmasPerLevel(smoothingSigmas=[2,1,0])
+registration_method.SmoothingSigmasAreSpecifiedInPhysicalUnitsOn()
+
+# Don't optimize in-place, we would possibly like to run this cell multiple times.
+registration_method.SetInitialTransform(initial_transform, inPlace=False)
+
+# Connect all of the observers so that we can perform plotting during registration.
+registration_method.AddCommand(sitk.sitkStartEvent, start_plot)
+registration_method.AddCommand(sitk.sitkEndEvent, end_plot)
+registration_method.AddCommand(sitk.sitkMultiResolutionIterationEvent, update_multires_iterations) 
+registration_method.AddCommand(sitk.sitkIterationEvent, lambda: plot_values(registration_method))
+
+final_transform = registration_method.Execute(sitk.Cast(fixed_image, sitk.sitkFloat32), 
+                                               sitk.Cast(moving_image, sitk.sitkFloat32))
+```
+
+![](episodes/fig/reg_metric_iter.png){alt='Metrics across iterations.'}
+
+Always remember to query why the optimizer terminated. This will help you understand whether termination is too early, either due to thresholds being too tight, early termination due to small number of iterations - `numberOfIterations`, or too loose, early termination due to large value for minimal change in similarity measure - `convergenceMinimumValue`.
+
+```python
+print('Final metric value: {0}'.format(registration_method.GetMetricValue()))
+print('Optimizer\'s stopping condition, {0}'.format(registration_method.GetOptimizerStopConditionDescription()))
+```
+
+```output
+Final metric value: -0.6561600032169457
+Optimizer's stopping condition, GradientDescentOptimizerv4Template: Convergence checker passed at iteration 61.
+```
+
+Now we can visually inspect the results:
+
+```python
+moving_resampled = sitk.Resample(moving_image, fixed_image, final_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelID())
+
+interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2] - 1), alpha=(0.0,1.0,0.05), fixed = fixed(fixed_image), moving=fixed(moving_resampled))
+```
+
+![](episodes/fig/ct_mri_registration_aligned.png){alt='CT and MRI volumes aligned.'}
+
+If we are satisfied with the results, save them to file.
+
+```python
+sitk.WriteImage(moving_resampled, os.path.join(OUTPUT_DIR, 'RIRE_training_001_mr_T1_resampled.mha'))
+sitk.WriteTransform(final_transform, os.path.join(OUTPUT_DIR, 'RIRE_training_001_CT_2_mr_T1.tfm'))
+```
+
+### Additional resources
+
+Code illustrating various aspects of the registration framework can be found in the set of [examples](https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples) which are part of the SimpleITK distribution and in the SimpleITK [Jupyter notebook repository](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
 
 ## Segmentation
 
