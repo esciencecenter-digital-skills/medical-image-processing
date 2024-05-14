@@ -6,17 +6,17 @@ exercises: 0
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- How are SITK Images defined?
-
-TBD
+- What are SITK Images?
+- How can registration be implemented in SITK?
+- How can I segment an image in SITK?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Explain how to perform basic operations on SITK Images
-
-TBD
+- Explain when registration can be needed and how to register images with SITK
+- Become familiar with basic segmentation algorithms available in SITK
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -602,6 +602,11 @@ OUTPUT_DIR = "episodes/data"
 fixed_image =  sitk.ReadImage("episodes/data/training_001_ct.mha", sitk.sitkFloat32)
 moving_image = sitk.ReadImage("episodes/data/training_001_mr_T1.mha", sitk.sitkFloat32)
 
+print(f"Origin for fixed image: {fixed_image.GetOrigin()}, moving image: {moving_image.GetOrigin()}")
+print(f"Spacing for fixed image: {fixed_image.GetSpacing()}, moving image: {moving_image.GetSpacing()}")
+print(f"Size for fixed image: {fixed_image.GetSize()}, moving image: {moving_image.GetSize()}")
+print(f"Number Of Components Per Pixel for fixed image: {fixed_image.GetNumberOfComponentsPerPixel()}, moving image: {moving_image.GetNumberOfComponentsPerPixel()}")
+
 # Callback invoked by the interact IPython method for scrolling through the image stacks of
 # the two images (moving and fixed).
 def display_images(fixed_image_z, moving_image_z, fixed_npa, moving_npa):
@@ -628,6 +633,13 @@ interact(
     moving_image_z=(0,moving_image.GetSize()[2]-1),
     fixed_npa = fixed(sitk.GetArrayViewFromImage(fixed_image)),
     moving_npa=fixed(sitk.GetArrayViewFromImage(moving_image)))
+```
+
+```output
+Origin for fixed image: (0.0, 0.0, 0.0), moving image: (0.0, 0.0, 0.0)
+Spacing for fixed image: (0.653595, 0.653595, 4.0), moving image: (1.25, 1.25, 4.0)
+Size for fixed image: (512, 512, 29), moving image: (256, 256, 26)
+Number Of Components Per Pixel for fixed image: 1, moving image: 1
 ```
 
 ![](episodes/fig/ct_mri_registration.png){alt='CT and MRI volumes before being aligned.'}
@@ -764,6 +776,18 @@ interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2] - 1), al
 ```
 
 ![](episodes/fig/ct_mri_registration_aligned.png){alt='CT and MRI volumes aligned.'}
+
+```python
+print(f"Origin for fixed image: {fixed_image.GetOrigin()}, shifted moving image: {moving_resampled.GetOrigin()}")
+print(f"Spacing for fixed image: {fixed_image.GetSpacing()}, shifted moving image: {moving_resampled.GetSpacing()}")
+print(f"Size for fixed image: {fixed_image.GetSize()}, shifted moving image: {moving_resampled.GetSize()}")
+```
+
+```output
+Origin for fixed image: (0.0, 0.0, 0.0), shifted moving image: (0.0, 0.0, 0.0)
+Spacing for fixed image: (0.653595, 0.653595, 4.0), shifted moving image: (0.653595, 0.653595, 4.0)
+Size for fixed image: (512, 512, 29), shifted moving image: (512, 512, 29)
+```
 
 If we are satisfied with the results, save them to file.
 
