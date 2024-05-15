@@ -562,10 +562,6 @@ print(resampled_sitk_img.GetSpacing())
 (1.25, 1.25, 1.25)
 ```
 
-### Additional resources
-
-To really understand the structure of SimpleITK images and how to work with them, we recommend some hands-on interaction using the [SimpleITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
-
 ## Registration
 
 Image registration involves spatially transforming the source/moving image(s) to align with the target image. More specifically, the goal of registration is to estimate the transformation which maps points from one image to the corresponding points in another image. The transformation estimated via registration is said to map points from the **fixed image** (target image) coordinate system to the **moving image** (source image) coordinate system.
@@ -796,40 +792,407 @@ sitk.WriteImage(moving_resampled, os.path.join(OUTPUT_DIR, 'RIRE_training_001_mr
 sitk.WriteTransform(final_transform, os.path.join(OUTPUT_DIR, 'RIRE_training_001_CT_2_mr_T1.tfm'))
 ```
 
-### Additional resources
-
-Code illustrating various aspects of the registration framework can be found in the set of [examples](https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples) which are part of the SimpleITK distribution and in the SimpleITK [Jupyter notebook repository](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
-
 ## Segmentation
 
-TBD
+Image segmentation filters process images by dividing them into meaningful regions. SITK provides a wide range of filters to support classical segmentation algorithms, including various thresholding methods and watershed algorithms. The output is typically an image where different integers represent distinct objects, with 0 often used for the background and 1 (or sometimes 255) for foreground objects. After segmenting the data, SITK allows for efficient post-processing, such as labeling distinct objects and analyzing their shapes.
 
-## Acknowledgements
+Let's start by reading in a T1 MRI scan, on which we will perform segmentation operations.
 
-This episode was largely inspired by [the official SITK tutorial](https://simpleitk.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
+```python
+%matplotlib inline
+import matplotlib.pyplot as plt
+from ipywidgets import interact, fixed
+import SimpleITK as sitk
 
-::::::::::::::::::::::::::::::::::::: callout
+img_T1 = sitk.ReadImage("episodes/data/A1_grayT1.nrrd")
+# To visualize the labels image in RGB with needs a image with 0-255 range
+img_T1_255 = sitk.Cast(sitk.RescaleIntensity(img_T1), sitk.sitkUInt8)
 
-Callout section.
+# Callback invoked by the interact IPython method for scrolling through the image stacks of
+# a volume image
+def display_images(image_z, npa, title):
+    plt.imshow(npa[image_z,:,:], cmap=plt.cm.Greys_r)
+    plt.title(title)
+    plt.axis('off')
+    plt.show()
 
-::::::::::::::::::::::::::::::::::::::::::::::::
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(img_T1)),
+    title = fixed('Z slices'))
+```
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
+![](episodes/fig/seg_z.png){alt='T1 MRI scan, Z slices.'}
 
-For the "Instructor View".
+### Thresholding
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Thresholding is the most basic form of segmentation. It simply labels the pixels of an image based on the intensity range without respect to geometry or connectivity.
+
+```python
+# Basic thresholding
+seg = img_T1>200
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title = fixed("Basic thresholding"))
+```
+
+Another example using `BinaryThreshold`:
+
+```python
+# Binary thresholding
+seg = sitk.BinaryThreshold(img_T1, lowerThreshold=100, upperThreshold=400, insideValue=1, outsideValue=0)
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title = fixed("Binary thresholding"))****
+```
+
+ITK has a number of histogram based automatic thresholding filters including `Huang`, `MaximumEntropy`, `Triangle`, and the popular Otsu's method (`OtsuThresholdImageFilter`). These methods create a histogram then use a heuristic to determine a threshold value.
+
+```python
+# Otsu Thresholding
+otsu_filter = sitk.OtsuThresholdImageFilter()
+otsu_filter.SetInsideValue(0)
+otsu_filter.SetOutsideValue(1)
+seg = otsu_filter.Execute(img_T1)
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title = fixed("Otsu thresholding"))
+
+print(otsu_filter.GetThreshold() )
+```
+
+```output
+236.40869140625
+```
+
+![](episodes/fig/thresholding.png){alt='Basic thresholding methods.'}
+
+### Region Growing Segmentation
+
+The first step of improvement upon the naive thresholding is a class of algorithms called region growing. The common theme for all these algorithms is that a voxel's neighbor is considered to be in the same class if its intensities are similar to the current voxel. The definition of similar is what varies:
+
+- [ConnectedThreshold](https://itk.org/Doxygen/html/classitk_1_1ConnectedThresholdImageFilter.html): The neighboring voxel's intensity is within explicitly specified thresholds.
+- [ConfidenceConnected](https://itk.org/Doxygen/html/classitk_1_1ConfidenceConnectedImageFilter.html): The neighboring voxel's intensity is within the implicitly specified bounds $\mu \pm c \sigma$, where $\mu$ is the mean intensity of the seed points, $\sigma$ their standard deviation and $c$ a user specified constant.
+- [VectorConfidenceConnected](https://itk.org/Doxygen/html/classitk_1_1VectorConfidenceConnectedImageFilter.html): A generalization of the previous approach to vector valued images, for instance multi-spectral images or multi-parametric MRI. The neighboring voxel's intensity vector is within the implicitly specified bounds using the Mahalanobis distance $\sqrt{(x-\mu)^{T\sum{-1}}(x-\mu)}<c$, where $\mu$ is the mean of the vectors at the seed points, $\sum$ is the covariance matrix and $c$ is a user specified constant.
+- [NeighborhoodConnected](https://itk.org/Doxygen/html/classitk_1_1NeighborhoodConnectedImageFilter.html)
+
+Let's imagine that we have to segment the left [lateral ventricle](https://en.wikipedia.org/wiki/Lateral_ventricles) of the brain image we just visualized.
+
+![](episodes/fig/lateral_ventricle.gif){alt='Brain lateral ventricle.'}
+
+[3D Slicer](https://www.slicer.org/) was used to determine that index: (132,142,96) was a good seed for the left lateral ventricle. Let's first visualize the seed:
+
+```python
+# Initial seed
+seed = (132,142,96)
+seg = sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)
+seg.CopyInformation(img_T1)
+seg[seed] = 1
+seg = sitk.BinaryDilate(seg, [3]*seg.GetDimension())
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Initial seed"))
+```
+
+![](episodes/fig/seed.png){alt='Initial seed.'}
+
+Let's use `ConnectedThreshold` functionality:
+
+```python
+# Connected Threshold
+seg = sitk.ConnectedThreshold(img_T1, seedList=[seed], lower=100, upper=190)
+
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Connected threshold"))
+```
+
+Improving upon this is the `ConfidenceConnected` filter, which uses the initial seed or current segmentation to estimate the threshold range.
+
+This region growing algorithm allows the user to implicitly specify the threshold bounds based on the statistics estimated from the seed points, $\mu \pm c\sigma$. This algorithm has some flexibility which you should familiarize yourself with:
+
+- The "multiplier" parameter is the constant $c$ from the formula above.
+- You can specify a region around each seed point "initialNeighborhoodRadius" from which the statistics are estimated, see what happens when you set it to zero.
+- The "numberOfIterations" allows you to rerun the algorithm. In the first run the bounds are defined by the seed voxels you specified, in the following iterations $\mu$ and $\sigma$ are estimated from the segmented points and the region growing is updated accordingly.
+
+```python
+seg = sitk.ConfidenceConnected(img_T1, seedList=[seed],
+                                   numberOfIterations=0,
+                                   multiplier=2,
+                                   initialNeighborhoodRadius=1,
+                                   replaceValue=1)
+
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Confidence connected"))
+```
+
+Since we have available also another MRI scan of the same patient, T2-weighted, we can try to further improve the segmentation.
+We first load a T2 image from the same person and combine it with the T1 image to create a vector image. This region growing algorithm is similar to the previous one, `ConfidenceConnected`, and allows the user to implicitly specify the threshold bounds based on the statistics estimated from the seed points. The main difference is that in this case we are using the Mahalanobis and not the intensity difference.
+
+```python
+img_T2 = sitk.ReadImage("episodes/data/A1_grayT2.nrrd")
+img_multi = sitk.Compose(img_T1, img_T2)
+seg = sitk.VectorConfidenceConnected(img_multi, seedList=[seed],
+                                             numberOfIterations=1,
+                                             multiplier=2.5,
+                                             initialNeighborhoodRadius=1)
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Vector confidence connected"))
+```
+
+![](episodes/fig/reg_grow.png){alt='Region growing segmentations.'}
+
+#### Clean up
+
+Use of low level segmentation algorithms such as region growing is often followed by a clean up step. In this step we fill holes and remove small connected components. Both of these operations are achieved by using binary morphological operations, opening (`BinaryMorphologicalOpening`) to remove small connected components and closing (`BinaryMorphologicalClosing`) to fill holes.
+
+SITK supports several shapes for the structuring elements (kernels) including:
+
+- sitkAnnulus
+- sitkBall
+- sitkBox
+- sitkCross
+
+The size of the kernel can be specified as a scalar (same for all dimensions) or as a vector of values, size per dimension.
+
+The following code cell illustrates the results of such a clean up, using closing to remove holes in the original segmentation.
+
+```python
+seg = sitk.ConfidenceConnected(img_T1, seedList=[seed],
+                                   numberOfIterations=0,
+                                   multiplier=2,
+                                   initialNeighborhoodRadius=1,
+                                   replaceValue=1)
+
+vectorRadius=(1,1,1)
+kernel=sitk.sitkBall
+seg_clean = sitk.BinaryMorphologicalClosing(seg, vectorRadius, kernel)
+seg_img_clean = sitk.LabelOverlay(img_T1_255, seg_clean)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img_clean)),
+    title=fixed("Confidence connected after morphological closing"))
+```
+
+![](episodes/fig/reg_grow_cleaned.png){alt='Confidence connected after morphological closing.'}
+
+### Level-Set Segmentation
+
+There are a variety of level-set based segmentation filter available in ITK:
+
+- [GeodesicActiveContour](https://itk.org/Doxygen/html/classitk_1_1GeodesicActiveContourLevelSetImageFilter.html)
+- [ShapeDetection](https://itk.org/Doxygen/html/classitk_1_1ShapeDetectionLevelSetImageFilter.html)
+- [ThresholdSegmentation](https://itk.org/Doxygen/html/classitk_1_1ThresholdSegmentationLevelSetImageFilter.html)
+- [LaplacianSegmentation](https://itk.org/Doxygen/html/classitk_1_1LaplacianSegmentationLevelSetImageFilter.html)
+- [ScalarChanAndVese](https://itk.org/Doxygen/html/classitk_1_1ScalarChanAndVeseDenseLevelSetImageFilter.html)
+
+There is also a [modular Level-set framework](https://itk.org/Doxygen/html/group__ITKLevelSetsv4.html) which allows composition of terms and easy extension in C++.
+
+First we create a label image from our seed.
+
+```python
+seed = (132,142,96)
+
+seg = sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)
+seg.CopyInformation(img_T1)
+seg[seed] = 1
+seg = sitk.BinaryDilate(seg, [3]*seg.GetDimension())
+```
+
+Use the seed to estimate a reasonable threshold range.
+
+```python
+stats = sitk.LabelStatisticsImageFilter()
+stats.Execute(img_T1, seg)
+
+factor = 3.5
+lower_threshold = stats.GetMean(1)-factor*stats.GetSigma(1)
+upper_threshold = stats.GetMean(1)+factor*stats.GetSigma(1)
+print(lower_threshold,upper_threshold)
+```
+
+```output
+81.25184541308809 175.0084466827569
+```
+
+```python
+init_ls = sitk.SignedMaurerDistanceMap(seg, insideIsPositive=True, useImageSpacing=True)
+lsFilter = sitk.ThresholdSegmentationLevelSetImageFilter()
+lsFilter.SetLowerThreshold(lower_threshold)
+lsFilter.SetUpperThreshold(upper_threshold)
+lsFilter.SetMaximumRMSError(0.02)
+lsFilter.SetNumberOfIterations(1000)
+lsFilter.SetCurvatureScaling(.5)
+lsFilter.SetPropagationScaling(1)
+lsFilter.ReverseExpansionDirectionOn()
+ls = lsFilter.Execute(init_ls, sitk.Cast(img_T1, sitk.sitkFloat32))
+print(lsFilter)
+```
+
+```output
+itk::simple::ThresholdSegmentationLevelSetImageFilter
+  LowerThreshold: 81.2518
+  UpperThreshold: 175.008
+  MaximumRMSError: 0.02
+  PropagationScaling: 1
+  CurvatureScaling: 0.5
+  NumberOfIterations: 1000
+  ReverseExpansionDirection: 1
+  ElapsedIterations: 119
+  RMSChange: 0.0180966
+  Debug: 0
+  NumberOfThreads: 10
+  NumberOfWorkUnits: 0
+  Commands: (none)
+  ProgressMeasurement: 0.119
+  ActiveProcess: (none)
+```
+
+```python
+seg_img = sitk.LabelOverlay(img_T1_255, ls>0)
+
+interact(
+    display_images,
+    image_z=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Level set segmentation"))
+```
+
+![](episodes/fig/level_set_seg.png){alt='Level-set segmentation.'}
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Exercise example
+## Segment on the y-axis
 
-Exercise description.
+Try to segment the lateral ventricle using volume's slices on y-axis instead of z-axis. 
+
+Hint: Start by editing the `display_images` function in order to select the slices on the y-axis.
 
 :::::::::::::::::::::::: solution 
  
-Solution.
+```python
+def display_images(image_y, npa, title):
+    plt.imshow(npa[:,image_y,:], cmap=plt.cm.Greys_r)
+    plt.title(title)
+    plt.axis('off')
+    plt.show()
+
+# Initial seed; we can reuse the same used for the z-axis slices
+seed = (132,142,96)
+seg = sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)
+seg.CopyInformation(img_T1)
+seg[seed] = 1
+seg = sitk.BinaryDilate(seg, [3]*seg.GetDimension())
+seg_img = sitk.LabelOverlay(img_T1_255, seg)
+
+interact(
+    display_images,
+    image_y=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Initial seed"))
+```
+
+After some attempts, this was the method that gave the best segmentation results:
+
+```python
+seed = (132,142,96)
+
+seg = sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)
+seg.CopyInformation(img_T1)
+seg[seed] = 1
+seg = sitk.BinaryDilate(seg, [3]*seg.GetDimension())
+
+stats = sitk.LabelStatisticsImageFilter()
+stats.Execute(img_T1, seg)
+
+factor = 3.5
+lower_threshold = stats.GetMean(1)-factor*stats.GetSigma(1)
+upper_threshold = stats.GetMean(1)+factor*stats.GetSigma(1)
+print(lower_threshold,upper_threshold)
+
+init_ls = sitk.SignedMaurerDistanceMap(seg, insideIsPositive=True, useImageSpacing=True)
+lsFilter = sitk.ThresholdSegmentationLevelSetImageFilter()
+lsFilter.SetLowerThreshold(lower_threshold)
+lsFilter.SetUpperThreshold(upper_threshold)
+lsFilter.SetMaximumRMSError(0.02)
+lsFilter.SetNumberOfIterations(1000)
+lsFilter.SetCurvatureScaling(.5)
+lsFilter.SetPropagationScaling(1)
+lsFilter.ReverseExpansionDirectionOn()
+ls = lsFilter.Execute(init_ls, sitk.Cast(img_T1, sitk.sitkFloat32))
+```
+
+```output
+81.25184541308809 175.0084466827569
+```
+
+```python
+seg_img = sitk.LabelOverlay(img_T1_255, ls>0)
+
+interact(
+    display_images,
+    image_y=(0,img_T1.GetSize()[2]-1),
+    npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
+    title=fixed("Level set segmentation"))
+```
+
+![](episodes/fig/y-axis_seg.png){alt='Y-axis segmentation.'}
 
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::: callout
+
+#### Segmentation Evaluation
+
+Evaluating segmentation algorithms typically involves comparing your results to reference data.
+
+In the medical field, reference data is usually created through manual segmentation by an expert. When resources are limited, a single expert might define this data, though this is less than ideal. If multiple experts contribute, their inputs can be combined to produce reference data that more closely approximates the elusive "ground truth."
+
+For detailed coding examples on segmentation evaluation, refer to [this notebook](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/34_Segmentation_Evaluation.html).
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+## Acknowledgements
+
+This episode was largely inspired by [the official SITK tutorial](https://simpleitk.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/), and [SimpleITK Notebooks](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
+
+### Additional resources
+
+To really understand the structure of SimpleITK images and how to work with them, we recommend some hands-on interaction using the [SimpleITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
+
+Code illustrating various aspects of the registration and segmentation framework can be found in the set of [examples](https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples) which are part of the SimpleITK distribution and in the SimpleITK [Jupyter notebook repository](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
