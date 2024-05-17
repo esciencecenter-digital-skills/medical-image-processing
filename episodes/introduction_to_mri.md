@@ -8,46 +8,39 @@ exercises: 2
 
 - What kinds of MRI are there?
 - How are MRI data represented digitally?
-- What file structures should I use around MRIs for neuroimaging?
+- How should I organize and structure files for neuroimaging MRI data?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Learn common kinds of MRI imaging used in research
-- Understand the most common file formats for MRI
+- Show common kinds of MRI imaging used in research
+- Show the most common file formats for MRI
 - Introduce MRI coordinate systems
-- Load an MRI scan into Python and understand how the data is stored
+- Load an MRI scan into Python and explain how the data is stored
 - View and manipulate image data
-- Understand what BIDS is
-- Understand advantages of working with Nifti and BIDS
-- Know a method to convert from DICOM to BIDS/nifti
+- Explain what BIDS is
+- Explain advantages of working with Nifti and BIDS
+- Show a method to convert from DICOM to BIDS/NIfTI
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 ## Introduction
 
-This is a lesson created heavily drawing from other existing
-Carpentries lessons; namely:
+This lesson is heavily based on existing lessons from Carpentries; namely:
 
  1. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
  3. [Functional Neuroimaging Analysis in Python ](https://carpentries-incubator.github.io/SDC-BIDS-fMRI/)
 
-We will not cover all the material in these lessons, rather give an over view of key points. 
+We will not cover all the material from these lessons, but instead provide an overview of the key points.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes :
-If Zenodo is unavailable steer students to 
-https://github.com/esciencecenter-digital-skills/med-image-ext
-then work in a notebook from there, so use the following:
+Inline instructor notes: if Zenodo is unavailable steer students to https://github.com/esciencecenter-digital-skills/med-image-ext then work in a notebook from there, so use the following:
 '../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii'
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 ## Types of MR scans
 
@@ -58,8 +51,8 @@ then work in a notebook from there, so use the following:
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
 - 3D images of anatomy 
-- different tissue types produce different intensities 
-- different sequences will produce different intensities for various phenomena and tissues
+- Different tissue types produce different intensities 
+- Different sequences produce different intensities for various phenomena and tissues
 
 ### Functional
 
@@ -69,8 +62,8 @@ then work in a notebook from there, so use the following:
 
 *Sourced from Wagner and Lindquist, 2015*
 
-- reveals blood oxygen level-dependant (BOLD) signal 
-- four dimensional image (x, y, z and time)
+- Reveals blood oxygen level-dependant (BOLD) signal 
+- Four dimensional image (x, y, z and time)
 
 ### Diffusion 
 
@@ -80,85 +73,76 @@ then work in a notebook from there, so use the following:
 
 *Sourced from [http://brainsuite.org/processing/diffusion/tractography/](https://brainsuite.org/processing/diffusion/tractography/)*
 
-- measures diffusion of water in order to model tissue microstructure
-- four dimensional images (x, y, z + direction of diffusion)
-- has parameters about the strength of the diffusion "gradient" and its direction in `.bval` and `.bvec` files
+- Measures diffusion of water in order to model tissue microstructure
+- Four dimensional images (x, y, z + direction of diffusion)
+- Has parameters about the strength of the diffusion "gradient" and its direction in `.bval` and `.bvec` files
 
 ### Other types of MRI
 
 Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced MR perfusion, dynamic susceptibility contrast MR perfusion, and arterial spin labelled perfusion. 
 
-MRI can also be used for spectroscopy, but this is not covered as it isn't a true image.
+MRI can also be used for spectroscopy, but this will not be covered here as it does not produce traditional images.
 
 ## Common MRI file formats
 
 | Format Name | File Extension | Origin/Group                                  | More info|
 | ----------- | -------------- | --------------------------------------------- |-----------
-| DICOM       | none or .dc    | ACR/NEMA Consortium                           |https://www.dicomstandard.org/  |
-| Analyze     | .img/.hdr      | Analyze Software, Mayo Clinic                 |https://eeg.sourceforge.net/ANALYZE75.pdf|
-| NIfTI       | .nii           | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
-| MINC        | .mnc           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
-| NRRD        | .nrrd          |                                               |https://teem.sourceforge.net/nrrd/format.html|
+| DICOM       | none or `.dc`    | ACR/NEMA Consortium                           |https://www.dicomstandard.org/  |
+| Analyze     | `.img`/`.hdr`      | Analyze Software, Mayo Clinic                 |https://eeg.sourceforge.net/ANALYZE75.pdf|
+| NIfTI       | `.nii`           | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
+| MINC        | `.mnc`           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
+| NRRD        | `.nrrd`          |                                               |https://teem.sourceforge.net/nrrd/format.html|
 
 From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
 
-
-We will, in a later episode, look more deeplu into DICOM data. The DICOM will have all kinds of data
-such as the patient's name. In this episode we want to get to the images.
-We'll load some example images originally from Zenodo where you can find [this data](https://doi.org/10.5281/zenodo.6466491) and it's open lisence. We will use a **wget** command to get thess from Zeonodo.
-
-```python
-TODO: write wget command 
+In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images. We’ll load some example images from Zenodo, where [this data](https://doi.org/10.5281/zenodo.6466491) is available under an open license. We will use a **wget** command to download these from Zenodo.
+  
+```console
+wget https://zenodo.org/records/6466491/files/<file_name_to_fill>.zip
 ```
 
-
-
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
-We can convert DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix).
+We can convert DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix) software.
 
-We can learn how to run `dcm2niix` by taking a look at its help menu.
+We can learn how to run `dcm2niix` by taking a look at its help menu:
 
 ```bash
 dcm2niix -help
 ```
-One of the advaantages of working with dcm2niix is that it can be used to create BIDS structured files. Basically it will give you a NiFTI and a json  with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. Issues of how data and files are organized are actually critical in terms of working across research groups, or even from one researcher to another. Some pipelines assume your data is organized in BIDS structure, and these are sometimes called [BIDS Apps](https://bids-apps.neuroimaging.io/apps/).
+One of the advaantages of working with `dcm2niix` is that it can be used to create Brain Imaging Data Structure (BIDS) files, since it outputs a NIfTI and a JSON with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. The organization of data and files is crucial for seamless collaboration across research groups and even between individual researchers. Some pipelines assume your data is organized in BIDS structure, and these are sometimes called [BIDS Apps](https://bids-apps.neuroimaging.io/apps/).
 
 Some of the more popular examples are:
+- `fmriprep`
+- `freesurfer`
+- `micapipe`
+- `SPM`
+- `MRtrix3_connectome`
 
-   
-    fmriprep
-    freesurfer
-    micapipe
-    SPM
-    MRtrix3_connectome
+We recommend the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) for learning the basics of this standard.
 
- We reccomend you use the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) to learn the basics if you need to learn the basics of this standard. 
-
-We'll now cover some details on working with NiFTIS.
+Next, we'll cover some details on working with NIfTI files.
 
 ## Reading NIfTI images
 
 [NiBabel](https://nipy.org/nibabel/) is a Python package for reading and writing neuroimaging data.
-To learn more about how NiBabel handles NIfTIs, check out the [NiBabel documentation on working with Niftis](https://nipy.org/nibabel/nifti_images.html) from which this episode is heavily based.
+To learn more about how NiBabel handles NIfTIs, refer to the [NiBabel documentation on working with NIfTIs](https://nipy.org/nibabel/nifti_images.html), which this episode heavily references.
 
 ```python
 import nibabel as nib
 ```
 
-First, use the `load()` function to create a NiBabel image object from a NIfTI file.
-
-
-.
+First, use the `load()` function to create a `NiBabel` image object from a NIfTI file.
 
 ```python
-t2_img = nib.load("../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii"")
+t2_img = nib.load("../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
 ```
 
-Loading in a NIfTI file with `NiBabel` gives us a special type of data object which encodes all the information in the file. Each bit of information is called an **attribute** in Python's terminology.
-To see all of these attributes, type `t2_img.` followed by <kbd>Tab</kbd>.
-There are three main attributes that we'll discuss today:
+When loading a NIfTI file with `NiBabel`, you get a specialized data object that includes all the information stored in the file. Each piece of information is referred to as an **attribute** in Python's terminology. To view all these attributes, simply type `t2_img.` followed by <kbd>Tab</kbd>.
+Today, we'll focus on discussing mainly two attributes (`header` and `affine`) and one method (`get_fdata`). 
 
-### 1\. [Header](https://nipy.org/nibabel/nibabel_images.html#the-image-header): contains metadata about the image, such as image dimensions, data type, etc.
+### 1. [Header](https://nipy.org/nibabel/nibabel_images.html#the-image-header)
+
+It contains metadata about the image, including image dimensions, data type, and more.
 
 ```python
 t2_hdr = t2_img.header
@@ -213,13 +197,14 @@ intent_name     : b''
 magic           : b'n+1'
 ```
 
-`t2_hdr` is a Python **dictionary**.
-Dictionaries are containers that hold pairs of objects - keys and values. Let's take a look at all of the keys.
-Similar to `t2_img` in which attributes can be accessed by typing `t2_img.` followed by <kbd>Tab</kbd>, you can do the same with `t2_hdr`.
+`t2_hdr` is a Python **dictionary**, i.e. a container that hold pairs of objects - keys and values. Let's take a look at all of the keys.
+
+Similar to `t2_img`, in which attributes can be accessed by typing `t2_img.` followed by <kbd>Tab</kbd>, you can do the same with `t2_hdr`.
+
 In particular, we'll be using a **method** belonging to `t2_hdr` that will allow you to view the keys associated with it.
 
 ```python
-t2_hdr.keys()
+print(t2_hdr.keys())
 ```
 
 ```output
@@ -271,30 +256,29 @@ t2_hdr.keys()
 Notice that **methods** require you to include () at the end of them whereas **attributes** do not.
 The key difference between a method and an attribute is:
 
-- Attributes are stored *values* kept within an object
-- Methods are *processes* that we can run using the object. Usually a method takes attributes, performs an operation on them, then returns it for you to use.
+- Attributes are *variables* belonging to an object and containing information about their properties or characteristics
+- Methods are *processes* that belong to an object and are designed to perform actions involving the object's attributes
 
 When you type in `t2_img.` followed by <kbd>Tab</kbd>, you may see that attributes are highlighted in orange and methods highlighted in blue. 
 
-The output above is a list of **keys** you can use from `t2_hdr` to access **values**.
-We can access the value stored by a given key by typing:
+The output above is a list of **keys** you can use to access **values** of `t2_hdr`. We can access the value stored by a given key by typing:
 
 ```python
-t2_hdr['<key_name>']
+print(t2_hdr['<key_name>'])
 ```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Extract values from the NIfTI header
 
-Extract the value of pixdim from `t2_hdr`
+Extract the value of 'pixdim' from `t2_hdr`.
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```python
-t2_hdr['pixdim']
+print(t2_hdr['pixdim'])
 ```
 
 ```output
@@ -305,15 +289,13 @@ array([1. , 0.9259259, 0.9259259, 5.7360578, 0. , 0. , 0. , 0. ], dtype=float32)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-### 2\. Data
+### 2. Data
 
-As you've seen above, the header contains useful information that gives us information about the properties (metadata) associated with the MR data we've loaded in.
-Now we'll move in to loading the actual *image data itself*.
-We can achieve this by using the method called `t2_img.get_fdata()`.
+As you've seen above, the header contains useful information that gives us information about the properties (metadata) associated with the MR data we've loaded in. Now we'll move in to loading the actual *image data itself*. We can achieve this by using the method called `t2_img.get_fdata()`:
 
 ```python
 t2_data = t2_img.get_fdata()
-t2_data
+print(t2_data)
 ```
 
 ```output
@@ -365,17 +347,15 @@ array([[[0., 0., 0., ..., 0., 0., 0.],
         ...,
         [0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.]])
+        [0., 0., 0., ..., 0., 0., 0.]]])
 ```
 
-The first thing you will notice is that we seem to have a lot of zeros here. You might be nervous about
-whether there is anyting in this picture at all. If you see this
-when working with radiolohical images, remember these images often have some air, which
-becomes black space, around the objects of interest.
-What type of data is this exactly in a computational sense? We can determine this by calling the `type()` function on `t2_data`.
+The initial observation you might make is the prevalence of zeros in the image. This abundance of zeros might prompt concerns about the presence of any discernible content in the picture. However, when working with radiological images, it's important to keep in mind that these images frequently contain areas of air surrounding the objects of interest, which appear as black space.
+
+What type of data is this exactly in a computational sense? We can determine this by calling the `type()` function on `t2_data`:
 
 ```python
-type(t2_data)
+print(type(t2_data))
 ```
 
 ```output
@@ -395,7 +375,7 @@ How can we see the number of dimensions in the `t2_data` array? Once again, all 
 ## Solution
 
 ```python
-t2_data.ndim
+print(t2_data.ndim)
 ```
 
 ```output
@@ -403,21 +383,23 @@ t2_data.ndim
 ```
 
 `t2_data` contains 3 dimensions. You can think of the data as a 3D version of a picture (more accurately, a volume).
-![](fig/numpy_arrays.png)
 
+![](fig/numpy_arrays.png)
 
 :::::::::::::::::::::::::
 
 Remember typical 2D pictures are made out of **pixels**, but a 3D MR image is made up of 3D cubes called **voxels**.
+
 ![](fig/mri_slices.jpg)  
-How big each dimension is (shape)?
+
+What is the shape of the image?
 
 :::::::::::::::  solution
 
 ## Solution
 
 ```python
-t2_data.shape
+print(t2_data.shape)
 ```
 
 ```output
@@ -428,18 +410,14 @@ t2_data.shape
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-The 3 numbers given here represent the number of values *along a respective dimension (x,y,z)*.
-This image was scanned in 30 slices with a resolution of 432 x 432 voxels per slice.
-That means there are:
-
-`30 * 432 * 432 = 5,598,720`
-
-voxels in total!
+The three numbers given here represent the number of values *along a respective dimension (x,y,z)*.
+This image was scanned in 30 slices, each with a resolution of 432 x 432 voxels.
+That means there are `30 * 432 * 432 = 5,598,720` voxels in total!
 
 Let's see the type of data inside of the array.
 
 ```python
-t2_data.dtype
+print(t2_data.dtype)
 ```
 
 ```output
@@ -471,39 +449,37 @@ We can inspect the value of a voxel by selecting an index as follows:
 So for example we can inspect a voxel at coordinates (9,19,2) by doing the following:
 
 ```python
-t2_data[9, 19, 2]
+print(t2_data[9, 19, 2])
 ```
 
 ```output
 0.
 ```
 
-This yields a single value representing the intensity of the signal at a particular voxel!
-Next we'll see how to not just pull one voxel but a slice or an array of voxels for visualization and analysis!
+This yields a single value representing the intensity of the signal at a particular voxel.
+Next we will see how to not just pull one voxel but a slice or an array of voxels for visualization and analysis.
 
 ## Working with image data
 
-Slicing does exactly what it seems to imply.
-Given a 3D volume, we pull out a 2D **slice** of our data.
+Slicing does exactly what it seems to imply. Given a 3D volume, slicing involves extracting a 2D **slice** from our data.
 
 ![](fig/T1w.gif)
 
 From left to right: sagittal, coronal and axial slices of a brain.
 
-Let's pull the 10th slice in the z axis of our data.
+Let's select the 10th slice in the z-axis of our data:
 
 ```python
 z_slice = t2_data[:, :, 9]
 ```
 
-This is similar to the indexing we did before to pull out a single voxel.
-However, instead of providing a value for each axis, the `:` indicates that we want to grab *all* values from that particular axis.
+This is similar to the indexing we did before to select a single voxel. However, instead of providing a value for each axis, the `:` indicates that we want to grab *all* values from that particular axis.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
 ## Slicing MRI data
 
-Now try selecting the 20th slice from the y axis.
+Now try selecting the 20th slice from the y-axis.
 
 :::::::::::::::  solution
 
@@ -515,7 +491,7 @@ y_slice = t2_data[:, 19, :]
 
 :::::::::::::::::::::::::
 
-Finally, try grabbing the 3rd slice from the x axis
+Finally, try grabbing the 3rd slice from the x-axis.
 
 :::::::::::::::  solution
 
@@ -529,14 +505,11 @@ x_slice = t2_data[3, :, :]
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-We've been slicing and dicing images but we have no idea what they look like! In the next section we'll show you one way you can visualize it all together!
+We've been slicing and dicing images but we have no idea what they look like. In the next section we'll show you one way you can visualize it all together.
 
 ## Visualizing the data
 
-We previously inspected the signal intensity of the voxel at coordinates (10,20,3).
-Let's see what out data looks like when we slice it at this location.
-We've already indexed the data at each x, y, and z axis.
-Let's use `matplotlib`.
+We previously inspected the signal intensity of the voxel at coordinates (10,20,3). Let's see what out data looks like when we slice it at this location. We've already indexed the data at each x-, y-, and z-axis. Let's use `matplotlib`:
 
 ```python
 import matplotlib.pyplot as plt
@@ -549,16 +522,17 @@ for i, slice in enumerate(slices):
     axes[i].imshow(slice.T, cmap="gray", origin="lower")
 ```
 
-Now, we're going to step away from discussing our data and talk about the final important attribute of a NIfTI.
+Now, we're shifting our focus away from discussing our data to address the final crucial attribute of a NIfTI.
 
-### 3\. [Affine](https://nipy.org/nibabel/coordinate_systems.html): tells the position of the image array data in a reference space
+### 3. [Affine](https://nipy.org/nibabel/coordinate_systems.html)
 
-The final important piece of metadata associated with an image file is the **affine matrix**.
-Below is the affine matrix for our data.
+The final important piece of metadata associated with an image file is the **affine matrix**, which indicates the position of the image array data in a reference space.
+
+Below is the affine matrix for our data:
 
 ```python
 t2_affine = t2_img.affine
-t2_affine
+print(t2_affine)
 ```
 
 ```output
@@ -579,12 +553,12 @@ To explain this concept, recall that we referred to coordinates in our data as (
 - z is the third dimension of `t2_data`
 
 Although this tells us how to access our data in terms of voxels in a 3D volume, it doesn't tell us much about the actual dimensions in our data (centimetres, right or left, up or down, back or front).
-The affine matrix allows us to translate between *voxel coordinates* in (x,y,z) and *world space coordinates* in (left/right,bottom/top,back/front).
+The affine matrix allows us to translate between *voxel coordinates* in (x,y,z) and *world space coordinates* in (left/right, bottom/top, back/front).
 An important thing to note is that in reality in which order you have:
 
-- left/right
-- bottom/top
-- back/front
+- Left/right
+- Bottom/top
+- Back/front
 
 Depends on how you've constructed the affine matrix; thankfully there is in depth coverage of the issue [the nibabel documentation](https://nipy.org/nibabel/coordinate_systems.html)
 For most of the the data we're dealing with we use a RAS coordinate system so it always refers to:
@@ -593,88 +567,83 @@ For most of the the data we're dealing with we use a RAS coordinate system so it
 - Anterior
 - Superior
 
-Here we must note a practical point. Radiologists and nuclear medicine specialists like to look at images in a certain layout. The patient's right side will be on the physical left of the image. This is a display convention that is the opposite of how a lot of NiFTIs are set up by scientists. If you want your results to be used by actual medical specialists, you probably need to translate your images to thier conventions. Remember medical specialists may have to read hundreds of images a day, so they want thier process streamlined, not to worry about flipping around images so they can understand them. 
+Here we must note a practical point. Radiologists and nuclear medicine specialists like to look at images in a certain layout. The patient's right side will be on the physical left of the image. This is a display convention that is the opposite of how a lot of NIfTIs are set up by scientists. If you want your results to be used by actual medical specialists, you probably need to translate your images to thier conventions. Remember medical specialists may have to read hundreds of images a day, so they want thier process streamlined, not to worry about flipping around images so they can understand them. 
 
-Applying the affine matrix (`t2_affine`) is done through using a *linear map* (matrix multiplication) on voxel coordinates (defined in `t2_data`).
+Applying the affine matrix (`t2_affine`) is done by using a *linear map* (matrix multiplication) on voxel coordinates (defined in `t2_data`).
 
 ![](fig/coordinate_systems.png)
 
 The concept of an affine matrix may seem confusing at first but essentially it allows us to figure out real world distances and locations.
 
+If we want to know what the distances between these two voxels are in terms of real world distances (millimetres), this information cannot be derived from using voxel coordinates, and so we need the **affine matrix**.
 
-If we wanted to know what the distances between these two voxels are in terms of real world distances (millimetres).
-This information cannot be derived from using voxel coordinates so we turn to the **affine matrix**.
+NIfTI images, by definition, have an affine with the voxel coordinates relating to the real world coordinates in RAS+ encoded space. So here the affine matrix we'll be using will be encoded in **RAS**. That means once we apply the matrix our coordinates are `(Right, Anterior, Superior)`.
 
-NIfTI images, by definition, have an affine with the voxel coordinates relating to the real world coordinates in RAS+ encoded space. 
-So here the affine matrix we'll be using will be encoded in **RAS**.
-That means once we apply the matrix our coordinates are as follows:  
-`(Right, Anterior, Superior)`
+- In the R axis, positive values mean move right, negative values mean move left
+- In the A axis, positive values mean move forward, negative values mean move posterior
+- In the S axis, positive values mean move up, negative values mean move inferior
 
-
-In the R axis, positive values mean move right, negative values mean move left.
-In the A axis, positive values mean move forward, negative values mean move posterior
-In the S axis, positive values mean move up, negative values mean move inferior
-So increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
-
+Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
 
 ## Functional MRI data
 
-Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities,and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, fmriprep is still the go-to package for this difficult work. If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data.
+Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities, and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, `fmriprep` is still the go-to package for this difficult work.
+
+If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data.
 
 :::::::::::::::: callout
 
 ### Adantages of nilearn:
 
--Fully free and open source
-
--Extremely popular
-
--Allows Python coding
-
--Implementations of many state-of-the art algorithms
-
--Works on Nibabel objects
+- Fully free and open source
+- Extremely popular
+- Allows Python coding
+- Implementations of many state-of-the art algorithms
+- Works on Nibabel objects
 
 ::::::::::::::
+
 ## Diffusion MRI data
 
 Diffusion MRIs have additional data when compared to anatomical MRIs.
 
 Diffusion sequences which are sensitive to the signals from the random, microscropic motion (i.e. diffusion) of water protons. The diffusion of water in anatomical structures is restricted due to barriers (e.g. cell membranes), resulting in a preferred direction of diffusion (anisotropy). A typical diffusion MRI scan will acquire multiple volumes with varying magnetic fields which are sensitive to diffusion along a particular direction and result in diffusion-weighted images.
-In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix .bval) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix .bvec) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
+
+In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix `.bval`) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix `.bvec`) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
 
 Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
-A strong possible library for coding with diffusion images is [the DIPY (Diffusion Imaging in Python) package](https://dipy.org/index.html#)
+A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
 
 ::::::::::::::: callout
 
 ## Adantages of DIPY:
 
--Fully free and open source
-
--Allows Python coding
-
--Implementations of many state-of-the art algorithms
-
--Has methods for diffusion tensor imaging
-
--High performance with many algorithms actually implemented in Cython under the hood
+- Fully free and open source
+- Allows Python coding
+- Implementations of many state-of-the art algorithms
+- Has methods for diffusion tensor imaging
+- High performance with many algorithms actually implemented in Cython under the hood
 
 :::::::::::::::::::::
 
-Tractography is a reconstruction technique to assess neural fiber tracts using the data of diffusion tensor imaging.
-Tractography models axonal trajectories as 'streamlines' from local directional information. There are several families methods for tractopraphy. No known methods is exact and perfect, they all have biases and limitations. The streamlines generated by a tractography method and the required meta-data are usually saved into files called tractograms. 
+::::::::::::::: callout
+
+## Tractography
+
+Tractography is a reconstruction technique used to visually represent neural fiber tracts using data collected by diffusion MRI. Tractography models axonal trajectories as 'streamlines' from local directional information. There are several families methods for tractopraphy. No known methods is exact and perfect, they all have biases and limitations. The streamlines generated by a tractography method and the required meta-data are usually saved into files called tractograms. 
+
+:::::::::::::::::::::
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- imaging MRIs commonly used for research can be anatomical, functional or diffusion
-- MRIs can be converted from DICOMs to Niftis
+- Imaging MRIs commonly used for research can be anatomical, functional or diffusion
+- MRIs can be converted from DICOMs to NIfTIs
 - BIDS is a standard about organizing neuroimaging data
-- NIfTI images contain a header, which describes the contents, and the data.
-- The position of the NIfTI data in space is determined by the affine matrix.
-- NIfTI data is a multi-dimensional array of values.
-- diffusion MRI has b-values and b-vectors
-- there are many various tractography methods, each with imperfections
-- functional MRI requires heavy processing
+- NIfTI images contain a header, which describes the contents, and the data
+- The position of the NIfTI data in space is determined by the affine matrix
+- NIfTI data is a multi-dimensional array of values
+- Diffusion MRI has b-values and b-vectors
+- There are many various tractography methods, each with imperfections
+- Functional MRI requires heavy processing
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
