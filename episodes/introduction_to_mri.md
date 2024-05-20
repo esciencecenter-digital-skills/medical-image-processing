@@ -587,13 +587,18 @@ Increasing a coordinate value in the first dimension corresponds to moving to th
 
 ## Functional MRI data and workflow pipelines in general
 
-Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities, and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, `fmriprep` is still the go-to package for this difficult work.
+A fundamental difference between many MRI sequences as fMRI is that fMRI will have a time dimension. You could conceptualize of fMRI as a signal in each voxel of the imaged object over time. We can visualize this as below:
+
+![](fig/4D_array_time.png)
+
+
+Unfortunately, any signal will have some noise. Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities, and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, `fmriprep` is still the go-to package for this difficult work.
 
 ![](fig/nipreps-chart.png)
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
 
-If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data. 
+
 
 
 
@@ -609,6 +614,7 @@ If you are less interested in coding, but still need it to accomplish your resea
 
 ::::::::::::::
 
+If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data. 
 
 :::::::::::::::: callout
 
