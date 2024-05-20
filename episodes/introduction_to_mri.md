@@ -632,9 +632,13 @@ If you are less interested in coding, but still need it to accomplish your resea
 
 Diffusion MRIs have additional data when compared to anatomical MRIs.
 
-Diffusion sequences which are sensitive to the signals from the random, microscropic motion (i.e. diffusion) of water protons. The diffusion of water in anatomical structures is restricted due to barriers (e.g. cell membranes), resulting in a preferred direction of diffusion (anisotropy). A typical diffusion MRI scan will acquire multiple volumes with varying magnetic fields which are sensitive to diffusion along a particular direction and result in diffusion-weighted images.
+Diffusion sequences are sensitive to the signals from the random, microscropic motion (i.e. diffusion) of water protons. The diffusion of water in anatomical structures is restricted due to barriers (e.g. cell membranes), resulting in a preferred direction of diffusion (anisotropy). A typical diffusion MRI scan will acquire multiple volumes with varying magnetic fields which are sensitive to diffusion along a particular direction and result in diffusion-weighted images.
 
 In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix `.bval`) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix `.bvec`) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
+
+Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there can be many things that might need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
+
+![](fig/dmri_preprocess_steps.jpg)
 
 Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
 A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
@@ -650,6 +654,8 @@ A strong possible library for coding with diffusion images is the [Diffusion Ima
 - High performance with many algorithms actually implemented in Cython under the hood
 
 :::::::::::::::::::::
+
+Diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a signal for axonal organization. Tractography is a group of techniques to visualize neural tracts using data collected by DTI.
 
 ::::::::::::::: callout
 
@@ -667,8 +673,10 @@ Tractography is a reconstruction technique used to visually represent neural fib
 - NIfTI images contain a header, which describes the contents, and the data
 - The position of the NIfTI data in space is determined by the affine matrix
 - NIfTI data is a multi-dimensional array of values
+- Functional MRIs and Diffusion MRIs require heavy (pre)processing
+- Functional MRIs have time dimension
 - Diffusion MRI has b-values and b-vectors
 - There are many various tractography methods, each with imperfections
-- Functional MRI requires heavy processing
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
