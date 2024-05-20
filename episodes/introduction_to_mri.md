@@ -585,11 +585,30 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
 
-## Functional MRI data
+## Functional MRI data and workflow pipelines in general
 
 Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities, and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, `fmriprep` is still the go-to package for this difficult work.
 
-If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data.
+![](fig/nipreps-chart.png)
+
+*Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
+
+If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data. 
+
+
+
+
+:::::::::::::::: callout
+
+### nipreps and beyond:
+
+- There are many, many packages for medical image analysius
+- There are known pre-built pipelines with possibilities in python
+- Your pipeline will probably begin with cleaning and preparing data 
+- You can mix and match parts of pipelines with NiPype
+
+::::::::::::::
+
 
 :::::::::::::::: callout
 
