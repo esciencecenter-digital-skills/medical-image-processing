@@ -447,6 +447,18 @@ for key in img_xray.GetMetaDataKeys():
 "
 ```
 
+
+::::::::::::::: callout
+
+## Many ways to read a DICOM:
+
+- Many libraries allow you to read DICOM metadata
+- PyDICOM will be explored for this task later
+- If you are already using SITK, you will usually not need an extra library to get DICOM metadata
+- Many libraries have some basic dicom functionality, check the documentation before adding extra dependencies
+
+:::::::::::::::::::::
+
 Generally speaking, SimpleITK represents color images as multi-channel images independent of a [color space](https://en.wikipedia.org/wiki/Color_space). It is up to you to interpret the channels correctly based on additional color space knowledge prior to using them for display or any other purpose.
 
 Things to note:
@@ -649,6 +661,18 @@ print(resampled_sitk_img.GetSpacing())
 ## Registration
 
 Image registration involves spatially transforming the source/moving image(s) to align with the target image. More specifically, the goal of registration is to estimate the transformation which maps points from one image to the corresponding points in another image. The transformation estimated via registration is said to map points from the **fixed image** (target image) coordinate system to the **moving image** (source image) coordinate system.
+
+::::::::::::::: callout
+
+## Many ways to do registration:
+
+- Several libraries allow you to do a built in registration
+- Registration can be done with dipy (mentioned in the MRI episode) in very specific ways on diffusion imaging e.g. SymmetricDiffeomorphicRegistration functionality
+- nibabel has a functions that take one NIfTI image and resample or conform it into the space of another in the processing module
+- SITK offers nice registration and you can even code your own registration
+- using as few libraries as possible, and ones that do not create conflicts, is better for your code
+
+:::::::::::::::::::::
 
 SimpleITK provides a configurable multi-resolution registration framework, implemented in the [ImageRegistrationMethod](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html) class. In addition, a number of variations of the Demons registration algorithm are implemented independently from this class as they do not fit into the framework.
 
