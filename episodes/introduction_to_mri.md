@@ -585,40 +585,34 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
 
-## Functional MRI data and workflow pipelines in general
+## Functional MRI data and general workflow pipelines
 
-A fundamental difference between many MRI sequences as fMRI is that fMRI will have a time dimension. You could conceptualize of fMRI as a signal in each voxel of the imaged object over time. We can visualize this as below:
+A fundamental difference between many MRI sequences and fMRI is the inclusion of a time dimension in fMRI. Essentially, fMRI captures a signal in each voxel of the imaged object over time. We can visualize this as shown below:
 
 ![](fig/4D_array_time.png)
 
-
-Unfortunately, any signal will have some noise. Functional MRI data is inherently noisy, as people move thier heads. Usually we are interested in grey matter brain cells, but other cells and structures can also generate signal. Filtering and many other techniques are used to clean up fMRI data. Although this sort of imaging is quite difficult to interpret, the effort itself has brought the neuroimaging community many positive outcomes. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) was a model across new modalities, and now we have the general concept of [nipreps]( https://www.nipreps.org/). And by the way, `fmriprep` is still the go-to package for this difficult work.
+Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/). Notably, `fmriprep` remains the go-to package for handling the complexities of fMRI data processing.
 
 ![](fig/nipreps-chart.png)
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
 
-
-
-
-
-
 :::::::::::::::: callout
 
 ### nipreps and beyond:
 
-- There are many, many packages for medical image analysius
+- There are many, many packages for medical image analysis
 - There are known pre-built pipelines with possibilities in python
 - Your pipeline will probably begin with cleaning and preparing data 
 - You can mix and match parts of pipelines with NiPype
 
 ::::::::::::::
 
-If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [nilearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data. 
+If you are less interested in coding, but still need it to accomplish your research goals, it can be worthwhile to use packages that are well known, as it is easier to find various forms of documentation and help. For this reason [NIlearn](https://github.com/nilearn/nilearn) is a library to consider for fMRI data. 
 
 :::::::::::::::: callout
 
-### Adantages of nilearn:
+### Adantages of NIlearn:
 
 - Fully free and open source
 - Extremely popular
@@ -677,6 +671,5 @@ Tractography is a reconstruction technique used to visually represent neural fib
 - Functional MRIs have time dimension
 - Diffusion MRI has b-values and b-vectors
 - There are many various tractography methods, each with imperfections
-
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
