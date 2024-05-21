@@ -80,7 +80,7 @@ Let's read an example of human brain CT, and let's explore it with SITK.
 import matplotlib.pyplot as plt
 import SimpleITK as sitk
 
-img_volume = sitk.ReadImage("episodes/fig/A1_grayT1.nrrd")
+img_volume = sitk.ReadImage("../../data/A1_grayT1.nrrd")
 
 print(type(img_volume))
 print(img_volume.GetOrigin())
@@ -342,7 +342,7 @@ Images stored in the DICOM format have a meta-data dictionary associated with th
 Let's read in a digital x-ray image saved in a DICOM file format, and let's print the metadata's keys:
 
 ```python
-img_xray = sitk.ReadImage('episodes/fig/digital_xray.dcm')
+img_xray = sitk.ReadImage('../../data/digital_xray.dcm')
 
 for key in img_xray.GetMetaDataKeys():
     print(f'"{key}":"{img_xray.GetMetaData(key)}"')
@@ -502,7 +502,7 @@ It is not uncommon to end up with an empty (all black) image after resampling. T
 Let's try to plot multiple slices across different axis for the image "training_001_mr_T1.mha". 
 
 ```python
-img_volume = sitk.ReadImage("episodes/fig/training_001_mr_T1.mha")
+img_volume = sitk.ReadImage("../../data/training_001_mr_T1.mha")
 print(img_volume.GetSize())
 print(img_volume.GetSpacing())
 ```
