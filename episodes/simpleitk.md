@@ -41,7 +41,7 @@ In this section, we’ll cover some fundamental image processing operations usin
 The fundamental tenet of an image in ITK and consequentially in SimpleITK is that an image is defined by a set of points on a grid occupying a **physical region in space**
 . This significantly differs from many other image analysis libraries that treat an image as an array which has two implications: (1) pixel/voxel spacing is assumed to be isotropic and (2) there is no notion of an image’s location in physical space.
 
-SimpleITK images are multi-dimensional (the default configuration includes images from 2D upto 5D) and can be a scalar, labelmap (scalar with run length encoding), complex value or have an arbitrary number of scalar channels (also known as a vector image). The region in physical space which an image occupies is defined by the image’s:
+SimpleITK images are multi-dimensional (the default configuration includes images from two dimensional up to five dimensional) and can be a scalar, labelmap (scalar with run length encoding), complex value or have an arbitrary number of scalar channels (also known as a vector image). The region in physical space which an image occupies is defined by the image’s:
 
 1. Origin (vector like type) - location in the world coordinate system of the voxel with all zero indexes.
 2. Spacing (vector like type) - distance between pixels along each of the dimensions.
@@ -67,7 +67,7 @@ As an image is also defined by its spatial location, two images with the same pi
 
 ![Two images with exactly the same pixel data, positioned in the world coordinate system. In SimpleITK these are not considered the same image, because they occupy different spatial locations.](episodes/fig/spatial_relationship.png){alt='Spatial relationship in images.'}
 
-As SimpleITK images occupy a physical region in space, the quantities defining this region have metric units (cm, mm, etc.). In general SimpleITK assume units are in millimeters (historical reasons, due to DICOM standard). In practice SimpleITK is not aware of the specific units associated with each image, it just assumes that they are consistent. Thus, it is up to you the developer to ensure that all of the images you read and created are using the same units.
+As SimpleITK images occupy a physical region in space, the quantities defining this region have metric units (cm, mm, etc.). In general SimpleITK assumes units are in millimeters (historical reasons, due to DICOM standard). In practice SimpleITK is not aware of the specific units associated with each image, it just assumes that they are consistent. Thus, it is up to you the developer to ensure that all of the images you read and created are using the same units.
 
 A SimpleITK image can have an arbitrary number of channels with the content of the channels being a scalar or complex value. This is determined when an image is created.
 
@@ -222,7 +222,7 @@ print(type(img_zslice))
 <class 'SimpleITK.SimpleITK.Image'>
 ```
 
-We can also plot multiple slices at the same time, for better ispecting the volume:
+We can also plot multiple slices at the same time, for better inspecting the volume:
 
 ```python
 img_xslices = [img_volume[x,:,:] for x in range(50, 200, 30)]
@@ -251,19 +251,29 @@ n_slice = 150
 
 # Original slice
 plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :, n_slice]), cmap="gray")
+```
 
+```python
 # Cropping
 plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :100, n_slice]), cmap="gray")
+```
 
+```python
 # Flipping
 plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, ::-1, n_slice]), cmap="gray")
+```
 
+```python
 # Subsampling
 plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, ::3, n_slice]), cmap="gray")
+```
 
+```python
 # Comparative operators
 plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :, n_slice] > 90), cmap="gray")
+```
 
+```python
 # Draw a square
 draw_square = sitk.GetArrayFromImage(img_volume[:, :, n_slice])
 draw_square[0:100,0:100] = draw_square.max()
@@ -363,15 +373,14 @@ for key in img_xray.GetMetaDataKeys():
 "
 ```
 
-
 ::::::::::::::: callout
 
 ## Many ways to read a DICOM:
 
-- Many libraries allow you to read DICOM metadata
-- PyDICOM will be explored for this task later
-- If you are already using SITK, you will usually not need an extra library to get DICOM metadata
-- Many libraries have some basic dicom functionality, check the documentation before adding extra dependencies
+- Many libraries allow you to read DICOM metadata.
+- PyDICOM will be explored for this task later.
+- If you are already using SITK, you will usually not need an extra library to get DICOM metadata.
+- Many libraries have some basic DICOM functionality, check the documentation before adding extra dependencies.
 
 :::::::::::::::::::::
 
@@ -447,7 +456,7 @@ The nomenclature used in the documentation refers to the components of the trans
 - Matrix - the matrix $A$.
 - Center - the point $c$.
 - Translation - the vector $t$.
-- Offset - the expression $t + c - Ac$
+- Offset - the expression $t + c - Ac$.
 
 A variety of global 2D and 3D transformations are available (translation, rotation, rigid, similarity, affine…). Some of these transformations are available with various parameterizations which are useful for registration purposes.
 
@@ -472,7 +481,7 @@ Generally speaking, resampling in SimpleITK involves four components:
 
 1. Image - the image we resample, given in coordinate system $m$.
 2. Resampling grid - a regular grid of points given in coordinate system $f$ which will be mapped to coordinate system $m$.
-3. Transformation $T_f^m$ - maps points from coordinate system $f$ to coordinate system $m$, $^mp=T_f^m(^fp)$
+3. Transformation $T_f^m$ - maps points from coordinate system $f$ to coordinate system $m$, $^mp=T_f^m(^fp)$.
 4. Interpolator - method for obtaining the intensity values at arbitrary points in coordinate system $m$ from the values of the points defined by the Image.
 
 While SimpleITK provides a large number of interpolation methods, the two most commonly used are sitkLinear and sitkNearestNeighbor. The former is used for most interpolation tasks and is a compromise between accuracy and computational efficiency. The later is used to interpolate labeled images representing a segmentation. It is the only interpolation approach which will not introduce new labels into the result.
@@ -561,7 +570,7 @@ def resample_img(image, out_spacing=[1.25, 1.25, 1.25]):
     resample.SetDefaultPixelValue(image.GetPixelIDValue())
     resample.SetInterpolator(sitk.sitkBSpline)
 
-    return resample.Execute(itk_image)
+    return resample.Execute(image)
 
 resampled_sitk_img = resample_img(img_volume)
 
@@ -582,11 +591,11 @@ Image registration involves spatially transforming the source/moving image(s) to
 
 ## Many ways to do registration:
 
-- Several libraries allow you to do a built in registration
-- Registration can be done with dipy (mentioned in the MRI episode) in very specific ways on diffusion imaging e.g. SymmetricDiffeomorphicRegistration functionality
-- nibabel has a functions that take one NIfTI image and resample or conform it into the space of another in the processing module
-- SITK offers nice registration and you can even code your own registration
-- using as few libraries as possible, and ones that do not create conflicts, is better for your code
+- Several libraries offer built-in registration functionalities.
+- Registration can be performed with [DIPY](https://dipy.org/index.html) (mentioned in the MRI episode), specifically for diffusion imaging using the `SymmetricDiffeomorphicRegistration` functionality.
+- [NiBabel](https://nipy.org/nibabel/) includes a function in its processing module that allows resampling or conforming one NIfTI image into the space of another.
+- SITK provides robust registration capabilities and allows you to code your own registration algorithms.
+- To maintain cleaner and more efficient code, it's advisable to use as few libraries as possible and avoid those that may create conflicts.
 
 :::::::::::::::::::::
 
@@ -649,10 +658,10 @@ def display_images(fixed_image_z, moving_image_z, fixed_npa, moving_npa):
 
 interact(
     display_images,
-    fixed_image_z=(0,fixed_image.GetSize()[2]-1),
-    moving_image_z=(0,moving_image.GetSize()[2]-1),
+    fixed_image_z = (0,fixed_image.GetSize()[2]-1),
+    moving_image_z = (0,moving_image.GetSize()[2]-1),
     fixed_npa = fixed(sitk.GetArrayViewFromImage(fixed_image)),
-    moving_npa=fixed(sitk.GetArrayViewFromImage(moving_image)))
+    moving_npa = fixed(sitk.GetArrayViewFromImage(moving_image)))
 ```
 
 ```output
@@ -667,8 +676,9 @@ Number Of Components Per Pixel for fixed image: 1, moving image: 1
 We can use the `CenteredTransformInitializer` to align the centers of the two volumes and set the center of rotation to the center of the fixed image:
 
 ```python
-# Callback invoked by the IPython interact method for scrolling and modifying the alpha blending
-# of an image stack of two images that occupy the same physical space. 
+# Callback invoked by the IPython interact method for scrolling and
+# modifying the alpha blending of an image stack of two images that
+# occupy the same physical space. 
 def display_images_with_alpha(image_z, alpha, fixed, moving):
     img = (1.0 - alpha)*fixed[:,:,image_z] + alpha*moving[:,:,image_z] 
     plt.imshow(sitk.GetArrayViewFromImage(img),cmap=plt.cm.Greys_r)
@@ -682,7 +692,12 @@ initial_transform = sitk.CenteredTransformInitializer(fixed_image,
 
 moving_resampled = sitk.Resample(moving_image, fixed_image, initial_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelID())
 
-interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2]-1), alpha=(0.0,1.0,0.05), fixed = fixed(fixed_image), moving=fixed(moving_resampled))
+interact(
+    display_images_with_alpha,
+    image_z = (0,fixed_image.GetSize()[2]-1),
+    alpha = (0.0,1.0,0.05),
+    fixed = fixed(fixed_image),
+    moving = fixed(moving_resampled))
 ```
 
 ![](episodes/fig/ct_mri_registration2.png){alt='CT and MRI volumes overimposed.'}
@@ -695,7 +710,7 @@ The specific registration task at hand estimates a 3D rigid transformation betwe
   - Sampling percentage, 1%.
 - Interpolator, `sitkLinear`.
 - Optimizer, gradient descent:
-  - Learning rate, step size along traversal direction in parameter space, 1.0 .
+  - Learning rate, step size along traversal direction in parameter space, 1.0.
   - Number of iterations, maximal number of iterations, 100.
   - Convergence minimum value, value used for convergence checking in conjunction with the energy profile of the similarity metric that is estimated in the given window size, 1e-6.
   - Convergence window size, number of values of the similarity metric which are used to estimate the energy profile of the similarity metric, 10.
@@ -792,7 +807,12 @@ Now we can visually inspect the results:
 ```python
 moving_resampled = sitk.Resample(moving_image, fixed_image, final_transform, sitk.sitkLinear, 0.0, moving_image.GetPixelID())
 
-interact(display_images_with_alpha, image_z=(0,fixed_image.GetSize()[2] - 1), alpha=(0.0,1.0,0.05), fixed = fixed(fixed_image), moving=fixed(moving_resampled))
+interact(
+    display_images_with_alpha,
+    image_z = (0,fixed_image.GetSize()[2]-1),
+    alpha = (0.0,1.0,0.05),
+    fixed = fixed(fixed_image),
+    moving = fixed(moving_resampled))
 ```
 
 ![](episodes/fig/ct_mri_registration_aligned.png){alt='CT and MRI volumes aligned.'}
@@ -842,7 +862,7 @@ def display_images(image_z, npa, title):
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(img_T1)),
     title = fixed('Z slices'))
 ```
@@ -860,7 +880,7 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
     title = fixed("Basic thresholding"))
 ```
@@ -874,7 +894,7 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
     title = fixed("Binary thresholding"))****
 ```
@@ -891,7 +911,7 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
     title = fixed("Otsu thresholding"))
 
@@ -930,9 +950,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Initial seed"))
+    title = fixed("Initial seed"))
 ```
 
 ![](episodes/fig/seed.png){alt='Initial seed.'}
@@ -947,9 +967,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Connected threshold"))
+    title = fixed("Connected threshold"))
 ```
 
 Improving upon this is the `ConfidenceConnected` filter, which uses the initial seed or current segmentation to estimate the threshold range.
@@ -990,9 +1010,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Vector confidence connected"))
+    title = fixed("Vector confidence connected"))
 ```
 
 ![](episodes/fig/reg_grow.png){alt='Region growing segmentations.'}
@@ -1003,10 +1023,10 @@ Use of low level segmentation algorithms such as region growing is often followe
 
 SITK supports several shapes for the structuring elements (kernels) including:
 
-- sitkAnnulus
-- sitkBall
-- sitkBox
-- sitkCross
+- `sitkAnnulus`
+- `sitkBall`
+- `sitkBox`
+- `sitkCross`
 
 The size of the kernel can be specified as a scalar (same for all dimensions) or as a vector of values, size per dimension.
 
@@ -1026,16 +1046,16 @@ seg_img_clean = sitk.LabelOverlay(img_T1_255, seg_clean)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img_clean)),
-    title=fixed("Confidence connected after morphological closing"))
+    title = fixed("Confidence connected after morphological closing"))
 ```
 
 ![](episodes/fig/reg_grow_cleaned.png){alt='Confidence connected after morphological closing.'}
 
 ### Level-Set Segmentation
 
-There are a variety of level-set based segmentation filter available in ITK:
+There are a variety of [level-set based](https://en.wikipedia.org/wiki/Level-set_method) segmentation filter available in ITK:
 
 - [GeodesicActiveContour](https://itk.org/Doxygen/html/classitk_1_1GeodesicActiveContourLevelSetImageFilter.html)
 - [ShapeDetection](https://itk.org/Doxygen/html/classitk_1_1ShapeDetectionLevelSetImageFilter.html)
@@ -1110,9 +1130,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, ls>0)
 
 interact(
     display_images,
-    image_z=(0,img_T1.GetSize()[2]-1),
+    image_z = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Level set segmentation"))
+    title = fixed("Level set segmentation"))
 ```
 
 ![](episodes/fig/level_set_seg.png){alt='Level-set segmentation.'}
@@ -1144,9 +1164,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, seg)
 
 interact(
     display_images,
-    image_y=(0,img_T1.GetSize()[2]-1),
+    image_y = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Initial seed"))
+    title = fixed("Initial seed"))
 ```
 
 After some attempts, this was the method that gave the best segmentation results:
@@ -1188,9 +1208,9 @@ seg_img = sitk.LabelOverlay(img_T1_255, ls>0)
 
 interact(
     display_images,
-    image_y=(0,img_T1.GetSize()[2]-1),
+    image_y = (0,img_T1.GetSize()[2]-1),
     npa = fixed(sitk.GetArrayViewFromImage(seg_img)),
-    title=fixed("Level set segmentation"))
+    title = fixed("Level set segmentation"))
 ```
 
 ![](episodes/fig/y-axis_seg.png){alt='Y-axis segmentation.'}
