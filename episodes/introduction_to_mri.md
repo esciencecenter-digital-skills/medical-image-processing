@@ -46,7 +46,7 @@ Inline instructor notes: if Zenodo is unavailable steer students to https://gith
 
 ### Anatomical
 
-![](fig/t1t2flairbrain.jpg)
+![](fig/t1t2flairbrain.jpg){alt='FLAIR brain'}
 
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
@@ -56,9 +56,9 @@ Inline instructor notes: if Zenodo is unavailable steer students to https://gith
 
 ### Functional
 
-![](fig/bold.gif)
+![](fig/bold.gif){alt='FMRI'}
 
-![](fig/fmri_timeseries.png)
+![](fig/fmri_timeseries.png){alt='FMRI timeseries'}
 
 *Sourced from Wagner and Lindquist, 2015*
 
@@ -67,9 +67,9 @@ Inline instructor notes: if Zenodo is unavailable steer students to https://gith
 
 ### Diffusion 
 
-![](fig/dwi.gif)
+![](fig/dwi.gif){alt='DWI'}
 
-![](fig/dwi_tracts.png)
+![](fig/dwi_tracts.png){alt='DWI tracts'}
 
 *Sourced from [http://brainsuite.org/processing/diffusion/tractography/](https://brainsuite.org/processing/diffusion/tractography/)*
 
@@ -384,13 +384,13 @@ print(t2_data.ndim)
 
 `t2_data` contains 3 dimensions. You can think of the data as a 3D version of a picture (more accurately, a volume).
 
-![](fig/numpy_arrays.png)
+![](fig/numpy_arrays.png){alt='Numpy arrays'}
 
 :::::::::::::::::::::::::
 
 Remember typical 2D pictures are made out of **pixels**, but a 3D MR image is made up of 3D cubes called **voxels**.
 
-![](fig/mri_slices.jpg)  
+![](fig/mri_slices.jpg){alt='MRI slices'}
 
 What is the shape of the image?
 
@@ -463,7 +463,7 @@ Next we will see how to not just pull one voxel but a slice or an array of voxel
 
 Slicing does exactly what it seems to imply. Given a 3D volume, slicing involves extracting a 2D **slice** from our data.
 
-![](fig/T1w.gif)
+![](fig/T1w.gif){alt='T1 weighted'}
 
 From left to right: sagittal, coronal and axial slices of a brain.
 
@@ -571,7 +571,7 @@ Here we must note a practical point. Radiologists and nuclear medicine specialis
 
 Applying the affine matrix (`t2_affine`) is done by using a *linear map* (matrix multiplication) on voxel coordinates (defined in `t2_data`).
 
-![](fig/coordinate_systems.png)
+![](fig/coordinate_systems.png){alt='Coordinate system'}
 
 The concept of an affine matrix may seem confusing at first but essentially it allows us to figure out real world distances and locations.
 
@@ -589,11 +589,11 @@ Increasing a coordinate value in the first dimension corresponds to moving to th
 
 A fundamental difference between many MRI sequences and fMRI is the inclusion of a time dimension in fMRI. Essentially, fMRI captures a signal in each voxel of the imaged object over time. We can visualize this as shown below:
 
-![](fig/4D_array_time.png)
+![](fig/4D_array_time.png){alt='4D array time'}
 
 Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/). Notably, `fmriprep` remains the go-to package for handling the complexities of fMRI data processing.
 
-![](fig/nipreps-chart.png)
+![](fig/nipreps-chart.png){alt='Nipreps chart'}
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
 
@@ -632,7 +632,7 @@ In addition to the acquired images, two files are collected as part of the diffu
 
 Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there can be many things that might need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
 
-![](fig/dmri_preprocess_steps.jpg)
+![](fig/dmri_preprocess_steps.jpg){alt='dMRI preprocess steps'}
 
 Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
 A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
