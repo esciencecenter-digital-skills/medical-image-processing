@@ -31,7 +31,7 @@ The details of various forms of imaging will be covered in a lecture with slides
 
 Historically, x-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (e.g., photographic film) on the other side of the subject.
 
-![Schematic of x-ray image creation.](fig/x_ray_dia.png)
+![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
 Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no x-ray can be interpreted clinically without multiple perspectives. In chest-x-rays implies a anteroposterior and a lateral view. We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
 
@@ -45,7 +45,7 @@ CTs and tomosynthetic images are produced with the same technology. The differen
 
 Ultrasounds can produce multiple complex types of images. Typically, sonographers produce a lot of B-mode images. They use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get 2D-images. Just as different tissues attenuate radiation differently, different tissues attenuate these waves differently, and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they can be saved as cine-files inside DICOMs. On the other hand, the sonographer can choose to record only a single 'frame', in which case a 2D-array will ultimately be saved. B-mode is far from the only type of ultrasounds. M-mode, like the cine-files in B-mode, can also capture motion, but puts it into a a single 2D-array of one line of the image over time. In the compound image below you can see a B-mode 2D-image and an M-mode made on the line in it.    
 
-![Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence.](fig/Mitral_Valve_M_Mode.jpg)
+![Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence.](fig/Mitral_Valve_M_Mode.jpg){alt='Mitral valve prolapse.'}
 
 ::::::::::::::::::::::::: callout
 
