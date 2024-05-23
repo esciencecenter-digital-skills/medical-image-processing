@@ -61,8 +61,8 @@ contact: 'c.moore@esciencecenter.nl' # FIXME
 episodes: 
 - introduction.md
 - introduction_to_medical_imaging.md
-- simpleitk.md
 - introduction_to_mri.md
+- simpleitk.md
 
 # Information for Learners
 learners: 
