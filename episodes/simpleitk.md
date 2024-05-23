@@ -229,9 +229,13 @@ img_xslices = [img_volume[x,:,:] for x in range(50, 200, 30)]
 img_yslices = [img_volume[:,y,:] for y in range(50, 200, 30)]
 img_zslices = [img_volume[:,:,z] for z in range(50, 200, 30)]
 
-nda_xslices = sitk.GetArrayViewFromImage(sitk.Tile(img_xslices, [1,0]))
-nda_yslices = sitk.GetArrayViewFromImage(sitk.Tile(img_yslices, [1,0]))
-nda_zslices = sitk.GetArrayViewFromImage(sitk.Tile(img_zslices, [1,0]))
+tile_x = sitk.Tile(img_xslices, [1,0])
+tile_y = sitk.Tile(img_yslices, [1,0])
+tile_z = sitk.Tile(img_zslices, [1,0])
+
+nda_xslices = sitk.GetArrayViewFromImage(tile_x)
+nda_yslices = sitk.GetArrayViewFromImage(tile_y)
+nda_zslices = sitk.GetArrayViewFromImage(tile_z)
 
 fig, (ax1, ax2, ax3) = plt.subplots(1,3)
 ax1.imshow(nda_xslices, cmap=plt.cm.Greys_r)
@@ -518,9 +522,13 @@ img_xslices = [img_volume[x,:,:] for x in range(50, 200, 30)]
 img_yslices = [img_volume[:,y,:] for y in range(50, 200, 30)]
 img_zslices = [img_volume[:,:,z] for z in range(1, 25, 3)]
 
-nda_xslices = sitk.GetArrayViewFromImage(sitk.Tile(img_xslices, [1,0]))
-nda_yslices = sitk.GetArrayViewFromImage(sitk.Tile(img_yslices, [1,0]))
-nda_zslices = sitk.GetArrayViewFromImage(sitk.Tile(img_zslices, [1,0]))
+tile_x = sitk.Tile(img_xslices, [1,0])
+tile_y = sitk.Tile(img_yslices, [1,0])
+tile_z = sitk.Tile(img_zslices, [1,0])
+
+nda_xslices = sitk.GetArrayViewFromImage(tile_x)
+nda_yslices = sitk.GetArrayViewFromImage(tile_y)
+nda_zslices = sitk.GetArrayViewFromImage(tile_z)
 
 fig, (ax1, ax2, ax3) = plt.subplots(1,3)
 ax1.imshow(nda_xslices, cmap=plt.cm.Greys_r)
