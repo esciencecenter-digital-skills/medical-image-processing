@@ -206,6 +206,18 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="simpleitk.html">3. Registration and Segmentation with SITK</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -271,7 +283,89 @@
 <p aria-hidden="true">Image 1 of 1: ‘Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence.’</p>
 <figure><img src="fig/Mitral_Valve_M_Mode.jpg" alt="Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence." class="figure mx-auto d-block"><div class="figcaption">Image of mitral valve prolapse from Cafer
 Zorkun, MD, PhD on wikidoc.org with creative commons lisence.</div>
-</figure><hr></section>
+</figure><hr></section><section id="simpleitk"><h2 class="section-heading"><a href="simpleitk.html">Registration and Segmentation with SITK</a></h2>
+<hr class="half-width">
+<h3 id="simpleitk-figure-1">Figure 1</h3>
+<p aria-hidden="true">Image 1 of 1: ‘SITK logo.’</p>
+<figure><img src="fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-2">Figure 2</h3>
+<p aria-hidden="true">Image 1 of 1: ‘SITK Image.’</p>
+<figure><img src="fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SimpleITK occupies a region in
+physical space which is defined by its meta-data (origin, size, spacing,
+and direction cosine matrix). Note that the image’s physical extent
+starts half a voxel before the origin and ends half a voxel beyond the
+last voxel.</div>
+</figure><hr>
+<h3 id="simpleitk-figure-3">Figure 3</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Isotropic vs non-isotropic images.’</p>
+<figure><img src="fig/isotropic_vs_non_isotropic.png" alt="Isotropic vs non-isotropic images." class="figure mx-auto d-block"><div class="figcaption">The same image displayed with a viewer that is
+not aware of spatial meta-data (left image) and one that is aware (right
+image). The image’s pixel spacing is (0.97656, 2.0)mm.</div>
+</figure><hr>
+<h3 id="simpleitk-figure-4">Figure 4</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Spatial relationship in images.’</p>
+<figure><img src="fig/spatial_relationship.png" alt="Spatial relationship in images." class="figure mx-auto d-block"><div class="figcaption">Two images with exactly the same pixel data,
+positioned in the world coordinate system. In SimpleITK these are not
+considered the same image, because they occupy different spatial
+locations.</div>
+</figure><hr>
+<h3 id="simpleitk-figure-5">Figure 5</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Slice and cmaps example.’</p>
+<figure><img src="fig/slice_cmaps.png" alt="Slice and cmaps example." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-6">Figure 6</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Multiple slices example.’</p>
+<figure><img src="fig/iso_slices.png" alt="Multiple slices example." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-7">Figure 7</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Operations examples.’</p>
+<figure><img src="fig/sitk_operations.png" alt="Operations examples." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-8">Figure 8</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Slice with grid mask.’</p>
+<figure><img src="fig/slice_grid.png" alt="Slice with grid mask." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-9">Figure 9</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Digital x-ray image.’</p>
+<figure><img src="fig/xray_srgb.png" alt="Digital x-ray image." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-10">Figure 10</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Grayscale x-ray image.’</p>
+<figure><img src="fig/xray_gs.png" alt="Grayscale x-ray image." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-11">Figure 11</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Non-isotropic slices example.’</p>
+<figure><img src="fig/non-iso_slices.png" alt="Non-isotropic slices example." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-12">Figure 12</h3>
+<p aria-hidden="true">Image 1 of 1: ‘CT and MRI volumes before being aligned.’</p>
+<figure><img src="fig/ct_mri_registration.png" alt="CT and MRI volumes before being aligned." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-13">Figure 13</h3>
+<p aria-hidden="true">Image 1 of 1: ‘CT and MRI volumes overimposed.’</p>
+<figure><img src="fig/ct_mri_registration2.png" alt="CT and MRI volumes overimposed." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-14">Figure 14</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Metrics across iterations.’</p>
+<figure><img src="fig/reg_metric_iter.png" alt="Metrics across iterations." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-15">Figure 15</h3>
+<p aria-hidden="true">Image 1 of 1: ‘CT and MRI volumes aligned.’</p>
+<figure><img src="fig/ct_mri_registration_aligned.png" alt="CT and MRI volumes aligned." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-16">Figure 16</h3>
+<p aria-hidden="true">Image 1 of 1: ‘T1 MRI scan, Z slices.’</p>
+<figure><img src="fig/seg_z.png" alt="T1 MRI scan, Z slices." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-17">Figure 17</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Basic thresholding methods.’</p>
+<figure><img src="fig/thresholding.png" alt="Basic thresholding methods." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-18">Figure 18</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Brain lateral ventricle.’</p>
+<figure><img src="fig/lateral_ventricle.gif" alt="Brain lateral ventricle." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-19">Figure 19</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Initial seed.’</p>
+<figure><img src="fig/seed.png" alt="Initial seed." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-20">Figure 20</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Region growing segmentations.’</p>
+<figure><img src="fig/reg_grow.png" alt="Region growing segmentations." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-21">Figure 21</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Confidence connected after morphological closing.’</p>
+<figure><img src="fig/reg_grow_cleaned.png" alt="Confidence connected after morphological closing." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-22">Figure 22</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Level-set segmentation.’</p>
+<figure><img src="fig/level_set_seg.png" alt="Level-set segmentation." class="figure mx-auto d-block"></figure><hr>
+<h3 id="simpleitk-figure-23">Figure 23</h3>
+<p aria-hidden="true">Image 1 of 1: ‘Y-axis segmentation.’</p>
+<figure><img src="fig/y-axis_seg.png" alt="Y-axis segmentation." class="figure mx-auto d-block"></figure><hr></section>
 </div>
     </main>
 </div>
@@ -318,9 +412,9 @@ Zorkun, MD, PhD on wikidoc.org with creative commons lisence.</div>
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/images.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/images.html",
-  "dateCreated": "2024-05-04",
-  "dateModified": "2024-05-21",
-  "datePublished": "2024-05-21"
+  "dateCreated": "2024-05-23",
+  "dateModified": "2024-05-23",
+  "datePublished": "2024-05-23"
 }
 
   </script><script>

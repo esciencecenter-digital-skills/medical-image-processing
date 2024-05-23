@@ -207,6 +207,18 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush4">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading4">
+        <a href="simpleitk.html">3. Registration and Segmentation with SITK</a>
+    </div>
+<!--/div.accordion-header-->
+        
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -594,6 +606,1708 @@ future</li>
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use. 
  -->
+</section></section><section id="aio-simpleitk"><p>Content from <a href="simpleitk.html">Registration and Segmentation with SITK</a></p>
+<hr>
+<p>Last updated on 2024-05-23 |
+        
+        <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/simpleitk.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 120 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What are SITK Images?</li>
+<li>How can registration be implemented in SITK?</li>
+<li>How can I segment an image in SITK?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Explain how to perform basic operations on SITK Images</li>
+<li>Explain when registration can be needed and how to register images
+with SITK</li>
+<li>Become familiar with basic segmentation algorithms available in
+SITK</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section id="introduction"><h2 class="section-heading">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<hr class="half-width">
+<p>In the realm of medical imaging analysis, registration and
+segmentation play crucial roles. Registration aligns images, enabling
+the fusion of data or the tracking of changes over time. Segmentation
+identifies and labels objects of interest within images. Automation is
+essential due to high clinical demand, driving the development of robust
+algorithms for both processes. Moreover, many advanced segmentation
+techniques utilize image registration, whether implicitly or
+explicitly.</p>
+<p><a href="https://github.com/SimpleITK/SimpleITK" class="external-link">SimpleITK</a> (SITK)
+is a simplified programming interface to the algorithms and data
+structures of the <a href="https://itk.org/" class="external-link">Insight Toolkit</a> (ITK)
+for segmentation, registration and advanced image analysis, available in
+many programming languages (e.g., C++, Python, R, Java, C#, Lua,
+Ruby).</p>
+<figure><img src="../fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><p>SimpleITK is part of the <a href="https://insightsoftwareconsortium.org/" class="external-link">Insight Software
+Consortium</a> a non-profit educational consortium dedicated to
+promoting and maintaining open-source, freely available software for
+medical image analysis. Its copyright is held by <a href="https://numfocus.org/" class="external-link">NumFOCUS</a>, and the software is
+distributed under the <a href="https://github.com/SimpleITK/SimpleITK/blob/master/LICENSE" class="external-link">Apache
+License 2.0</a>.</p>
+<p>In this episode, we use a hands-on approach utilizing Python to show
+how to use SimpleITK for performing registration and segmentation tasks
+in medical imaging use cases.</p>
+</section><section id="fundamental-concepts"><h2 class="section-heading">Fundamental concepts<a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
+</h2>
+<hr class="half-width">
+<p>In this section, we’ll cover some fundamental image processing
+operations using SITK, such as reading and writing images, accessing
+pixel values, and resampling images.</p>
+<div class="section level3">
+<h3 id="images">Images<a class="anchor" aria-label="anchor" href="#images"></a>
+</h3>
+<p>The fundamental tenet of an image in ITK and consequentially in
+SimpleITK is that an image is defined by a set of points on a grid
+occupying a <strong>physical region in space</strong> . This
+significantly differs from many other image analysis libraries that
+treat an image as an array which has two implications: (1) pixel/voxel
+spacing is assumed to be isotropic and (2) there is no notion of an
+image’s location in physical space.</p>
+<p>SimpleITK images are multi-dimensional (the default configuration
+includes images from two dimensional up to five dimensional) and can be
+a scalar, labelmap (scalar with run length encoding), complex value or
+have an arbitrary number of scalar channels (also known as a vector
+image). The region in physical space which an image occupies is defined
+by the image’s:</p>
+<ol style="list-style-type: decimal">
+<li>Origin (vector like type) - location in the world coordinate system
+of the voxel with all zero indexes.</li>
+<li>Spacing (vector like type) - distance between pixels along each of
+the dimensions.</li>
+<li>Size (vector like type) - number of pixels in each dimension.</li>
+<li>Direction cosine matrix (vector like type representing matrix in row
+major order) - direction of each of the axes corresponding to the matrix
+columns.</li>
+</ol>
+<p>The following figure illustrates these concepts.</p>
+<figure><img src="../fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SimpleITK occupies a region in
+physical space which is defined by its meta-data (origin, size, spacing,
+and direction cosine matrix). Note that the image’s physical extent
+starts half a voxel before the origin and ends half a voxel beyond the
+last voxel.</div>
+</figure><p>In SimpleITK, when we construct an image we specify its
+dimensionality, size and pixel type, all other components are set to
+<strong>reasonable default values</strong>:</p>
+<ol style="list-style-type: decimal">
+<li>Origin - all zeros.</li>
+<li>Spacing - all ones.</li>
+<li>Direction - identity.</li>
+<li>Intensities in all channels - all zero.</li>
+</ol>
+<p>The tenet that images occupy a spatial location in the physical world
+has to do with the original application domain of ITK and SimpleITK,
+medical imaging. In that domain images represent anatomical structures
+with metric sizes and spatial locations. Additionally, the spacing
+between voxels is often non-isotropic (most commonly the spacing along
+the inferior-superior/foot-to-head direction is larger). Viewers that
+treat images as an array will display a distorted image as shown
+below:</p>
+<figure><img src="../fig/isotropic_vs_non_isotropic.png" alt="Isotropic vs non-isotropic images." class="figure mx-auto d-block"><div class="figcaption">The same image displayed with a viewer that is
+not aware of spatial meta-data (left image) and one that is aware (right
+image). The image’s pixel spacing is (0.97656, 2.0)mm.</div>
+</figure><p>As an image is also defined by its spatial location, two images with
+the same pixel data and spacing may not be considered equivalent. Think
+of two CT scans of the same patient acquired at different sites. The
+following figure illustrates the notion of spatial location in the
+physical world, the two images are considered different even though the
+intensity values and pixel spacing are the same.</p>
+<figure><img src="../fig/spatial_relationship.png" alt="Spatial relationship in images." class="figure mx-auto d-block"><div class="figcaption">Two images with exactly the same pixel data,
+positioned in the world coordinate system. In SimpleITK these are not
+considered the same image, because they occupy different spatial
+locations.</div>
+</figure><p>As SimpleITK images occupy a physical region in space, the quantities
+defining this region have metric units (cm, mm, etc.). In general
+SimpleITK assumes units are in millimeters (historical reasons, due to
+DICOM standard). In practice SimpleITK is not aware of the specific
+units associated with each image, it just assumes that they are
+consistent. Thus, it is up to you the developer to ensure that all of
+the images you read and created are using the same units.</p>
+<p>A SimpleITK image can have an arbitrary number of channels with the
+content of the channels being a scalar or complex value. This is
+determined when an image is created.</p>
+<p>In the medical domain, many image types have a single scalar channel
+(e.g. CT, US). Another common image type is a three channel image where
+each channel has scalar values in [0,255], often people refer to such an
+image as an RGB image. This terminology implies that the three channels
+should be interpreted using the RGB color space. In some cases you can
+have the same image type, but the channel values represent another color
+space, such as HSV (it decouples the color and intensity information and
+is a bit more invariant to illumination changes). SimpleITK has no
+concept of color space, thus in both cases it will simply view a pixel
+value as a 3-tuple.</p>
+<p>Let’s read an example of human brain CT, and let’s explore it with
+SITK.</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">import</span> SimpleITK <span class="im">as</span> sitk</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>img_volume <span class="op">=</span> sitk.ReadImage(<span class="st">"../../data/A1_grayT1.nrrd"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(img_volume))</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetOrigin())</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetSpacing())</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetDirection())</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>&lt;class 'SimpleITK.SimpleITK.Image'&gt;
+(-77.625, -107.625, 119.625)
+(0.75, 0.75, 0.75)
+(0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, -1.0, 0.0)</code></pre>
+</div>
+<p>The function <code>sitk.ReadImage</code> loads the file as a
+<code>SimpleITK.SimpleITK.Image</code> instance, and then we can access
+useful methods to get an idea of how the image/s contained in the file
+is/are. The size of the image’s dimensions have explicit accessors:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetSize())</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetWidth())</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetHeight())</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetDepth())</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetNumberOfComponentsPerPixel())</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetPixelIDTypeAsString())</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(288, 320, 208)
+288
+320
+208
+1
+32-bit float</code></pre>
+</div>
+<p>Just inspecting these accessors, we deduce that the file contains a
+volume made of 208 images, each made of 288x320 pixels and one channel
+only (grayscale).</p>
+<div id="sitk-conventions" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="sitk-conventions" class="callout-inner">
+<h3 class="callout-title">SITK conventions<a class="anchor" aria-label="anchor" href="#sitk-conventions"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Image access is in x,y,z order, <code>image.GetPixel(x,y,z)</code>
+or <code>image[x,y,z]</code>, with zero based indexing.</li>
+<li>If the output of an ITK filter has non-zero starting index, then the
+index will be set to 0, and the origin adjusted accordingly.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="displaying-images" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="displaying-images" class="callout-inner">
+<h3 class="callout-title">Displaying images<a class="anchor" aria-label="anchor" href="#displaying-images"></a>
+</h3>
+<div class="callout-content">
+<p>While SimpleITK does not do visualization, it does contain a built in
+<code>Show</code> method. This function writes the image out to disk and
+than launches a program for visualization. By default it is configured
+to use ImageJ, because it is readily supports all the image types which
+SimpleITK has and load very quickly.</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>sitk.Show?</span></code></pre>
+</div>
+<p>SimpleITK provides two options for invoking an external viewer, use a
+procedural interface (the <code>Show</code> function) or an object
+oriented one. For more details about them, please refer to <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/04_Image_Display.html" class="external-link">this
+notebook</a> from the official documentation.</p>
+<p>In this episode we will convert SITK images to <code>numpy</code>
+arrays, and we will plot them as such.</p>
+</div>
+</div>
+</div>
+<div class="section level4">
+<h4 id="images-as-arrays">Images as arrays<a class="anchor" aria-label="anchor" href="#images-as-arrays"></a>
+</h4>
+<p>We have two options for converting from SimpleITK to a
+<code>numpy</code> array:</p>
+<ul>
+<li>
+<code>GetArrayFromImage()</code>: returns a copy of the image data.
+You can then freely modify the data as it has no effect on the original
+SimpleITK image.</li>
+<li>
+<code>GetArrayViewFromImage()</code>: returns a view on the image
+data which is useful for display in a memory efficient manner. You
+cannot modify the data and <strong>the view will be invalid if the
+original SimpleITK image is deleted</strong>.</li>
+</ul>
+<p>The order of index and dimensions need careful attention during
+conversion. ITK’s Image class has a <code>GetPixel</code> which takes an
+ITK Index object as an argument, which is ordered as (x,y,z). This is
+the convention that SimpleITK’s Image class uses for the
+<code>GetPixel</code> method and slicing operator as well. In
+<code>numpy</code>, an array is indexed in the opposite order (z,y,x).
+Also note that the access to channels is different. In SimpleITK you do
+not access the channel directly, rather the pixel value representing all
+channels for the specific pixel is returned and you then access the
+channel for that pixel. In the numpy array you are accessing the channel
+directly. Let’s see this in an example:</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>multi_channel_3Dimage <span class="op">=</span> sitk.Image([<span class="dv">2</span>, <span class="dv">4</span>, <span class="dv">8</span>], sitk.sitkVectorFloat32, <span class="dv">5</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>x <span class="op">=</span> multi_channel_3Dimage.GetWidth() <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>y <span class="op">=</span> multi_channel_3Dimage.GetHeight() <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>z <span class="op">=</span> multi_channel_3Dimage.GetDepth() <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>multi_channel_3Dimage[x, y, z] <span class="op">=</span> np.random.random(</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    multi_channel_3Dimage.GetNumberOfComponentsPerPixel()</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>)</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayFromImage(multi_channel_3Dimage)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Image size: "</span> <span class="op">+</span> <span class="bu">str</span>(multi_channel_3Dimage.GetSize()))</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Numpy array size: "</span> <span class="op">+</span> <span class="bu">str</span>(nda.shape))</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co"># Notice the index order and channel access are different:</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First channel value in image: "</span> <span class="op">+</span> <span class="bu">str</span>(multi_channel_3Dimage[x, y, z][<span class="dv">0</span>]))</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"First channel value in numpy array: "</span> <span class="op">+</span> <span class="bu">str</span>(nda[z, y, x, <span class="dv">0</span>]))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Image size: (2, 4, 8)
+Numpy array size: (8, 4, 2, 5)
+First channel value in image: 0.5384010076522827
+First channel value in numpy array: 0.538401</code></pre>
+</div>
+<p>Going back to the loaded file, let’s plot the array version of the
+volume slice from the middle of the stack, along the z axis, using
+different color maps:</p>
+<div class="codewrapper sourceCode" id="cb8">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>npa <span class="op">=</span> sitk.GetArrayViewFromImage(img_volume)</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># Display the image slice from the middle of the stack, z axis</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>z <span class="op">=</span> <span class="bu">int</span>(img_volume.GetDepth() <span class="op">/</span> <span class="dv">2</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>npa_zslice <span class="op">=</span> sitk.GetArrayViewFromImage(img_volume)[z, :, :]</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a></span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a><span class="co"># Three plots displaying the same data, how do we deal with the high dynamic range?</span></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">3</span>))</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>fig.add_subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">1</span>)</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>plt.imshow(npa_zslice)</span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>plt.title(<span class="st">"default colormap"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a></span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>fig.add_subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>plt.imshow(npa_zslice, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>plt.title(<span class="st">"grey colormap"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a></span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>fig.add_subplot(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">3</span>)</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>plt.title(</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>    <span class="st">"grey colormap,</span><span class="ch">\n</span><span class="st"> scaling based on volumetric min and max values"</span>, fontsize<span class="op">=</span><span class="dv">10</span></span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>)</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>plt.imshow(npa_zslice, cmap<span class="op">=</span>plt.cm.Greys_r, vmin<span class="op">=</span>npa.<span class="bu">min</span>(), vmax<span class="op">=</span>npa.<span class="bu">max</span>())</span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code></pre>
+</div>
+<figure><img src="../fig/slice_cmaps.png" alt="Slice and cmaps example." class="figure mx-auto d-block"></figure><p>We can also do the reverse, i.e. converting a <code>numpy</code>
+array to the SimpleITK Image:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>img_zslice <span class="op">=</span> sitk.GetImageFromArray(npa_zslice)</span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(img_zslice))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>&lt;class 'SimpleITK.SimpleITK.Image'&gt;</code></pre>
+</div>
+<p>We can also plot multiple slices at the same time, for better
+inspecting the volume:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>img_xslices <span class="op">=</span> [img_volume[x,:,:] <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">30</span>)]</span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a>img_yslices <span class="op">=</span> [img_volume[:,y,:] <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">30</span>)]</span>
+<span id="cb11-3"><a href="#cb11-3" tabindex="-1"></a>img_zslices <span class="op">=</span> [img_volume[:,:,z] <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">30</span>)]</span>
+<span id="cb11-4"><a href="#cb11-4" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" tabindex="-1"></a>tile_x <span class="op">=</span> sitk.Tile(img_xslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb11-6"><a href="#cb11-6" tabindex="-1"></a>tile_y <span class="op">=</span> sitk.Tile(img_yslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb11-7"><a href="#cb11-7" tabindex="-1"></a>tile_z <span class="op">=</span> sitk.Tile(img_zslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb11-8"><a href="#cb11-8" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" tabindex="-1"></a>nda_xslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_x)</span>
+<span id="cb11-10"><a href="#cb11-10" tabindex="-1"></a>nda_yslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_y)</span>
+<span id="cb11-11"><a href="#cb11-11" tabindex="-1"></a>nda_zslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_z)</span>
+<span id="cb11-12"><a href="#cb11-12" tabindex="-1"></a></span>
+<span id="cb11-13"><a href="#cb11-13" tabindex="-1"></a>fig, (ax1, ax2, ax3) <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" tabindex="-1"></a>ax1.imshow(nda_xslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb11-15"><a href="#cb11-15" tabindex="-1"></a>ax2.imshow(nda_yslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb11-16"><a href="#cb11-16" tabindex="-1"></a>ax3.imshow(nda_zslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb11-17"><a href="#cb11-17" tabindex="-1"></a>ax1.set_title(<span class="st">'X slices'</span>)</span>
+<span id="cb11-18"><a href="#cb11-18" tabindex="-1"></a>ax2.set_title(<span class="st">'Y slices'</span>)</span>
+<span id="cb11-19"><a href="#cb11-19" tabindex="-1"></a>ax3.set_title(<span class="st">'Z slices'</span>)</span></code></pre>
+</div>
+<figure><img src="../fig/iso_slices.png" alt="Multiple slices example." class="figure mx-auto d-block"></figure><p>Operations like slice indexing, cropping, flipping, … can be
+performed on SITK images very similarly as it is usually done in
+<code>numpy</code>. Note that slicing of SITK images returns a copy of
+the image data, similarly to slicing Python lists, and differently from
+the “view” returned by slicing <code>numpy</code> arrays.</p>
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>n_slice <span class="op">=</span> <span class="dv">150</span></span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="co"># Original slice</span></span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a>plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :, n_slice]), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb13">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Cropping</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :<span class="dv">100</span>, n_slice]), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb14">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Flipping</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, ::<span class="op">-</span><span class="dv">1</span>, n_slice]), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb15">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Subsampling</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, ::<span class="dv">3</span>, n_slice]), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb16">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Comparative operators</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>plt.imshow(sitk.GetArrayViewFromImage(img_volume[:, :, n_slice] <span class="op">&gt;</span> <span class="dv">90</span>), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb17">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="co"># Draw a square</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>draw_square <span class="op">=</span> sitk.GetArrayFromImage(img_volume[:, :, n_slice])</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>draw_square[<span class="dv">0</span>:<span class="dv">100</span>,<span class="dv">0</span>:<span class="dv">100</span>] <span class="op">=</span> draw_square.<span class="bu">max</span>()</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>plt.imshow(draw_square, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<figure><img src="../fig/sitk_operations.png" alt="Operations examples." class="figure mx-auto d-block"></figure><p>Another example of operation we can perform is creating a grid mask
+and apply it to an image:</p>
+<div class="codewrapper sourceCode" id="cb18">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>img_zslice <span class="op">=</span> img_volume[:, :, n_slice]</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a><span class="co"># Create a grid and use as mask</span></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>grid_image <span class="op">=</span> sitk.GridSource(</span>
+<span id="cb18-4"><a href="#cb18-4" tabindex="-1"></a>    outputPixelType<span class="op">=</span>sitk.sitkUInt16,</span>
+<span id="cb18-5"><a href="#cb18-5" tabindex="-1"></a>    size<span class="op">=</span>img_zslice.GetSize(),</span>
+<span id="cb18-6"><a href="#cb18-6" tabindex="-1"></a>    sigma<span class="op">=</span>(<span class="fl">0.1</span>, <span class="fl">0.1</span>),</span>
+<span id="cb18-7"><a href="#cb18-7" tabindex="-1"></a>    gridSpacing<span class="op">=</span>(<span class="fl">20.0</span>, <span class="fl">20.0</span>),</span>
+<span id="cb18-8"><a href="#cb18-8" tabindex="-1"></a>)</span>
+<span id="cb18-9"><a href="#cb18-9" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co"># zero out the values in the original image that correspond to</span></span>
+<span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co"># the grid lines in the grid_image</span></span>
+<span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>img_zslice[grid_image <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayViewFromImage(<span class="bu">slice</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>plt.imshow(nda, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<div id="fix-the-error-optional" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="fix-the-error-optional" class="callout-inner">
+<h3 class="callout-title">Fix the error (optional)<a class="anchor" aria-label="anchor" href="#fix-the-error-optional"></a>
+</h3>
+<div class="callout-content">
+<p>By running the lines of code above for masking the slice with the
+grid, you will get an error. Can you guess what is it about?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1">Show me the solution</h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>By default, SITK creates images centered in the origin, which all
+ones spacing. We need to have the same values in the grid and in the
+image in order to superimpose the first to the latter.</p>
+<div class="codewrapper sourceCode" id="cb19">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>grid_image.SetOrigin(img_zslice.GetOrigin())</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a>grid_image.SetSpacing(img_zslice.GetSpacing())</span></code></pre>
+</div>
+<p>Add these two lines to the code above, after the creation of the
+grid. Everything should work fine now. Remember that making such changes
+to an image already containing data should be done cautiously.</p>
+<figure><img src="../fig/slice_grid.png" alt="Slice with grid mask." class="figure mx-auto d-block"></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level4">
+<h4 id="meta-dictionaries">Meta-dictionaries<a class="anchor" aria-label="anchor" href="#meta-dictionaries"></a>
+</h4>
+<p>SimpleITK can read (and write) images stored in a single file, or a
+set of files (e.g. DICOM series).</p>
+<p>Images stored in the DICOM format have a meta-data dictionary
+associated with them, which is populated with the DICOM tags. When a
+DICOM series is read as a single image, the meta-data information is not
+available since DICOM tags are specific to each file. If you need the
+meta-data, you have three options:</p>
+<ol style="list-style-type: decimal">
+<li><p>Using the object oriented interface’s <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageSeriesReader.html" class="external-link">ImageSeriesReader</a>
+class, configure it to load the tags using the
+<code>MetaDataDictionaryArrayUpdateOn</code> method and possibly the
+<code>LoadPrivateTagsOn</code> method if you need the private tags. Once
+the series is read you can access the meta-data from the series reader
+using the <code>GetMetaDataKeys</code>, <code>HasMetaDataKey</code>, and
+<code>GetMetaData</code>.</p></li>
+<li><p>Using the object oriented interface’s <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageFileReader.html" class="external-link">ImageFileReader</a>,
+set a specific slice’s file name and only read it’s meta-data using the
+<code>ReadImageInformation</code> method which only reads the meta-data
+but not the bulk pixel information. Once the meta-data is read you can
+access it from the file reader using the <code>GetMetaDataKeys</code>,
+<code>HasMetaDataKey</code>, and <code>GetMetaData</code>.</p></li>
+<li><p>Using the object oriented interface’s <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageFileReader.html" class="external-link">ImageFileReader</a>,
+set a specific slice’s file name and read it. Or using the procedural
+interface’s, <a href="https://simpleitk.org/doxygen/latest/html/namespaceitk_1_1simple.html#ae3b678b5b043c5a8c93aa616d5ee574c" class="external-link">ReadImage</a>
+function, read a specific file. You can then access the meta-data
+directly from the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1Image.html" class="external-link">Image</a>
+using the <code>GetMetaDataKeys</code>, <code>HasMetaDataKey</code>, and
+<code>GetMetaData</code>.</p></li>
+</ol>
+<p><strong>Note</strong>: When reading an image series, via the
+<code>ImageSeriesReader</code> or via the procedural
+<code>ReadImage</code> interface, the images in the list are assumed to
+be ordered correctly (<code>GetGDCMSeriesFileNames</code> ensures this
+for DICOM). If the order is incorrect, the image will be read, but its
+spacing and possibly the direction cosine matrix will be incorrect.</p>
+<p>Let’s read in a digital x-ray image saved in a DICOM file format, and
+let’s print the metadata’s keys:</p>
+<div class="codewrapper sourceCode" id="cb20">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a>img_xray <span class="op">=</span> sitk.ReadImage(<span class="st">'../../data/digital_xray.dcm'</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" tabindex="-1"></a><span class="cf">for</span> key <span class="kw">in</span> img_xray.GetMetaDataKeys():</span>
+<span id="cb20-4"><a href="#cb20-4" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'"</span><span class="sc">{</span>key<span class="sc">}</span><span class="ss">":"</span><span class="sc">{</span>img_xray<span class="sc">.</span>GetMetaData(key)<span class="sc">}</span><span class="ss">"'</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">"0008|0005"</span><span class="op">:</span><span class="st">"ISO_IR 100"</span></span>
+<span><span class="st">"0008|0012"</span><span class="op">:</span><span class="st">"20180713"</span></span>
+<span><span class="st">"0008|0013"</span><span class="op">:</span><span class="st">"233245.431"</span></span>
+<span><span class="st">"0008|0016"</span><span class="op">:</span><span class="st">"1.2.840.10008.5.1.4.1.1.7"</span></span>
+<span><span class="st">"0008|0018"</span><span class="op">:</span><span class="st">"2.25.225981116244996633889747723103230447077"</span></span>
+<span><span class="st">"0008|0020"</span><span class="op">:</span><span class="st">"20160208"</span></span>
+<span><span class="st">"0008|0060"</span><span class="op">:</span><span class="st">"XC"</span></span>
+<span><span class="st">"0020|000d"</span><span class="op">:</span><span class="st">"2.25.59412532821774470466514450673479191872"</span></span>
+<span><span class="st">"0020|000e"</span><span class="op">:</span><span class="st">"2.25.149748537243964334146339164752570719260"</span></span>
+<span><span class="st">"0028|0002"</span><span class="op">:</span><span class="st">"3"</span></span>
+<span><span class="st">"0028|0004"</span><span class="op">:</span><span class="st">"YBR_FULL_422"</span></span>
+<span><span class="st">"0028|0006"</span><span class="op">:</span><span class="st">"0"</span></span>
+<span><span class="st">"0028|0010"</span><span class="op">:</span><span class="st">"357"</span></span>
+<span><span class="st">"0028|0011"</span><span class="op">:</span><span class="st">"371"</span></span>
+<span><span class="st">"0028|0100"</span><span class="op">:</span><span class="st">"8"</span></span>
+<span><span class="st">"0028|0101"</span><span class="op">:</span><span class="st">"8"</span></span>
+<span><span class="st">"0028|0102"</span><span class="op">:</span><span class="st">"7"</span></span>
+<span><span class="st">"0028|0103"</span><span class="op">:</span><span class="st">"0"</span></span>
+<span><span class="st">"ITK_original_direction"</span><span class="op">:</span><span class="st">"[UNKNOWN_PRINT_CHARACTERISTICS]</span></span>
+<span><span class="st">"</span></span>
+<span><span class="st">"ITK_original_spacing"</span><span class="op">:</span><span class="st">"[UNKNOWN_PRINT_CHARACTERISTICS]</span></span>
+<span><span class="st">"</span></span></code></pre>
+</div>
+<div id="many-ways-to-read-a-dicom" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="many-ways-to-read-a-dicom" class="callout-inner">
+<h3 class="callout-title">Many ways to read a DICOM:<a class="anchor" aria-label="anchor" href="#many-ways-to-read-a-dicom"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Many libraries allow you to read DICOM metadata.</li>
+<li>PyDICOM will be explored for this task later.</li>
+<li>If you are already using SITK, you will usually not need an extra
+library to get DICOM metadata.</li>
+<li>Many libraries have some basic DICOM functionality, check the
+documentation before adding extra dependencies.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>Generally speaking, SimpleITK represents color images as
+multi-channel images independent of a <a href="https://en.wikipedia.org/wiki/Color_space" class="external-link">color space</a>. It is
+up to you to interpret the channels correctly based on additional color
+space knowledge prior to using them for display or any other
+purpose.</p>
+<p>Things to note: 1. When using SimpleITK to read a color DICOM image,
+the channel values will be transformed to the RGB color space. 2. When
+using SimpleITK to read a scalar image, it is assumed that the lowest
+intensity value is black and highest white. If the photometric
+interpretation tag is MONOCHROME2 (lowest value displayed as black)
+nothing is done. If it is MONOCHROME1 (lowest value displayed as white),
+the pixel values are inverted.</p>
+<div class="codewrapper sourceCode" id="cb22">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f'Image Modality: </span><span class="sc">{</span>img_xray<span class="sc">.</span>GetMetaData(<span class="st">"0008|0060"</span>)<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" tabindex="-1"></a><span class="bu">print</span>(img_xray.GetNumberOfComponentsPerPixel())</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Image Modality: XC
+3</code></pre>
+</div>
+<p>“0008|0060” is a code indicating the modality, and “XC” stays for
+“External-camera Photography”.</p>
+<div id="grayscale-images-stored-as-srgb" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="grayscale-images-stored-as-srgb" class="callout-inner">
+<h3 class="callout-title">Grayscale images stored as sRGB<a class="anchor" aria-label="anchor" href="#grayscale-images-stored-as-srgb"></a>
+</h3>
+<div class="callout-content">
+<p>“digital_xray.dcm” image is sRGB, even if an x-ray should be a single
+channel gray scale image. In some cases looks may be deceiving. Gray
+scale images are not always stored as a single channel image. In some
+cases an image that looks like a gray scale image is actually a three
+channel image with the intensity values repeated in each of the
+channels. Even worse, some gray scale images can be four channel images
+with the channels representing RGBA and the alpha channel set to all
+255. This can result in a significant waste of memory and computation
+time. Always become familiar with your data.</p>
+<p>We can <a href="https://en.wikipedia.org/wiki/Grayscale#Converting_color_to_grayscale" class="external-link">convert
+sRGB to gray scale</a>:</p>
+<div class="codewrapper sourceCode" id="cb24">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>nda_xray <span class="op">=</span> sitk.GetArrayViewFromImage(img_xray)</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a>plt.imshow(np.squeeze(nda_xray))</span></code></pre>
+</div>
+<figure><img src="../fig/xray_srgb.png" alt="Digital x-ray image." class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb25">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="kw">def</span> srgb2gray(image):</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>    <span class="co"># Convert sRGB image to gray scale and rescale results to [0,255]</span></span>
+<span id="cb25-3"><a href="#cb25-3" tabindex="-1"></a>    channels <span class="op">=</span> [</span>
+<span id="cb25-4"><a href="#cb25-4" tabindex="-1"></a>        sitk.VectorIndexSelectionCast(image, i, sitk.sitkFloat32)</span>
+<span id="cb25-5"><a href="#cb25-5" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(image.GetNumberOfComponentsPerPixel())</span>
+<span id="cb25-6"><a href="#cb25-6" tabindex="-1"></a>    ]</span>
+<span id="cb25-7"><a href="#cb25-7" tabindex="-1"></a>    <span class="co"># linear mapping</span></span>
+<span id="cb25-8"><a href="#cb25-8" tabindex="-1"></a>    I <span class="op">=</span> <span class="dv">1</span> <span class="op">/</span> <span class="fl">255.0</span> <span class="op">*</span> (<span class="fl">0.2126</span> <span class="op">*</span> channels[<span class="dv">0</span>] <span class="op">+</span> <span class="fl">0.7152</span> <span class="op">*</span> channels[<span class="dv">1</span>] <span class="op">+</span> <span class="fl">0.0722</span> <span class="op">*</span> channels[<span class="dv">2</span>])</span>
+<span id="cb25-9"><a href="#cb25-9" tabindex="-1"></a>    <span class="co"># nonlinear gamma correction</span></span>
+<span id="cb25-10"><a href="#cb25-10" tabindex="-1"></a>    I <span class="op">=</span> (</span>
+<span id="cb25-11"><a href="#cb25-11" tabindex="-1"></a>        I <span class="op">*</span> sitk.Cast(I <span class="op">&lt;=</span> <span class="fl">0.0031308</span>, sitk.sitkFloat32) <span class="op">*</span> <span class="fl">12.92</span></span>
+<span id="cb25-12"><a href="#cb25-12" tabindex="-1"></a>        <span class="op">+</span> I <span class="op">**</span> (<span class="dv">1</span> <span class="op">/</span> <span class="fl">2.4</span>) <span class="op">*</span> sitk.Cast(I <span class="op">&gt;</span> <span class="fl">0.0031308</span>, sitk.sitkFloat32) <span class="op">*</span> <span class="fl">1.055</span></span>
+<span id="cb25-13"><a href="#cb25-13" tabindex="-1"></a>        <span class="op">-</span> <span class="fl">0.055</span></span>
+<span id="cb25-14"><a href="#cb25-14" tabindex="-1"></a>    )</span>
+<span id="cb25-15"><a href="#cb25-15" tabindex="-1"></a>    <span class="cf">return</span> sitk.Cast(sitk.RescaleIntensity(I), sitk.sitkUInt8)</span>
+<span id="cb25-16"><a href="#cb25-16" tabindex="-1"></a></span>
+<span id="cb25-17"><a href="#cb25-17" tabindex="-1"></a>img_xray_gray <span class="op">=</span> srgb2gray(img_xray)</span>
+<span id="cb25-18"><a href="#cb25-18" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayViewFromImage(img_xray_gray)</span>
+<span id="cb25-19"><a href="#cb25-19" tabindex="-1"></a>plt.imshow(np.squeeze(nda), cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
+</div>
+<figure><img src="../fig/xray_gs.png" alt="Grayscale x-ray image." class="figure mx-auto d-block"></figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="transforms">Transforms<a class="anchor" aria-label="anchor" href="#transforms"></a>
+</h3>
+<p>SimpleITK supports two types of spatial transforms, ones with a
+global (unbounded) spatial domain and ones with a bounded spatial
+domain. Points in SimpleITK are mapped by the transform using the
+<code>TransformPoint</code> method.</p>
+<p>All <strong>global domain transforms</strong> are of the form:</p>
+<p><span class="math inline">\(T(x) = A(x - c) + t + c\)</span></p>
+<p>The nomenclature used in the documentation refers to the components
+of the transformations as follows:</p>
+<ul>
+<li>Matrix - the matrix <span class="math inline">\(A\)</span>.</li>
+<li>Center - the point <span class="math inline">\(c\)</span>.</li>
+<li>Translation - the vector <span class="math inline">\(t\)</span>.</li>
+<li>Offset - the expression <span class="math inline">\(t + c -
+Ac\)</span>.</li>
+</ul>
+<p>A variety of global 2D and 3D transformations are available
+(translation, rotation, rigid, similarity, affine…). Some of these
+transformations are available with various parameterizations which are
+useful for registration purposes.</p>
+<p>The second type of spatial transformation, <strong>bounded domain
+transformations</strong>, are defined to be identity outside their
+domain. These include the B-spline deformable transformation, often
+referred to as Free-Form Deformation, and the displacement field
+transformation.</p>
+<p>The B-spline transform uses a grid of control points to represent a
+spline based transformation. To specify the transformation the user
+defines the number of control points and the spatial region which they
+overlap. The spline order can also be set, though the default of cubic
+is appropriate in most cases. The displacement field transformation uses
+a dense set of vectors representing displacement in a bounded spatial
+domain. It has no implicit constraints on transformation continuity or
+smoothness.</p>
+<p>Finally, SimpleITK supports a <strong>composite
+transformation</strong> with either a bounded or global domain. This
+transformation represents multiple transformations applied one after the
+other <span class="math inline">\(T_0(T_1(T_2(...T_n(p))))\)</span>. The
+semantics are stack based, that is, first in last applied:</p>
+<div class="codewrapper sourceCode" id="cb26">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a>composite_transform <span class="op">=</span> CompositeTransform([T0, T1])</span>
+<span id="cb26-2"><a href="#cb26-2" tabindex="-1"></a>composite_transform.AddTransform(T2)</span></code></pre>
+</div>
+<p>For more details about SITK transformation types and examples, see <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/22_Transforms.html" class="external-link">this
+tutorial notebook</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="resampling">Resampling<a class="anchor" aria-label="anchor" href="#resampling"></a>
+</h3>
+<p>Resampling, as the verb implies, is the action of sampling an image,
+which itself is a sampling of an original continuous signal.</p>
+<p>Generally speaking, resampling in SimpleITK involves four
+components:</p>
+<ol style="list-style-type: decimal">
+<li>Image - the image we resample, given in coordinate system <span class="math inline">\(m\)</span>.</li>
+<li>Resampling grid - a regular grid of points given in coordinate
+system <span class="math inline">\(f\)</span> which will be mapped to
+coordinate system <span class="math inline">\(m\)</span>.</li>
+<li>Transformation <span class="math inline">\(T_f^m\)</span> - maps
+points from coordinate system <span class="math inline">\(f\)</span> to
+coordinate system <span class="math inline">\(m\)</span>, <span class="math inline">\(^mp=T_f^m(^fp)\)</span>.</li>
+<li>Interpolator - method for obtaining the intensity values at
+arbitrary points in coordinate system <span class="math inline">\(m\)</span> from the values of the points defined
+by the Image.</li>
+</ol>
+<p>While SimpleITK provides a large number of interpolation methods, the
+two most commonly used are sitkLinear and sitkNearestNeighbor. The
+former is used for most interpolation tasks and is a compromise between
+accuracy and computational efficiency. The later is used to interpolate
+labeled images representing a segmentation. It is the only interpolation
+approach which will not introduce new labels into the result.</p>
+<p>The SimpleITK interface includes three variants for specifying the
+resampling grid:</p>
+<ol style="list-style-type: decimal">
+<li>Use the same grid as defined by the resampled image.</li>
+<li>Provide a second, reference, image which defines the grid.</li>
+<li>Specify the grid using: size, origin, spacing, and direction cosine
+matrix.</li>
+</ol>
+<p>Points that are mapped outside of the resampled image’s spatial
+extent in physical space are set to a constant pixel value which you
+provide (default is zero).</p>
+<p>It is not uncommon to end up with an empty (all black) image after
+resampling. This is due to:</p>
+<ol style="list-style-type: decimal">
+<li>Using wrong settings for the resampling grid (not too common, but
+does happen).</li>
+<li>Using the inverse of the transformation <span class="math inline">\(T_f^m\)</span>. This is a relatively common error,
+which is readily addressed by invoking the transformation’s
+<code>GetInverse</code> method.</li>
+</ol>
+<p>Let’s try to plot multiple slices across different axis for the image
+“training_001_mr_T1.mha”.</p>
+<div class="codewrapper sourceCode" id="cb27">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a>img_volume <span class="op">=</span> sitk.ReadImage(<span class="st">"../../data/training_001_mr_T1.mha"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetSize())</span>
+<span id="cb27-3"><a href="#cb27-3" tabindex="-1"></a><span class="bu">print</span>(img_volume.GetSpacing())</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(256, 256, 26)
+(1.25, 1.25, 4.0)</code></pre>
+</div>
+<p>We can plot the slices as we did before:</p>
+<div class="codewrapper sourceCode" id="cb29">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a>img_xslices <span class="op">=</span> [img_volume[x,:,:] <span class="cf">for</span> x <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">30</span>)]</span>
+<span id="cb29-2"><a href="#cb29-2" tabindex="-1"></a>img_yslices <span class="op">=</span> [img_volume[:,y,:] <span class="cf">for</span> y <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">50</span>, <span class="dv">200</span>, <span class="dv">30</span>)]</span>
+<span id="cb29-3"><a href="#cb29-3" tabindex="-1"></a>img_zslices <span class="op">=</span> [img_volume[:,:,z] <span class="cf">for</span> z <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">25</span>, <span class="dv">3</span>)]</span>
+<span id="cb29-4"><a href="#cb29-4" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" tabindex="-1"></a>tile_x <span class="op">=</span> sitk.Tile(img_xslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb29-6"><a href="#cb29-6" tabindex="-1"></a>tile_y <span class="op">=</span> sitk.Tile(img_yslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb29-7"><a href="#cb29-7" tabindex="-1"></a>tile_z <span class="op">=</span> sitk.Tile(img_zslices, [<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb29-8"><a href="#cb29-8" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" tabindex="-1"></a>nda_xslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_x)</span>
+<span id="cb29-10"><a href="#cb29-10" tabindex="-1"></a>nda_yslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_y)</span>
+<span id="cb29-11"><a href="#cb29-11" tabindex="-1"></a>nda_zslices <span class="op">=</span> sitk.GetArrayViewFromImage(tile_z)</span>
+<span id="cb29-12"><a href="#cb29-12" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" tabindex="-1"></a>fig, (ax1, ax2, ax3) <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">3</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" tabindex="-1"></a>ax1.imshow(nda_xslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb29-15"><a href="#cb29-15" tabindex="-1"></a>ax2.imshow(nda_yslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb29-16"><a href="#cb29-16" tabindex="-1"></a>ax3.imshow(nda_zslices, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb29-17"><a href="#cb29-17" tabindex="-1"></a>ax1.set_title(<span class="st">'X slices'</span>)</span>
+<span id="cb29-18"><a href="#cb29-18" tabindex="-1"></a>ax2.set_title(<span class="st">'Y slices'</span>)</span>
+<span id="cb29-19"><a href="#cb29-19" tabindex="-1"></a>ax3.set_title(<span class="st">'Z slices'</span>)</span></code></pre>
+</div>
+<figure><img src="../fig/non-iso_slices.png" alt="Non-isotropic slices example." class="figure mx-auto d-block"></figure><div id="distorted-images" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="distorted-images" class="callout-inner">
+<h3 class="callout-title">Distorted images<a class="anchor" aria-label="anchor" href="#distorted-images"></a>
+</h3>
+<div class="callout-content">
+<p>What is the main difference with the first image we plotted
+(“A1_grayT1.nrrd”)?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2">Show me the solution</h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div class="accordion-body">
+<p>In this case, there are only 26 images in the volume and the spacing
+between voxels is non-isotropic, and in particular it is the same across
+x- and y-axis, but it differs across the z-axis.</p>
+</div>
+</div>
+</div>
+</div>
+<p>We can fix the distortion by resampling the volume along the z-axis,
+which has a different spacing (i.e., 4mm), and make it match with the
+other two spacing measures (i.e., 1.25mm):</p>
+<div class="codewrapper sourceCode" id="cb30">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a><span class="kw">def</span> resample_img(image, out_spacing<span class="op">=</span>[<span class="fl">1.25</span>, <span class="fl">1.25</span>, <span class="fl">1.25</span>]):</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a>    </span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>    <span class="co"># Resample images to 1.25mm spacing</span></span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a>    original_spacing <span class="op">=</span> image.GetSpacing()</span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>    original_size <span class="op">=</span> image.GetSize()</span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>    out_size <span class="op">=</span> [</span>
+<span id="cb30-8"><a href="#cb30-8" tabindex="-1"></a>        <span class="bu">int</span>(np.<span class="bu">round</span>(original_size[<span class="dv">0</span>] <span class="op">*</span> (original_spacing[<span class="dv">0</span>] <span class="op">/</span> out_spacing[<span class="dv">0</span>]))),</span>
+<span id="cb30-9"><a href="#cb30-9" tabindex="-1"></a>        <span class="bu">int</span>(np.<span class="bu">round</span>(original_size[<span class="dv">1</span>] <span class="op">*</span> (original_spacing[<span class="dv">1</span>] <span class="op">/</span> out_spacing[<span class="dv">1</span>]))),</span>
+<span id="cb30-10"><a href="#cb30-10" tabindex="-1"></a>        <span class="bu">int</span>(np.<span class="bu">round</span>(original_size[<span class="dv">2</span>] <span class="op">*</span> (original_spacing[<span class="dv">2</span>] <span class="op">/</span> out_spacing[<span class="dv">2</span>])))]</span>
+<span id="cb30-11"><a href="#cb30-11" tabindex="-1"></a></span>
+<span id="cb30-12"><a href="#cb30-12" tabindex="-1"></a>    resample <span class="op">=</span> sitk.ResampleImageFilter()</span>
+<span id="cb30-13"><a href="#cb30-13" tabindex="-1"></a>    resample.SetOutputSpacing(out_spacing)</span>
+<span id="cb30-14"><a href="#cb30-14" tabindex="-1"></a>    resample.SetSize(out_size)</span>
+<span id="cb30-15"><a href="#cb30-15" tabindex="-1"></a>    resample.SetOutputDirection(image.GetDirection())</span>
+<span id="cb30-16"><a href="#cb30-16" tabindex="-1"></a>    resample.SetOutputOrigin(image.GetOrigin())</span>
+<span id="cb30-17"><a href="#cb30-17" tabindex="-1"></a>    resample.SetTransform(sitk.Transform())</span>
+<span id="cb30-18"><a href="#cb30-18" tabindex="-1"></a>    resample.SetDefaultPixelValue(image.GetPixelIDValue())</span>
+<span id="cb30-19"><a href="#cb30-19" tabindex="-1"></a>    resample.SetInterpolator(sitk.sitkBSpline)</span>
+<span id="cb30-20"><a href="#cb30-20" tabindex="-1"></a></span>
+<span id="cb30-21"><a href="#cb30-21" tabindex="-1"></a>    <span class="cf">return</span> resample.Execute(image)</span>
+<span id="cb30-22"><a href="#cb30-22" tabindex="-1"></a></span>
+<span id="cb30-23"><a href="#cb30-23" tabindex="-1"></a>resampled_sitk_img <span class="op">=</span> resample_img(img_volume)</span>
+<span id="cb30-24"><a href="#cb30-24" tabindex="-1"></a></span>
+<span id="cb30-25"><a href="#cb30-25" tabindex="-1"></a><span class="bu">print</span>(resampled_sitk_img.GetSize())</span>
+<span id="cb30-26"><a href="#cb30-26" tabindex="-1"></a><span class="bu">print</span>(resampled_sitk_img.GetSpacing())</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(256, 256, 83)
+(1.25, 1.25, 1.25)</code></pre>
+</div>
+</div>
+</section><section id="registration"><h2 class="section-heading">Registration<a class="anchor" aria-label="anchor" href="#registration"></a>
+</h2>
+<hr class="half-width">
+<p>Image registration involves spatially transforming the source/moving
+image(s) to align with the target image. More specifically, the goal of
+registration is to estimate the transformation which maps points from
+one image to the corresponding points in another image. The
+transformation estimated via registration is said to map points from the
+<strong>fixed image</strong> (target image) coordinate system to the
+<strong>moving image</strong> (source image) coordinate system.</p>
+<div id="many-ways-to-do-registration" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="many-ways-to-do-registration" class="callout-inner">
+<h3 class="callout-title">Many ways to do registration:<a class="anchor" aria-label="anchor" href="#many-ways-to-do-registration"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Several libraries offer built-in registration functionalities.</li>
+<li>Registration can be performed with <a href="https://dipy.org/index.html" class="external-link">DIPY</a> (mentioned in the MRI
+episode), specifically for diffusion imaging using the
+<code>SymmetricDiffeomorphicRegistration</code> functionality.</li>
+<li>
+<a href="https://nipy.org/nibabel/" class="external-link">NiBabel</a> includes a function
+in its processing module that allows resampling or conforming one NIfTI
+image into the space of another.</li>
+<li>SITK provides robust registration capabilities and allows you to
+code your own registration algorithms.</li>
+<li>To maintain cleaner and more efficient code, it’s advisable to use
+as few libraries as possible and avoid those that may create
+conflicts.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>SimpleITK provides a configurable multi-resolution registration
+framework, implemented in the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html" class="external-link">ImageRegistrationMethod</a>
+class. In addition, a number of variations of the Demons registration
+algorithm are implemented independently from this class as they do not
+fit into the framework.</p>
+<p>The task of registration is formulated using non-linear optimization
+which requires an initial estimate. The two most common initialization
+approaches are (1) Use the identity transform (a.k.a. forgot to
+initialize). (2) Align the physical centers of the two images (see <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1CenteredTransformInitializerFilter.html" class="external-link">CenteredTransformInitializerFilter</a>).
+If after initialization there is no overlap between the images,
+registration will fail. The closer the initialization transformation is
+to the actual transformation, the higher the probability of convergence
+to the correct solution.</p>
+<p>If your registration involves the use of a global domain transform
+(<a href="https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#lbl-transforms" class="external-link">described
+here</a>), you should also set an appropriate center of rotation. In
+many cases you want the center of rotation to be the physical center of
+the fixed image (the CenteredTransformCenteredTransformInitializerFilter
+ensures this). This is of significant importance for registration
+convergence due to the non-linear nature of rotation. When the center of
+rotation is far from our physical region of interest (ROI), a small
+rotational angle results in a large displacement. Think of moving the
+pivot/fulcrum point of a <a href="https://en.wikipedia.org/wiki/Lever" class="external-link">lever</a>. For the same
+rotation angle, the farther you are from the fulcrum the larger the
+displacement. For numerical stability we do not want our computations to
+be sensitive to very small variations in the rotation angle, thus the
+ideal center of rotation is the point which minimizes the distance to
+the farthest point in our ROI:</p>
+<p><span class="math inline">\(p_{center} = arg_{p_{rotation}} min dist
+(p_{rotation}, \{p_{roi}\})\)</span></p>
+<p>Without additional knowledge we can only assume that the ROI is the
+whole fixed image. If your ROI is only in a sub region of the image, a
+more appropriate point would be the center of the oriented bounding box
+of that ROI.</p>
+<p>To create a specific registration instance using the
+ImageRegistrationMethod you need to select several components which
+together define the registration instance:</p>
+<ol style="list-style-type: decimal">
+<li>Transformation
+<ul>
+<li>It defines the mapping between the two images.</li>
+</ul>
+</li>
+<li>Similarity metric
+<ul>
+<li>It reflects the relationship between the intensities of the images
+(identity, affine, stochastic…).</li>
+</ul>
+</li>
+<li>Optimizer.
+<ul>
+<li>When selecting the optimizer you will also need to configure it
+(e.g. set the number of iterations).</li>
+</ul>
+</li>
+<li>Interpolator.
+<ul>
+<li>In most cases linear interpolation, the default setting, is
+sufficient.</li>
+</ul>
+</li>
+</ol>
+<p>Let’s see now an example where we want to use registration for
+aligning two volumes relative to the same patient, one being a CT scan
+and the second being a MRI sequence T1-weighted scan. We first read the
+images, casting the pixel type to that required for registration
+(Float32 or Float64) and look at them:</p>
+<div class="codewrapper sourceCode" id="cb32">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, fixed</span>
+<span id="cb32-2"><a href="#cb32-2" tabindex="-1"></a><span class="im">from</span> IPython.display <span class="im">import</span> clear_output</span>
+<span id="cb32-3"><a href="#cb32-3" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb32-4"><a href="#cb32-4" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" tabindex="-1"></a>OUTPUT_DIR <span class="op">=</span> <span class="st">"episodes/data"</span></span>
+<span id="cb32-6"><a href="#cb32-6" tabindex="-1"></a>fixed_image <span class="op">=</span>  sitk.ReadImage(<span class="st">"episodes/data/training_001_ct.mha"</span>, sitk.sitkFloat32)</span>
+<span id="cb32-7"><a href="#cb32-7" tabindex="-1"></a>moving_image <span class="op">=</span> sitk.ReadImage(<span class="st">"episodes/data/training_001_mr_T1.mha"</span>, sitk.sitkFloat32)</span>
+<span id="cb32-8"><a href="#cb32-8" tabindex="-1"></a></span>
+<span id="cb32-9"><a href="#cb32-9" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Origin for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetOrigin()<span class="sc">}</span><span class="ss">, moving image: </span><span class="sc">{</span>moving_image<span class="sc">.</span>GetOrigin()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-10"><a href="#cb32-10" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Spacing for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetSpacing()<span class="sc">}</span><span class="ss">, moving image: </span><span class="sc">{</span>moving_image<span class="sc">.</span>GetSpacing()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-11"><a href="#cb32-11" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Size for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetSize()<span class="sc">}</span><span class="ss">, moving image: </span><span class="sc">{</span>moving_image<span class="sc">.</span>GetSize()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-12"><a href="#cb32-12" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Number Of Components Per Pixel for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetNumberOfComponentsPerPixel()<span class="sc">}</span><span class="ss">, moving image: </span><span class="sc">{</span>moving_image<span class="sc">.</span>GetNumberOfComponentsPerPixel()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb32-13"><a href="#cb32-13" tabindex="-1"></a></span>
+<span id="cb32-14"><a href="#cb32-14" tabindex="-1"></a><span class="co"># Callback invoked by the interact IPython method for scrolling through the image stacks of</span></span>
+<span id="cb32-15"><a href="#cb32-15" tabindex="-1"></a><span class="co"># the two images (moving and fixed).</span></span>
+<span id="cb32-16"><a href="#cb32-16" tabindex="-1"></a><span class="kw">def</span> display_images(fixed_image_z, moving_image_z, fixed_npa, moving_npa):</span>
+<span id="cb32-17"><a href="#cb32-17" tabindex="-1"></a>    <span class="co"># Create a figure with two subplots and the specified size.</span></span>
+<span id="cb32-18"><a href="#cb32-18" tabindex="-1"></a>    plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">10</span>,<span class="dv">8</span>))</span>
+<span id="cb32-19"><a href="#cb32-19" tabindex="-1"></a>    </span>
+<span id="cb32-20"><a href="#cb32-20" tabindex="-1"></a>    <span class="co"># Draw the fixed image in the first subplot.</span></span>
+<span id="cb32-21"><a href="#cb32-21" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb32-22"><a href="#cb32-22" tabindex="-1"></a>    plt.imshow(fixed_npa[fixed_image_z,:,:],cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb32-23"><a href="#cb32-23" tabindex="-1"></a>    plt.title(<span class="st">'fixed/target image'</span>)</span>
+<span id="cb32-24"><a href="#cb32-24" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb32-25"><a href="#cb32-25" tabindex="-1"></a>    </span>
+<span id="cb32-26"><a href="#cb32-26" tabindex="-1"></a>    <span class="co"># Draw the moving image in the second subplot.</span></span>
+<span id="cb32-27"><a href="#cb32-27" tabindex="-1"></a>    plt.subplot(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>)</span>
+<span id="cb32-28"><a href="#cb32-28" tabindex="-1"></a>    plt.imshow(moving_npa[moving_image_z,:,:],cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb32-29"><a href="#cb32-29" tabindex="-1"></a>    plt.title(<span class="st">'moving/source image'</span>)</span>
+<span id="cb32-30"><a href="#cb32-30" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb32-31"><a href="#cb32-31" tabindex="-1"></a>    </span>
+<span id="cb32-32"><a href="#cb32-32" tabindex="-1"></a>    plt.show()</span>
+<span id="cb32-33"><a href="#cb32-33" tabindex="-1"></a></span>
+<span id="cb32-34"><a href="#cb32-34" tabindex="-1"></a>interact(</span>
+<span id="cb32-35"><a href="#cb32-35" tabindex="-1"></a>    display_images,</span>
+<span id="cb32-36"><a href="#cb32-36" tabindex="-1"></a>    fixed_image_z <span class="op">=</span> (<span class="dv">0</span>,fixed_image.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb32-37"><a href="#cb32-37" tabindex="-1"></a>    moving_image_z <span class="op">=</span> (<span class="dv">0</span>,moving_image.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb32-38"><a href="#cb32-38" tabindex="-1"></a>    fixed_npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(fixed_image)),</span>
+<span id="cb32-39"><a href="#cb32-39" tabindex="-1"></a>    moving_npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(moving_image)))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Origin for fixed image: (0.0, 0.0, 0.0), moving image: (0.0, 0.0, 0.0)
+Spacing for fixed image: (0.653595, 0.653595, 4.0), moving image: (1.25, 1.25, 4.0)
+Size for fixed image: (512, 512, 29), moving image: (256, 256, 26)
+Number Of Components Per Pixel for fixed image: 1, moving image: 1</code></pre>
+</div>
+<figure><img src="../fig/ct_mri_registration.png" alt="CT and MRI volumes before being aligned." class="figure mx-auto d-block"></figure><p>We can use the <code>CenteredTransformInitializer</code> to align the
+centers of the two volumes and set the center of rotation to the center
+of the fixed image:</p>
+<div class="codewrapper sourceCode" id="cb34">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="co"># Callback invoked by the IPython interact method for scrolling and</span></span>
+<span id="cb34-2"><a href="#cb34-2" tabindex="-1"></a><span class="co"># modifying the alpha blending of an image stack of two images that</span></span>
+<span id="cb34-3"><a href="#cb34-3" tabindex="-1"></a><span class="co"># occupy the same physical space. </span></span>
+<span id="cb34-4"><a href="#cb34-4" tabindex="-1"></a><span class="kw">def</span> display_images_with_alpha(image_z, alpha, fixed, moving):</span>
+<span id="cb34-5"><a href="#cb34-5" tabindex="-1"></a>    img <span class="op">=</span> (<span class="fl">1.0</span> <span class="op">-</span> alpha)<span class="op">*</span>fixed[:,:,image_z] <span class="op">+</span> alpha<span class="op">*</span>moving[:,:,image_z] </span>
+<span id="cb34-6"><a href="#cb34-6" tabindex="-1"></a>    plt.imshow(sitk.GetArrayViewFromImage(img),cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb34-7"><a href="#cb34-7" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb34-8"><a href="#cb34-8" tabindex="-1"></a>    plt.show()</span>
+<span id="cb34-9"><a href="#cb34-9" tabindex="-1"></a></span>
+<span id="cb34-10"><a href="#cb34-10" tabindex="-1"></a>initial_transform <span class="op">=</span> sitk.CenteredTransformInitializer(fixed_image, </span>
+<span id="cb34-11"><a href="#cb34-11" tabindex="-1"></a>                                                      moving_image, </span>
+<span id="cb34-12"><a href="#cb34-12" tabindex="-1"></a>                                                      sitk.Euler3DTransform(), </span>
+<span id="cb34-13"><a href="#cb34-13" tabindex="-1"></a>                                                      sitk.CenteredTransformInitializerFilter.GEOMETRY)</span>
+<span id="cb34-14"><a href="#cb34-14" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="#cb34-15" tabindex="-1"></a>moving_resampled <span class="op">=</span> sitk.Resample(moving_image, fixed_image, initial_transform, sitk.sitkLinear, <span class="fl">0.0</span>, moving_image.GetPixelID())</span>
+<span id="cb34-16"><a href="#cb34-16" tabindex="-1"></a></span>
+<span id="cb34-17"><a href="#cb34-17" tabindex="-1"></a>interact(</span>
+<span id="cb34-18"><a href="#cb34-18" tabindex="-1"></a>    display_images_with_alpha,</span>
+<span id="cb34-19"><a href="#cb34-19" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,fixed_image.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb34-20"><a href="#cb34-20" tabindex="-1"></a>    alpha <span class="op">=</span> (<span class="fl">0.0</span>,<span class="fl">1.0</span>,<span class="fl">0.05</span>),</span>
+<span id="cb34-21"><a href="#cb34-21" tabindex="-1"></a>    fixed <span class="op">=</span> fixed(fixed_image),</span>
+<span id="cb34-22"><a href="#cb34-22" tabindex="-1"></a>    moving <span class="op">=</span> fixed(moving_resampled))</span></code></pre>
+</div>
+<figure><img src="../fig/ct_mri_registration2.png" alt="CT and MRI volumes overimposed." class="figure mx-auto d-block"></figure><p>The specific registration task at hand estimates a 3D rigid
+transformation between images of different modalities. There are
+multiple components from each group (optimizers, similarity metrics,
+interpolators) that are appropriate for the task. Note that each
+component selection requires setting some parameter values. We have made
+the following choices:</p>
+<ul>
+<li>Similarity metric, mutual information (Mattes MI):
+<ul>
+<li>Number of histogram bins, 50.</li>
+<li>Sampling strategy, random.</li>
+<li>Sampling percentage, 1%.</li>
+</ul>
+</li>
+<li>Interpolator, <code>sitkLinear</code>.</li>
+<li>Optimizer, gradient descent:
+<ul>
+<li>Learning rate, step size along traversal direction in parameter
+space, 1.0.</li>
+<li>Number of iterations, maximal number of iterations, 100.</li>
+<li>Convergence minimum value, value used for convergence checking in
+conjunction with the energy profile of the similarity metric that is
+estimated in the given window size, 1e-6.</li>
+<li>Convergence window size, number of values of the similarity metric
+which are used to estimate the energy profile of the similarity metric,
+10.</li>
+</ul>
+</li>
+</ul>
+<p>We perform registration using the settings given above, and by taking
+advantage of the built in multi-resolution framework, we use a three
+tier pyramid.</p>
+<p>In this example we plot the similarity metric’s value during
+registration. Note that the change of scales in the multi-resolution
+framework is readily visible.</p>
+<div class="codewrapper sourceCode" id="cb35">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="co"># Callback invoked when the StartEvent happens, sets up our new data.</span></span>
+<span id="cb35-2"><a href="#cb35-2" tabindex="-1"></a><span class="kw">def</span> start_plot():</span>
+<span id="cb35-3"><a href="#cb35-3" tabindex="-1"></a>    <span class="kw">global</span> metric_values, multires_iterations</span>
+<span id="cb35-4"><a href="#cb35-4" tabindex="-1"></a>    </span>
+<span id="cb35-5"><a href="#cb35-5" tabindex="-1"></a>    metric_values <span class="op">=</span> []</span>
+<span id="cb35-6"><a href="#cb35-6" tabindex="-1"></a>    multires_iterations <span class="op">=</span> []</span>
+<span id="cb35-7"><a href="#cb35-7" tabindex="-1"></a></span>
+<span id="cb35-8"><a href="#cb35-8" tabindex="-1"></a><span class="co"># Callback invoked when the EndEvent happens, do cleanup of data and figure.</span></span>
+<span id="cb35-9"><a href="#cb35-9" tabindex="-1"></a><span class="kw">def</span> end_plot():</span>
+<span id="cb35-10"><a href="#cb35-10" tabindex="-1"></a>    <span class="kw">global</span> metric_values, multires_iterations</span>
+<span id="cb35-11"><a href="#cb35-11" tabindex="-1"></a>    </span>
+<span id="cb35-12"><a href="#cb35-12" tabindex="-1"></a>    <span class="kw">del</span> metric_values</span>
+<span id="cb35-13"><a href="#cb35-13" tabindex="-1"></a>    <span class="kw">del</span> multires_iterations</span>
+<span id="cb35-14"><a href="#cb35-14" tabindex="-1"></a>    <span class="co"># Close figure, we don't want to get a duplicate of the plot latter on.</span></span>
+<span id="cb35-15"><a href="#cb35-15" tabindex="-1"></a>    plt.close()</span>
+<span id="cb35-16"><a href="#cb35-16" tabindex="-1"></a></span>
+<span id="cb35-17"><a href="#cb35-17" tabindex="-1"></a><span class="co"># Callback invoked when the sitkMultiResolutionIterationEvent happens, update the index into the </span></span>
+<span id="cb35-18"><a href="#cb35-18" tabindex="-1"></a><span class="co"># metric_values list. </span></span>
+<span id="cb35-19"><a href="#cb35-19" tabindex="-1"></a><span class="kw">def</span> update_multires_iterations():</span>
+<span id="cb35-20"><a href="#cb35-20" tabindex="-1"></a>    <span class="kw">global</span> metric_values, multires_iterations</span>
+<span id="cb35-21"><a href="#cb35-21" tabindex="-1"></a>    multires_iterations.append(<span class="bu">len</span>(metric_values))</span>
+<span id="cb35-22"><a href="#cb35-22" tabindex="-1"></a></span>
+<span id="cb35-23"><a href="#cb35-23" tabindex="-1"></a><span class="co"># Callback invoked when the IterationEvent happens, update our data and display new figure.</span></span>
+<span id="cb35-24"><a href="#cb35-24" tabindex="-1"></a><span class="kw">def</span> plot_values(registration_method):</span>
+<span id="cb35-25"><a href="#cb35-25" tabindex="-1"></a>    <span class="kw">global</span> metric_values, multires_iterations</span>
+<span id="cb35-26"><a href="#cb35-26" tabindex="-1"></a>    </span>
+<span id="cb35-27"><a href="#cb35-27" tabindex="-1"></a>    metric_values.append(registration_method.GetMetricValue())                                       </span>
+<span id="cb35-28"><a href="#cb35-28" tabindex="-1"></a>    <span class="co"># Clear the output area (wait=True, to reduce flickering), and plot current data</span></span>
+<span id="cb35-29"><a href="#cb35-29" tabindex="-1"></a>    clear_output(wait<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb35-30"><a href="#cb35-30" tabindex="-1"></a>    <span class="co"># Plot the similarity metric values</span></span>
+<span id="cb35-31"><a href="#cb35-31" tabindex="-1"></a>    plt.plot(metric_values, <span class="st">'r'</span>)</span>
+<span id="cb35-32"><a href="#cb35-32" tabindex="-1"></a>    plt.plot(multires_iterations, [metric_values[index] <span class="cf">for</span> index <span class="kw">in</span> multires_iterations], <span class="st">'b*'</span>)</span>
+<span id="cb35-33"><a href="#cb35-33" tabindex="-1"></a>    plt.xlabel(<span class="st">'Iteration Number'</span>,fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb35-34"><a href="#cb35-34" tabindex="-1"></a>    plt.ylabel(<span class="st">'Metric Value'</span>,fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb35-35"><a href="#cb35-35" tabindex="-1"></a>    plt.show()</span>
+<span id="cb35-36"><a href="#cb35-36" tabindex="-1"></a></span>
+<span id="cb35-37"><a href="#cb35-37" tabindex="-1"></a></span>
+<span id="cb35-38"><a href="#cb35-38" tabindex="-1"></a>registration_method <span class="op">=</span> sitk.ImageRegistrationMethod()</span>
+<span id="cb35-39"><a href="#cb35-39" tabindex="-1"></a></span>
+<span id="cb35-40"><a href="#cb35-40" tabindex="-1"></a><span class="co"># Similarity metric settings.</span></span>
+<span id="cb35-41"><a href="#cb35-41" tabindex="-1"></a>registration_method.SetMetricAsMattesMutualInformation(numberOfHistogramBins<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb35-42"><a href="#cb35-42" tabindex="-1"></a>registration_method.SetMetricSamplingStrategy(registration_method.RANDOM)</span>
+<span id="cb35-43"><a href="#cb35-43" tabindex="-1"></a>registration_method.SetMetricSamplingPercentage(<span class="fl">0.01</span>)</span>
+<span id="cb35-44"><a href="#cb35-44" tabindex="-1"></a></span>
+<span id="cb35-45"><a href="#cb35-45" tabindex="-1"></a>registration_method.SetInterpolator(sitk.sitkLinear)</span>
+<span id="cb35-46"><a href="#cb35-46" tabindex="-1"></a></span>
+<span id="cb35-47"><a href="#cb35-47" tabindex="-1"></a><span class="co"># Optimizer settings.</span></span>
+<span id="cb35-48"><a href="#cb35-48" tabindex="-1"></a>registration_method.SetOptimizerAsGradientDescent(learningRate<span class="op">=</span><span class="fl">1.0</span>, numberOfIterations<span class="op">=</span><span class="dv">100</span>, convergenceMinimumValue<span class="op">=</span><span class="fl">1e-6</span>, convergenceWindowSize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb35-49"><a href="#cb35-49" tabindex="-1"></a>registration_method.SetOptimizerScalesFromPhysicalShift()</span>
+<span id="cb35-50"><a href="#cb35-50" tabindex="-1"></a></span>
+<span id="cb35-51"><a href="#cb35-51" tabindex="-1"></a><span class="co"># Setup for the multi-resolution framework.            </span></span>
+<span id="cb35-52"><a href="#cb35-52" tabindex="-1"></a>registration_method.SetShrinkFactorsPerLevel(shrinkFactors <span class="op">=</span> [<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">1</span>])</span>
+<span id="cb35-53"><a href="#cb35-53" tabindex="-1"></a>registration_method.SetSmoothingSigmasPerLevel(smoothingSigmas<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">0</span>])</span>
+<span id="cb35-54"><a href="#cb35-54" tabindex="-1"></a>registration_method.SmoothingSigmasAreSpecifiedInPhysicalUnitsOn()</span>
+<span id="cb35-55"><a href="#cb35-55" tabindex="-1"></a></span>
+<span id="cb35-56"><a href="#cb35-56" tabindex="-1"></a><span class="co"># Don't optimize in-place, we would possibly like to run this cell multiple times.</span></span>
+<span id="cb35-57"><a href="#cb35-57" tabindex="-1"></a>registration_method.SetInitialTransform(initial_transform, inPlace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb35-58"><a href="#cb35-58" tabindex="-1"></a></span>
+<span id="cb35-59"><a href="#cb35-59" tabindex="-1"></a><span class="co"># Connect all of the observers so that we can perform plotting during registration.</span></span>
+<span id="cb35-60"><a href="#cb35-60" tabindex="-1"></a>registration_method.AddCommand(sitk.sitkStartEvent, start_plot)</span>
+<span id="cb35-61"><a href="#cb35-61" tabindex="-1"></a>registration_method.AddCommand(sitk.sitkEndEvent, end_plot)</span>
+<span id="cb35-62"><a href="#cb35-62" tabindex="-1"></a>registration_method.AddCommand(sitk.sitkMultiResolutionIterationEvent, update_multires_iterations) </span>
+<span id="cb35-63"><a href="#cb35-63" tabindex="-1"></a>registration_method.AddCommand(sitk.sitkIterationEvent, <span class="kw">lambda</span>: plot_values(registration_method))</span>
+<span id="cb35-64"><a href="#cb35-64" tabindex="-1"></a></span>
+<span id="cb35-65"><a href="#cb35-65" tabindex="-1"></a>final_transform <span class="op">=</span> registration_method.Execute(sitk.Cast(fixed_image, sitk.sitkFloat32), </span>
+<span id="cb35-66"><a href="#cb35-66" tabindex="-1"></a>                                               sitk.Cast(moving_image, sitk.sitkFloat32))</span></code></pre>
+</div>
+<figure><img src="../fig/reg_metric_iter.png" alt="Metrics across iterations." class="figure mx-auto d-block"></figure><p>Always remember to query why the optimizer terminated. This will help
+you understand whether termination is too early, either due to
+thresholds being too tight, early termination due to small number of
+iterations - <code>numberOfIterations</code>, or too loose, early
+termination due to large value for minimal change in similarity measure
+- <code>convergenceMinimumValue</code>.</p>
+<div class="codewrapper sourceCode" id="cb36">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Final metric value: </span><span class="sc">{0}</span><span class="st">'</span>.<span class="bu">format</span>(registration_method.GetMetricValue()))</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Optimizer</span><span class="ch">\'</span><span class="st">s stopping condition, </span><span class="sc">{0}</span><span class="st">'</span>.<span class="bu">format</span>(registration_method.GetOptimizerStopConditionDescription()))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Final metric value: -0.6561600032169457
+Optimizer's stopping condition, GradientDescentOptimizerv4Template: Convergence checker passed at iteration 61.</code></pre>
+</div>
+<p>Now we can visually inspect the results:</p>
+<div class="codewrapper sourceCode" id="cb38">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>moving_resampled <span class="op">=</span> sitk.Resample(moving_image, fixed_image, final_transform, sitk.sitkLinear, <span class="fl">0.0</span>, moving_image.GetPixelID())</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a>interact(</span>
+<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a>    display_images_with_alpha,</span>
+<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,fixed_image.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a>    alpha <span class="op">=</span> (<span class="fl">0.0</span>,<span class="fl">1.0</span>,<span class="fl">0.05</span>),</span>
+<span id="cb38-7"><a href="#cb38-7" tabindex="-1"></a>    fixed <span class="op">=</span> fixed(fixed_image),</span>
+<span id="cb38-8"><a href="#cb38-8" tabindex="-1"></a>    moving <span class="op">=</span> fixed(moving_resampled))</span></code></pre>
+</div>
+<figure><img src="../fig/ct_mri_registration_aligned.png" alt="CT and MRI volumes aligned." class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb39">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Origin for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetOrigin()<span class="sc">}</span><span class="ss">, shifted moving image: </span><span class="sc">{</span>moving_resampled<span class="sc">.</span>GetOrigin()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Spacing for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetSpacing()<span class="sc">}</span><span class="ss">, shifted moving image: </span><span class="sc">{</span>moving_resampled<span class="sc">.</span>GetSpacing()<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb39-3"><a href="#cb39-3" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Size for fixed image: </span><span class="sc">{</span>fixed_image<span class="sc">.</span>GetSize()<span class="sc">}</span><span class="ss">, shifted moving image: </span><span class="sc">{</span>moving_resampled<span class="sc">.</span>GetSize()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Origin for fixed image: (0.0, 0.0, 0.0), shifted moving image: (0.0, 0.0, 0.0)
+Spacing for fixed image: (0.653595, 0.653595, 4.0), shifted moving image: (0.653595, 0.653595, 4.0)
+Size for fixed image: (512, 512, 29), shifted moving image: (512, 512, 29)</code></pre>
+</div>
+<p>If we are satisfied with the results, save them to file.</p>
+<div class="codewrapper sourceCode" id="cb41">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a>sitk.WriteImage(moving_resampled, os.path.join(OUTPUT_DIR, <span class="st">'RIRE_training_001_mr_T1_resampled.mha'</span>))</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>sitk.WriteTransform(final_transform, os.path.join(OUTPUT_DIR, <span class="st">'RIRE_training_001_CT_2_mr_T1.tfm'</span>))</span></code></pre>
+</div>
+</section><section id="segmentation"><h2 class="section-heading">Segmentation<a class="anchor" aria-label="anchor" href="#segmentation"></a>
+</h2>
+<hr class="half-width">
+<p>Image segmentation filters process images by dividing them into
+meaningful regions. SITK provides a wide range of filters to support
+classical segmentation algorithms, including various thresholding
+methods and watershed algorithms. The output is typically an image where
+different integers represent distinct objects, with 0 often used for the
+background and 1 (or sometimes 255) for foreground objects. After
+segmenting the data, SITK allows for efficient post-processing, such as
+labeling distinct objects and analyzing their shapes.</p>
+<p>Let’s start by reading in a T1 MRI scan, on which we will perform
+segmentation operations.</p>
+<div class="codewrapper sourceCode" id="cb42">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" tabindex="-1"></a><span class="op">%</span>matplotlib inline</span>
+<span id="cb42-2"><a href="#cb42-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb42-3"><a href="#cb42-3" tabindex="-1"></a><span class="im">from</span> ipywidgets <span class="im">import</span> interact, fixed</span>
+<span id="cb42-4"><a href="#cb42-4" tabindex="-1"></a><span class="im">import</span> SimpleITK <span class="im">as</span> sitk</span>
+<span id="cb42-5"><a href="#cb42-5" tabindex="-1"></a></span>
+<span id="cb42-6"><a href="#cb42-6" tabindex="-1"></a>img_T1 <span class="op">=</span> sitk.ReadImage(<span class="st">"episodes/data/A1_grayT1.nrrd"</span>)</span>
+<span id="cb42-7"><a href="#cb42-7" tabindex="-1"></a><span class="co"># To visualize the labels image in RGB with needs a image with 0-255 range</span></span>
+<span id="cb42-8"><a href="#cb42-8" tabindex="-1"></a>img_T1_255 <span class="op">=</span> sitk.Cast(sitk.RescaleIntensity(img_T1), sitk.sitkUInt8)</span>
+<span id="cb42-9"><a href="#cb42-9" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="#cb42-10" tabindex="-1"></a><span class="co"># Callback invoked by the interact IPython method for scrolling through the image stacks of</span></span>
+<span id="cb42-11"><a href="#cb42-11" tabindex="-1"></a><span class="co"># a volume image</span></span>
+<span id="cb42-12"><a href="#cb42-12" tabindex="-1"></a><span class="kw">def</span> display_images(image_z, npa, title):</span>
+<span id="cb42-13"><a href="#cb42-13" tabindex="-1"></a>    plt.imshow(npa[image_z,:,:], cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb42-14"><a href="#cb42-14" tabindex="-1"></a>    plt.title(title)</span>
+<span id="cb42-15"><a href="#cb42-15" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb42-16"><a href="#cb42-16" tabindex="-1"></a>    plt.show()</span>
+<span id="cb42-17"><a href="#cb42-17" tabindex="-1"></a></span>
+<span id="cb42-18"><a href="#cb42-18" tabindex="-1"></a>interact(</span>
+<span id="cb42-19"><a href="#cb42-19" tabindex="-1"></a>    display_images,</span>
+<span id="cb42-20"><a href="#cb42-20" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb42-21"><a href="#cb42-21" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(img_T1)),</span>
+<span id="cb42-22"><a href="#cb42-22" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">'Z slices'</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/seg_z.png" alt="T1 MRI scan, Z slices." class="figure mx-auto d-block"></figure><div class="section level3">
+<h3 id="thresholding">Thresholding<a class="anchor" aria-label="anchor" href="#thresholding"></a>
+</h3>
+<p>Thresholding is the most basic form of segmentation. It simply labels
+the pixels of an image based on the intensity range without respect to
+geometry or connectivity.</p>
+<div class="codewrapper sourceCode" id="cb43">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="co"># Basic thresholding</span></span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>seg <span class="op">=</span> img_T1<span class="op">&gt;</span><span class="dv">200</span></span>
+<span id="cb43-3"><a href="#cb43-3" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb43-4"><a href="#cb43-4" tabindex="-1"></a></span>
+<span id="cb43-5"><a href="#cb43-5" tabindex="-1"></a>interact(</span>
+<span id="cb43-6"><a href="#cb43-6" tabindex="-1"></a>    display_images,</span>
+<span id="cb43-7"><a href="#cb43-7" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb43-8"><a href="#cb43-8" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb43-9"><a href="#cb43-9" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Basic thresholding"</span>))</span></code></pre>
+</div>
+<p>Another example using <code>BinaryThreshold</code>:</p>
+<div class="codewrapper sourceCode" id="cb44">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a><span class="co"># Binary thresholding</span></span>
+<span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a>seg <span class="op">=</span> sitk.BinaryThreshold(img_T1, lowerThreshold<span class="op">=</span><span class="dv">100</span>, upperThreshold<span class="op">=</span><span class="dv">400</span>, insideValue<span class="op">=</span><span class="dv">1</span>, outsideValue<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a></span>
+<span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a>interact(</span>
+<span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>    display_images,</span>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb44-8"><a href="#cb44-8" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb44-9"><a href="#cb44-9" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Binary thresholding"</span>))<span class="op">****</span></span></code></pre>
+</div>
+<p>ITK has a number of histogram based automatic thresholding filters
+including <code>Huang</code>, <code>MaximumEntropy</code>,
+<code>Triangle</code>, and the popular Otsu’s method
+(<code>OtsuThresholdImageFilter</code>). These methods create a
+histogram then use a heuristic to determine a threshold value.</p>
+<div class="codewrapper sourceCode" id="cb45">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="co"># Otsu Thresholding</span></span>
+<span id="cb45-2"><a href="#cb45-2" tabindex="-1"></a>otsu_filter <span class="op">=</span> sitk.OtsuThresholdImageFilter()</span>
+<span id="cb45-3"><a href="#cb45-3" tabindex="-1"></a>otsu_filter.SetInsideValue(<span class="dv">0</span>)</span>
+<span id="cb45-4"><a href="#cb45-4" tabindex="-1"></a>otsu_filter.SetOutsideValue(<span class="dv">1</span>)</span>
+<span id="cb45-5"><a href="#cb45-5" tabindex="-1"></a>seg <span class="op">=</span> otsu_filter.Execute(img_T1)</span>
+<span id="cb45-6"><a href="#cb45-6" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb45-7"><a href="#cb45-7" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" tabindex="-1"></a>interact(</span>
+<span id="cb45-9"><a href="#cb45-9" tabindex="-1"></a>    display_images,</span>
+<span id="cb45-10"><a href="#cb45-10" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb45-11"><a href="#cb45-11" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb45-12"><a href="#cb45-12" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Otsu thresholding"</span>))</span>
+<span id="cb45-13"><a href="#cb45-13" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="#cb45-14" tabindex="-1"></a><span class="bu">print</span>(otsu_filter.GetThreshold() )</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="fl">236.40869140625</span></span></code></pre>
+</div>
+<figure><img src="../fig/thresholding.png" alt="Basic thresholding methods." class="figure mx-auto d-block"></figure>
+</div>
+<div class="section level3">
+<h3 id="region-growing-segmentation">Region Growing Segmentation<a class="anchor" aria-label="anchor" href="#region-growing-segmentation"></a>
+</h3>
+<p>The first step of improvement upon the naive thresholding is a class
+of algorithms called region growing. The common theme for all these
+algorithms is that a voxel’s neighbor is considered to be in the same
+class if its intensities are similar to the current voxel. The
+definition of similar is what varies:</p>
+<ul>
+<li>
+<a href="https://itk.org/Doxygen/html/classitk_1_1ConnectedThresholdImageFilter.html" class="external-link">ConnectedThreshold</a>:
+The neighboring voxel’s intensity is within explicitly specified
+thresholds.</li>
+<li>
+<a href="https://itk.org/Doxygen/html/classitk_1_1ConfidenceConnectedImageFilter.html" class="external-link">ConfidenceConnected</a>:
+The neighboring voxel’s intensity is within the implicitly specified
+bounds <span class="math inline">\(\mu \pm c \sigma\)</span>, where
+<span class="math inline">\(\mu\)</span> is the mean intensity of the
+seed points, <span class="math inline">\(\sigma\)</span> their standard
+deviation and <span class="math inline">\(c\)</span> a user specified
+constant.</li>
+<li>
+<a href="https://itk.org/Doxygen/html/classitk_1_1VectorConfidenceConnectedImageFilter.html" class="external-link">VectorConfidenceConnected</a>:
+A generalization of the previous approach to vector valued images, for
+instance multi-spectral images or multi-parametric MRI. The neighboring
+voxel’s intensity vector is within the implicitly specified bounds using
+the Mahalanobis distance <span class="math inline">\(\sqrt{(x-\mu)^{T\sum{-1}}(x-\mu)}&lt;c\)</span>,
+where <span class="math inline">\(\mu\)</span> is the mean of the
+vectors at the seed points, <span class="math inline">\(\sum\)</span> is
+the covariance matrix and <span class="math inline">\(c\)</span> is a
+user specified constant.</li>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1NeighborhoodConnectedImageFilter.html" class="external-link">NeighborhoodConnected</a></li>
+</ul>
+<p>Let’s imagine that we have to segment the left <a href="https://en.wikipedia.org/wiki/Lateral_ventricles" class="external-link">lateral
+ventricle</a> of the brain image we just visualized.</p>
+<figure><img src="../fig/lateral_ventricle.gif" alt="Brain lateral ventricle." class="figure mx-auto d-block"></figure><p><a href="https://www.slicer.org/" class="external-link">3D Slicer</a> was used to determine
+that index: (132,142,96) was a good seed for the left lateral ventricle.
+Let’s first visualize the seed:</p>
+<div class="codewrapper sourceCode" id="cb47">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="co"># Initial seed</span></span>
+<span id="cb47-2"><a href="#cb47-2" tabindex="-1"></a>seed <span class="op">=</span> (<span class="dv">132</span>,<span class="dv">142</span>,<span class="dv">96</span>)</span>
+<span id="cb47-3"><a href="#cb47-3" tabindex="-1"></a>seg <span class="op">=</span> sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)</span>
+<span id="cb47-4"><a href="#cb47-4" tabindex="-1"></a>seg.CopyInformation(img_T1)</span>
+<span id="cb47-5"><a href="#cb47-5" tabindex="-1"></a>seg[seed] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb47-6"><a href="#cb47-6" tabindex="-1"></a>seg <span class="op">=</span> sitk.BinaryDilate(seg, [<span class="dv">3</span>]<span class="op">*</span>seg.GetDimension())</span>
+<span id="cb47-7"><a href="#cb47-7" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb47-8"><a href="#cb47-8" tabindex="-1"></a></span>
+<span id="cb47-9"><a href="#cb47-9" tabindex="-1"></a>interact(</span>
+<span id="cb47-10"><a href="#cb47-10" tabindex="-1"></a>    display_images,</span>
+<span id="cb47-11"><a href="#cb47-11" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb47-12"><a href="#cb47-12" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb47-13"><a href="#cb47-13" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Initial seed"</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/seed.png" alt="Initial seed." class="figure mx-auto d-block"></figure><p>Let’s use <code>ConnectedThreshold</code> functionality:</p>
+<div class="codewrapper sourceCode" id="cb48">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a><span class="co"># Connected Threshold</span></span>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>seg <span class="op">=</span> sitk.ConnectedThreshold(img_T1, seedList<span class="op">=</span>[seed], lower<span class="op">=</span><span class="dv">100</span>, upper<span class="op">=</span><span class="dv">190</span>)</span>
+<span id="cb48-3"><a href="#cb48-3" tabindex="-1"></a></span>
+<span id="cb48-4"><a href="#cb48-4" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb48-5"><a href="#cb48-5" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="#cb48-6" tabindex="-1"></a>interact(</span>
+<span id="cb48-7"><a href="#cb48-7" tabindex="-1"></a>    display_images,</span>
+<span id="cb48-8"><a href="#cb48-8" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb48-9"><a href="#cb48-9" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb48-10"><a href="#cb48-10" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Connected threshold"</span>))</span></code></pre>
+</div>
+<p>Improving upon this is the <code>ConfidenceConnected</code> filter,
+which uses the initial seed or current segmentation to estimate the
+threshold range.</p>
+<p>This region growing algorithm allows the user to implicitly specify
+the threshold bounds based on the statistics estimated from the seed
+points, <span class="math inline">\(\mu \pm c\sigma\)</span>. This
+algorithm has some flexibility which you should familiarize yourself
+with:</p>
+<ul>
+<li>The “multiplier” parameter is the constant <span class="math inline">\(c\)</span> from the formula above.</li>
+<li>You can specify a region around each seed point
+“initialNeighborhoodRadius” from which the statistics are estimated, see
+what happens when you set it to zero.</li>
+<li>The “numberOfIterations” allows you to rerun the algorithm. In the
+first run the bounds are defined by the seed voxels you specified, in
+the following iterations <span class="math inline">\(\mu\)</span> and
+<span class="math inline">\(\sigma\)</span> are estimated from the
+segmented points and the region growing is updated accordingly.</li>
+</ul>
+<div class="codewrapper sourceCode" id="cb49">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a>seg <span class="op">=</span> sitk.ConfidenceConnected(img_T1, seedList<span class="op">=</span>[seed],</span>
+<span id="cb49-2"><a href="#cb49-2" tabindex="-1"></a>                                   numberOfIterations<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb49-3"><a href="#cb49-3" tabindex="-1"></a>                                   multiplier<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb49-4"><a href="#cb49-4" tabindex="-1"></a>                                   initialNeighborhoodRadius<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb49-5"><a href="#cb49-5" tabindex="-1"></a>                                   replaceValue<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb49-6"><a href="#cb49-6" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="#cb49-7" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb49-8"><a href="#cb49-8" tabindex="-1"></a></span>
+<span id="cb49-9"><a href="#cb49-9" tabindex="-1"></a>interact(</span>
+<span id="cb49-10"><a href="#cb49-10" tabindex="-1"></a>    display_images,</span>
+<span id="cb49-11"><a href="#cb49-11" tabindex="-1"></a>    image_z<span class="op">=</span>(<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb49-12"><a href="#cb49-12" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb49-13"><a href="#cb49-13" tabindex="-1"></a>    title<span class="op">=</span>fixed(<span class="st">"Confidence connected"</span>))</span></code></pre>
+</div>
+<p>Since we have available also another MRI scan of the same patient,
+T2-weighted, we can try to further improve the segmentation. We first
+load a T2 image from the same person and combine it with the T1 image to
+create a vector image. This region growing algorithm is similar to the
+previous one, <code>ConfidenceConnected</code>, and allows the user to
+implicitly specify the threshold bounds based on the statistics
+estimated from the seed points. The main difference is that in this case
+we are using the Mahalanobis and not the intensity difference.</p>
+<div class="codewrapper sourceCode" id="cb50">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a>img_T2 <span class="op">=</span> sitk.ReadImage(<span class="st">"episodes/data/A1_grayT2.nrrd"</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>img_multi <span class="op">=</span> sitk.Compose(img_T1, img_T2)</span>
+<span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>seg <span class="op">=</span> sitk.VectorConfidenceConnected(img_multi, seedList<span class="op">=</span>[seed],</span>
+<span id="cb50-4"><a href="#cb50-4" tabindex="-1"></a>                                             numberOfIterations<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb50-5"><a href="#cb50-5" tabindex="-1"></a>                                             multiplier<span class="op">=</span><span class="fl">2.5</span>,</span>
+<span id="cb50-6"><a href="#cb50-6" tabindex="-1"></a>                                             initialNeighborhoodRadius<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb50-7"><a href="#cb50-7" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb50-8"><a href="#cb50-8" tabindex="-1"></a></span>
+<span id="cb50-9"><a href="#cb50-9" tabindex="-1"></a>interact(</span>
+<span id="cb50-10"><a href="#cb50-10" tabindex="-1"></a>    display_images,</span>
+<span id="cb50-11"><a href="#cb50-11" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb50-12"><a href="#cb50-12" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb50-13"><a href="#cb50-13" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Vector confidence connected"</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/reg_grow.png" alt="Region growing segmentations." class="figure mx-auto d-block"></figure><div class="section level4">
+<h4 id="clean-up">Clean up<a class="anchor" aria-label="anchor" href="#clean-up"></a>
+</h4>
+<p>Use of low level segmentation algorithms such as region growing is
+often followed by a clean up step. In this step we fill holes and remove
+small connected components. Both of these operations are achieved by
+using binary morphological operations, opening
+(<code>BinaryMorphologicalOpening</code>) to remove small connected
+components and closing (<code>BinaryMorphologicalClosing</code>) to fill
+holes.</p>
+<p>SITK supports several shapes for the structuring elements (kernels)
+including:</p>
+<ul>
+<li><code>sitkAnnulus</code></li>
+<li><code>sitkBall</code></li>
+<li><code>sitkBox</code></li>
+<li><code>sitkCross</code></li>
+</ul>
+<p>The size of the kernel can be specified as a scalar (same for all
+dimensions) or as a vector of values, size per dimension.</p>
+<p>The following code cell illustrates the results of such a clean up,
+using closing to remove holes in the original segmentation.</p>
+<div class="codewrapper sourceCode" id="cb51">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a>seg <span class="op">=</span> sitk.ConfidenceConnected(img_T1, seedList<span class="op">=</span>[seed],</span>
+<span id="cb51-2"><a href="#cb51-2" tabindex="-1"></a>                                   numberOfIterations<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb51-3"><a href="#cb51-3" tabindex="-1"></a>                                   multiplier<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb51-4"><a href="#cb51-4" tabindex="-1"></a>                                   initialNeighborhoodRadius<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="cb51-5"><a href="#cb51-5" tabindex="-1"></a>                                   replaceValue<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb51-6"><a href="#cb51-6" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" tabindex="-1"></a>vectorRadius<span class="op">=</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="cb51-8"><a href="#cb51-8" tabindex="-1"></a>kernel<span class="op">=</span>sitk.sitkBall</span>
+<span id="cb51-9"><a href="#cb51-9" tabindex="-1"></a>seg_clean <span class="op">=</span> sitk.BinaryMorphologicalClosing(seg, vectorRadius, kernel)</span>
+<span id="cb51-10"><a href="#cb51-10" tabindex="-1"></a>seg_img_clean <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg_clean)</span>
+<span id="cb51-11"><a href="#cb51-11" tabindex="-1"></a></span>
+<span id="cb51-12"><a href="#cb51-12" tabindex="-1"></a>interact(</span>
+<span id="cb51-13"><a href="#cb51-13" tabindex="-1"></a>    display_images,</span>
+<span id="cb51-14"><a href="#cb51-14" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb51-15"><a href="#cb51-15" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img_clean)),</span>
+<span id="cb51-16"><a href="#cb51-16" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Confidence connected after morphological closing"</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/reg_grow_cleaned.png" alt="Confidence connected after morphological closing." class="figure mx-auto d-block"></figure>
+</div>
+</div>
+<div class="section level3">
+<h3 id="level-set-segmentation">Level-Set Segmentation<a class="anchor" aria-label="anchor" href="#level-set-segmentation"></a>
+</h3>
+<p>There are a variety of <a href="https://en.wikipedia.org/wiki/Level-set_method" class="external-link">level-set
+based</a> segmentation filter available in ITK:</p>
+<ul>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1GeodesicActiveContourLevelSetImageFilter.html" class="external-link">GeodesicActiveContour</a></li>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1ShapeDetectionLevelSetImageFilter.html" class="external-link">ShapeDetection</a></li>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1ThresholdSegmentationLevelSetImageFilter.html" class="external-link">ThresholdSegmentation</a></li>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1LaplacianSegmentationLevelSetImageFilter.html" class="external-link">LaplacianSegmentation</a></li>
+<li><a href="https://itk.org/Doxygen/html/classitk_1_1ScalarChanAndVeseDenseLevelSetImageFilter.html" class="external-link">ScalarChanAndVese</a></li>
+</ul>
+<p>There is also a <a href="https://itk.org/Doxygen/html/group__ITKLevelSetsv4.html" class="external-link">modular
+Level-set framework</a> which allows composition of terms and easy
+extension in C++.</p>
+<p>First we create a label image from our seed.</p>
+<div class="codewrapper sourceCode" id="cb52">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>seed <span class="op">=</span> (<span class="dv">132</span>,<span class="dv">142</span>,<span class="dv">96</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>seg <span class="op">=</span> sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)</span>
+<span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>seg.CopyInformation(img_T1)</span>
+<span id="cb52-5"><a href="#cb52-5" tabindex="-1"></a>seg[seed] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb52-6"><a href="#cb52-6" tabindex="-1"></a>seg <span class="op">=</span> sitk.BinaryDilate(seg, [<span class="dv">3</span>]<span class="op">*</span>seg.GetDimension())</span></code></pre>
+</div>
+<p>Use the seed to estimate a reasonable threshold range.</p>
+<div class="codewrapper sourceCode" id="cb53">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a>stats <span class="op">=</span> sitk.LabelStatisticsImageFilter()</span>
+<span id="cb53-2"><a href="#cb53-2" tabindex="-1"></a>stats.Execute(img_T1, seg)</span>
+<span id="cb53-3"><a href="#cb53-3" tabindex="-1"></a></span>
+<span id="cb53-4"><a href="#cb53-4" tabindex="-1"></a>factor <span class="op">=</span> <span class="fl">3.5</span></span>
+<span id="cb53-5"><a href="#cb53-5" tabindex="-1"></a>lower_threshold <span class="op">=</span> stats.GetMean(<span class="dv">1</span>)<span class="op">-</span>factor<span class="op">*</span>stats.GetSigma(<span class="dv">1</span>)</span>
+<span id="cb53-6"><a href="#cb53-6" tabindex="-1"></a>upper_threshold <span class="op">=</span> stats.GetMean(<span class="dv">1</span>)<span class="op">+</span>factor<span class="op">*</span>stats.GetSigma(<span class="dv">1</span>)</span>
+<span id="cb53-7"><a href="#cb53-7" tabindex="-1"></a><span class="bu">print</span>(lower_threshold,upper_threshold)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>81.25184541308809 175.0084466827569</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb55">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a>init_ls <span class="op">=</span> sitk.SignedMaurerDistanceMap(seg, insideIsPositive<span class="op">=</span><span class="va">True</span>, useImageSpacing<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" tabindex="-1"></a>lsFilter <span class="op">=</span> sitk.ThresholdSegmentationLevelSetImageFilter()</span>
+<span id="cb55-3"><a href="#cb55-3" tabindex="-1"></a>lsFilter.SetLowerThreshold(lower_threshold)</span>
+<span id="cb55-4"><a href="#cb55-4" tabindex="-1"></a>lsFilter.SetUpperThreshold(upper_threshold)</span>
+<span id="cb55-5"><a href="#cb55-5" tabindex="-1"></a>lsFilter.SetMaximumRMSError(<span class="fl">0.02</span>)</span>
+<span id="cb55-6"><a href="#cb55-6" tabindex="-1"></a>lsFilter.SetNumberOfIterations(<span class="dv">1000</span>)</span>
+<span id="cb55-7"><a href="#cb55-7" tabindex="-1"></a>lsFilter.SetCurvatureScaling(<span class="fl">.5</span>)</span>
+<span id="cb55-8"><a href="#cb55-8" tabindex="-1"></a>lsFilter.SetPropagationScaling(<span class="dv">1</span>)</span>
+<span id="cb55-9"><a href="#cb55-9" tabindex="-1"></a>lsFilter.ReverseExpansionDirectionOn()</span>
+<span id="cb55-10"><a href="#cb55-10" tabindex="-1"></a>ls <span class="op">=</span> lsFilter.Execute(init_ls, sitk.Cast(img_T1, sitk.sitkFloat32))</span>
+<span id="cb55-11"><a href="#cb55-11" tabindex="-1"></a><span class="bu">print</span>(lsFilter)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>itk::simple::ThresholdSegmentationLevelSetImageFilter
+  LowerThreshold: 81.2518
+  UpperThreshold: 175.008
+  MaximumRMSError: 0.02
+  PropagationScaling: 1
+  CurvatureScaling: 0.5
+  NumberOfIterations: 1000
+  ReverseExpansionDirection: 1
+  ElapsedIterations: 119
+  RMSChange: 0.0180966
+  Debug: 0
+  NumberOfThreads: 10
+  NumberOfWorkUnits: 0
+  Commands: (none)
+  ProgressMeasurement: 0.119
+  ActiveProcess: (none)</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb57">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, ls<span class="op">&gt;</span><span class="dv">0</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a></span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a>interact(</span>
+<span id="cb57-4"><a href="#cb57-4" tabindex="-1"></a>    display_images,</span>
+<span id="cb57-5"><a href="#cb57-5" tabindex="-1"></a>    image_z <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Level set segmentation"</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/level_set_seg.png" alt="Level-set segmentation." class="figure mx-auto d-block"></figure><div id="segment-on-the-y-axis" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="segment-on-the-y-axis" class="callout-inner">
+<h3 class="callout-title">Segment on the y-axis<a class="anchor" aria-label="anchor" href="#segment-on-the-y-axis"></a>
+</h3>
+<div class="callout-content">
+<p>Try to segment the lateral ventricle using volume’s slices on y-axis
+instead of z-axis.</p>
+<p>Hint: Start by editing the <code>display_images</code> function in
+order to select the slices on the y-axis.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution3" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
+  <h4 class="accordion-header" id="headingSolution3">Show me the solution</h4>
+</button>
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb58">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="kw">def</span> display_images(image_y, npa, title):</span>
+<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>    plt.imshow(npa[:,image_y,:], cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb58-3"><a href="#cb58-3" tabindex="-1"></a>    plt.title(title)</span>
+<span id="cb58-4"><a href="#cb58-4" tabindex="-1"></a>    plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb58-5"><a href="#cb58-5" tabindex="-1"></a>    plt.show()</span>
+<span id="cb58-6"><a href="#cb58-6" tabindex="-1"></a></span>
+<span id="cb58-7"><a href="#cb58-7" tabindex="-1"></a><span class="co"># Initial seed; we can reuse the same used for the z-axis slices</span></span>
+<span id="cb58-8"><a href="#cb58-8" tabindex="-1"></a>seed <span class="op">=</span> (<span class="dv">132</span>,<span class="dv">142</span>,<span class="dv">96</span>)</span>
+<span id="cb58-9"><a href="#cb58-9" tabindex="-1"></a>seg <span class="op">=</span> sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)</span>
+<span id="cb58-10"><a href="#cb58-10" tabindex="-1"></a>seg.CopyInformation(img_T1)</span>
+<span id="cb58-11"><a href="#cb58-11" tabindex="-1"></a>seg[seed] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb58-12"><a href="#cb58-12" tabindex="-1"></a>seg <span class="op">=</span> sitk.BinaryDilate(seg, [<span class="dv">3</span>]<span class="op">*</span>seg.GetDimension())</span>
+<span id="cb58-13"><a href="#cb58-13" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, seg)</span>
+<span id="cb58-14"><a href="#cb58-14" tabindex="-1"></a></span>
+<span id="cb58-15"><a href="#cb58-15" tabindex="-1"></a>interact(</span>
+<span id="cb58-16"><a href="#cb58-16" tabindex="-1"></a>    display_images,</span>
+<span id="cb58-17"><a href="#cb58-17" tabindex="-1"></a>    image_y <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb58-18"><a href="#cb58-18" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb58-19"><a href="#cb58-19" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Initial seed"</span>))</span></code></pre>
+</div>
+<p>After some attempts, this was the method that gave the best
+segmentation results:</p>
+<div class="codewrapper sourceCode" id="cb59">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a>seed <span class="op">=</span> (<span class="dv">132</span>,<span class="dv">142</span>,<span class="dv">96</span>)</span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a></span>
+<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a>seg <span class="op">=</span> sitk.Image(img_T1.GetSize(), sitk.sitkUInt8)</span>
+<span id="cb59-4"><a href="#cb59-4" tabindex="-1"></a>seg.CopyInformation(img_T1)</span>
+<span id="cb59-5"><a href="#cb59-5" tabindex="-1"></a>seg[seed] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb59-6"><a href="#cb59-6" tabindex="-1"></a>seg <span class="op">=</span> sitk.BinaryDilate(seg, [<span class="dv">3</span>]<span class="op">*</span>seg.GetDimension())</span>
+<span id="cb59-7"><a href="#cb59-7" tabindex="-1"></a></span>
+<span id="cb59-8"><a href="#cb59-8" tabindex="-1"></a>stats <span class="op">=</span> sitk.LabelStatisticsImageFilter()</span>
+<span id="cb59-9"><a href="#cb59-9" tabindex="-1"></a>stats.Execute(img_T1, seg)</span>
+<span id="cb59-10"><a href="#cb59-10" tabindex="-1"></a></span>
+<span id="cb59-11"><a href="#cb59-11" tabindex="-1"></a>factor <span class="op">=</span> <span class="fl">3.5</span></span>
+<span id="cb59-12"><a href="#cb59-12" tabindex="-1"></a>lower_threshold <span class="op">=</span> stats.GetMean(<span class="dv">1</span>)<span class="op">-</span>factor<span class="op">*</span>stats.GetSigma(<span class="dv">1</span>)</span>
+<span id="cb59-13"><a href="#cb59-13" tabindex="-1"></a>upper_threshold <span class="op">=</span> stats.GetMean(<span class="dv">1</span>)<span class="op">+</span>factor<span class="op">*</span>stats.GetSigma(<span class="dv">1</span>)</span>
+<span id="cb59-14"><a href="#cb59-14" tabindex="-1"></a><span class="bu">print</span>(lower_threshold,upper_threshold)</span>
+<span id="cb59-15"><a href="#cb59-15" tabindex="-1"></a></span>
+<span id="cb59-16"><a href="#cb59-16" tabindex="-1"></a>init_ls <span class="op">=</span> sitk.SignedMaurerDistanceMap(seg, insideIsPositive<span class="op">=</span><span class="va">True</span>, useImageSpacing<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb59-17"><a href="#cb59-17" tabindex="-1"></a>lsFilter <span class="op">=</span> sitk.ThresholdSegmentationLevelSetImageFilter()</span>
+<span id="cb59-18"><a href="#cb59-18" tabindex="-1"></a>lsFilter.SetLowerThreshold(lower_threshold)</span>
+<span id="cb59-19"><a href="#cb59-19" tabindex="-1"></a>lsFilter.SetUpperThreshold(upper_threshold)</span>
+<span id="cb59-20"><a href="#cb59-20" tabindex="-1"></a>lsFilter.SetMaximumRMSError(<span class="fl">0.02</span>)</span>
+<span id="cb59-21"><a href="#cb59-21" tabindex="-1"></a>lsFilter.SetNumberOfIterations(<span class="dv">1000</span>)</span>
+<span id="cb59-22"><a href="#cb59-22" tabindex="-1"></a>lsFilter.SetCurvatureScaling(<span class="fl">.5</span>)</span>
+<span id="cb59-23"><a href="#cb59-23" tabindex="-1"></a>lsFilter.SetPropagationScaling(<span class="dv">1</span>)</span>
+<span id="cb59-24"><a href="#cb59-24" tabindex="-1"></a>lsFilter.ReverseExpansionDirectionOn()</span>
+<span id="cb59-25"><a href="#cb59-25" tabindex="-1"></a>ls <span class="op">=</span> lsFilter.Execute(init_ls, sitk.Cast(img_T1, sitk.sitkFloat32))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>81.25184541308809 175.0084466827569</code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb61">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a>seg_img <span class="op">=</span> sitk.LabelOverlay(img_T1_255, ls<span class="op">&gt;</span><span class="dv">0</span>)</span>
+<span id="cb61-2"><a href="#cb61-2" tabindex="-1"></a></span>
+<span id="cb61-3"><a href="#cb61-3" tabindex="-1"></a>interact(</span>
+<span id="cb61-4"><a href="#cb61-4" tabindex="-1"></a>    display_images,</span>
+<span id="cb61-5"><a href="#cb61-5" tabindex="-1"></a>    image_y <span class="op">=</span> (<span class="dv">0</span>,img_T1.GetSize()[<span class="dv">2</span>]<span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb61-6"><a href="#cb61-6" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
+<span id="cb61-7"><a href="#cb61-7" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Level set segmentation"</span>))</span></code></pre>
+</div>
+<figure><img src="../fig/y-axis_seg.png" alt="Y-axis segmentation." class="figure mx-auto d-block"></figure>
+</div>
+</div>
+</div>
+</div>
+<div id="segmentation-evaluation" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="segmentation-evaluation" class="callout-inner">
+<h3 class="callout-title">Segmentation Evaluation<a class="anchor" aria-label="anchor" href="#segmentation-evaluation"></a>
+</h3>
+<div class="callout-content">
+<p>Evaluating segmentation algorithms typically involves comparing your
+results to reference data.</p>
+<p>In the medical field, reference data is usually created through
+manual segmentation by an expert. When resources are limited, a single
+expert might define this data, though this is less than ideal. If
+multiple experts contribute, their inputs can be combined to produce
+reference data that more closely approximates the elusive “ground
+truth.”</p>
+<p>For detailed coding examples on segmentation evaluation, refer to <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/34_Segmentation_Evaluation.html" class="external-link">this
+notebook</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section id="acknowledgements"><h2 class="section-heading">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
+</h2>
+<hr class="half-width">
+<p>This episode was largely inspired by <a href="https://simpleitk.org/TUTORIAL/#tutorial" class="external-link">the official SITK
+tutorial</a>, which is copyrighted by NumFOCUS and distributed under the
+<a href="https://creativecommons.org/licenses/by/4.0/" class="external-link">Creative Commons
+Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">SimpleITK
+Notebooks</a>.</p>
+<div class="section level3">
+<h3 id="additional-resources">Additional resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a>
+</h3>
+<p>To really understand the structure of SimpleITK images and how to
+work with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SimpleITK
+Jupyter notebooks</a> from the SITK official channels. More detailed
+information about SITK fundamental concepts can also be found <a href="https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#" class="external-link">here</a>.</p>
+<p>Code illustrating various aspects of the registration and
+segmentation framework can be found in the set of <a href="https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples" class="external-link">examples</a>
+which are part of the SimpleITK distribution and in the SimpleITK <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">Jupyter
+notebook repository</a>.</p>
+<!-- 
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use. 
+ -->
+</div>
 </section></section>
 </div>
     </main>
@@ -641,9 +2355,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html",
-  "dateCreated": "2024-05-04",
-  "dateModified": "2024-05-21",
-  "datePublished": "2024-05-21"
+  "dateCreated": "2024-05-23",
+  "dateModified": "2024-05-23",
+  "datePublished": "2024-05-23"
 }
 
   </script><script>
