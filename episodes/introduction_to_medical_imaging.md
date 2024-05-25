@@ -25,11 +25,11 @@ before they are 'readable' by humans or by many of the algorithms we write.
 
 While thinking about how the information from these signals is stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is necessary to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
 
-The details of various forms of imaging will be covered in a lecture with slides that accompanies this episode. Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. He we will discuss what is common to get in terms of files given to researchers.
+The details of various forms of imaging will be covered in a lecture with slides that accompanies this episode. Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
 
 ## X-Rays
 
-Historically, x-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (e.g., photographic film) on the other side of the subject.
+Historically, x-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
@@ -59,7 +59,7 @@ Ultrasounds images are operator-dependent, often with embedded patient data, and
 
 ## How to reduce these problems?
 
-How can we optimize research involving e.g. biceps brachii ultrasounds?
+How can we optimize research involving ultrasounds in terms of the challenges above?
 
 :::::::::::::::  solution
 
