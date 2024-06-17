@@ -1,10 +1,54 @@
 ---
-title: learn to FIXME
+title: Setup-PASTR
 ---
-## Learner profiles
+
+FIXME: Setup instructions live in this document. Please specify the tools and
+the data sets the Learner needs to have installed.
+
+## Data Sets
+
+<!--
+FIXME: place any data you want learners to use in `episodes/data` and then use
+       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
+       link to it, replacing the example.com link.
+-->
+Download the [data zip file](https://example.com/FIXME) and unzip it to your Desktop
+
+## Software Setup
+
+::::::::::::::::::::::::::::::::::::::: discussion
+
+### Details
+
+Setup for different systems can be presented in dropdown menus via a `spoiler`
+tag. They will join to this discussion block, so you can give a general overview
+of the software used in this lesson here and fill out the individual operating
+systems (and potentially add more, e.g. online setup) in the solutions blocks.
+
+:::::::::::::::::::::::::::::::::::::::::::::::::::
+
+:::::::::::::::: spoiler
+
+### Windows
+
+Use PuTTY
+
+::::::::::::::::::::::::
+
+:::::::::::::::: spoiler
+
+### MacOS
+
+Use Terminal.app
+
+::::::::::::::::::::::::
 
 
-Aida, MD, PhD candidate from Amsterdam UMC, hematology department. She began working on data from pediatric thallesemia patients with the question of how the disease affects brain development. She was given tabular data on patient brain measurements, based on a lot of brain MRIs collected during the study of these patients, as well as age paired patients without thallesemia.  But these brain MRIs were collected from different institutions. She seeks to make sense of whether the tabular data produced makes sense, and remove any MRIs that were incorrectly acquired. Then she would like to use deep learning or machine learning to determine if thallesemia implies specific changes in the patient brains. She is unsure what to do about the different collection sites.  
+:::::::::::::::: spoiler
 
-Lena, PhD candidate from  Rotterdam Eramasmus MC, radiology department. Lena, a dedicated PhD student, is excited to dig deeper into the complexities of diagnostic image processing. She is particularly intrigued by the algorithmic complexities of image processing pipelines and seeks guidance on maximizing efficiency and scalability in handling large datasets. In addition, Lena is interested in exploring dimensionality reduction and image segmentation techniques, including recent advances and their practical implications. She is also interested in working with 3D meshes and wishes to learn the basics of synthetic image generation and resolution enhancement, despite her limited familiarity with medical imaging applications, which she is eager to understand better. 
+### Linux
+
+Use Terminal
+
+::::::::::::::::::::::::
 
