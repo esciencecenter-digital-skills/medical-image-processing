@@ -479,3 +479,15 @@ Autocombat has no releases and no verioning.If a package never had released vers
 
 
 We point out the following problems to make you aware of some potential pitfalls with such programs. We hope you will one day build a harmonization package that is also sustainable and reusable for the community of researchers you work with. All of the above packages have many truly positive aspects that make them notable for the research community. Alas no package is perfect. Choose wisely! And don't forget you could also make your own harmonization though code or even step this code up to a package so others can also benefit. 
+
+
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- There is no substitute for getting to know some of your data by hand
+- You should examine your data statistically to see if it meshes with reality in terms of patient distribution
+- You should examine your derived data statistically to see if it meshes with realities known to specialists
+- Radiomics allows us to use mathematical qualities of images as features
+- Various open pipelines for volumetrics and radiomics are available
+- Data produced from different machines often needs harmonization
+::::::::::::::::::::::::::::::::::::::::::::::::::
