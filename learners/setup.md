@@ -23,6 +23,10 @@ Setup for different systems can be done slightly differently.
 We reccomend using conda or mamba, but some of you, especially Linux
 users may find it more convenient to build the environments by hand.
 
+There are two requeired environments you will have to be able to use.
+One is [image_libraries](https://github.com/esciencecenter-digital-skills/image-processing/blob/main/environment.yml) and the other is [GIULIAMUSTADD?](?). You can copy the yaml files and build the environments.
+The GIULIAMUSTADD environment is used in all lessons except the one on preparing images for ML. 
+
 :::::::::::::::::::::::::::::::::::::::::::::::::::
 
 :::::::::::::::: spoiler
