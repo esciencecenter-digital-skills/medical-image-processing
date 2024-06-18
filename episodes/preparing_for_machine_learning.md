@@ -427,7 +427,7 @@ We will often have to harmonize either images or derived feature datasets. With 
 
 *Sourced from [Bernd L. Schmitz, Andrik J. Aschoff, Martin H.K. Hoffmann and Georg Grön, Advantages and Pitfalls in 3T MR Brain Imaging: A Pictorial Review ,American Journal of Neuroradiology October 2005, 26 (9) 2229-2237](https://www.ajnr.org/content/26/9/2229)*
 
-Different contrast levels make the caudate and thalami far more or less apparent. The radiomics of brain are different in terms of contrast, and probably some other parameters.
+Different contrast levels make the caudate and thalami far more or less apparent. The radiomics of these brain images are different in terms of contrast, and probably some other parameters, even though it is literally the same patient.
 
 We can't simply build a dataset based on unharmonized derived data. On the other hand, we may not have access to the images, to even guess how things are going differently.
 
