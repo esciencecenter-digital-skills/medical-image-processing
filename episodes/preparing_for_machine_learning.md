@@ -421,7 +421,16 @@ Once we have tabular data we can apply all kinds of algorithms to it. But the pr
 
 ## Harmonization
 
-We will often have to harmonize either images or derived feature datasets. With images if teh differences between datasets are start we will notice them with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each set, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). We can't simply build a dataset based on unharmonized derived data. On the other hand, we may not have access to the images, to even guess how things are going differently.
+We will often have to harmonize either images or derived feature datasets. With images if teh differences between datasets are start we will notice them with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each set, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). This is only one potential difference. Examine the images of the same patient below from a 1.5 and 3T machine:
+
+![](fig/t1_vT3_large.jpg){alt='T1 v T3'}
+
+*Sourced from [Bernd L. Schmitz, Andrik J. Aschoff, Martin H.K. Hoffmann and Georg Grön, Advantages and Pitfalls in 3T MR Brain Imaging: A Pictorial Review ,American Journal of Neuroradiology October 2005, 26 (9) 2229-2237](https://www.ajnr.org/content/26/9/2229)*
+
+Different contrast levels make the caudate and thalami far more or less apparent. The radiomics of brain are different in terms of contrast, and probably some other parameters.
+
+We can't simply build a dataset based on unharmonized derived data. On the other hand, we may not have access to the images, to even guess how things are going differently.
+
 
 We suggest the following approach: 
 
