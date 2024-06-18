@@ -69,14 +69,15 @@ Below are some initial steps to understanding your dataset if you will do superv
 7. normalizations: size, histogram, other, 'centering' in some cases only
 8. re-examine some images by hand for resize and other artifacts
 9. dataset harmonizations?
-10. augmented data creation
+10. augmented and/or synthetic data creation
 
 Preparing images for unsupervised learning has many of the same steps. However you need to consider the specific algorithm itself e.g. some segmentation algorithms may not benefit from extra data.
 In our supervised preparation step 2. we suggest checking labeling, the label or the y, is what you want to predict. You need to make sure the labelling was actually done correctly, and see how may types of labels there are (as opposed to how many you want your models to predict). In step 3. we suggest checking for diversity of protected classes. Protected classes are groups in society who usuallt have specific legislation in terms of medical diagnostic testing and other areas where they have historically been underrepresented. To be more specific blunt, it's proabably not a bad idea to check if your dataset has women and certain ethnic minority groups. Certain measurements may be normal in terms of one population, and not others, for example chest circumference and height are known to differ dramatically on average between Dutch people without a migrant background, and people from Indonesia. If your algorithm is about cerebral blood flow, then this body size might matter very little, but you have to think about the context of your specific algorithm. 
 In step 5 we mention anonymization in terms of images. This is especially the case with ultrasounds. They often have things like the patient name or even the diagnosis burned right onto the image. You may be able to simply crop this away if it is always done in a corner. But if you want to get more sophisticated, you can apply all kinds of blurring and masking, or even use OCR.
 
-We will work through some examples. To do this you will need an appropriate environment.
-You can build the environment from our ml_enviro file (particpants who did  [Image Processing with Python](https://datacarpentry.org/image-processing/) will have this environment built already).
+We will cover dataset harmonization in a seperate section. For step ten tou could create entirely synthetic data, and this will be covered in a seperate episode on generative AI. In the next section we will work through some examples of augmented data creation.  
+To work though our examples of daataset augmentation you will need an appropriate environment.
+You can build the environment from our ml_environment file (see the setup instructions).
 
 Let's switch environments (assuming your environment is called image_libraries):
 
