@@ -24,9 +24,9 @@ We reccomend using conda or mamba, but some of you, especially Linux
 users may find it more convenient to build the environments by hand.
 
 There are two required environments you will have to be able to use.
-One is [image_libraries](https://github.com/esciencecenter-digital-skills/med-image-ext/ml_environment.yml) and the other is [GIULIAMUSTADD? main_landing ](https://github.com/esciencecenter-digital-skills/med-image-ext/main_environment.yml). 
+One is [image_libraries](https://github.com/esciencecenter-digital-skills/med-image-ext/ml_environment.yml) and the other is [GIULIAMUSTADDTO main_landing ](https://github.com/esciencecenter-digital-skills/med-image-ext/main_environment.yml). 
 You can get the both 
-The GIULIAMUSTADD main_landing environment is used in all lessons except the one on preparing images for ML. 
+The GIULIAMUSTADDTO main_landing environment is used in all lessons except the one on preparing images for ML. 
 Instructions can be found on the [med-image-ext repo](https://github.com/esciencecenter-digital-skills/med-image-ext/blob/main/README.md), which are meant to be followed after cloning and entering it. 
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -39,7 +39,14 @@ Clone the [med-image-ext repo](https://github.com/esciencecenter-digital-skills/
 and if so substitute conda with mamba) and run:
 
 ```bash
-conda env create -f whatever_you_named_environment.yml
+conda deactivate # use this if you were in another environment only
+conda env create -f main_environment.yml
+```
+Then
+
+```bash
+conda deactivate
+conda env create -f ml_environment.yml
 ```
 ::::::::::::::::::::::::
 
