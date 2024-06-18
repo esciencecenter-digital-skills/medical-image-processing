@@ -485,9 +485,10 @@ We point out the following problems to make you aware of some potential pitfalls
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - There is no substitute for getting to know some of your data by hand
-- You should examine your data statistically to see if it meshes with reality in terms of patient distribution
+- You should examine your data statistically to see if it may create or amplify biases in terms of patient distribution
 - You should examine your derived data statistically to see if it meshes with realities known to specialists
+- Not all ways of augmenting data are valid or useful
 - Radiomics allows us to use mathematical qualities of images as features
 - Various open pipelines for volumetrics and radiomics are available
-- Data produced from different machines often needs harmonization
+- Data produced from different machines often needs harmonization which can be accomplished with code and/or various existing libraries
 ::::::::::::::::::::::::::::::::::::::::::::::::::
