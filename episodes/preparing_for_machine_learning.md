@@ -6,20 +6,20 @@ exercises: 3
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What basic steps are involved in preparing images for machine learning?
-- How can I augment my data? 
-- How should I handle data from different sources or acquired under different conditions?
-- How can I craft features for machine learning through radiomics or volumetrics?
+- What are the basic steps involved in preparing images for machine learning?
+- How can data be augmented? 
+- How to handle data from different sources or acquired under different conditions?
+- How to create features for machine learning through radiomics or volumetrics?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain basic steps involved in preparing images for machine learning
+- Explain the basic steps involved of preparing images for machine learning
 - Demonstrate data augmentation with affines
-- Explain pitfalls of data augmentation
-- Explain derived features including radiomics and other pipeline derived features
-- Review techniques for image harmonization at the image and dataset level
+- Explain the pitfalls of data augmentation
+- Explain derived features, including radiomics and other pipeline-derived features
+- Review image harmonization techniques at the image and dataset level
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -49,7 +49,6 @@ chest X-rays. They will also be relevant in a variety of other cases.
 
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 In the real world we often have a question about a specific pathology that is relatively rare,
 so we may get a dataset of thousands of normal subjects, and then relatively speaking fewer of
@@ -142,7 +141,6 @@ plt.title("Normal 2")
 
 ```
 
-
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Thought Challenge: Can you see some problems in the following scenario?
@@ -164,8 +162,6 @@ this could be called a "batch effect" creating bias
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Code Challenge: Using skimage.transform.rotate
@@ -176,7 +172,6 @@ Use skimage.tranform.rotate to produce two realistic augmented images  (name the
 
 ## Possible code solution for augment and improve
  
-
 ```python
 # code to rotate
 new_pic1 = rotate(image_g, -2)
@@ -218,7 +213,6 @@ plt.axis('off')
 plt.title("Augment 2")
 # now let's make it even better with some crops
 # next cells 
-
 
 # figure out how much to cut on sides
 print("cut top/bottom:", (image_b.shape[0] - image_g.shape[0])/2)
@@ -268,7 +262,6 @@ plt.title("Augment 2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 Note that the results are be further enhanced by cropping. Usually we want to avoid harsh artifictual lines in any images
 we feed to ML algorithms unless it is always the same line. Of course there are many kinds of transformations of images we can do beyond rotation. Let's look at a shear and a wave over  mesh: 
 
@@ -303,7 +296,6 @@ dst_cols = src[:, 0]
 dst_rows *= 1.5
 dst_rows -= 1.5 * 50
 dst = np.vstack([dst_cols, dst_rows]).T
-
 
 tform = PiecewiseAffineTransform()
 tform.estimate(src, dst)
@@ -358,8 +350,6 @@ When it comes to augmenting data, there are many possibilities. Just be careful 
 Only a subject matter expert, usually a pathology or nuclear medicine or radiology specialist, will know what 
 that literally looks like.
 
-
-
 ## Image features as data for ML
 
 Until now we have worked on an example where we were working directly on images.
@@ -380,8 +370,6 @@ We want to put images into a pipeline that will give us these data back. An exam
 ## Thought Challenge: Can you see some problems in using output of a pipeline without acessing the original images?
 
 Think of a couple scenarios where this could be problematic, and possible solutions
-
-
 
 :::::::::::::::::::::::: solution  
 
@@ -419,7 +407,6 @@ While we could write the code ourselves, it's better to use a known package for 
 
 Once we have tabular data we can apply all kinds of algorithms to it. But the process is not as simple as adding ML and shaking. In the next section we will explore one reason why.
 
-
 ## Harmonization
 
 We will often have to harmonize either images or derived feature datasets. With images if teh differences between datasets are start we will notice them with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each set, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). This is only one potential difference. Examine the images of the same patient below from a 1.5 and 3T machine:
@@ -432,15 +419,12 @@ Different contrast levels make the caudate and thalami far more or less apparent
 
 We can't simply build a dataset based on unharmonized derived data. On the other hand, we may not have access to the images, to even guess how things are going differently.
 
-
 We suggest the following approach: 
 
 1. compare the data yourself in terms of descriptive statistics and what you know about the two patient groups (do you expect the same counts in each group? why or why not?)
 2. consider a harmonization package
 
 Below are a three examples from the world of neuroimaging:
-
-
 
 |             | `neurocombat`    | `haca3`        | `autocombat`           |
 |-------------|------------------|----------------|------------------------|
@@ -457,20 +441,16 @@ Below are a three examples from the world of neuroimaging:
 There are countless examples of such packages for brain MRI alone, let alone the rest of the body. Why did we choose these three?
 To show some of the issues and pitfalls with such packages. 
 
-
 ::::::::::::::::::::::::::::::::::::: challenge  
 
 ## Thought Challenge: Can you see some potential problems in each package?
 
 Think of an issue that may hinder your implementation for each package
 
-
-
 :::::::::::::::::::::::: solution  
 
 ## Possible problems with packages 
  
-
 Aging code:
 Nuerocombat was last modified three years ago. The code may well be based on dependancies we don't want to chase after.
 Will they be compatiable with our brand new machine? 
@@ -487,18 +467,16 @@ Autocombat has no releases and no verioning.If a package never had released vers
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 We point out the following problems to make you aware of some potential pitfalls with such programs. We hope you will one day build a harmonization package that is also sustainable and reusable for the community of researchers you work with. All of the above packages have many truly positive aspects that make them notable for the research community. Alas no package is perfect. Choose wisely! And don't forget you could also make your own harmonization though code or even step this code up to a package so others can also benefit. 
-
-
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- There is no substitute for getting to know some of your data by hand
-- You should examine your data statistically to see if it may create or amplify biases in terms of patient distribution
-- You should examine your derived data statistically to see if it meshes with realities known to specialists
+- There is no way to replace direct knowledge of some data
+- Examine data statistically to see if they can create or amplify biases in terms of patient distribution
+- Statistically examine derived data to see if it corresponds to realities known to specialists
 - Not all ways of augmenting data are valid or useful
-- Radiomics allows us to use mathematical qualities of images as features
+- Radiomics allows mathematical qualities of images to be used as features
 - Various open pipelines for volumetrics and radiomics are available
-- Data produced from different machines often needs harmonization which can be accomplished with code and/or various existing libraries
+- Data produced by different machines often needs harmonization, which can be accomplished with code and/or existing libraries
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::
