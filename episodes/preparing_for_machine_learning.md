@@ -79,7 +79,7 @@ conda activate image_libraries
 
 Then we need to get our sample images:
 
-```
+```bash
 TBD
 ```
 
@@ -132,8 +132,10 @@ plt.imshow(image_y)
 plt.axis('off')
 plt.title("Normal 2")
 ```
-Expected output:
+Output:
 ![](episodes/fig/csx_display_mip.png){alt='CXR examples'}
+
+
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Thought Challenge: Can you see some problems in the following scenario?
@@ -153,6 +155,7 @@ All of the following may be potential problems:
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -218,6 +221,7 @@ plt.axis('off')
 plt.title("Augment 2")
 
 ```
+Output:
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
 
 :::::::::::::::::::::::::::::::::
