@@ -1,7 +1,7 @@
 ---
 title: "Preparing Images for Machine Learning"
-teaching: 60
-exercises: 3
+teaching: 90
+exercises: 5
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -91,6 +91,7 @@ import matplotlib
 from matplotlib import pyplot as plt
 from skimage import data
 from skimage import transform
+from skimage import io
 from skimage import img_as_float
 from skimage.transform import rotate
 from skimage import transform as tf
@@ -131,7 +132,8 @@ plt.imshow(image_y)
 plt.axis('off')
 plt.title("Normal 2")
 ```
-
+Expected output:
+![](episodes/fig/csx_display_mip.png){alt='CXR examples'}
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Thought Challenge: Can you see some problems in the following scenario?
@@ -165,15 +167,26 @@ Hint: look at the shape of the cardiomegaly image in more ways than one.
 ## Solution
  
 ```python
-# code to rotate
-new_pic1 = rotate(image_g, -2)
-new_pic2 = rotate(image_g, 2)
+# figure out how much to cut on sides
+print("cut top/bottom:", (image_b.shape[0] - image_g.shape[0])/2)
+cut_top_bottom = abs(round((image_b.shape[0] - image_g.shape[0])/2))
+# figure our how much to cut on top and bottom
+print("cut sides:",(image_b.shape[1] - image_g.shape[1])/2)
 
-# crop the images so all without edges
+```
+
+```output
+cut top/bottom: -119.0
+cut sides: -208.5
+```
+
+
+```python
+cut_sides = abs(round((image_b.shape[1] - image_g.shape[1])/2))
 list_images = [image_g, new_pic1, new_pic2]
 better_for_ml_list = []
 for image in list_images:
-    image = image[119:-119, 208: -209]
+    image = image[cut_top_bottom:-cut_top_bottom, cut_sides: -cut_sides]
     better_for_ml_list.append(image)
 
 # create figure for display
@@ -203,52 +216,9 @@ fig.add_subplot(rows, columns, 3)
 plt.imshow(better_for_ml_list[2])
 plt.axis('off')
 plt.title("Augment 2")
-# now let's make it even better with some crops
-# next cells 
-
-# figure out how much to cut on sides
-print("cut top/bottom:", (image_b.shape[0] - image_g.shape[0])/2)
-cut_top_bottom = abs(round((image_b.shape[0] - image_g.shape[0])/2))
-
-# figure our how much to cut on top and bottom
-print("cut sides:",(image_b.shape[1] - image_g.shape[1])/2)
-
-cut_sides = abs(round((image_b.shape[1] - image_g.shape[1])/2))
-list_images = [image_g, new_pic1, new_pic2]
-better_for_ml_list = []
-for image in list_images:
-    image = image[cut_top_bottom:-cut_top_bottom, cut_sides: -cut_sides]
-    better_for_ml_list.append(image)
-
-# create figure
-fig = plt.figure(figsize=(10, 7))
-  
-# setting values to rows and column variables
-rows = 1
-columns = 3
-
-# Adds a subplot at the 1st position
-fig.add_subplot(rows, columns, 1)
-# showing image
-plt.imshow(better_for_ml_list[0])
-plt.axis('off')
-plt.title("Normal 1")
-  
-# Adds a subplot at the 2nd position
-fig.add_subplot(rows, columns, 2)
-# showing image
-plt.imshow(better_for_ml_list[1])
-plt.axis('off')
-plt.title("Augment 1")
-
-# Adds a subplot at the 3nd position
-fig.add_subplot(rows, columns, 3)
-# showing image
-plt.imshow(better_for_ml_list[2])
-plt.axis('off')
-plt.title("Augment 2")
 
 ```
+![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
 
 :::::::::::::::::::::::::::::::::
 
