@@ -290,7 +290,7 @@ plt.imshow(modified)
 plt.axis('off')
 plt.title("Normal")
   
-# ads a subplot at the 2nd position
+# add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(modified)
