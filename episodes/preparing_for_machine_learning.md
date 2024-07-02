@@ -8,8 +8,8 @@ exercises: 5
 
 - What are the basic steps involved in preparing images for machine learning?
 - How can data be augmented? 
-- How to handle data from different sources or acquired under different conditions?
-- How to create features for machine learning through radiomics or volumetrics?
+- How should you handle data from different sources or acquired under different conditions?
+- How can we create features for machine learning through radiomics or volumetrics?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -25,7 +25,7 @@ exercises: 5
 
 ## Basic steps
 
-The images you receive can be the raw data for machine learning. If you are extremely lucky they can be used without much effort, however in many projects the majority of time
+Datasets of images you receive can be the raw data for machine learning. If you are extremely lucky they can be used without much effort, however in many projects the majority of time
 spent in building machine learning is spent cleaning up and preparing data. The quality of the data used will have a profound impact on the quality of the models built. 
 
 One of the first steps towards building a model is simply looking at both some of the data and metadata by hand. 
@@ -47,10 +47,10 @@ You will almost always want to look at age and sex distribution. These are relev
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::
 
-In the real world we often have a question about a specific pathology that is relatively rare, so we may get a dataset of thousands of normal subjects, and then relatively speaking fewer of and pathology, and perhaps very few of the pathology we care about. This creates an imalanced dataset in general, but once we think about metadata in may also create biases. For example if we want to build a model to detect heart failure on chest X-ray, but all our heart failure patients are older men, we may get a model
+In the real world we often have a question about a specific pathology that is relatively rare, so we may get a dataset of thousands of normal subjects, and then relatively fewer of with any pathology, and perhaps even fewer of the pathology we care about. This creates an imbalanced dataset in general, but once we think about metadata in may also create biases. For example if we want to build a model to detect heart failure on chest X-ray, but all our heart failure patients are older men, we may get a model
 that "looks" for the absence of female breasts, and signs of ageing, rather than one that looks for actual signs of heart failure we are familiar with i.e. the ratio of heart to chest diameter (or in the words of radiologists cardiothoracic ratio).
 
-Below are some initial steps to understanding your dataset if you will do supervised machine learning:
+Below are some initial steps to understanding your dataset if you plan to do supervised machine learning:
 
 1. Check some images by hand (quality, content, surprises)
 2. Check some of labeling by hand (quality, content, surprises)
@@ -59,15 +59,16 @@ Below are some initial steps to understanding your dataset if you will do superv
 5. Anonymization can include inside images (OCR (optical character recognition)?)
 6. Decide what in images is important, consider cropped versions?
 7. Normalizations: size, histogram, other, 'centering' in some cases only
-8. Re-examine some images by hand for resize and other artifacts
+8. Re-examine some images by hand with attention to artifiacts created by your resizing or other steps 
 9. Dataset harmonizations?
 10. Augmented and/or synthetic data creation
 
-Preparing images for unsupervised learning has many of the same steps. However, you need to consider the specific algorithm itself e.g. some segmentation algorithms may not benefit from extra data.
+When you prepare images for unsupervised learning, you can use many of the same steps. However, you need to consider the specific algorithm itself e.g. some segmentation algorithms may not benefit from extra data.
 
-In our supervised preparation step 2. we suggest checking labeling, the label or the y, is what you want to predict. You need to make sure the labelling was actually done correctly, and see how may types of labels there are (as opposed to how many you want your models to predict). In step 3. we suggest checking for diversity of protected classes. Protected classes are groups in society who usuallt have specific legislation in terms of medical diagnostic testing and other areas where they have historically been underrepresented. To be more specific blunt, it's proabably not a bad idea to check if your dataset has women and certain ethnic minority groups. Certain measurements may be normal in terms of one population, and not others, for example chest circumference and height are known to differ dramatically on average between Dutch people without a migrant background, and people from Indonesia. If your algorithm is about cerebral blood flow, then this body size might matter very little, but you have to think about the context of your specific algorithm. In step 5 we mention anonymization in terms of images. This is especially the case with ultrasounds. They often have things like the patient name or even the diagnosis burned right onto the image. You may be able to simply crop this away if it is always done in a corner. But if you want to get more sophisticated, you can apply all kinds of blurring and masking, or even use OCR.
+In our supervised preparation step number two we suggest checking labeling, the label or the y, is what you want to predict. You need to make sure the labelling was actually done correctly, and see how may types of labels there are (as opposed to how many you want your models to predict). In step three we suggest checking for diversity of protected classes. Protected classes are groups in society who usuallt have specific legislation in terms of medical diagnostic testing and other areas where they have historically been underrepresented. To be more specific and blunt, it is a good idea to check if your dataset has women and certain ethnic minority groups. Certain measurements may be normal in terms of one population, and not others, for example chest circumference and height are known to differ dramatically on average between Dutch people without a migrant background, and people from Indonesia. If your algorithm is about cerebral blood flow, then this body size might matter very little, but you have to think about the context of your specific algorithm. In step five we mention anonymization in terms of images. This is especially the case with ultrasounds. They often have things like the patient name or even the diagnosis burned right onto the image. You may be able to simply crop this away if it is always done in a corner. But if you want to get more sophisticated, you can apply all kinds of blurring and masking, or even use optical charecter recognition (OCR).
 
-We will cover dataset harmonization in a separate section. For step 10 you could create entirely synthetic data, and this will be covered in a seperate episode on generative AI. In the next section, we will work through some examples of augmented data creation.  
+We will cover step nine, dataset harmonization, in a separate section. For step ten, creating more data, you could create entirely synthetic data, and this will be further covered in a seperate episode on generative AI. In the next section, we will work through some examples of augmented data creation.  
+
 To work though our examples of dataset augmentation you will need an appropriate environment. You can build the environment from our `ml_environment` file (see the setup instructions).
 
 Let's switch environments (assuming your environment is called `image_libraries`):
@@ -118,29 +119,30 @@ plt.imshow(image_g)
 plt.axis('off')
 plt.title("Normal 1")
   
-# Adds a subplot at the 2nd position
+# add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(image_b)
 plt.axis('off')
 plt.title("Cardiomegaly")
 
-# Adds a subplot at the 3nd position
+# add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(image_y)
 plt.axis('off')
 plt.title("Normal 2")
 ```
-Output:
-![](episodes/fig/csx_display_mip.png){alt='CXR examples'}
+
+![](fig/cxr_display_mip.png){alt='CXR examples'}
+
 
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Thought Challenge: Can you see some problems in the following scenario?
 
-Imagine you got the above images and many more because you  have been assigned to make an algorithm for cardiomegaly detection so patients can be notified if by chance their X-ray shows cardiomegaly. You are given one dataset of healthy (no cardiomegaly) patients who went to an outpatient clinic in a very poor area staffed with first year radiography students. Those patients were under surviellance program for TB. You also got chest X-rays of cardiomegaly patients from an extremely prestigeous tertiary inpatient hospital. 
+Imagine you got the above images and many more because you have been assigned to make an algorithm for cardiomegaly detection so patients can be notified if by chance their X-rays acquired by the hospital for any purpose shows cardiomegaly. (This would be an example of using machine learning for opportunistic screening.) You are given one dataset of healthy (no cardiomegaly) patients who went to an outpatient clinic in a very poor area staffed with first year radiography students. Those patients were being checked for tuberculosis (TB). You also got chest X-rays of cardiomegaly patients from an extremely prestigeous tertiary inpatient hospital. 
 
 :::::::::::::::::::::::: solution 
 
@@ -161,9 +163,9 @@ All of the following may be potential problems:
 
 ## Code Challenge: Using skimage.transform.rotate
 
-Use `skimage.tranform.rotate` to produce two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image we put in `image_g` variable, and then apply what you percieve as the two most critical algorithms to make them ready for classic supervised machine learning in one bit of code.
+Use `skimage.tranform.rotate` to produce two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image we put in `image_g` variable, and then apply what you percieve as the two most critical algorithms to make them ready for classic supervised machine learning in one bit of code. 
 
-Hint: look at the shape of the cardiomegaly image in more ways than one.
+Hint: look at the shape of the cardiomegaly image in more ways than one. What will harsh lines do when we do ML?
 
 :::::::::::::::::::::::: solution 
 
@@ -199,21 +201,21 @@ fig = plt.figure(figsize=(10, 7))
 rows = 1
 columns = 3
 
-# Adds a subplot at the 1st position
+# add a subplot at the 1st position
 fig.add_subplot(rows, columns, 1)
 # showing image
 plt.imshow(better_for_ml_list[0])
 plt.axis('off')
 plt.title("Normal 1")
   
-# Adds a subplot at the 2nd position
+# add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(better_for_ml_list[1])
 plt.axis('off')
 plt.title("Augment 1")
 
-# Adds a subplot at the 3nd position
+# add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(better_for_ml_list[2])
@@ -221,33 +223,36 @@ plt.axis('off')
 plt.title("Augment 2")
 
 ```
-Output:
+
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
 
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Note that the results are be further enhanced by cropping. Usually we want to avoid harsh artifictual lines in any images
+Note that the results are further enhanced by cropping. Usually we want to avoid harsh artifictual lines in any images
 we feed to ML algorithms unless it is always the same line. Of course there are many kinds of transformations of images we can do beyond rotation. Let's look at a shear and a wave over  mesh: 
 
 Shearing: 
 ```python
-# Create Afine transform
+# create afine transform
 afine_tf = tf.AffineTransform(shear=0.2)
 
-# Apply transform to image data
+# apply transform to image data
 modified = tf.warp(image_b, inverse_map=afine_tf)
 
-# Display the result
+# display the result
 io.imshow(modified)
 io.show()
 ```
+![](fig/shear_cxr.png){alt='augmented by shear chest x-ray'}
+
+
 And finally, let's show a wave over a mesh
 ```python
 rows, cols = modified.shape[0], modified.shape[1]
 
-#np.linspace will return evenly spaced numbers over an interval
+# np.linspace will return evenly spaced numbers over an interval
 src_cols = np.linspace(0, cols, 20)
 # ie above is start=0, stop = cols, num = 50, and num is the number of chops
 src_rows = np.linspace(0, rows, 10)
@@ -255,7 +260,7 @@ src_rows = np.linspace(0, rows, 10)
 # np.meshgrid returns coordinate matrices from coordinate vectors.
 src_rows, src_cols = np.meshgrid(src_rows, src_cols)
 
-# nunmpy dstack stacks along a third dimension in the concatenation
+# numpy dstack stacks along a third dimension in the concatenation
 src = np.dstack([src_cols.flat, src_rows.flat])[0]
 dst_rows = src[:, 1] - np.sin(np.linspace(0, 3 * np.pi, src.shape[0])) * 50
 dst_cols = src[:, 0]
@@ -278,14 +283,14 @@ fig = plt.figure(figsize=(10, 7))
 rows = 1
 columns = 4
 
-# Adds a subplot at the 1st position
+# add a subplot at the 1st position
 fig.add_subplot(rows, columns, 1)
 # showing image
 plt.imshow(modified)
 plt.axis('off')
 plt.title("Normal")
   
-# Adds a subplot at the 2nd position
+# ads a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(modified)
@@ -293,7 +298,7 @@ plt.plot(noform.inverse(src)[:, 0], noform.inverse(src)[:, 1], '.b')
 plt.axis('off')
 plt.title("Normal and Mesh")
 
-# Adds a subplot at the 3nd position
+# add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(out)
@@ -301,7 +306,7 @@ plt.imshow(out)
 plt.axis('off')
 plt.title("Augment")
 
-# Adds a subplot at the 3nd position
+# add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 4)
 # showing image
 plt.imshow(out)
@@ -310,21 +315,24 @@ plt.axis('off')
 plt.title("Augment and Mesh")
 ```
 
+![](fig/augment_and_mesh.png){alt='augmented by waves chest x-ray'}
+
+
 That last transform doesn't look so realistic. The chest became very wide, and it was obvious,
 but there are other potential augmentations that could get us into trouble we might not see.
 When it comes to augmenting data, there are many possibilities. Just be careful to make realistically augmented data.
-Only a subject matter expert, usually a pathology or nuclear medicine or radiology specialist, will know what 
-that literally looks like.
+Only a subject matter expert, usually a pathologist or nuclear medicine specialist or radiologist, will know what 
+possible realistic data literally looks like.
 
 ## Images' features
 
 Until now we have worked on an example where we were working directly on images.
-A lot of machine learning can be done on values derived from images (which we typically turn into tabular data). In fact you can even combine images and all kinds of tabular data for machine learning in various ways; but before we discuss this, let's consider image features (which we can organize into tabular data along with patient and/or machine charecteristics) as an input for machine learning.
+A lot of machine learning can be done on values derived from images (which we typically turn into tabular data). In fact you can even combine images and all kinds of tabular data for machine learning in various ways; but before we discuss this, let's consider just image features (which we can organize into tabular data along with patient and/or machine charecteristics) as an input for machine learning.
 
 Two examples are of image features are volume data and radiomic data. 
-Of course at scale we do not want to measure our images to get volume data or other measurements. Legend has it that Benjamin Felson (an undeniable grandfather of modern chest X-ray analysis) got some of his statistics about chest X-rays by reading hundreds and hundreds by hand and counting. Numbers, for research subjects, in the hundreds now seem quiant. With pre-built pipelines we now have the power to process thousands of images at a time. 
+Of course at scale (when we have thousands of images) we do not want to measure our images to get volume data or other measurements by hand. Legend has it that Benjamin Felson (an undeniable grandfather of modern chest X-ray analysis) got some of his statistics about chest X-rays by reading hundreds and hundreds by hand and counting. Numbers, for research subjects, in the hundreds now seem quiant. With pre-built pipelines we now have the power to process thousands of images at a time. 
 
-We want to put images into a pipeline that will give us these data back. An example of such a feature pipeline (for brain imaging) is [Freesurfer](https://surfer.nmr.mgh.harvard.edu/). It helps us to get volume and some other data from brain imaging. 
+We want to put images into a pipeline that will give us various kinds data back automatically. An example of such a feature pipeline (for brain imaging) is [Freesurfer](https://surfer.nmr.mgh.harvard.edu/). It helps us to get volume and some other data from brain imaging. 
 
 ::::::::::::::::::::::::::::::::::::: challenge  
 
@@ -344,7 +352,8 @@ pipeline had mislabelled or miscounted features.   The most important step you c
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Morphometric or volumetric data is just one type of derived data. Radmiomics is another. Radiomics is the study of the mathematic qualities of areas of images, for example the entropy or kurtosis. Typically we want to segment and/or mask an image down to the area we care about, then apply some code to derive radiomic features. While we could write the code ourselves, it's better to use a known package for reproducibility. To be truly reproducible in the future we should also think about the standards of the International Bio-imaging Stanstards Initiative [IBSI](https://theibsi.github.io/). Below is a table of open* libaries:
+Morphometric or volumetric data is just one type of derived data. Radmiomics is another. Radiomics is the study of the mathematical qualities of areas of images, for example the entropy or kurtosis. Similar analyses have been applied to pathology and called pathomics. Some might summarize radiomics and pathomics as advanced texture analysis applied to medical imaging. Others would argue that these fields include a larger variety of data, indeed potentially any quatitiate data, than are normally used in texture analysis. 
+Whatever data we decide to derive we typically we want to segment and/or mask an image down to the area we care about, then apply some code to derive radiomic (or pathomic) features. While we could write the code ourselves, it's better to use a known package for reproducibility. To be truly reproducible in the future we should also think about the standards of the International Bio-imaging Stanstards Initiative [IBSI](https://theibsi.github.io/). Below is a table of open* libaries:
 
 
 |        | `mirp`    | `pyradiomics`        | `LIFEx`           |`radiomics`           |
@@ -359,11 +368,11 @@ Morphometric or volumetric data is just one type of derived data. Radmiomics is 
 | Early Publication |[pending JOSS publication](https://joss.theoj.org/papers/165c85b1ecad891550a21b12c8b2e577)| [doi:10.1158/0008-5472.CAN-17-0339](https://doi.org/10.1158/0008-5472.CAN-17-0339)  |[doi:10.1158/0008-5472.CAN-18-0125](https://doi.org/10.1038/s41598-022-16609-1)|[doi:10.1088/0031-9155/60/14/5471](https://doi.org/10.1088/0031-9155/60/14/5471)| 
 | Notes |    relative newcomer    | very standard and supported| user-friendly   | * MATLAB requires a license | 
 
-Once we have tabular data we can apply all kinds of algorithms to it. But the process is not as simple as adding ML and shaking. In the next section we will explore one reason why.
+Once we have tabular data we can apply all kinds of algorithms to it. But the process is not as simple as adding machine learning and shaking. In the next section we will explore one reason why.
 
 ## Harmonization
 
-We will often have to harmonize either images or derived feature datasets. With images if the differences between datasets are start we will notice them with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each set, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). This is only one potential difference. Examine the images of the same patient below from a 1.5 and 3T machine:
+We will often have to harmonize either images or derived feature datasets. With images if the differences between datasets are obvious we will notice them even with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each dataset, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). This is only one potential difference. Examine the images of the same patient below from a 1.5 and 3T machine:
 
 ![](fig/t1_vT3_large.jpg){alt='T1 v T3'}
 
@@ -414,7 +423,7 @@ No releases and versioning: Autocombat has no releases and no verioning. If a pa
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-We point out the following problems to make you aware of some potential pitfalls with such programs. We hope you will one day build a harmonization package that is also sustainable and reusable for the community of researchers you work with. All of the above packages have many truly positive aspects that make them notable for the research community. Alas no package is perfect. Choose wisely! And don't forget you could also make your own harmonization though code or even step this code up to a package so others can also benefit. 
+We pointed out a few potential problems to make you aware of some potential pitfalls with such programs. We hope you will one day build a harmonization package that is also sustainable and reusable for the community of researchers you work with. All of the above packages have many truly positive aspects that make them notable for the research community. Alas no package is perfect. Choose wisely! And don't forget you could also make your own harmonization though code or even step this code up to a package so others can also benefit. 
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
