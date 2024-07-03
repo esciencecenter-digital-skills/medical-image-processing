@@ -43,7 +43,7 @@ Inline instructor notes: if Zenodo is unavailable ...
 - Document your use of models in academic work
 - Be aware that the corpus such models are trained on may introduce biases
 
-Stable Diffusion is an open source system that can be run locally. Older versions probably needs some GPUs to run on.
+Stable Diffusion is an open source tool that can be run locally which many have used succesfully for image generation. Older versions probably needs some GPUs to run on. Internet rumor has it that there are now builds of this tool that can be run on a CPU, very slowly. If you need to generate a large number of images with any tool, save time and make sure you can run on a GPU.
 One downside to this tool, and many others like it, is that the model is not trained or changed by you, you can't put in your own dataset.
 
 
