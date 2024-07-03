@@ -51,7 +51,7 @@ One downside to this tool, and many others like it, is that the model is not tra
 
 ## What is safe
 
-Can you think of a couple risks of a model run completely on your machine?
+Can you think of a fewrisks of a model run completely on your machine?
 
 :::::::::::::::  solution
 
@@ -60,6 +60,8 @@ Can you think of a couple risks of a model run completely on your machine?
 One risk of any model is that it could contain malicious code. Any model run entirely locally will need to be downloaded to your machine. There is no garuntee that such a model will not contain malware. We therefore encourage the use of open souce models.
 
 Another risk of some models is that the content generated will not be worth the environmental costs. The creation and maintenence of such models uses an astounding amount of resources including carbon and water. We do not suggest running models like ChatGPT endlessly. Even when you run a model locally, this is still in some sense a risk. 
+
+Yet another risk is that you may unwittingly inject your data and algorithms with all kinds of biases. While humans can not interpret patient ethnicity from body imaging, increasing research proves certain AI algorithms not only can, but may use correlations of this data. 
 
 :::::::::::::::::::::::::
 
