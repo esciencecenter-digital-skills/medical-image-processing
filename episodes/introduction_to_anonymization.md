@@ -16,13 +16,18 @@ exercises: 2
 
 - Show examples of data that makes patient images is identifiable
 - Discuss the concept of anonmyization
-- Use pydicom library as an example to handle DICOM metadata
+- Use the Pydicom library as an example to handle DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-Each of us is similar yet unique. This reality makes us identifiable. Metadata e.g. patient name and adressm,are obviously designed to be patient identifying. It is equally important to recognize that in certain contexts this means all kinds of images can also be identified as belonging to a certain person. With the advent of face recognition software and search engines, even images we never thought of as identifiable, like a head CT, MRI [or even PET](https://doi.org/10.1016/j.neuroimage.2022.119357), can be theoretically traced back to a specific patient. 
+Each of us is similar yet unique. This reality makes us identifiable which can be a problem in terms of medical research.
+While the open sharing of data helps research move forward, few patients would want thier medical details shared with the broader world if they could be identified. Patient information is protected by law in most countries. 
+
+ Metadata elements for imaging e.g. patient name and adress, are often obviously designed to be patient identifying. 
+ 
+ In certain contexts the uniqueness of patients means all kinds of images without obvious metadata such as patient name can also be identified as belonging to a certain person. With the advent of face recognition software and search engines, images we never previously thought of as identifiable, like a head CT, MRI [or even PET](https://doi.org/10.1016/j.neuroimage.2022.119357), can be theoretically traced back to a specific patient. We can however, implement de-identification strategies to create data that is shareable.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -30,7 +35,7 @@ Inline instructor notes: if Zenodo is unavailable ...
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Types of patient identifying data scans
+## Types of patient identifying data 
 
 ### Metadata
 
@@ -40,9 +45,11 @@ DICOMs contain metadata. This metadata will have all kinds of identifying data w
 
 A full CT, MRI or PET of the head can be reconstructed into a face. Therefore many image analysis programs 'deface' these types of images. This is useful for not only avoiding the patient's specific identity but also to some extent their demographic identity (ethnicity and gender). 
 
+There are also variuos tools to deface head imaging from several fully built software products e.g. Freesurfer has defacing capabilities, to functions inside code libraries.
+
 ### Text on Images
 
-Occasionaly for various reasons techs will burn information strauight onto images. This may knclude anything from diagnosis to demographics to the patient's name. 
+Occasionaly for various reasons techs will burn information strauight onto images as part of a burned-in annotation. This may include anything from diagnosis to demographics to the patient's name. Luckily this text is not written but typed (thus will be recognizable by optical charecter recignition function), and often typed in the same place on images, away from the center such that clever cropping may eliminate it entirely in some datasets.
 
 ### Other parts of images
 
@@ -56,12 +63,283 @@ In other cases, it would only take slightly more data to figure out who a specif
 *Case courtesy of Ian Bickle, <a href="https://radiopaedia.org/">Radiopaedia.org</a>. From the case <a href="https://radiopaedia.org/cases/61830">rID: 61830</a>*
 
 
-Keep in mind that many data leaks are data leaks within a hospital. People see information on patients they are not treating. Sometimes this is done on purpose e.g. people try to figure out the medical information of colleagues or family members. 
 
+
+There are varios tools available to help de-identify DICOMs in terms of metadata. Of note is [dicom-anonymizer](https://github.com/KitwareMedical/dicom-anonymizer) which is an open source tool written in Python. 
+In some cases you will want to examine metadata in DICOM or remove them by hand, or at least with code. For example in some countries they use DICOM fields inconsistently, and patient identifying data can appear in unexpected fields. 
+
+
+::::::::::::::: callout
+
+## Many ways to "skin" a DICOM:
+
+- Multiple libraries allow you to read, access and manipulate DICOM metadata including Pydicom and SITK.
+- DICOMs are an extremely complicated [standard](https://www.dicomstandard.org/), therefore it is usually better to use existing libraries as opposed to bare python to handle them
+
+:::::::::::::::::::::
+
+For various reasons we may prefer Pydicom or SITK or another method to handle DICOM metadata, usually based on the principle of minimizing dependances and keeping things as simple as possible. SITK was introduced in a previous part of this course. Pydicom is a great alternative not least of all because of it's [documentation](https://pydicom.github.io/pydicom/stable/).
+Let's now see how to open a DICOM and work with it in Pydicom: 
+
+We will import Pydicom and read in a CT:
+
+```python
+import pydicom
+from pydicom import dcmread
+from pydicom.data import get_testdata_file
+fpath = "our_sample_dicom.dcm"
+ds = dcmread(fpath)
+print(ds)
+```
+
+```output
+Dataset.file_meta -------------------------------
+(0002, 0000) File Meta Information Group Length  UL: 218
+(0002, 0001) File Meta Information Version       OB: b'\x00\x01'
+(0002, 0002) Media Storage SOP Class UID         UI: CT Image Storage
+(0002, 0003) Media Storage SOP Instance UID      UI: 1.3.46.670589.33.1.63849049636503447100001.4758671761353145811
+(0002, 0010) Transfer Syntax UID                 UI: JPEG Lossless, Non-Hierarchical, First-Order Prediction (Process 14 [Selection Value 1])
+(0002, 0012) Implementation Class UID            UI: 1.2.840.113845.1.1
+(0002, 0013) Implementation Version Name         SH: 'Syn7,3,0,258'
+(0002, 0016) Source Application Entity Title     AE: 'SynapseDicomSCP'
+-------------------------------------------------
+(0008, 0005) Specific Character Set              CS: 'ISO_IR 100'
+(0008, 0008) Image Type                          CS: ['DERIVED', 'SECONDARY', 'MPR']
+(0008, 0012) Instance Creation Date              DA: '20240418'
+(0008, 0013) Instance Creation Time              TM: '150716.503'
+(0008, 0016) SOP Class UID                       UI: CT Image Storage
+(0008, 0018) SOP Instance UID                    UI: 1.3.46.670589.33.1.63849049636503447100001.4758671761353145811
+(0008, 0020) Study Date                          DA: '20240418'
+(0008, 0022) Acquisition Date                    DA: '20240418'
+(0008, 0023) Content Date                        DA: '20240418'
+(0008, 002a) Acquisition DateTime                DT: '20240418150313.020'
+(0008, 0030) Study Time                          TM: '150045'
+(0008, 0032) Acquisition Time                    TM: '150313'
+(0008, 0033) Content Time                        TM: '150314.375'
+(0008, 0050) Accession Number                    SH: '2001433888'
+(0008, 0060) Modality                            CS: 'CT'
+(0008, 0070) Manufacturer                        LO: 'Philips'
+(0008, 0080) Institution Name                    LO: 'BovenIJ Ziekenhuis iCT'
+(0008, 0081) Institution Address                 ST: ''
+(0008, 0090) Referring Physician's Name          PN: 'WILTING^I^I^""'
+(0008, 1010) Station Name                        SH: 'HOST-999999'
+(0008, 1030) Study Description                   LO: 'CT thorax met iv contrast'
+(0008, 103e) Series Description                  LO: 'Cor IMR med'
+(0008, 1040) Institutional Department Name       LO: 'Radiology'
+(0008, 1080) Admitting Diagnoses Description     LO: ''
+(0008, 1084)  Admitting Diagnoses Code Sequence  0 item(s) ---- 
+(0008, 1090) Manufacturer's Model Name           LO: 'iCT 256'
+(0008, 1111)  Referenced Performed Procedure Step Sequence  1 item(s) ---- 
+   (0008, 1150) Referenced SOP Class UID            UI: Modality Performed Procedure Step SOP Class
+   (0008, 1155) Referenced SOP Instance UID         UI: 1.3.46.670589.33.1.63849049241567858000001.4675122277016890611
+   ---------
+(0008, 1140)  Referenced Image Sequence  1 item(s) ---- 
+   (0008, 1150) Referenced SOP Class UID            UI: CT Image Storage
+   (0008, 1155) Referenced SOP Instance UID         UI: 1.3.46.670589.33.1.63849049294969912500001.5475332148846191441
+   ---------
+(0008, 3010) Irradiation Event UID               UI: 1.3.46.670589.33.1.63849049343237673200010.5507538603167078985
+(0010, 0010) Patient's Name                      PN: 'OurBeloved^Colleague'
+(0010, 0020) Patient ID                          LO: 'party like 1999'
+(0010, 0030) Patient's Birth Date                DA: '19421104'
+(0010, 0040) Patient's Sex                       CS: 'M'
+(0010, 1000) Other Patient IDs                   LO: '1989442112'
+(0010, 1010) Patient's Age                       AS: '041Y'
+(0018, 0010) Contrast/Bolus Agent                LO: 'Iodine'
+(0018, 0015) Body Part Examined                  CS: 'CHEST'
+(0018, 0022) Scan Options                        CS: 'HELIX'
+(0018, 0050) Slice Thickness                     DS: '2.0'
+(0018, 0060) KVP                                 DS: '100.0'
+(0018, 0088) Spacing Between Slices              DS: '2.0'
+(0018, 0090) Data Collection Diameter            DS: '500.0'
+(0018, 1000) Device Serial Number                LO: ''
+(0018, 1020) Software Versions                   LO: '4.1'
+(0018, 1030) Protocol Name                       LO: 'Thorax std /Thorax'
+(0018, 1040) Contrast/Bolus Route                LO: 'IV'
+(0018, 1041) Contrast/Bolus Volume               DS: '80.0'
+(0018, 1044) Contrast/Bolus Total Dose           DS: '40.0'
+(0018, 1046) Contrast Flow Rate                  DS: [3, 3]
+(0018, 1047) Contrast Flow Duration              DS: [17, 10]
+(0018, 1049) Contrast/Bolus Ingredient Concentra DS: '300.0'
+(0018, 1100) Reconstruction Diameter             DS: '348.0'
+(0018, 1110) Distance Source to Detector         DS: '1040.0'
+(0018, 1111) Distance Source to Patient          DS: '570.0'
+(0018, 1120) Gantry/Detector Tilt                DS: '0.0'
+(0018, 1130) Table Height                        DS: '85.1'
+(0018, 1150) Exposure Time                       IS: '434'
+(0018, 1151) X-Ray Tube Current                  IS: '258'
+(0018, 1152) Exposure                            IS: '108'
+(0018, 1160) Filter Type                         SH: 'IMR'
+(0018, 1210) Convolution Kernel                  SH: 'IMR1,Soft Tissue'
+(0018, 5100) Patient Position                    CS: 'FFS'
+(0018, 9305) Revolution Time                     FD: 0.33
+(0018, 9306) Single Collimation Width            FD: 0.625
+(0018, 9307) Total Collimation Width             FD: 80.0
+(0018, 9309) Table Speed                         FD: 185.0
+(0018, 9310) Table Feed per Rotation             FD: 97.664
+(0018, 9311) Spiral Pitch Factor                 FD: 0.763
+(0018, 9345) CTDIvol                             FD: 4.330253533859318
+(0018, a001)  Contributing Equipment Sequence  1 item(s) ---- 
+   (0008, 0070) Manufacturer                        LO: 'PHILIPS'
+   (0008, 0080) Institution Name                    LO: 'BRILLIANCE4'
+   (0008, 0081) Institution Address                 ST: 'BRILLIANCE4'
+   (0008, 1010) Station Name                        SH: 'HOST-999999'
+   (0008, 1040) Institutional Department Name       LO: 'BRILLIANCE4'
+   (0008, 1090) Manufacturer's Model Name           LO: 'BRILLIANCE4'
+   (0018, 1000) Device Serial Number                LO: 'BRILLIANCE4'
+   (0018, 1020) Software Versions                   LO: '4.5.0.30020'
+   (0040, a170)  Purpose of Reference Code Sequence  1 item(s) ---- 
+      (0008, 0100) Code Value                          SH: '109102'
+      (0008, 0102) Coding Scheme Designator            SH: 'DCM'
+      (0008, 0104) Code Meaning                        LO: 'Processing Equipment'
+      ---------
+   ---------
+(0020, 000d) Study Instance UID                  UI: 1.3.46.670589.33.1.63849049241560857600001.4706589000974752499
+(0020, 000e) Series Instance UID                 UI: 1.3.46.670589.33.1.63849049343237673200004.5226562961912261811
+(0020, 0010) Study ID                            SH: '8041'
+(0020, 0011) Series Number                       IS: '203'
+(0020, 0012) Acquisition Number                  IS: '2'
+(0020, 0013) Instance Number                     IS: '1'
+(0020, 0032) Image Position (Patient)            DS: [-172.7884, 8.90000000000001, 1201.43792746114]
+(0020, 0037) Image Orientation (Patient)         DS: [1, 0, 0, 0, 0, -1]
+(0020, 0052) Frame of Reference UID              UI: 1.3.46.670589.33.1.63849049263758127200002.5362237490253193614
+(0020, 1040) Position Reference Indicator        LO: ''
+(0020, 4000) Image Comments                      LT: 'Cor IMR med'
+(0028, 0002) Samples per Pixel                   US: 1
+(0028, 0004) Photometric Interpretation          CS: 'MONOCHROME2'
+(0028, 0010) Rows                                US: 832
+(0028, 0011) Columns                             US: 772
+(0028, 0030) Pixel Spacing                       DS: [0.4507772, 0.4507772]
+(0028, 0100) Bits Allocated                      US: 16
+(0028, 0101) Bits Stored                         US: 12
+(0028, 0102) High Bit                            US: 11
+(0028, 0103) Pixel Representation                US: 0
+(0028, 1050) Window Center                       DS: [50, 50]
+(0028, 1051) Window Width                        DS: [350, 350]
+(0028, 1052) Rescale Intercept                   DS: '-1024.0'
+(0028, 1053) Rescale Slope                       DS: '1.0'
+(0032, 1033) Requesting Service                  LO: 'CHIPSOFT'
+(0040, 1001) Requested Procedure ID              SH: 'CT5001IV'
+(0054, 1001) Units                               CS: 'HU'
+(00e1, 0010) Private Creator                     LO: 'ELSCINT1'
+(00e1, 1036) Private tag data                    CS: 'YES'
+(00e1, 1040) [Image Label]                       SH: 'Cor IMR med'
+(00e1, 1046) Private tag data                    OB: Array of 512 elements
+(01f1, 0010) Private Creator                     LO: 'ELSCINT1'
+(01f1, 1001) [Acquisition Type]                  CS: 'SPIRAL'
+(01f1, 1002) [Unknown]                           CS: 'STANDARD'
+(01f1, 100e) [Unknown]                           FL: 0.0
+(01f1, 1027) [Rotation Time]                     DS: '0.33'
+(01f1, 1032) [Image View Convention]             CS: 'RIGHT_ON_LEFT'
+(01f1, 104a) [Unknown]                           SH: 'DOM'
+(01f1, 104b) [Unknown]                           SH: '128x0.625'
+(01f1, 104d) [Unknown]                           SH: 'NO'
+(01f1, 104e) [Unknown]                           SH: 'Chest'
+(01f1, 1054) Private tag data                    IS: '11'
+(01f1, 1056) Private tag data                    LO: '30.0451206729581'
+(01f7, 0010) Private Creator                     LO: 'ELSCINT1'
+(01f7, 1022) [Unknown]                           UI: 1.3.46.670589.33.1.63849049343237673200010.5507538603167078985
+(07a1, 0010) Private Creator                     LO: 'ELSCINT1'
+(07a1, 1010) [Tamar Software Version]            LO: '4.0.0'
+(7fe0, 0010) Pixel Data                          OB: Array of 309328 elements
+```
+
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## What metadata is safe
+
+Can you identify for this CT which metadata is probably safe i.e. does not lead to patient identification.
+When might you keep such data?
+
+:::::::::::::::  solution
+
+## Solution
+
+Metadata about the machine, image type and file type are pretty safe. 
+This data may be very useful is we are sorting through a lot of DICOMS 
+and only want a certain type of image, or need to create tabular data which helps harmonization.
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+We can modify elements of our dicom metadata
+
+```python
+elem = ds[0x0010, 0x0010]
+elem.value
+```
+```output
+
+```
+```python
+elem.value = 'Citizen^Almoni'
+elem
+```
+In some cases, if we are dealing with a standard element, we can modify elements by keyword:
+
+```python
+ds.PatientName = 'Almoni^Shmalmoni'
+elem
+```
+
+```output
+'Almoni^Shmalmoni'
+```
+
+You can also just set an alament to empty by using None:
+
+```python
+ds.PatientName = None
+elem
+```
+You can even delete elemnts and add elements. After modifications you should save your file
+```python
+ds.save_as('my_modified_dicom.dcm')
+```
+We reccomend stripping off at least the patient IDs and birthdates in most cases. Also look into the data elements'OtherPatientIDs' and 'OtherPatientIDsSequence'.
+
+:::::::::::::::::::::::::::::::::::::::  challenge
+
+## More patient IDs?
+
+How can you access and print more patient identifying data?
+Hint: check around the documentation, and compare what we printed
+
+:::::::::::::::  solution
+
+## Solution
+
+```python
+print(ds.PatientBirthDate)
+print(ds.PatientID)
+print(ds.OtherPatientIDs)
+print(ds.PatientSex)
+print(ds.PatientAge)
+```
+```output
+19421104
+party like 1999
+1989442112
+M
+41Y
+
+````
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+You can use Pydicom to do all sorts of things. You can show your DICOM data in a hierarchical tree for a GUI ready reading. You can downsize images. You can work with waveform data i.e. EKGs. If you add matplotlib you can load and plot files. The list goes on, so before adding more and more libraries, if you are using this one, try to use it's full potential.
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
+- Certain metadata should almost always be removed from DICOMs if DICOMS will be shared
+- Sharing only image files e.g. jpegs or niftis can circumvent metadata dangers
 - Imaging itself without any metadata can be used to identify patients
-- There are 
+- Tooling is available to stip metadata automatically, but stripping should be re-checked as fields are not always used correctly
+- Tooling is available to deface images
+- Various python libraries allow metadata access
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
