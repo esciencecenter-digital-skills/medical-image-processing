@@ -27,7 +27,7 @@
             <span class="visually-hidden">This lesson is in the pre-alpha phase, which means that it is in early development, but has not yet been taught.</span>
           </abbr>
         </span>
-        
+
       </div>
     </div>
     <div class="selector-container">
@@ -56,7 +56,7 @@
             </li>
           </ul></li>
       </div>
-      
+
       <div class="dropdown" id="instructor-dropdown">
         <button class="btn btn-secondary dropdown-toggle bordered-button" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
           <i aria-hidden="true" class="icon" data-feather="eye"></i> Instructor View <i data-feather="chevron-down"></i>
@@ -180,7 +180,7 @@
                 </div><!--/div.accordion-flush-->
               </div><!--div.sidenav-view-selector -->
             </div><!--/div.col -->
-      
+
             <hr></div><!--/div.mobile-row -->
 
           <div class="accordion accordion-flush" id="accordionFlush11">
@@ -199,7 +199,7 @@
     <div class="accordion-header" id="flush-heading1">
         <a href="index.html">Summary and Schedule</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -208,7 +208,7 @@
     <div class="accordion-header" id="flush-heading2">
         <a href="introduction.html">1. Course Introduction</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -217,7 +217,7 @@
     <div class="accordion-header" id="flush-heading3">
         <a href="introduction_to_medical_imaging.html">2. Introduction to Medical Imaging</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -231,7 +231,7 @@
         </span>
       </button>
     </div><!--/div.accordion-header-->
-        
+
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#introduction">Introduction</a></li>
@@ -244,7 +244,7 @@
 <li><a href="#diffusion-mri-data">Diffusion MRI data</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -253,7 +253,7 @@
     <div class="accordion-header" id="flush-heading5">
         <a href="simpleitk.html">4. Registration and Segmentation with SITK</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -285,10 +285,10 @@
               </div>
             </div>
             <hr class="half-width resources"><a href="../instructor/aio.html">See all in one page</a>
-            
+
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
-            
+
             </div>
           </div><!-- /div.accordion -->
         </div><!-- /div.sidebar-inner -->
@@ -309,20 +309,20 @@
           Previous: Introduction to
         </a>
         <a class="chapter-link float-end" href="../instructor/simpleitk.html" rel="next">
-          Next: Registration and... 
+          Next: Registration and...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Working with MRI</h1>
         <p>Last updated on 2024-05-23 |
-        
+
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_mri.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-        
-        
-        
+
+
+
         <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 62 minutes</p>
-        
+
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -360,8 +360,8 @@ data?</li>
 </div>
 </div>
 </div>
-<section id="introduction"><h2 class="section-heading">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<a class="anchor" aria-label="anchor" href="#introduction"></a></h2>
 <hr class="half-width"><p>This lesson is heavily based on existing lessons from Carpentries;
 namely:</p>
 <ol style="list-style-type: decimal"><li><a href="https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/" class="external-link">Introduction
@@ -387,8 +387,8 @@ then work in a notebook from there, so use the following:
 </div>
 </div>
 </div>
-</section><section id="types-of-mr-scans"><h2 class="section-heading">Types of MR scans<a class="anchor" aria-label="anchor" href="#types-of-mr-scans"></a>
-</h2>
+</section><section><h2 class="section-heading" id="types-of-mr-scans">Types of MR scans<a class="anchor" aria-label="anchor" href="#types-of-mr-scans"></a>
+<a class="anchor" aria-label="anchor" href="#types-of-mr-scans"></a></h2>
 <hr class="half-width"><div class="section level3">
 <h3 id="anatomical">Anatomical<a class="anchor" aria-label="anchor" href="#anatomical"></a></h3>
 <figure><img src="../fig/t1t2flairbrain.jpg" alt="FLAIR brain" class="figure mx-auto d-block"></figure><p><em>Sourced from <a href="https://case.edu/med/neurology/NR/MRI%20Basics.htm" class="external-link">https://case.edu/med/neurology/NR/MRI%20Basics.htm</a></em></p>
@@ -420,8 +420,8 @@ contrast MR perfusion, and arterial spin labelled perfusion.</p>
 <p>MRI can also be used for spectroscopy, but this will not be covered
 here as it does not produce traditional images.</p>
 </div>
-</section><section id="common-mri-file-formats"><h2 class="section-heading">Common MRI file formats<a class="anchor" aria-label="anchor" href="#common-mri-file-formats"></a>
-</h2>
+</section><section><h2 class="section-heading" id="common-mri-file-formats">Common MRI file formats<a class="anchor" aria-label="anchor" href="#common-mri-file-formats"></a>
+<a class="anchor" aria-label="anchor" href="#common-mri-file-formats"></a></h2>
 <hr class="half-width"><table class="table"><colgroup><col width="13%"><col width="17%"><col width="55%"><col width="13%"></colgroup><thead><tr class="header"><th>Format Name</th>
 <th>File Extension</th>
 <th>Origin/Group</th>
@@ -483,8 +483,8 @@ structure, and these are sometimes called <a href="https://bids-apps.neuroimagin
 <p>We recommend the <a href="https://bids-standard.github.io/bids-starter-kit/#" class="external-link">BIDS
 starter-kit website</a> for learning the basics of this standard.</p>
 <p>Next, we’ll cover some details on working with NIfTI files.</p>
-</section><section id="reading-nifti-images"><h2 class="section-heading">Reading NIfTI images<a class="anchor" aria-label="anchor" href="#reading-nifti-images"></a>
-</h2>
+</section><section><h2 class="section-heading" id="reading-nifti-images">Reading NIfTI images<a class="anchor" aria-label="anchor" href="#reading-nifti-images"></a>
+<a class="anchor" aria-label="anchor" href="#reading-nifti-images"></a></h2>
 <hr class="half-width"><p><a href="https://nipy.org/nibabel/" class="external-link">NiBabel</a> is a Python package
 for reading and writing neuroimaging data. To learn more about how
 NiBabel handles NIfTIs, refer to the <a href="https://nipy.org/nibabel/nifti_images.html" class="external-link">NiBabel documentation
@@ -896,8 +896,8 @@ doing the following:</p>
 at a particular voxel. Next we will see how to not just pull one voxel
 but a slice or an array of voxels for visualization and analysis.</p>
 </div>
-</section><section id="working-with-image-data"><h2 class="section-heading">Working with image data<a class="anchor" aria-label="anchor" href="#working-with-image-data"></a>
-</h2>
+</section><section><h2 class="section-heading" id="working-with-image-data">Working with image data<a class="anchor" aria-label="anchor" href="#working-with-image-data"></a>
+<a class="anchor" aria-label="anchor" href="#working-with-image-data"></a></h2>
 <hr class="half-width"><p>Slicing does exactly what it seems to imply. Given a 3D volume,
 slicing involves extracting a 2D <strong>slice</strong> from our
 data.</p>
@@ -972,8 +972,8 @@ that particular axis.</p>
 <p>We’ve been slicing and dicing images but we have no idea what they
 look like. In the next section we’ll show you one way you can visualize
 it all together.</p>
-</section><section id="visualizing-the-data"><h2 class="section-heading">Visualizing the data<a class="anchor" aria-label="anchor" href="#visualizing-the-data"></a>
-</h2>
+</section><section><h2 class="section-heading" id="visualizing-the-data">Visualizing the data<a class="anchor" aria-label="anchor" href="#visualizing-the-data"></a>
+<a class="anchor" aria-label="anchor" href="#visualizing-the-data"></a></h2>
 <hr class="half-width"><p>We previously inspected the signal intensity of the voxel at
 coordinates (10,20,3). Let’s see what out data looks like when we slice
 it at this location. We’ve already indexed the data at each x-, y-, and
@@ -1075,8 +1075,8 @@ move inferior</li>
 </ul><p>Increasing a coordinate value in the first dimension corresponds to
 moving to the right of the person being scanned, and so on.</p>
 </div>
-</section><section id="functional-mri-data-and-general-workflow-pipelines"><h2 class="section-heading">Functional MRI data and general workflow pipelines<a class="anchor" aria-label="anchor" href="#functional-mri-data-and-general-workflow-pipelines"></a>
-</h2>
+</section><section><h2 class="section-heading" id="functional-mri-data-and-general-workflow-pipelines">Functional MRI data and general workflow pipelines<a class="anchor" aria-label="anchor" href="#functional-mri-data-and-general-workflow-pipelines"></a>
+<a class="anchor" aria-label="anchor" href="#functional-mri-data-and-general-workflow-pipelines"></a></h2>
 <hr class="half-width"><p>A fundamental difference between many MRI sequences and fMRI is the
 inclusion of a time dimension in fMRI. Essentially, fMRI captures a
 signal in each voxel of the imaged object over time. We can visualize
@@ -1130,8 +1130,8 @@ is a library to consider for fMRI data.</p>
 </ul></div>
 </div>
 </div>
-</section><section id="diffusion-mri-data"><h2 class="section-heading">Diffusion MRI data<a class="anchor" aria-label="anchor" href="#diffusion-mri-data"></a>
-</h2>
+</section><section><h2 class="section-heading" id="diffusion-mri-data">Diffusion MRI data<a class="anchor" aria-label="anchor" href="#diffusion-mri-data"></a>
+<a class="anchor" aria-label="anchor" href="#diffusion-mri-data"></a></h2>
 <hr class="half-width"><p>Diffusion MRIs have additional data when compared to anatomical
 MRIs.</p>
 <p>Diffusion sequences are sensitive to the signals from the random,
@@ -1223,9 +1223,9 @@ imperfections</li>
 </ul></div>
 </div>
 </div>
-<!-- 
+<!--
 Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use. 
+any links that you are not going to use.
  -->
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
@@ -1239,7 +1239,7 @@ any links that you are not going to use.
           Previous: Introduction to
         </a>
         <a class="chapter-link float-end" href="../instructor/simpleitk.html" rel="next">
-          Next: Registration and... 
+          Next: Registration and...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -1250,18 +1250,18 @@ any links that you are not going to use.
       		<footer class="row footer mx-md-3"><hr><div class="col-md-6">
         <p>This lesson is subject to the <a href="CODE_OF_CONDUCT.html">Code of Conduct</a></p>
         <p>
-        
+
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_mri.md" class="external-link">Edit on GitHub</a>
-        
+
 	
         | <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a>
         | <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/" class="external-link">Source</a></p>
 				<p><a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:c.moore@esciencecenter.nl">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
 			</div>
 			<div class="col-md-6">
-        
+
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
-        
+
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.5" class="external-link">sandpaper (0.16.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.3" class="external-link">varnish (1.0.3)</a></p>
 			</div>
@@ -1286,7 +1286,7 @@ any links that you are not going to use.
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/introduction_to_mri.html",
   "dateCreated": "2024-07-02",
   "dateModified": "2024-05-23",
-  "datePublished": "2024-07-02"
+  "datePublished": "2024-07-09"
 }
 
   </script><script>

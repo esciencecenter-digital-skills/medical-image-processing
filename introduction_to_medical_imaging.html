@@ -27,7 +27,7 @@
             <span class="visually-hidden">This lesson is in the pre-alpha phase, which means that it is in early development, but has not yet been taught.</span>
           </abbr>
         </span>
-        
+
       </div>
     </div>
     <div class="selector-container">
@@ -56,7 +56,7 @@
             </li>
           </ul></li>
       </div>
-      
+
       <div class="dropdown" id="instructor-dropdown">
         <button class="btn btn-secondary dropdown-toggle bordered-button" type="button" id="dropdownMenu1" data-bs-toggle="dropdown" aria-expanded="false">
           <i aria-hidden="true" class="icon" data-feather="eye"></i> Learner View <i data-feather="chevron-down"></i>
@@ -180,7 +180,7 @@
                 </div><!--/div.accordion-flush-->
               </div><!--div.sidenav-view-selector -->
             </div><!--/div.col -->
-      
+
             <hr></div><!--/div.mobile-row -->
 
           <div class="accordion accordion-flush" id="accordionFlush11">
@@ -199,7 +199,7 @@
     <div class="accordion-header" id="flush-heading1">
         <a href="index.html">Summary and Setup</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -208,7 +208,7 @@
     <div class="accordion-header" id="flush-heading2">
         <a href="introduction.html">1. Course Introduction</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -222,7 +222,7 @@
         </span>
       </button>
     </div><!--/div.accordion-header-->
-        
+
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#x-rays">X-Rays</a></li>
@@ -232,7 +232,7 @@
 <li><a href="#other-image-types">Other image types</a></li>
         </ul></div><!--/div.accordion-body-->
     </div><!--/div.accordion-collapse-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -241,7 +241,7 @@
     <div class="accordion-header" id="flush-heading4">
         <a href="introduction_to_mri.html">3. Working with MRI</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -250,7 +250,7 @@
     <div class="accordion-header" id="flush-heading5">
         <a href="simpleitk.html">4. Registration and Segmentation with SITK</a>
     </div><!--/div.accordion-header-->
-        
+
   </div><!--/div.accordion-item-->
 </div><!--/div.accordion-flush-->
 
@@ -282,10 +282,10 @@
               </div>
             </div>
             <hr class="half-width resources"><a href="aio.html">See all in one page</a>
-            
+
 
             <hr class="d-none d-sm-block d-md-none"><div class="d-grid gap-1">
-            
+
             </div>
           </div><!-- /div.accordion -->
         </div><!-- /div.sidebar-inner -->
@@ -306,18 +306,18 @@
           Previous: Course Introduction
         </a>
         <a class="chapter-link float-end" href="introduction_to_mri.html" rel="next">
-          Next: Working with MRI... 
+          Next: Working with MRI...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Introduction to Medical Imaging</h1>
         <p>Last updated on 2024-05-27 |
-        
+
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_medical_imaging.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-        
-        
-        
+
+
+
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -376,8 +376,8 @@ manufacturers may have specificities in terms of file types not covered
 here, and there are many possibilities in terms of how images could
 potentially be stored. Here we will discuss what is common to get in
 terms of files given to researchers.</p>
-<section id="x-rays"><h2 class="section-heading">X-Rays<a class="anchor" aria-label="anchor" href="#x-rays"></a>
-</h2>
+<section><h2 class="section-heading" id="x-rays">X-Rays<a class="anchor" aria-label="anchor" href="#x-rays"></a>
+<a class="anchor" aria-label="anchor" href="#x-rays"></a></h2>
 <hr class="half-width"><p>Historically, x-rays were the first common form of medical imaging.
 The diagram below should help you visualize how they are produced. The
 signal from an x-ray generator crosses the subject. Some tissues
@@ -401,8 +401,8 @@ flouroscopy. Flouroscopy images are stored in a DICOM but can be
 displayed as movies because they are typically cine-files. Cine- is a
 file format that lets you store images in sequence with a frame
 rate.</p>
-</section><section id="computed-tomography-and-tomosynthesis"><h2 class="section-heading">Computed Tomography and Tomosynthesis<a class="anchor" aria-label="anchor" href="#computed-tomography-and-tomosynthesis"></a>
-</h2>
+</section><section><h2 class="section-heading" id="computed-tomography-and-tomosynthesis">Computed Tomography and Tomosynthesis<a class="anchor" aria-label="anchor" href="#computed-tomography-and-tomosynthesis"></a>
+<a class="anchor" aria-label="anchor" href="#computed-tomography-and-tomosynthesis"></a></h2>
 <hr class="half-width"><p>There are several kinds of tomography. This technique produces
 3D-images, made of voxels, that allow us to see structures within a
 subject. CTs are extremely common, and helpful for many diagnostic
@@ -420,8 +420,8 @@ either 3D or single layer “slices” of voxels. It is not uncommon to get
 CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be
 processed before viewing, or in some cases stored off as other file
 types.</p>
-</section><section id="ultrasounds"><h2 class="section-heading">Ultrasounds<a class="anchor" aria-label="anchor" href="#ultrasounds"></a>
-</h2>
+</section><section><h2 class="section-heading" id="ultrasounds">Ultrasounds<a class="anchor" aria-label="anchor" href="#ultrasounds"></a>
+<a class="anchor" aria-label="anchor" href="#ultrasounds"></a></h2>
 <hr class="half-width"><p>Ultrasounds can produce multiple complex types of images. Typically,
 sonographers produce a lot of B-mode images. They use high frequency
 sound waves, sent and captured from a piezoelectric probe (also known as
@@ -482,8 +482,8 @@ machine type</li>
 </div>
 </div>
 </div>
-</section><section id="magnetic-resonance-imaging"><h2 class="section-heading">Magnetic Resonance Imaging<a class="anchor" aria-label="anchor" href="#magnetic-resonance-imaging"></a>
-</h2>
+</section><section><h2 class="section-heading" id="magnetic-resonance-imaging">Magnetic Resonance Imaging<a class="anchor" aria-label="anchor" href="#magnetic-resonance-imaging"></a>
+<a class="anchor" aria-label="anchor" href="#magnetic-resonance-imaging"></a></h2>
 <hr class="half-width"><p>MRIs are images made by utilizing some fairly complicated physics in
 terms of what we can do to protons (abundant in human tissue) with
 magnets and radiofrequency waves, and how we capture their signal.
@@ -500,8 +500,8 @@ post-processed 3D-array wrapped inside a DICOM file. We can transform
 the image, and parts of the metadata, to a variety of file types
 commonly used in neuroscience research. These file types will be covered
 in more detail later in the course.</p>
-</section><section id="other-image-types"><h2 class="section-heading">Other image types<a class="anchor" aria-label="anchor" href="#other-image-types"></a>
-</h2>
+</section><section><h2 class="section-heading" id="other-image-types">Other image types<a class="anchor" aria-label="anchor" href="#other-image-types"></a>
+<a class="anchor" aria-label="anchor" href="#other-image-types"></a></h2>
 <hr class="half-width"><p>PET scans, nuclear medicine images in general and pathology images
 are also broadly available inside hospitals. Pathology is currently
 undergoing a revolution of digitalization, and a typical file format has
@@ -556,9 +556,9 @@ future</li>
 </ul></div>
 </div>
 </div>
-<!-- 
+<!--
 Place links that you need to refer to multiple times across pages here. Delete
-any links that you are not going to use. 
+any links that you are not going to use.
  -->
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
@@ -572,7 +572,7 @@ any links that you are not going to use.
           Previous: Course Introduction
         </a>
         <a class="chapter-link float-end" href="introduction_to_mri.html" rel="next">
-          Next: Working with MRI... 
+          Next: Working with MRI...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -583,18 +583,18 @@ any links that you are not going to use.
       		<footer class="row footer mx-md-3"><hr><div class="col-md-6">
         <p>This lesson is subject to the <a href="CODE_OF_CONDUCT.html">Code of Conduct</a></p>
         <p>
-        
+
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_medical_imaging.md" class="external-link">Edit on GitHub</a>
-        
+
 	
         | <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/CONTRIBUTING.md" class="external-link">Contributing</a>
         | <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/" class="external-link">Source</a></p>
 				<p><a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/CITATION" class="external-link">Cite</a> | <a href="mailto:c.moore@esciencecenter.nl">Contact</a> | <a href="https://carpentries.org/about/" class="external-link">About</a></p>
 			</div>
 			<div class="col-md-6">
-        
+
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
-        
+
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
         <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.5" class="external-link">sandpaper (0.16.5)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.3" class="external-link">varnish (1.0.3)</a></p>
 			</div>
@@ -619,7 +619,7 @@ any links that you are not going to use.
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/introduction_to_medical_imaging.html",
   "dateCreated": "2024-07-02",
   "dateModified": "2024-05-27",
-  "datePublished": "2024-07-02"
+  "datePublished": "2024-07-09"
 }
 
   </script><script>
