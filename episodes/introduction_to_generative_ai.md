@@ -33,6 +33,11 @@ Inline instructor notes: if Zenodo is unavailable ...
 
 ## Using generative AI tools well
 
+### Architectures
+
+Generative AI encompasses any model that generates new data be is text, images, video, or audio. There are many architectures that can accomplish such a task. Some popular architectures are generative adversarial networks (GANs), variational autoencoders, diffusion models and transformers. The details of these architectures are beyond the scopre of this course, however understanding how an architecture works may provide insight into what it is generating. For example if we have used any model that views data as a sequence (whether it be a sequence of pixels or words), and generates the most probable next pixel or word, if we have no other controls, we are very much going to repeat what is common (as opposed to inherently correct and true) in our training dataset.   
+There is a risk with many generative algorithms that you may unwittingly inject your data and algorithms with all kinds of biases. While humans can not interpret patient ethnicity from body imaging, increasing research proves certain AI algorithms not only can, but may use correlations of this data. This is only one of many risks with these technologies. In the next section we will consider safety. 
+
 ### Using generative AI safely
 
 - Never upload non-anonymized sensitive patient data away from your own servers
@@ -61,9 +66,8 @@ Can you think of a few risks of a model run completely on your machine?
 
 One risk of any model is that it could contain malicious code. Any model run entirely locally will need to be downloaded to your machine. There is no garuntee that such a model will not contain malware. We therefore encourage the use of open souce models.
 
-Another risk of some models is that the content generated will not be worth the environmental costs. The creation and maintenence of such models uses an astounding amount of resources including carbon and water. We do not suggest running models like ChatGPT endlessly. Even when you run a model locally, this is still in some sense a risk. 
+Another risk of some models is that the content generated will not be worth the environmental costs. The creation and maintenence of such models uses an astounding amount of resources including carbon and water. We do not suggest running models like ChatGPT endlessly. Even when you run a model locally, this is still in some sense a risk. In fact you could end up using a smaller training dataset so everything fits on your machine, but trade off quality.  
 
-Yet another risk is that you may unwittingly inject your data and algorithms with all kinds of biases. While humans can not interpret patient ethnicity from body imaging, increasing research proves certain AI algorithms not only can, but may use correlations of this data. 
 
 :::::::::::::::::::::::::
 
