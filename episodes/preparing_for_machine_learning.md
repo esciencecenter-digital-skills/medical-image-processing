@@ -4,72 +4,73 @@ teaching: 90
 exercises: 5
 ---
 
+<!-- TODO: Polish variables in the code -->
+<!-- TODO: Put into subsequent challenges CODE CHALLENGE: USING SKIMAGE.TRANSFORM.ROTATE -->
+
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What are the basic steps involved in preparing images for machine learning?
-- How can data be augmented? 
-- How should you handle data from different sources or acquired under different conditions?
-- How can we create features for machine learning through radiomics or volumetrics?
+- What are the fundamental steps in preparing images for machine learning?
+- What techniques can be used to augment data?
+- How should data from various sources or collected under different conditions be handled?
+- How can we generate features for machine learning using radiomics or volumetrics?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Explain the basic steps involved of preparing images for machine learning
-- Demonstrate data augmentation with affines
-- Explain the pitfalls of data augmentation
-- Explain derived features, including radiomics and other pipeline-derived features
-- Review image harmonization techniques at the image and dataset level
+- Outline the fundamental steps involved in preparing images for machine learning
+- Demonstrate data augmentation techniques using affine transformations
+- Discuss the potential pitfalls of data augmentation
+- Explain the concept of derived features, including radiomics and other pipeline-derived features
+- Review image harmonization techniques at both the image and dataset levels
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Basic steps
 
-Datasets of images you receive can be the raw data for machine learning. If you are extremely lucky they can be used without much effort, however in many projects the majority of time
-spent in building machine learning is spent cleaning up and preparing data. The quality of the data used will have a profound impact on the quality of the models built. 
+Datasets of images can serve as the raw data for machine learning (ML). While in rare cases they might be ready for use with minimal effort, in most projects, a significant portion of time is dedicated to cleaning and preparing the data. The quality of the data directly impacts the quality of the resulting models.
 
-One of the first steps towards building a model is simply looking at both some of the data and metadata by hand. 
+One of the initial steps in building a model involves manually inspecting both the data and metadata.
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1: Thinking about metadata
+## Challenge: Thinking about metadata
 
-What metadata will you want to look at in almost any radiological dataset?
+What metadata should you examine in almost any radiological dataset?
 
-Hint: Think of metadata relevant for brain and thorax imaging. 
+Hint: Consider metadata pertinent to brain and thorax imaging.
 
 :::::::::::::::::::::::: solution 
 
 ## Solution
- 
-You will almost always want to look at age and sex distribution. These are relevant metadata whether you are looking at brain MRIs or chest X-rays. They will also be relevant in a variety of other cases.
+
+In almost any radiological dataset, it is essential to examine the age and sex distribution. These metadata are crucial for both brain MRIs and chest X-rays, as well as for many other types of imaging studies.
 
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::
 
-In the real world we often have a question about a specific pathology that is relatively rare, so we may get a dataset of thousands of normal subjects, and then relatively fewer of with any pathology, and perhaps even fewer of the pathology we care about. This creates an imbalanced dataset in general, but once we think about metadata in may also create biases. For example if we want to build a model to detect heart failure on chest X-ray, but all our heart failure patients are older men, we may get a model
-that "looks" for the absence of female breasts, and signs of ageing, rather than one that looks for actual signs of heart failure we are familiar with i.e. the ratio of heart to chest diameter (or in the words of radiologists cardiothoracic ratio).
+In real-world scenarios, we often face the challenge of investigating a specific pathology that is relatively rare. Consequently, our dataset may contain thousands of normal subjects but relatively few with any pathology, and even fewer with the pathology of interest. This creates an imbalanced dataset and can introduce biases. For instance, if we aim to develop a model to detect heart failure on chest X-rays, but all our heart failure patients are older men, the model may incorrectly focus on the absence of female breasts and signs of aging instead of actual heart failure indicators, such as the cardiothoracic ratio.
 
-Below are some initial steps to understanding your dataset if you plan to do supervised machine learning:
+Here are some initial steps to understanding your dataset if you plan to do supervised ML:
 
-1. Check some images by hand (quality, content, surprises)
-2. Check some of labeling by hand (quality, content, surprises)
-3. Diversity check by obvious protected classes (can be in images or labels or metadata)
-4. Conversion of images to a lossless format, and storage of a backup data collection
-5. Anonymization can include inside images (OCR (optical character recognition)?)
-6. Decide what in images is important, consider cropped versions?
-7. Normalizations: size, histogram, other, 'centering' in some cases only
-8. Re-examine some images by hand with attention to artifiacts created by your resizing or other steps 
-9. Dataset harmonizations?
-10. Augmented and/or synthetic data creation
+1. Check some images by hand: assess quality, content, and any unexpected elements.
+2. Check some labeling by hand: ensure accuracy, consistency, and note any surprises.
+3. Diversity check for obvious protected classes: examine images, labels, or metadata for representation.
+4. Convert images to a lossless format and store a backup of the data collection.
+5. Anonymize data: remove identifiable information within images (consider using OCR for text).
+6. Determine important image features: consider creating cropped versions.
+7. Normalize images: adjust for size, histogram, and other factors, ensuring proper centering when necessary.
+8. Re-examine some images by hand: look for artifacts introduced during preprocessing steps.
+9. Harmonize the dataset.
+10. Create augmented and/or synthetic data.
 
-When you prepare images for unsupervised learning, you can use many of the same steps. However, you need to consider the specific algorithm itself e.g. some segmentation algorithms may not benefit from extra data.
+When preparing images for unsupervised learning, many of these steps still apply. However, you must also consider the specific algorithm's requirements, as some segmentation algorithms may not benefit from additional data.
 
-In our supervised preparation step number two we suggest checking labeling, the label or the y, is what you want to predict. You need to make sure the labelling was actually done correctly, and see how may types of labels there are (as opposed to how many you want your models to predict). In step three we suggest checking for diversity of protected classes. Protected classes are groups in society who usuallt have specific legislation in terms of medical diagnostic testing and other areas where they have historically been underrepresented. To be more specific and blunt, it is a good idea to check if your dataset has women and certain ethnic minority groups. Certain measurements may be normal in terms of one population, and not others, for example chest circumference and height are known to differ dramatically on average between Dutch people without a migrant background, and people from Indonesia. If your algorithm is about cerebral blood flow, then this body size might matter very little, but you have to think about the context of your specific algorithm. In step five we mention anonymization in terms of images. This is especially the case with ultrasounds. They often have things like the patient name or even the diagnosis burned right onto the image. You may be able to simply crop this away if it is always done in a corner. But if you want to get more sophisticated, you can apply all kinds of blurring and masking, or even use optical charecter recognition (OCR).
+In our supervised preparation step two, we suggest checking labeling, which is the target variable you want to predict. Ensure the labeling is accurate and examine the types of labels present versus what you want your models to predict. In step three, we emphasize checking for diversity among protected classes (i.e., groups that often have specific legislation regarding medical diagnostics due to historical underrepresentation). Specifically, ensure your dataset includes women and certain ethnic minority groups. For example, chest circumference and height can vary significantly between populations, such as Dutch people and those from Indonesia. While these differences might not matter for an algorithm focused on cerebral blood flow, they are crucial for others. In step five, anonymization is highlighted, particularly for ultrasounds, which may display patient names or diagnoses directly on the image. Simple cropping can sometimes suffice, but more sophisticated techniques like blurring, masking, or optical character recognition (OCR) can also be employed.
 
-We will cover step nine, dataset harmonization, in a separate section. For step ten, creating more data, you could create entirely synthetic data, and this will be further covered in a seperate episode on generative AI. In the next section, we will work through some examples of augmented data creation.  
+We will cover step nine, dataset harmonization, in a separate section. For step ten, creating more data, synthetic data generation will be discussed further in an episode on generative AI. In the next section, we will explore examples of augmented data creation.
 
-To work though our examples of dataset augmentation you will need an appropriate environment. You can build the environment from our `ml_environment` file (see the setup instructions).
+To work through our dataset augmentation examples, you will need an appropriate environment. You can build the environment using our `ml_environment` file (see the setup instructions).
 
 Let's switch environments (assuming your environment is called `image_libraries`):
 
@@ -140,19 +141,24 @@ plt.title("Normal 2")
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Thought Challenge: Can you see some problems in the following scenario?
+## Challenge: Can you see some problems in the following scenario?
 
-Imagine you got the above images and many more because you have been assigned to make an algorithm for cardiomegaly detection so patients can be notified if by chance their X-rays acquired by the hospital for any purpose shows cardiomegaly. (This would be an example of using machine learning for opportunistic screening.) You are given one dataset of healthy (no cardiomegaly) patients who went to an outpatient clinic in a very poor area staffed with first year radiography students. Those patients were being checked for tuberculosis (TB). You also got chest X-rays of cardiomegaly patients from an extremely prestigeous tertiary inpatient hospital. 
+Imagine you got the above images and many more because you have been assigned to make an algorithm for cardiomegaly detection. The goal is to notify patients if their hospital-acquired X-rays, taken for any reason, show signs of cardiomegaly. This is an example of using ML for opportunistic screening.
+
+You are provided with two datasets:
+
+- A dataset of healthy (no cardiomegaly) patients from an outpatient clinic in a very poor area, staffed by first-year radiography students. These patients were being screened for tuberculosis (TB).
+- A dataset of chest X-rays of cardiomegaly patients from an extremely prestigious tertiary inpatient hospital.
 
 :::::::::::::::::::::::: solution 
 
 ## Solution
  
-All of the following may be potential problems:
+All of the following may pose potential problems:
 
-- We may have different quality images from different machines for our healthy versus diseased in this scenario, this could be called a "batch effect" creating bias
-- In the presigous hospital many X-rays may be supine, will these combine well with standing APs?
-- We could suspect labelling may not be entirely accurate in the clinic because has by lower level staff 
+- We may have different quality images from different machines for our healthy versus diseased patients, which could introduce a "batch effect" and create bias.
+- At the prestigious hospital, many X-rays might be taken in the supine position. Will these combine well with standing AP X-rays?
+- There could be concerns about the accuracy of labeling at the clinic since it was performed by lower-level staff.
 
 :::::::::::::::::::::::::::::::::
 
@@ -161,11 +167,11 @@ All of the following may be potential problems:
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Code Challenge: Using skimage.transform.rotate
+## Challenge: Using skimage.transform.rotate
 
-Use `skimage.tranform.rotate` to produce two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image we put in `image_g` variable, and then apply what you percieve as the two most critical algorithms to make them ready for classic supervised machine learning in one bit of code. 
+Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_g` variable. Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
 
-Hint: look at the shape of the cardiomegaly image in more ways than one. What will harsh lines do when we do ML?
+Hint: Carefully examine the shape of the cardiomegaly image from multiple perspectives. Consider the impact of harsh lines on ML performance.
 
 :::::::::::::::::::::::: solution 
 
@@ -230,10 +236,10 @@ plt.title("Augment 2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Note that the results are further enhanced by cropping. Usually we want to avoid harsh artifictual lines in any images
-we feed to ML algorithms unless it is always the same line. Of course there are many kinds of transformations of images we can do beyond rotation. Let's look at a shear and a wave over  mesh: 
+Note that the results are further enhanced by cropping. Typically, we aim to minimize harsh artificial lines in any images we feed to ML algorithms, unless they are consistent. Of course, there are numerous other transformations we can apply to images beyond rotation. For example, let's explore applying a shear and a wave over a mesh:
 
-Shearing: 
+Shearing:
+
 ```python
 # create afine transform
 afine_tf = tf.AffineTransform(shear=0.2)
@@ -248,7 +254,8 @@ io.show()
 ![](fig/shear_cxr.png){alt='augmented by shear chest x-ray'}
 
 
-And finally, let's show a wave over a mesh
+And finally, let's show a wave over a mesh:
+
 ```python
 rows, cols = modified.shape[0], modified.shape[1]
 
@@ -317,43 +324,43 @@ plt.title("Augment and Mesh")
 
 ![](fig/augment_and_mesh.png){alt='augmented by waves chest x-ray'}
 
-
-That last transform doesn't look so realistic. The chest became very wide, and it was obvious,
-but there are other potential augmentations that could get us into trouble we might not see.
-When it comes to augmenting data, there are many possibilities. Just be careful to make realistically augmented data.
-Only a subject matter expert, usually a pathologist or nuclear medicine specialist or radiologist, will know what 
-possible realistic data literally looks like.
+The last transformation doesn’t appear realistic. The chest became noticeably widened, which could be problematic. When augmenting data, there are numerous possibilities, but it's crucial to ensure the augmented data remains realistic. Only a subject matter expert (typically a pathologist, nuclear medicine specialist, or radiologist) can accurately determine what realistic data should look like.
 
 ## Images' features
 
-Until now we have worked on an example where we were working directly on images.
-A lot of machine learning can be done on values derived from images (which we typically turn into tabular data). In fact you can even combine images and all kinds of tabular data for machine learning in various ways; but before we discuss this, let's consider just image features (which we can organize into tabular data along with patient and/or machine charecteristics) as an input for machine learning.
+So far, we've focused on examples where we directly manipulate images. However, much of ML involves working with derived values from images, often converted into tabular data. In fact, it's possible to combine images with various types of tabular data in multiple ways for ML. But before exploring these methods, let's first consider using image features alone as inputs for ML.
 
-Two examples are of image features are volume data and radiomic data. 
-Of course at scale (when we have thousands of images) we do not want to measure our images to get volume data or other measurements by hand. Legend has it that Benjamin Felson (an undeniable grandfather of modern chest X-ray analysis) got some of his statistics about chest X-rays by reading hundreds and hundreds by hand and counting. Numbers, for research subjects, in the hundreds now seem quiant. With pre-built pipelines we now have the power to process thousands of images at a time. 
+Two notable examples of image features are volumetric data and radiomic data. Handling such data at scale—when dealing with thousands of images—typically involves automated processes rather than manual measurements. In the past, pioneers like Benjamin Felson, a founding figure in modern chest X-ray analysis, painstakingly analyzed hundreds of X-rays by hand to gather statistics. Today, processing pipelines allow us to efficiently analyze thousands of images simultaneously.
 
-We want to put images into a pipeline that will give us various kinds data back automatically. An example of such a feature pipeline (for brain imaging) is [Freesurfer](https://surfer.nmr.mgh.harvard.edu/). It helps us to get volume and some other data from brain imaging. 
+We aim to integrate images into a pipeline that automatically generates various types of data. A notable example of such a feature pipeline, particularly for brain imaging, is [Freesurfer](https://surfer.nmr.mgh.harvard.edu/). Freesurfer facilitates the extraction of volume and other relevant data from brain imaging scans.
 
 ::::::::::::::::::::::::::::::::::::: challenge  
 
-## Thought Challenge: Can you see some problems in using output of a pipeline without acessing the original images?
+## Challenge: Identifying issues with pipeline outputs in the absence of original images
 
-Think of a couple scenarios where this could be problematic, and possible solutions.
+Consider potential issues that could arise from using the output of a pipeline without accessing the original images.
 
 :::::::::::::::::::::::: solution  
 
 ## Solution
- 
-No one really gauruntees the accuracy of most pipelines. The authors of
-this lesson have had experiences when checking back on images they discovered the 
-pipeline had mislabelled or miscounted features.   The most important step you can take is to check some of your data by hand. If that is not possible, use existing literature to figure out what is actually likely for counts and volumes. You could also ask a radiologist if the numbers 'feel' correct. If your counts and volumes make no sense by what is known, you probably have a faulty pipeline, proceeed with caution.
+
+One major concern is accuracy, as pipelines may mislabel or miscount features, potentially leading to unreliable data analysis or model training. To mitigate these issues, consider:
+
+- Manual verification: validate pipeline outputs by manually reviewing a subset of images to ensure consistency with expected results.
+- Literature review: consult existing research to establish benchmarks for feature counts and volumes, helping identify discrepancies that may indicate pipeline errors.
+- Expert consultation: seek insights from radiologists or domain experts to assess the credibility of pipeline outputs based on their clinical experience.
+
+Proceed with caution when relying on pipeline outputs, especially without direct access to the original images.
 
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Morphometric or volumetric data is just one type of derived data. Radmiomics is another. Radiomics is the study of the mathematical qualities of areas of images, for example the entropy or kurtosis. Similar analyses have been applied to pathology and called pathomics. Some might summarize radiomics and pathomics as advanced texture analysis applied to medical imaging. Others would argue that these fields include a larger variety of data, indeed potentially any quatitiate data, than are normally used in texture analysis. 
-Whatever data we decide to derive we typically we want to segment and/or mask an image down to the area we care about, then apply some code to derive radiomic (or pathomic) features. While we could write the code ourselves, it's better to use a known package for reproducibility. To be truly reproducible in the future we should also think about the standards of the International Bio-imaging Stanstards Initiative [IBSI](https://theibsi.github.io/). Below is a table of open* libaries:
+Morphometric or volumetric data represents one type of derived data, but radiomics introduces another dimension. Radiomics involves analyzing mathematical characteristics within images, such as entropy or kurtosis. Similar methodologies applied to pathology are referred to as pathomics. Some define radiomics and pathomics as advanced texture analysis in medical imaging, while others argue they encompass a broader range of quantitative data than traditional texture analysis methods.
+
+Regardless of the data type chosen, the typical approach involves segmenting and/or masking an image to isolate the area of interest, followed by applying algorithms to derive radiomic or pathomic features. While it's possible to develop custom code for this purpose, using established packages is preferred for ensuring reproducibility. For future reproducibility, adherence to standards such as those set by the International Bio-imaging Standards Initiative ([IBSI](https://theibsi.github.io/)) is crucial.
+
+Below is a list of open-source* libraries that facilitate this type of analysis:
 
 
 |        | `mirp`    | `pyradiomics`        | `LIFEx`           |`radiomics`           |
@@ -365,29 +372,33 @@ Whatever data we decide to derive we typically we want to segment and/or mask an
 | IBSI-2 compliant     | yes        | no claim           | yes           | no claim        |
 | Interface            | high-level API       | high-level API, Docker| GUI, low-level API    | low-level API      |
 | Website     | [GitHub](https://github.com/oncoray/mirp) | [GitHub](https://github.com/AIM-Harvard/pyradiomics)  | [website](https://www.lifexsoft.org/) | [GitHub](https://github.com/mvallieres/radiomics)    | 
-| Early Publication |[pending JOSS publication](https://joss.theoj.org/papers/165c85b1ecad891550a21b12c8b2e577)| [doi:10.1158/0008-5472.CAN-17-0339](https://doi.org/10.1158/0008-5472.CAN-17-0339)  |[doi:10.1158/0008-5472.CAN-18-0125](https://doi.org/10.1038/s41598-022-16609-1)|[doi:10.1088/0031-9155/60/14/5471](https://doi.org/10.1088/0031-9155/60/14/5471)| 
+| Early publication |[pending JOSS publication](https://joss.theoj.org/papers/165c85b1ecad891550a21b12c8b2e577)| [doi:10.1158/0008-5472.CAN-17-0339](https://doi.org/10.1158/0008-5472.CAN-17-0339)  |[doi:10.1158/0008-5472.CAN-18-0125](https://doi.org/10.1038/s41598-022-16609-1)|[doi:10.1088/0031-9155/60/14/5471](https://doi.org/10.1088/0031-9155/60/14/5471)| 
 | Notes |    relative newcomer    | very standard and supported| user-friendly   | * MATLAB requires a license | 
 
-Once we have tabular data we can apply all kinds of algorithms to it. But the process is not as simple as adding machine learning and shaking. In the next section we will explore one reason why.
+Once we have tabular data, we can use different algorithms to analyze it. But applying machine learning isn't just about using algorithms and expecting quick results. In the next section, we'll look into one reason why this process can be more complicated.
 
 ## Harmonization
 
-We will often have to harmonize either images or derived feature datasets. With images if the differences between datasets are obvious we will notice them even with our eyes. For example if one set of X-rays has images that are always darker, we could intuit it might be a good idea to look at the average pixel values for each dataset, and perhaps renorm the sets to be more like each other. This is a simple case. Imagine we have two derived datasets on brain MRIs with Virchow Robin's spaces. We know one dataset was shot on a 1.5 Tesla machine in a faraway land, and the other on an experimental 5 Tesla machine (high resolution) in an advanced hospital. We expect differences in resolutions, therefore what may read as a single Virchow Robin's space at low resolution, may actually be two or even three small ones fused together (and we may see this at high resolution). This is only one potential difference. Examine the images of the same patient below from a 1.5 and 3T machine:
+We often need to harmonize either images or datasets of derived features. When dealing with images, differences between datasets can be visually apparent. For example, if one set of X-rays consistently appears darker, it may be wise to compare average pixel values between datasets and adjust normalization to achieve more uniformity. This is a straightforward scenario.
+
+Consider another example involving derived datasets from brain MRIs with Virchow Robin’s spaces. One dataset was captured using a 1.5 Tesla machine in a distant location, while the other used an experimental 5 Tesla machine (high resolution) in an advanced hospital. These machines vary in resolution, meaning what appears as a single Virchow Robin’s space at low resolution might actually show as two or three smaller spaces fused together at high resolution. This is just one potential difference.
+
+Below are images of the same patient scanned with 1.5 Tesla and 3 Tesla machines:
 
 ![](fig/t1_vT3_large.jpg){alt='T1 v T3'}
 
-*Sourced from [Bernd L. Schmitz, Andrik J. Aschoff, Martin H.K. Hoffmann and Georg Grön, Advantages and Pitfalls in 3T MR Brain Imaging: A Pictorial Review ,American Journal of Neuroradiology October 2005, 26 (9) 2229-2237](https://www.ajnr.org/content/26/9/2229)*
+*Sourced from [Bernd L. Schmitz, Andrik J. Aschoff, Martin H.K. Hoffmann and Georg Grön, Advantages and Pitfalls in 3T MR Brain Imaging: A Pictorial Review, American Journal of Neuroradiology October 2005, 26 (9) 2229-2237](https://www.ajnr.org/content/26/9/2229)*
 
-Different contrast levels make the caudate and thalami far more or less apparent. The radiomics of these brain images are different in terms of contrast, and probably some other parameters, even though it is literally the same patient.
+Different contrast levels significantly affect the visibility of structures like the caudate and thalami in brain images. As a result, the radiomic characteristics of these images, including contrast and possibly other parameters, can vary even when they originate from the same patient.
 
-We can't simply build a dataset based on unharmonized derived data. On the other hand, we may not have access to the images, to even guess how things are going differently.
+Building a dataset solely based on unharmonized derived data is not feasible. However, without access to the original images, understanding these variations becomes challenging.
 
-We suggest the following approach: 
+We recommend the following approach:
 
-1. Compare the data yourself in terms of descriptive statistics and what you know about the two patient groups (do you expect the same counts in each group? why or why not?).
-2. Consider a harmonization package.
+1. Compare the data using descriptive statistics and your knowledge of the patient groups. Consider whether you expect similar counts across both groups, and justify your reasoning.
+2. Explore the use of a harmonization package to standardize data across different datasets.
 
-Below are a three examples from the world of neuroimaging:
+Below are three examples from the field of neuroimaging:
 
 |             | `neurocombat`    | `haca3`        | `autocombat`           |
 |-------------|------------------|----------------|------------------------|
@@ -396,43 +407,45 @@ Below are a three examples from the world of neuroimaging:
 | Programming language | Python or R     | Python      | Python         | 
 | Organ/area and modality | brain MRI     | brain MRI              | brain MRI  |
 | Data type |  derived values    | images        | derived values       | 
-| Notes     | no release yet standard   | versioned but not released   | no releases not versions           |
-| Original Website     | [GitHub](https://github.com/Jfortin1/ComBatHarmonization) | [GitHub](https://github.com/lianruizuo/haca3) | [GitHub](https://github.com/Alxaline/ComScan)    | 
-| Early Publication |[doi: 10.1016/j.neuroimage.2017.08.047](https://doi.org/10.1016/j.neuroimage.2017.08.047)| [doi:10.1016/j.compmedimag.2023.102285](https://doi.org/10.1016/j.compmedimag.2023.102285)  |[doi: 10.1038/s41598-022-16609-1 ](https://doi.org/10.1038/s41598-022-16609-1)|
-| Verioned website |  [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/neurocombat) | [versioned on GitHub](https://github.com/lianruizuo/haca3)| [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/autocombat)  
+| Notes     | no standard release yet  | versioned but not released   | not release, not versioned |
+| Original website     | [GitHub](https://github.com/Jfortin1/ComBatHarmonization) | [GitHub](https://github.com/lianruizuo/haca3) | [GitHub](https://github.com/Alxaline/ComScan)    | 
+| Early publication |[doi: 10.1016/j.neuroimage.2017.08.047](https://doi.org/10.1016/j.neuroimage.2017.08.047)| [doi:10.1016/j.compmedimag.2023.102285](https://doi.org/10.1016/j.compmedimag.2023.102285)  |[doi: 10.1038/s41598-022-16609-1 ](https://doi.org/10.1038/s41598-022-16609-1)|
+| Versioned website |  [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/neurocombat) | [versioned on GitHub](https://github.com/lianruizuo/haca3)| [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/autocombat)  
 
-There are countless examples of such packages for brain MRI alone, let alone the rest of the body. We choose these three to show some of the issues and pitfalls with such packages. 
+There are numerous packages available for brain MRI alone, not to mention those for imaging the rest of the body. We have selected these three examples to highlight some of the common issues and pitfalls associated with such packages.
 
 ::::::::::::::::::::::::::::::::::::: challenge  
 
-## Thought Challenge: Can you see some potential problems in each package?
+## Challenge: Identifying potential problems in each package
 
-Think of an issue that may hinder your implementation for each package.
+Consider issues that might hinder your implementation with each package.
 
 :::::::::::::::::::::::: solution  
 
 ## Solution
+
+Aging code: `neurocombat` was last modified three years ago. It may rely on outdated dependencies that could pose compatibility issues with newer hardware and software environments. Additionally, the lack of versioned releases makes it challenging to track changes and updates.
+
+No license: `haca3` does not have a clear license available. Using code without a proper license could lead to legal complications and uncertainties about its usage rights.
+
+No releases and versioning: `autocombat` lacks both released versions and versioning practices. Without clear versioning, it becomes difficult to ensure consistency and compare results across different implementations of the package.
  
-Aging code: Neurocombat was last modified three years ago. The code may well be based on dependencies we don't want to chase after. Will they be compatiable with our brand new machine? An additional issue wth neurocombat is the lack of verioned release. 
-
-No lisence: haca3 has no lisence we can find. Really legally we can't use other people's code without a clear license. 
-
-No releases and versioning: Autocombat has no releases and no verioning. If a package never had released versions, can we compare across different uses of it. Maybe not, because the code may have changed.
-
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-We pointed out a few potential problems to make you aware of some potential pitfalls with such programs. We hope you will one day build a harmonization package that is also sustainable and reusable for the community of researchers you work with. All of the above packages have many truly positive aspects that make them notable for the research community. Alas no package is perfect. Choose wisely! And don't forget you could also make your own harmonization though code or even step this code up to a package so others can also benefit. 
+We've pointed out a few potential issues to highlight common challenges with such programs. Looking ahead, consider developing a harmonization package that's sustainable and useful for your research community.
+
+While each of these packages has its strengths for researchers, none are perfect. Choose wisely when selecting a package! Also, remember you can create your own harmonization method through coding or develop it into a package for others to use.
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- There is no way to replace direct knowledge of some data
-- Examine data statistically to see if they can create or amplify biases in terms of patient distribution
-- Statistically examine derived data to see if it corresponds to realities known to specialists
-- Not all ways of augmenting data are valid or useful
-- Radiomics allows mathematical qualities of images to be used as features
-- Various open pipelines for volumetrics and radiomics are available
-- Data produced by different machines often needs harmonization, which can be accomplished with code and/or existing libraries
+- Direct knowledge of specific data cannot be substituted
+- Statistical analysis is essential to detect and mitigate biases in patient distribution
+- Verify if derived data aligns with known clinical realities through statistical examination
+- Evaluate the validity and utility of data augmentation methods before applying them
+- Radiomics enables the use of mathematical image qualities as features
+- There are several accessible pipelines for volumetrics and radiomics
+- Data from different machines often requires harmonization, achievable through coding and existing libraries
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
