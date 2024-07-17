@@ -4,9 +4,6 @@ teaching: 90
 exercises: 5
 ---
 
-<!-- TODO: Polish variables in the code -->
-<!-- TODO: Put into subsequent challenges CODE CHALLENGE: USING SKIMAGE.TRANSFORM.ROTATE -->
-
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What are the fundamental steps in preparing images for machine learning?
@@ -167,9 +164,11 @@ All of the following may pose potential problems:
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge: Using skimage.transform.rotate
+## Challenge: Prepare the images for classic supervised ML
 
-Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_cxr1` variable. Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
+Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_cxr1` variable.
+
+Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
 
 Hint: Carefully examine the shape of the cardiomegaly image from multiple perspectives. Consider the impact of harsh lines on ML performance.
 
@@ -232,13 +231,14 @@ plt.title("Augment 2")
 
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
 
+Note that the results are further enhanced by cropping. Typically, we aim to minimize harsh artificial lines in any images we feed to ML algorithms, unless they are consistent.
+
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-Note that the results are further enhanced by cropping. Typically, we aim to minimize harsh artificial lines in any images we feed to ML algorithms, unless they are consistent. Of course, there are numerous other transformations we can apply to images beyond rotation. For example, let's explore applying a shear and a wave over a mesh:
+Of course, there are numerous other transformations we can apply to images beyond rotation. For example, let's explore applying a shear:
 
-Shearing:
 
 ```python
 # create affine transform
