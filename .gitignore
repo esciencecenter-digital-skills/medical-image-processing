@@ -49,3 +49,5 @@ docs/
 # translation temp files
 po/*~
 
+# Mac OS X temporary files
+.DS_Store
