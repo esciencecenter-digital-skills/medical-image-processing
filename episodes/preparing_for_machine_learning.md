@@ -103,9 +103,9 @@ from skimage.transform import PiecewiseAffineTransform
 Then, we import our example images and examine them.
 
 ```python
-image_b = io.imread('cardiomegaly_cc0.png') # cardiomegaly CXR
-image_g = io.imread('rotatechest.png') # a relatively normal CXR
-image_y = io.imread('other_op.png') # a relatively normal CXR
+image_cxr1 = io.imread('rotatechest.png') # a relatively normal chest X-ray (CXR)
+image_cxr_cmegaly = io.imread('cardiomegaly_cc0.png') # cardiomegaly CXR
+image_cxr2 = io.imread('other_op.png') # a relatively normal CXR
 # create figure
 fig = plt.figure(figsize=(10, 7))
   
@@ -116,21 +116,21 @@ columns = 3
 # Adds a subplot at the 1st position
 fig.add_subplot(rows, columns, 1)
 # showing image
-plt.imshow(image_g)
+plt.imshow(image_cxr1)
 plt.axis('off')
 plt.title("Normal 1")
   
 # add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
-plt.imshow(image_b)
+plt.imshow(image_cxr_cmegaly)
 plt.axis('off')
 plt.title("Cardiomegaly")
 
 # add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
-plt.imshow(image_y)
+plt.imshow(image_cxr2)
 plt.axis('off')
 plt.title("Normal 2")
 ```
@@ -169,7 +169,7 @@ All of the following may pose potential problems:
 
 ## Challenge: Using skimage.transform.rotate
 
-Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_g` variable. Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
+Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_cxr1` variable. Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
 
 Hint: Carefully examine the shape of the cardiomegaly image from multiple perspectives. Consider the impact of harsh lines on ML performance.
 
@@ -179,10 +179,10 @@ Hint: Carefully examine the shape of the cardiomegaly image from multiple perspe
  
 ```python
 # figure out how much to cut on sides
-print("cut top/bottom:", (image_b.shape[0] - image_g.shape[0])/2)
-cut_top_bottom = abs(round((image_b.shape[0] - image_g.shape[0])/2))
+print("cut top/bottom:", (image_cxr_cmegaly.shape[0] - image_cxr1.shape[0])/2)
+cut_top_bottom = abs(round((image_cxr_cmegaly.shape[0] - image_cxr1.shape[0])/2))
 # figure our how much to cut on top and bottom
-print("cut sides:",(image_b.shape[1] - image_g.shape[1])/2)
+print("cut sides:",(image_cxr_cmegaly.shape[1] - image_cxr1.shape[1])/2)
 
 ```
 
@@ -193,8 +193,8 @@ cut sides: -208.5
 
 
 ```python
-cut_sides = abs(round((image_b.shape[1] - image_g.shape[1])/2))
-list_images = [image_g, new_pic1, new_pic2]
+cut_sides = abs(round((image_cxr_cmegaly.shape[1] - image_cxr1.shape[1])/2))
+list_images = [image_cxr1, new_pic1, new_pic2]
 better_for_ml_list = []
 for image in list_images:
     image = image[cut_top_bottom:-cut_top_bottom, cut_sides: -cut_sides]
@@ -241,14 +241,14 @@ Note that the results are further enhanced by cropping. Typically, we aim to min
 Shearing:
 
 ```python
-# create afine transform
-afine_tf = tf.AffineTransform(shear=0.2)
+# create affine transform
+affine_tf = tf.AffineTransform(shear=0.2)
 
 # apply transform to image data
-modified = tf.warp(image_b, inverse_map=afine_tf)
+image_affine_tf = tf.warp(image_cxr_cmegaly, inverse_map=affine_tf)
 
 # display the result
-io.imshow(modified)
+io.imshow(image_affine_tf)
 io.show()
 ```
 ![](fig/shear_cxr.png){alt='augmented by shear chest x-ray'}
@@ -257,7 +257,7 @@ io.show()
 And finally, let's show a wave over a mesh:
 
 ```python
-rows, cols = modified.shape[0], modified.shape[1]
+rows, cols = image_affine_tf.shape[0], image_affine_tf.shape[1]
 
 # np.linspace will return evenly spaced numbers over an interval
 src_cols = np.linspace(0, cols, 20)
@@ -280,9 +280,9 @@ tform.estimate(src, dst)
 noform = PiecewiseAffineTransform()
 noform.estimate(src, src)
 
-out_rows = modified.shape[0] - 1.5 * 50
+out_rows = image_affine_tf.shape[0] - 1.5 * 50
 out_cols = cols
-out = tf.warp(modified, tform, output_shape=(out_rows, out_cols))
+out = tf.warp(image_affine_tf, tform, output_shape=(out_rows, out_cols))
 # create figure
 fig = plt.figure(figsize=(10, 7))
   
@@ -293,14 +293,14 @@ columns = 4
 # add a subplot at the 1st position
 fig.add_subplot(rows, columns, 1)
 # showing image
-plt.imshow(modified)
+plt.imshow(image_affine_tf)
 plt.axis('off')
 plt.title("Normal")
   
 # add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
-plt.imshow(modified)
+plt.imshow(image_affine_tf)
 plt.plot(noform.inverse(src)[:, 0], noform.inverse(src)[:, 1], '.b')
 plt.axis('off')
 plt.title("Normal and Mesh")
