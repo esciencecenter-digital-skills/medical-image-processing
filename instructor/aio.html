@@ -292,7 +292,19 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="introduction_to_generative_ai.html">5. Generative AI in medical imaging</a>
+        <a href="introduction_to_anonymization.html">5. Intro to Anonymization</a>
+    </div>
+<!--/div.accordion-header-->
+
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="introduction_to_generative_ai.html">6. Generative AI in medical imaging</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -444,7 +456,7 @@ open-source terms.</em></p>
 </div>
 </div></section><section id="aio-introduction_to_medical_imaging"><p>Content from <a href="introduction_to_medical_imaging.html">Introduction to Medical Imaging</a></p>
 <hr>
-<p>Last updated on 2024-05-27 |
+<p>Last updated on 2024-07-18 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_medical_imaging.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 47 minutes</p>
@@ -479,6 +491,10 @@ organized</li>
 </div>
 </div>
 </div>
+<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<hr class="half-width">
 <p>Medical imaging uses many technologies including X-rays, computed
 tomography (CT), magnetic resonance imaging (MRI), ultrasound, positron
 emmision tomography (PET) and microscopy. Although there are tendencies
@@ -507,7 +523,7 @@ manufacturers may have specificities in terms of file types not covered
 here, and there are many possibilities in terms of how images could
 potentially be stored. Here we will discuss what is common to get in
 terms of files given to researchers.</p>
-<section><h2 class="section-heading" id="x-rays">X-Rays<a class="anchor" aria-label="anchor" href="#x-rays"></a>
+</section><section><h2 class="section-heading" id="x-rays">X-Rays<a class="anchor" aria-label="anchor" href="#x-rays"></a>
 <a class="anchor" aria-label="anchor" href="#x-rays"></a>
 </h2>
 <hr class="half-width">
@@ -607,7 +623,7 @@ challenges above?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Possible solutions include:</p>
 <ul>
@@ -1690,10 +1706,10 @@ any links that you are not going to use.
  -->
 </section></section><section id="aio-simpleitk"><p>Content from <a href="simpleitk.html">Registration and Segmentation with SITK</a></p>
 <hr>
-<p>Last updated on 2024-05-23 |
+<p>Last updated on 2024-07-18 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/simpleitk.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
-<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 120 minutes</p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 150 minutes</p>
 <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
         </div>
@@ -1746,15 +1762,15 @@ structures of the <a href="https://itk.org/" class="external-link">Insight Toolk
 for segmentation, registration and advanced image analysis, available in
 many programming languages (e.g., C++, Python, R, Java, C#, Lua,
 Ruby).</p>
-<figure><img src="../fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><p>SimpleITK is part of the <a href="https://insightsoftwareconsortium.org/" class="external-link">Insight Software
+<figure><img src="../fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><p>SITK is part of the <a href="https://insightsoftwareconsortium.org/" class="external-link">Insight Software
 Consortium</a> a non-profit educational consortium dedicated to
 promoting and maintaining open-source, freely available software for
 medical image analysis. Its copyright is held by <a href="https://numfocus.org/" class="external-link">NumFOCUS</a>, and the software is
 distributed under the <a href="https://github.com/SimpleITK/SimpleITK/blob/master/LICENSE" class="external-link">Apache
 License 2.0</a>.</p>
 <p>In this episode, we use a hands-on approach utilizing Python to show
-how to use SimpleITK for performing registration and segmentation tasks
-in medical imaging use cases.</p>
+how to use SITK for performing registration and segmentation tasks in
+medical imaging use cases.</p>
 </section><section><h2 class="section-heading" id="fundamental-concepts">Fundamental concepts<a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
 <a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
 </h2>
@@ -1765,19 +1781,19 @@ pixel values, and resampling images.</p>
 <div class="section level3">
 <h3 id="images">Images<a class="anchor" aria-label="anchor" href="#images"></a>
 </h3>
-<p>The fundamental tenet of an image in ITK and consequentially in
-SimpleITK is that an image is defined by a set of points on a grid
-occupying a <strong>physical region in space</strong> . This
-significantly differs from many other image analysis libraries that
-treat an image as an array which has two implications: (1) pixel/voxel
-spacing is assumed to be isotropic and (2) there is no notion of an
-image’s location in physical space.</p>
-<p>SimpleITK images are multi-dimensional (the default configuration
-includes images from two dimensional up to five dimensional) and can be
-a scalar, labelmap (scalar with run length encoding), complex value or
-have an arbitrary number of scalar channels (also known as a vector
-image). The region in physical space which an image occupies is defined
-by the image’s:</p>
+<p>The fundamental tenet of an image in ITK and consequentially in SITK
+is that an image is defined by a set of points on a grid occupying a
+<strong>physical region in space</strong> . This significantly differs
+from many other image analysis libraries that treat an image as an array
+which has two implications: (1) pixel/voxel spacing is assumed to be
+isotropic and (2) there is no notion of an image’s location in physical
+space.</p>
+<p>SITK images are multi-dimensional (the default configuration includes
+images from two dimensional up to five dimensional) and can be a scalar,
+labelmap (scalar with run length encoding), complex value or have an
+arbitrary number of scalar channels (also known as a vector image). The
+region in physical space which an image occupies is defined by the
+image’s:</p>
 <ol style="list-style-type: decimal">
 <li>Origin (vector like type) - location in the world coordinate system
 of the voxel with all zero indexes.</li>
@@ -1789,14 +1805,14 @@ major order) - direction of each of the axes corresponding to the matrix
 columns.</li>
 </ol>
 <p>The following figure illustrates these concepts.</p>
-<figure><img src="../fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SimpleITK occupies a region in
-physical space which is defined by its meta-data (origin, size, spacing,
-and direction cosine matrix). Note that the image’s physical extent
-starts half a voxel before the origin and ends half a voxel beyond the
-last voxel.</div>
-</figure><p>In SimpleITK, when we construct an image we specify its
-dimensionality, size and pixel type, all other components are set to
-<strong>reasonable default values</strong>:</p>
+<figure><img src="../fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SITK occupies a region in physical
+space which is defined by its meta-data (origin, size, spacing, and
+direction cosine matrix). Note that the image’s physical extent starts
+half a voxel before the origin and ends half a voxel beyond the last
+voxel.</div>
+</figure><p>In SITK, when we construct an image we specify its dimensionality,
+size and pixel type, all other components are set to <strong>reasonable
+default values</strong>:</p>
 <ol style="list-style-type: decimal">
 <li>Origin - all zeros.</li>
 <li>Spacing - all ones.</li>
@@ -1804,13 +1820,12 @@ dimensionality, size and pixel type, all other components are set to
 <li>Intensities in all channels - all zero.</li>
 </ol>
 <p>The tenet that images occupy a spatial location in the physical world
-has to do with the original application domain of ITK and SimpleITK,
-medical imaging. In that domain images represent anatomical structures
-with metric sizes and spatial locations. Additionally, the spacing
-between voxels is often non-isotropic (most commonly the spacing along
-the inferior-superior/foot-to-head direction is larger). Viewers that
-treat images as an array will display a distorted image as shown
-below:</p>
+has to do with the original application domain of ITK and SITK, medical
+imaging. In that domain images represent anatomical structures with
+metric sizes and spatial locations. Additionally, the spacing between
+voxels is often non-isotropic (most commonly the spacing along the
+inferior-superior/foot-to-head direction is larger). Viewers that treat
+images as an array will display a distorted image as shown below:</p>
 <figure><img src="../fig/isotropic_vs_non_isotropic.png" alt="Isotropic vs non-isotropic images." class="figure mx-auto d-block"><div class="figcaption">The same image displayed with a viewer that is
 not aware of spatial meta-data (left image) and one that is aware (right
 image). The image’s pixel spacing is (0.97656, 2.0)mm.</div>
@@ -1821,17 +1836,17 @@ following figure illustrates the notion of spatial location in the
 physical world, the two images are considered different even though the
 intensity values and pixel spacing are the same.</p>
 <figure><img src="../fig/spatial_relationship.png" alt="Spatial relationship in images." class="figure mx-auto d-block"><div class="figcaption">Two images with exactly the same pixel data,
-positioned in the world coordinate system. In SimpleITK these are not
+positioned in the world coordinate system. In SITK these are not
 considered the same image, because they occupy different spatial
 locations.</div>
-</figure><p>As SimpleITK images occupy a physical region in space, the quantities
-defining this region have metric units (cm, mm, etc.). In general
-SimpleITK assumes units are in millimeters (historical reasons, due to
-DICOM standard). In practice SimpleITK is not aware of the specific
-units associated with each image, it just assumes that they are
-consistent. Thus, it is up to you the developer to ensure that all of
-the images you read and created are using the same units.</p>
-<p>A SimpleITK image can have an arbitrary number of channels with the
+</figure><p>As SITK images occupy a physical region in space, the quantities
+defining this region have metric units (cm, mm, etc.). In general SITK
+assumes units are in millimeters (historical reasons, due to DICOM
+standard). In practice SITK is not aware of the specific units
+associated with each image, it just assumes that they are consistent.
+Thus, it is up to you the developer to ensure that all of the images you
+read and created are using the same units.</p>
+<p>A SITK image can have an arbitrary number of channels with the
 content of the channels being a scalar or complex value. This is
 determined when an image is created.</p>
 <p>In the medical domain, many image types have a single scalar channel
@@ -1841,9 +1856,9 @@ image as an RGB image. This terminology implies that the three channels
 should be interpreted using the RGB color space. In some cases you can
 have the same image type, but the channel values represent another color
 space, such as HSV (it decouples the color and intensity information and
-is a bit more invariant to illumination changes). SimpleITK has no
-concept of color space, thus in both cases it will simply view a pixel
-value as a 3-tuple.</p>
+is a bit more invariant to illumination changes). SITK has no concept of
+color space, thus in both cases it will simply view a pixel value as a
+3-tuple.</p>
 <p>Let’s read an example of human brain CT, and let’s explore it with
 SITK.</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -1920,17 +1935,17 @@ index will be set to 0, and the origin adjusted accordingly.</li>
 <h3 class="callout-title">Displaying images<a class="anchor" aria-label="anchor" href="#displaying-images"></a>
 </h3>
 <div class="callout-content">
-<p>While SimpleITK does not do visualization, it does contain a built in
+<p>While SITK does not do visualization, it does contain a built in
 <code>Show</code> method. This function writes the image out to disk and
 than launches a program for visualization. By default it is configured
 to use ImageJ, because it is readily supports all the image types which
-SimpleITK has and load very quickly.</p>
+SITK has and load very quickly.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>sitk.Show?</span></code></pre>
 </div>
-<p>SimpleITK provides two options for invoking an external viewer, use a
+<p>SITK provides two options for invoking an external viewer, use a
 procedural interface (the <code>Show</code> function) or an object
 oriented one. For more details about them, please refer to <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/04_Image_Display.html" class="external-link">this
 notebook</a> from the official documentation.</p>
@@ -1942,27 +1957,27 @@ arrays, and we will plot them as such.</p>
 <div class="section level4">
 <h4 id="images-as-arrays">Images as arrays<a class="anchor" aria-label="anchor" href="#images-as-arrays"></a>
 </h4>
-<p>We have two options for converting from SimpleITK to a
-<code>numpy</code> array:</p>
+<p>We have two options for converting from SITK to a <code>numpy</code>
+array:</p>
 <ul>
 <li>
 <code>GetArrayFromImage()</code>: returns a copy of the image data.
 You can then freely modify the data as it has no effect on the original
-SimpleITK image.</li>
+SITK image.</li>
 <li>
 <code>GetArrayViewFromImage()</code>: returns a view on the image
 data which is useful for display in a memory efficient manner. You
 cannot modify the data and <strong>the view will be invalid if the
-original SimpleITK image is deleted</strong>.</li>
+original SITK image is deleted</strong>.</li>
 </ul>
 <p>The order of index and dimensions need careful attention during
 conversion. ITK’s Image class has a <code>GetPixel</code> which takes an
 ITK Index object as an argument, which is ordered as (x,y,z). This is
-the convention that SimpleITK’s Image class uses for the
+the convention that SITK’s Image class uses for the
 <code>GetPixel</code> method and slicing operator as well. In
 <code>numpy</code>, an array is indexed in the opposite order (z,y,x).
-Also note that the access to channels is different. In SimpleITK you do
-not access the channel directly, rather the pixel value representing all
+Also note that the access to channels is different. In SITK you do not
+access the channel directly, rather the pixel value representing all
 channels for the specific pixel is returned and you then access the
 channel for that pixel. In the numpy array you are accessing the channel
 directly. Let’s see this in an example:</p>
@@ -2029,7 +2044,7 @@ different color maps:</p>
 <span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/slice_cmaps.png" alt="Slice and cmaps example." class="figure mx-auto d-block"></figure><p>We can also do the reverse, i.e. converting a <code>numpy</code>
-array to the SimpleITK Image:</p>
+array to the SITK Image:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -2149,7 +2164,7 @@ grid, you will get an error. Can you guess what is it about?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>By default, SITK creates images centered in the origin, which all
 ones spacing. We need to have the same values in the grid and in the
@@ -2172,8 +2187,8 @@ to an image already containing data should be done cautiously.</p>
 <div class="section level4">
 <h4 id="meta-dictionaries">Meta-dictionaries<a class="anchor" aria-label="anchor" href="#meta-dictionaries"></a>
 </h4>
-<p>SimpleITK can read (and write) images stored in a single file, or a
-set of files (e.g. DICOM series).</p>
+<p>SITK can read (and write) images stored in a single file, or a set of
+files (e.g. DICOM series).</p>
 <p>Images stored in the DICOM format have a meta-data dictionary
 associated with them, which is populated with the DICOM tags. When a
 DICOM series is read as a single image, the meta-data information is not
@@ -2262,18 +2277,18 @@ documentation before adding extra dependencies.</li>
 </div>
 </div>
 </div>
-<p>Generally speaking, SimpleITK represents color images as
-multi-channel images independent of a <a href="https://en.wikipedia.org/wiki/Color_space" class="external-link">color space</a>. It is
+<p>Generally speaking, SITK represents color images as multi-channel
+images independent of a <a href="https://en.wikipedia.org/wiki/Color_space" class="external-link">color space</a>. It is
 up to you to interpret the channels correctly based on additional color
 space knowledge prior to using them for display or any other
 purpose.</p>
-<p>Things to note: 1. When using SimpleITK to read a color DICOM image,
-the channel values will be transformed to the RGB color space. 2. When
-using SimpleITK to read a scalar image, it is assumed that the lowest
-intensity value is black and highest white. If the photometric
-interpretation tag is MONOCHROME2 (lowest value displayed as black)
-nothing is done. If it is MONOCHROME1 (lowest value displayed as white),
-the pixel values are inverted.</p>
+<p>Things to note: 1. When using SITK to read a color DICOM image, the
+channel values will be transformed to the RGB color space. 2. When using
+SITK to read a scalar image, it is assumed that the lowest intensity
+value is black and highest white. If the photometric interpretation tag
+is MONOCHROME2 (lowest value displayed as black) nothing is done. If it
+is MONOCHROME1 (lowest value displayed as white), the pixel values are
+inverted.</p>
 <div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -2345,9 +2360,9 @@ sRGB to gray scale</a>:</p>
 <div class="section level3">
 <h3 id="transforms">Transforms<a class="anchor" aria-label="anchor" href="#transforms"></a>
 </h3>
-<p>SimpleITK supports two types of spatial transforms, ones with a
-global (unbounded) spatial domain and ones with a bounded spatial
-domain. Points in SimpleITK are mapped by the transform using the
+<p>SITK supports two types of spatial transforms, ones with a global
+(unbounded) spatial domain and ones with a bounded spatial domain.
+Points in SITK are mapped by the transform using the
 <code>TransformPoint</code> method.</p>
 <p>All <strong>global domain transforms</strong> are of the form:</p>
 <p><span class="math inline">\(T(x) = A(x - c) + t + c\)</span></p>
@@ -2377,11 +2392,10 @@ is appropriate in most cases. The displacement field transformation uses
 a dense set of vectors representing displacement in a bounded spatial
 domain. It has no implicit constraints on transformation continuity or
 smoothness.</p>
-<p>Finally, SimpleITK supports a <strong>composite
-transformation</strong> with either a bounded or global domain. This
-transformation represents multiple transformations applied one after the
-other <span class="math inline">\(T_0(T_1(T_2(...T_n(p))))\)</span>. The
-semantics are stack based, that is, first in last applied:</p>
+<p>Finally, SITK supports a <strong>composite transformation</strong>
+with either a bounded or global domain. This transformation represents
+multiple transformations applied one after the other <span class="math inline">\(T_0(T_1(T_2(...T_n(p))))\)</span>. The semantics
+are stack based, that is, first in last applied:</p>
 <div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -2396,8 +2410,7 @@ tutorial notebook</a>.</p>
 </h3>
 <p>Resampling, as the verb implies, is the action of sampling an image,
 which itself is a sampling of an original continuous signal.</p>
-<p>Generally speaking, resampling in SimpleITK involves four
-components:</p>
+<p>Generally speaking, resampling in SITK involves four components:</p>
 <ol style="list-style-type: decimal">
 <li>Image - the image we resample, given in coordinate system <span class="math inline">\(m\)</span>.</li>
 <li>Resampling grid - a regular grid of points given in coordinate
@@ -2410,13 +2423,13 @@ coordinate system <span class="math inline">\(m\)</span>, <span class="math inli
 arbitrary points in coordinate system <span class="math inline">\(m\)</span> from the values of the points defined
 by the Image.</li>
 </ol>
-<p>While SimpleITK provides a large number of interpolation methods, the
-two most commonly used are sitkLinear and sitkNearestNeighbor. The
-former is used for most interpolation tasks and is a compromise between
-accuracy and computational efficiency. The later is used to interpolate
-labeled images representing a segmentation. It is the only interpolation
+<p>While SITK provides a large number of interpolation methods, the two
+most commonly used are sitkLinear and sitkNearestNeighbor. The former is
+used for most interpolation tasks and is a compromise between accuracy
+and computational efficiency. The later is used to interpolate labeled
+images representing a segmentation. It is the only interpolation
 approach which will not introduce new labels into the result.</p>
-<p>The SimpleITK interface includes three variants for specifying the
+<p>The SITK interface includes three variants for specifying the
 resampling grid:</p>
 <ol style="list-style-type: decimal">
 <li>Use the same grid as defined by the resampled image.</li>
@@ -2493,7 +2506,7 @@ which is readily addressed by invoking the transformation’s
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>In this case, there are only 26 images in the volume and the spacing
 between voxels is non-isotropic, and in particular it is the same across
@@ -2579,8 +2592,8 @@ conflicts.</li>
 </div>
 </div>
 </div>
-<p>SimpleITK provides a configurable multi-resolution registration
-framework, implemented in the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html" class="external-link">ImageRegistrationMethod</a>
+<p>SITK provides a configurable multi-resolution registration framework,
+implemented in the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html" class="external-link">ImageRegistrationMethod</a>
 class. In addition, a number of variations of the Demons registration
 algorithm are implemented independently from this class as they do not
 fit into the framework.</p>
@@ -3271,7 +3284,7 @@ order to select the slices on the y-axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3374,22 +3387,551 @@ notebook</a>.</p>
 <a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 </h2>
 <hr class="half-width">
-<p>This episode was largely inspired by <a href="https://simpleitk.org/TUTORIAL/#tutorial" class="external-link">the official SITK
+<p>This episode was largely inspired by <a href="https://SITK.org/TUTORIAL/#tutorial" class="external-link">the official SITK
 tutorial</a>, which is copyrighted by NumFOCUS and distributed under the
 <a href="https://creativecommons.org/licenses/by/4.0/" class="external-link">Creative Commons
-Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">SimpleITK
+Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SITK-Notebooks/" class="external-link">SITK
 Notebooks</a>.</p>
 <div class="section level3">
 <h3 id="additional-resources">Additional resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a>
 </h3>
-<p>To really understand the structure of SimpleITK images and how to
-work with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SimpleITK
+<p>To really understand the structure of SITK images and how to work
+with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SITK
 Jupyter notebooks</a> from the SITK official channels. More detailed
 information about SITK fundamental concepts can also be found <a href="https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#" class="external-link">here</a>.</p>
 <p>Code illustrating various aspects of the registration and
-segmentation framework can be found in the set of <a href="https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples" class="external-link">examples</a>
-which are part of the SimpleITK distribution and in the SimpleITK <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">Jupyter
+segmentation framework can be found in the set of <a href="https://SITK.readthedocs.io/en/master/link_examples.html#lbl-examples" class="external-link">examples</a>
+which are part of the SITK distribution and in the SITK <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">Jupyter
 notebook repository</a>.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Registration aligns images for data merging or temporal tracking,
+while segmentation identifies objects within images, which is critical
+for detailed analysis.</li>
+<li>SITK simplifies segmentation, registration, and advanced analysis
+tasks using ITK algorithms and supporting several programming
+languages.</li>
+<li>Images in SITK are defined by physical space, unlike array-based
+libraries, ensuring accurate spatial representation and metadata
+management.</li>
+<li>SITK offers global and bounded domain transformations for spatial
+manipulation and efficient resampling techniques with various
+interpolation options.</li>
+<li>Use SITK’s robust capabilities for registration and classical
+segmentation methods such as thresholding and region growth, ensuring
+efficient analysis of medical images.</li>
+</ul>
+</div>
+</div>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</div>
+</section></section><section id="aio-introduction_to_anonymization"><p>Content from <a href="introduction_to_anonymization.html">Intro to Anonymization</a></p>
+<hr>
+<p>Last updated on 2024-07-18 |
+
+        <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_anonymization.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 55 minutes</p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What types of data make patient’s imaging data identifiable?</li>
+<li>How can I ensure the safe sharing of medical image data?</li>
+<li>How can I remove specific metadata from DICOM files?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Provide examples of data that makes patient images identifiable</li>
+<li>Discuss the concept of anonymization</li>
+<li>Demonstrate the use of the Pydicom library to manage DICOM
+metadata</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<hr class="half-width">
+<p>Each of us is similar yet unique, and this individuality can make us
+identifiable, posing challenges for medical research. While open data
+sharing advances research, most patients would not want their medical
+details shared if they could be identified. In most countries, patient
+information is protected by law.</p>
+<p>Metadata elements in imaging, such as patient names and addresses,
+are often clearly designed to identify patients. However, the uniqueness
+of patients means that even images without obvious metadata, such as
+names, can potentially be identified as belonging to a specific
+individual. With advancements in facial recognition software and search
+engines, images we previously thought were non-identifiable, like head
+CTs, MRIs, <a href="https://doi.org/10.1016/j.neuroimage.2022.119357" class="external-link">or
+even PET scans</a>, can theoretically be traced back to a specific
+patient. To address this, we can implement de-identification strategies
+to create shareable data.</p>
+<div id="accordionInstructor1" class="accordion instructor-note accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
+  <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
+</button>
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div class="accordion-body">
+<p>Inline instructor notes: if Zenodo is unavailable some images should
+be placed on <a href="https://github.com/esciencecenter-digital-skills/med-image-ext" class="external-link uri">https://github.com/esciencecenter-digital-skills/med-image-ext</a>
+and students can download from there.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="types-of-patient-identifying-data">Types of patient identifying data<a class="anchor" aria-label="anchor" href="#types-of-patient-identifying-data"></a>
+<a class="anchor" aria-label="anchor" href="#types-of-patient-identifying-data"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
+</h3>
+<p>DICOM files contain metadata, which includes various types of
+identifying information that should remain confidential. The easiest way
+to mitigate issues with DICOM metadata is to avoid having it in the
+first place. If possible, opt to receive just the images and select
+metadata rather than the entire DICOM file. When sharing data with
+collaborators, there is often no need to share the full DICOM files.</p>
+</div>
+<div class="section level3">
+<h3 id="faces-in-images">Faces in images<a class="anchor" aria-label="anchor" href="#faces-in-images"></a>
+</h3>
+<p>A full CT, MRI, or PET scan of the head can be reconstructed into a
+face. To prevent this, many image analysis programs ‘deface’ these types
+of images, which helps to obscure the patient’s specific identity as
+well as some demographic information (e.g., ethnicity and gender).</p>
+<p>Various tools are available for defacing head imaging, ranging from
+fully developed software products like <a href="https://surfer.nmr.mgh.harvard.edu/" class="external-link">FreeSurfer</a>, which has
+built-in defacing capabilities, to functions within code libraries.</p>
+<p>One issue under current research is that some defacing algorithms may
+accidentally change more than the face. There is some research in
+pre-print which shows some may even alter the morphometry of the brain
+image. Proceed with caution, and if possible compare original to defaced
+images to make sure you did not lose or corrupt important data.</p>
+<figure><img src="../fig/deface-example.jpg" alt="Defacing examples" class="figure mx-auto d-block"><div class="figcaption">Image from ‘A reproducibility evaluation of the
+effects of MRI defacing on brain segmentation’ by Chenyu Gao, Bennett A.
+Landman, Jerry L. Prince, and Aaron Carass (preprint available at <a href="https://pubmed.ncbi.nlm.nih.gov/37293070/" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/37293070/</a> or on
+MedRxiv)</div>
+</figure>
+</div>
+<div class="section level3">
+<h3 id="text-on-images">Text on images<a class="anchor" aria-label="anchor" href="#text-on-images"></a>
+</h3>
+<p>Occasionally, technicians will burn information directly onto images
+as part of a burned-in annotation. This may include details such as
+diagnoses, demographics, or the patient’s name. Fortunately, this text
+is usually typed rather than handwritten, making it recognizable by
+optical character recognition (OCR) functions. Often, this text is
+placed away from the center of the image, allowing for clever cropping
+to eliminate it entirely in some datasets.</p>
+</div>
+<div class="section level3">
+<h3 id="other-parts-of-images">Other parts of images<a class="anchor" aria-label="anchor" href="#other-parts-of-images"></a>
+</h3>
+<p>Patient identity can often be inferred with just a few pieces of
+data. In some cases, a single piece of information can be enough to
+track down a patient’s identity, especially if medical files are
+accessible. For instance, a serial number or other identifying number on
+a medical device may be traceable back to a specific patient.</p>
+<p>In other situations, slightly more data might be required to identify
+a patient. Some patients may wear unique jewelry, such as a MedicAlert
+bracelet or necklace with initials or a name. While most routine
+ambulatory images are taken without jewelry, in emergency situations,
+medical personnel may not have had the time to remove these items. The
+more data points we have on a patient, the easier it becomes to identify
+them.</p>
+<figure><img src="../fig/jewellery_artifact.jpg" alt="jewlery artifact" class="figure mx-auto d-block"><div class="figcaption">Case courtesy of Ian Bickle,
+<a href="https://radiopaedia.org/" class="external-link">Radiopaedia.org</a>. From the case
+<a href="https://radiopaedia.org/cases/61830" class="external-link">rID: 61830</a>
+</div>
+</figure><p>Various tools are available to help de-identify DICOM files in terms
+of metadata. A notable one is <a href="https://github.com/KitwareMedical/dicom-anonymizer" class="external-link">DicomAnonymizer</a>,
+an open-source tool written in Python.</p>
+<p>In some cases, you may need to examine and remove metadata manually
+or programmatically. For example, in some countries, DICOM fields are
+used inconsistently, and patient-identifying data can appear in
+unexpected fields. Therefore, careful examination and customized removal
+of metadata may be necessary.</p>
+<div id="many-ways-to-skin-a-dicom" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="many-ways-to-skin-a-dicom" class="callout-inner">
+<h3 class="callout-title">Many ways to “skin” a DICOM:<a class="anchor" aria-label="anchor" href="#many-ways-to-skin-a-dicom"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Multiple libraries, such as Pydicom and SimpleITK (SITK), allow you
+to read, access, and manipulate DICOM metadata.</li>
+<li>DICOMs follow an extremely complex <a href="https://www.dicomstandard.org/" class="external-link">standard</a>, so it is usually
+better to use existing libraries rather than raw Python to handle
+them.</li>
+</ul>
+</div>
+</div>
+</div>
+<p>For various reasons, we may prefer Pydicom, SITK, or another method
+to handle DICOM metadata, typically based on the principle of minimizing
+dependencies and maintaining simplicity. SITK was introduced earlier in
+this course. Pydicom is an excellent alternative, particularly because
+of its comprehensive <a href="https://pydicom.github.io/pydicom/stable/" class="external-link">documentation</a>.</p>
+<p>Now, let’s see how to open a DICOM file and work with it using
+Pydicom.</p>
+<p>First, let’s import Pydicom and read in a CT scan:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> pydicom</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">from</span> pydicom <span class="im">import</span> dcmread</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>fpath <span class="op">=</span> <span class="st">"our_sample_dicom.dcm"</span></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>ds <span class="op">=</span> dcmread(fpath)</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="bu">print</span>(ds)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>Dataset.file_meta -------------------------------
+(0002, 0000) File Meta Information Group Length  UL: 218
+(0002, 0001) File Meta Information Version       OB: b'\x00\x01'
+(0002, 0002) Media Storage SOP Class UID         UI: CT Image Storage
+(0002, 0003) Media Storage SOP Instance UID      UI: 1.3.46.670589.33.1.63849049636503447100001.4758671761353145811
+(0002, 0010) Transfer Syntax UID                 UI: JPEG Lossless, Non-Hierarchical, First-Order Prediction (Process 14 [Selection Value 1])
+(0002, 0012) Implementation Class UID            UI: 1.2.840.113845.1.1
+(0002, 0013) Implementation Version Name         SH: 'Syn7,3,0,258'
+(0002, 0016) Source Application Entity Title     AE: 'SynapseDicomSCP'
+-------------------------------------------------
+(0008, 0005) Specific Character Set              CS: 'ISO_IR 100'
+(0008, 0008) Image Type                          CS: ['DERIVED', 'SECONDARY', 'MPR']
+(0008, 0012) Instance Creation Date              DA: '20240418'
+(0008, 0013) Instance Creation Time              TM: '150716.503'
+(0008, 0016) SOP Class UID                       UI: CT Image Storage
+(0008, 0018) SOP Instance UID                    UI: 1.3.46.670589.33.1.63849049636503447100001.4758671761353145811
+(0008, 0020) Study Date                          DA: '20240418'
+(0008, 0022) Acquisition Date                    DA: '20240418'
+(0008, 0023) Content Date                        DA: '20240418'
+(0008, 002a) Acquisition DateTime                DT: '20240418150313.020'
+(0008, 0030) Study Time                          TM: '150045'
+(0008, 0032) Acquisition Time                    TM: '150313'
+(0008, 0033) Content Time                        TM: '150314.375'
+(0008, 0050) Accession Number                    SH: '2001433888'
+(0008, 0060) Modality                            CS: 'CT'
+(0008, 0070) Manufacturer                        LO: 'Philips'
+(0008, 0080) Institution Name                    LO: 'BovenIJ Ziekenhuis iCT'
+(0008, 0081) Institution Address                 ST: ''
+(0008, 0090) Referring Physician's Name          PN: 'WILTING^I^I^""'
+(0008, 1010) Station Name                        SH: 'HOST-999999'
+(0008, 1030) Study Description                   LO: 'CT thorax met iv contrast'
+(0008, 103e) Series Description                  LO: 'Cor IMR med'
+(0008, 1040) Institutional Department Name       LO: 'Radiology'
+(0008, 1080) Admitting Diagnoses Description     LO: ''
+(0008, 1084)  Admitting Diagnoses Code Sequence  0 item(s) ----
+(0008, 1090) Manufacturer's Model Name           LO: 'iCT 256'
+(0008, 1111)  Referenced Performed Procedure Step Sequence  1 item(s) ----
+   (0008, 1150) Referenced SOP Class UID            UI: Modality Performed Procedure Step SOP Class
+   (0008, 1155) Referenced SOP Instance UID         UI: 1.3.46.670589.33.1.63849049241567858000001.4675122277016890611
+   ---------
+(0008, 1140)  Referenced Image Sequence  1 item(s) ----
+   (0008, 1150) Referenced SOP Class UID            UI: CT Image Storage
+   (0008, 1155) Referenced SOP Instance UID         UI: 1.3.46.670589.33.1.63849049294969912500001.5475332148846191441
+   ---------
+(0008, 3010) Irradiation Event UID               UI: 1.3.46.670589.33.1.63849049343237673200010.5507538603167078985
+(0010, 0010) Patient's Name                      PN: 'OurBeloved^Colleague'
+(0010, 0020) Patient ID                          LO: 'party like 1999'
+(0010, 0030) Patient's Birth Date                DA: '19421104'
+(0010, 0040) Patient's Sex                       CS: 'M'
+(0010, 1000) Other Patient IDs                   LO: '1989442112'
+(0010, 1010) Patient's Age                       AS: '041Y'
+(0018, 0010) Contrast/Bolus Agent                LO: 'Iodine'
+(0018, 0015) Body Part Examined                  CS: 'CHEST'
+(0018, 0022) Scan Options                        CS: 'HELIX'
+(0018, 0050) Slice Thickness                     DS: '2.0'
+(0018, 0060) KVP                                 DS: '100.0'
+(0018, 0088) Spacing Between Slices              DS: '2.0'
+(0018, 0090) Data Collection Diameter            DS: '500.0'
+(0018, 1000) Device Serial Number                LO: ''
+(0018, 1020) Software Versions                   LO: '4.1'
+(0018, 1030) Protocol Name                       LO: 'Thorax std /Thorax'
+(0018, 1040) Contrast/Bolus Route                LO: 'IV'
+(0018, 1041) Contrast/Bolus Volume               DS: '80.0'
+(0018, 1044) Contrast/Bolus Total Dose           DS: '40.0'
+(0018, 1046) Contrast Flow Rate                  DS: [3, 3]
+(0018, 1047) Contrast Flow Duration              DS: [17, 10]
+(0018, 1049) Contrast/Bolus Ingredient Concentra DS: '300.0'
+(0018, 1100) Reconstruction Diameter             DS: '348.0'
+(0018, 1110) Distance Source to Detector         DS: '1040.0'
+(0018, 1111) Distance Source to Patient          DS: '570.0'
+(0018, 1120) Gantry/Detector Tilt                DS: '0.0'
+(0018, 1130) Table Height                        DS: '85.1'
+(0018, 1150) Exposure Time                       IS: '434'
+(0018, 1151) X-Ray Tube Current                  IS: '258'
+(0018, 1152) Exposure                            IS: '108'
+(0018, 1160) Filter Type                         SH: 'IMR'
+(0018, 1210) Convolution Kernel                  SH: 'IMR1,Soft Tissue'
+(0018, 5100) Patient Position                    CS: 'FFS'
+(0018, 9305) Revolution Time                     FD: 0.33
+(0018, 9306) Single Collimation Width            FD: 0.625
+(0018, 9307) Total Collimation Width             FD: 80.0
+(0018, 9309) Table Speed                         FD: 185.0
+(0018, 9310) Table Feed per Rotation             FD: 97.664
+(0018, 9311) Spiral Pitch Factor                 FD: 0.763
+(0018, 9345) CTDIvol                             FD: 4.330253533859318
+(0018, a001)  Contributing Equipment Sequence  1 item(s) ----
+   (0008, 0070) Manufacturer                        LO: 'PHILIPS'
+   (0008, 0080) Institution Name                    LO: 'BRILLIANCE4'
+   (0008, 0081) Institution Address                 ST: 'BRILLIANCE4'
+   (0008, 1010) Station Name                        SH: 'HOST-999999'
+   (0008, 1040) Institutional Department Name       LO: 'BRILLIANCE4'
+   (0008, 1090) Manufacturer's Model Name           LO: 'BRILLIANCE4'
+   (0018, 1000) Device Serial Number                LO: 'BRILLIANCE4'
+   (0018, 1020) Software Versions                   LO: '4.5.0.30020'
+   (0040, a170)  Purpose of Reference Code Sequence  1 item(s) ----
+      (0008, 0100) Code Value                          SH: '109102'
+      (0008, 0102) Coding Scheme Designator            SH: 'DCM'
+      (0008, 0104) Code Meaning                        LO: 'Processing Equipment'
+      ---------
+   ---------
+(0020, 000d) Study Instance UID                  UI: 1.3.46.670589.33.1.63849049241560857600001.4706589000974752499
+(0020, 000e) Series Instance UID                 UI: 1.3.46.670589.33.1.63849049343237673200004.5226562961912261811
+(0020, 0010) Study ID                            SH: '8041'
+(0020, 0011) Series Number                       IS: '203'
+(0020, 0012) Acquisition Number                  IS: '2'
+(0020, 0013) Instance Number                     IS: '1'
+(0020, 0032) Image Position (Patient)            DS: [-172.7884, 8.90000000000001, 1201.43792746114]
+(0020, 0037) Image Orientation (Patient)         DS: [1, 0, 0, 0, 0, -1]
+(0020, 0052) Frame of Reference UID              UI: 1.3.46.670589.33.1.63849049263758127200002.5362237490253193614
+(0020, 1040) Position Reference Indicator        LO: ''
+(0020, 4000) Image Comments                      LT: 'Cor IMR med'
+(0028, 0002) Samples per Pixel                   US: 1
+(0028, 0004) Photometric Interpretation          CS: 'MONOCHROME2'
+(0028, 0010) Rows                                US: 832
+(0028, 0011) Columns                             US: 772
+(0028, 0030) Pixel Spacing                       DS: [0.4507772, 0.4507772]
+(0028, 0100) Bits Allocated                      US: 16
+(0028, 0101) Bits Stored                         US: 12
+(0028, 0102) High Bit                            US: 11
+(0028, 0103) Pixel Representation                US: 0
+(0028, 1050) Window Center                       DS: [50, 50]
+(0028, 1051) Window Width                        DS: [350, 350]
+(0028, 1052) Rescale Intercept                   DS: '-1024.0'
+(0028, 1053) Rescale Slope                       DS: '1.0'
+(0032, 1033) Requesting Service                  LO: 'CHIPSOFT'
+(0040, 1001) Requested Procedure ID              SH: 'CT5001IV'
+(0054, 1001) Units                               CS: 'HU'
+(00e1, 0010) Private Creator                     LO: 'ELSCINT1'
+(00e1, 1036) Private tag data                    CS: 'YES'
+(00e1, 1040) [Image Label]                       SH: 'Cor IMR med'
+(00e1, 1046) Private tag data                    OB: Array of 512 elements
+(01f1, 0010) Private Creator                     LO: 'ELSCINT1'
+(01f1, 1001) [Acquisition Type]                  CS: 'SPIRAL'
+(01f1, 1002) [Unknown]                           CS: 'STANDARD'
+(01f1, 100e) [Unknown]                           FL: 0.0
+(01f1, 1027) [Rotation Time]                     DS: '0.33'
+(01f1, 1032) [Image View Convention]             CS: 'RIGHT_ON_LEFT'
+(01f1, 104a) [Unknown]                           SH: 'DOM'
+(01f1, 104b) [Unknown]                           SH: '128x0.625'
+(01f1, 104d) [Unknown]                           SH: 'NO'
+(01f1, 104e) [Unknown]                           SH: 'Chest'
+(01f1, 1054) Private tag data                    IS: '11'
+(01f1, 1056) Private tag data                    LO: '30.0451206729581'
+(01f7, 0010) Private Creator                     LO: 'ELSCINT1'
+(01f7, 1022) [Unknown]                           UI: 1.3.46.670589.33.1.63849049343237673200010.5507538603167078985
+(07a1, 0010) Private Creator                     LO: 'ELSCINT1'
+(07a1, 1010) [Tamar Software Version]            LO: '4.0.0'
+(7fe0, 0010) Pixel Data                          OB: Array of 309328 elements</code></pre>
+</div>
+<div id="identifying-safe-metadata-in-dicom" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="identifying-safe-metadata-in-dicom" class="callout-inner">
+<h3 class="callout-title">Identifying safe metadata in DICOM<a class="anchor" aria-label="anchor" href="#identifying-safe-metadata-in-dicom"></a>
+</h3>
+<div class="callout-content">
+<p>Can you determine which metadata for this CT scan is likely safe,
+meaning it does not lead to patient identification? When would you
+choose to retain such data?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div class="accordion-body">
+<p>Metadata related to the machine, image type, and file type are
+generally safe. This information is particularly valuable when sorting
+through numerous DICOM files to locate specific types of images or when
+generating tabular data for harmonization purposes.</p>
+</div>
+</div>
+</div>
+</div>
+<p>We can modify elements of our DICOM metadata:</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>elem <span class="op">=</span> ds[<span class="bn">0x0010</span>, <span class="bn">0x0010</span>]</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">print</span>(elem.value)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code><span><span class="st">'OurBeloved^Colleague'</span></span></code></pre>
+</div>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>elem.value <span class="op">=</span> <span class="st">'Citizen^Almoni'</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">print</span>(elem)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(0010, 0010) Patient's Name                      PN: 'Citizen^Almoni'</code></pre>
+</div>
+<p>In some cases, as here we are dealing with a standard <a href="https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataelem.DataElement.html#pydicom.dataelem.DataElement.keyword" class="external-link">keyword</a>.
+The keyword <code>PatientName</code> is in programming terms technically
+a property of the class <code>FileDataset</code>, but here we are using
+“keyword” to refer to it and other very standard properties of the
+DICOM. Certain keywords can be modified as it follows:</p>
+<div class="codewrapper sourceCode" id="cb7">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>ds.PatientName <span class="op">=</span> <span class="st">'Almoni^Shmalmoni'</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a><span class="bu">print</span>(elem)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(0010, 0010) Patient's Name                      PN: 'Almoni^Shmalmoni' </code></pre>
+</div>
+<p>You can also just set an element to empty by using None:</p>
+<div class="codewrapper sourceCode" id="cb9">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>ds.PatientName <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a><span class="bu">print</span>(elem)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(0010, 0010) Patient's Name                      PN: None</code></pre>
+</div>
+<p>You can also delete and add elements. After making modifications,
+remember to save your file:</p>
+<div class="codewrapper sourceCode" id="cb11">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>ds.save_as(<span class="st">'my_modified_dicom.dcm'</span>)</span></code></pre>
+</div>
+<p>We recommend removing at least the patient IDs and birthdates in most
+cases. Additionally, consider examining the data elements
+‘OtherPatientIDs’ and ‘OtherPatientIDsSequence’.</p>
+<div id="accessing-additional-patient-identifying-data" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="accessing-additional-patient-identifying-data" class="callout-inner">
+<h3 class="callout-title">Accessing additional patient identifying data<a class="anchor" aria-label="anchor" href="#accessing-additional-patient-identifying-data"></a>
+</h3>
+<div class="callout-content">
+<p>How can you access and print additional patient identifying data?
+Hint: Refer to the documentation and compare with what we have already
+printed.</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div class="accordion-body">
+<div class="codewrapper sourceCode" id="cb12">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="bu">print</span>(ds.PatientBirthDate)</span>
+<span id="cb12-2"><a href="#cb12-2" tabindex="-1"></a><span class="bu">print</span>(ds.PatientID)</span>
+<span id="cb12-3"><a href="#cb12-3" tabindex="-1"></a><span class="bu">print</span>(ds.OtherPatientIDs)</span>
+<span id="cb12-4"><a href="#cb12-4" tabindex="-1"></a><span class="bu">print</span>(ds.PatientSex)</span>
+<span id="cb12-5"><a href="#cb12-5" tabindex="-1"></a><span class="bu">print</span>(ds.PatientAge)</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>19421104
+party like 1999
+1989442112
+M
+41Y</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Pydicom offers a wide range of capabilities. You can visualize your
+DICOM data in a hierarchical tree format for user-friendly GUI reading.
+It supports downsizing images and handling waveform data such as EKGs.
+By integrating with Matplotlib, you can load and plot files seamlessly.
+Before adding additional libraries, explore Pydicom’s full potential to
+leverage its extensive functionalities.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Certain metadata should almost always be removed from DICOM files
+before sharing</li>
+<li>Sharing only image files such as JPEGs or NIfTI can mitigate risks
+associated with metadata</li>
+<li>Imaging data alone, even without explicit metadata, can sometimes
+lead to patient identification</li>
+<li>Automated tools are available to strip metadata from DICOMs, but
+manual verification is necessary due to inconsistencies in how fields
+are utilized.</li>
+<li>Tools exist to deface images to further protect patient
+identity</li>
+<li>Several Python libraries enable access to DICOM metadata</li>
+</ul>
+</div>
+</div>
+</div>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
@@ -3460,7 +4002,7 @@ essential to safeguard privacy and confidentiality.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes: if Zenodo is unavailable some images should
 have placed on <a href="https://github.com/esciencecenter-digital-skills/med-image-ext" class="external-link uri">https://github.com/esciencecenter-digital-skills/med-image-ext</a>
@@ -3545,7 +4087,7 @@ on your machine?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>One significant risk of running any model locally is the potential
 for malicious code. Since you need to download the model to your

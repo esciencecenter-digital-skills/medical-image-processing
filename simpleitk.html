@@ -118,11 +118,11 @@
   Medical Image Processing
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 43%" class="percentage">
-    43%
+<aside class="col-md-12 lesson-progress"><div style="width: 33%" class="percentage">
+    33%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 43%" aria-valuenow="43" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 33%" aria-valuenow="33" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -257,7 +257,16 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="introduction_to_generative_ai.html">5. Generative AI in medical imaging</a>
+        <a href="introduction_to_anonymization.html">5. Intro to Anonymization</a>
+    </div><!--/div.accordion-header-->
+
+  </div><!--/div.accordion-item-->
+</div><!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="introduction_to_generative_ai.html">6. Generative AI in medical imaging</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -306,7 +315,7 @@
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="introduction_to_mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="introduction_to_generative_ai.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="introduction_to_anonymization.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -314,14 +323,14 @@
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Working with MRI
         </a>
-        <a class="chapter-link float-end" href="introduction_to_generative_ai.html" rel="next">
-          Next: Generative AI in...
+        <a class="chapter-link float-end" href="introduction_to_anonymization.html" rel="next">
+          Next: Intro to...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Registration and Segmentation with SITK</h1>
-        <p>Last updated on 2024-05-23 |
+        <p>Last updated on 2024-07-18 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/simpleitk.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -376,15 +385,15 @@ structures of the <a href="https://itk.org/" class="external-link">Insight Toolk
 for segmentation, registration and advanced image analysis, available in
 many programming languages (e.g., C++, Python, R, Java, C#, Lua,
 Ruby).</p>
-<figure><img src="fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><p>SimpleITK is part of the <a href="https://insightsoftwareconsortium.org/" class="external-link">Insight Software
+<figure><img src="fig/sitk.png" alt="SITK logo." class="figure mx-auto d-block"></figure><p>SITK is part of the <a href="https://insightsoftwareconsortium.org/" class="external-link">Insight Software
 Consortium</a> a non-profit educational consortium dedicated to
 promoting and maintaining open-source, freely available software for
 medical image analysis. Its copyright is held by <a href="https://numfocus.org/" class="external-link">NumFOCUS</a>, and the software is
 distributed under the <a href="https://github.com/SimpleITK/SimpleITK/blob/master/LICENSE" class="external-link">Apache
 License 2.0</a>.</p>
 <p>In this episode, we use a hands-on approach utilizing Python to show
-how to use SimpleITK for performing registration and segmentation tasks
-in medical imaging use cases.</p>
+how to use SITK for performing registration and segmentation tasks in
+medical imaging use cases.</p>
 </section><section><h2 class="section-heading" id="fundamental-concepts">Fundamental concepts<a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
 <a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a></h2>
 <hr class="half-width"><p>In this section, we’ll cover some fundamental image processing
@@ -392,19 +401,19 @@ operations using SITK, such as reading and writing images, accessing
 pixel values, and resampling images.</p>
 <div class="section level3">
 <h3 id="images">Images<a class="anchor" aria-label="anchor" href="#images"></a></h3>
-<p>The fundamental tenet of an image in ITK and consequentially in
-SimpleITK is that an image is defined by a set of points on a grid
-occupying a <strong>physical region in space</strong> . This
-significantly differs from many other image analysis libraries that
-treat an image as an array which has two implications: (1) pixel/voxel
-spacing is assumed to be isotropic and (2) there is no notion of an
-image’s location in physical space.</p>
-<p>SimpleITK images are multi-dimensional (the default configuration
-includes images from two dimensional up to five dimensional) and can be
-a scalar, labelmap (scalar with run length encoding), complex value or
-have an arbitrary number of scalar channels (also known as a vector
-image). The region in physical space which an image occupies is defined
-by the image’s:</p>
+<p>The fundamental tenet of an image in ITK and consequentially in SITK
+is that an image is defined by a set of points on a grid occupying a
+<strong>physical region in space</strong> . This significantly differs
+from many other image analysis libraries that treat an image as an array
+which has two implications: (1) pixel/voxel spacing is assumed to be
+isotropic and (2) there is no notion of an image’s location in physical
+space.</p>
+<p>SITK images are multi-dimensional (the default configuration includes
+images from two dimensional up to five dimensional) and can be a scalar,
+labelmap (scalar with run length encoding), complex value or have an
+arbitrary number of scalar channels (also known as a vector image). The
+region in physical space which an image occupies is defined by the
+image’s:</p>
 <ol style="list-style-type: decimal"><li>Origin (vector like type) - location in the world coordinate system
 of the voxel with all zero indexes.</li>
 <li>Spacing (vector like type) - distance between pixels along each of
@@ -414,26 +423,25 @@ the dimensions.</li>
 major order) - direction of each of the axes corresponding to the matrix
 columns.</li>
 </ol><p>The following figure illustrates these concepts.</p>
-<figure><img src="fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SimpleITK occupies a region in
-physical space which is defined by its meta-data (origin, size, spacing,
-and direction cosine matrix). Note that the image’s physical extent
-starts half a voxel before the origin and ends half a voxel beyond the
-last voxel.</div>
-</figure><p>In SimpleITK, when we construct an image we specify its
-dimensionality, size and pixel type, all other components are set to
-<strong>reasonable default values</strong>:</p>
+<figure><img src="fig/sitk_origin_spacing.png" alt="SITK Image." class="figure mx-auto d-block"><div class="figcaption">An image in SITK occupies a region in physical
+space which is defined by its meta-data (origin, size, spacing, and
+direction cosine matrix). Note that the image’s physical extent starts
+half a voxel before the origin and ends half a voxel beyond the last
+voxel.</div>
+</figure><p>In SITK, when we construct an image we specify its dimensionality,
+size and pixel type, all other components are set to <strong>reasonable
+default values</strong>:</p>
 <ol style="list-style-type: decimal"><li>Origin - all zeros.</li>
 <li>Spacing - all ones.</li>
 <li>Direction - identity.</li>
 <li>Intensities in all channels - all zero.</li>
 </ol><p>The tenet that images occupy a spatial location in the physical world
-has to do with the original application domain of ITK and SimpleITK,
-medical imaging. In that domain images represent anatomical structures
-with metric sizes and spatial locations. Additionally, the spacing
-between voxels is often non-isotropic (most commonly the spacing along
-the inferior-superior/foot-to-head direction is larger). Viewers that
-treat images as an array will display a distorted image as shown
-below:</p>
+has to do with the original application domain of ITK and SITK, medical
+imaging. In that domain images represent anatomical structures with
+metric sizes and spatial locations. Additionally, the spacing between
+voxels is often non-isotropic (most commonly the spacing along the
+inferior-superior/foot-to-head direction is larger). Viewers that treat
+images as an array will display a distorted image as shown below:</p>
 <figure><img src="fig/isotropic_vs_non_isotropic.png" alt="Isotropic vs non-isotropic images." class="figure mx-auto d-block"><div class="figcaption">The same image displayed with a viewer that is
 not aware of spatial meta-data (left image) and one that is aware (right
 image). The image’s pixel spacing is (0.97656, 2.0)mm.</div>
@@ -444,17 +452,17 @@ following figure illustrates the notion of spatial location in the
 physical world, the two images are considered different even though the
 intensity values and pixel spacing are the same.</p>
 <figure><img src="fig/spatial_relationship.png" alt="Spatial relationship in images." class="figure mx-auto d-block"><div class="figcaption">Two images with exactly the same pixel data,
-positioned in the world coordinate system. In SimpleITK these are not
+positioned in the world coordinate system. In SITK these are not
 considered the same image, because they occupy different spatial
 locations.</div>
-</figure><p>As SimpleITK images occupy a physical region in space, the quantities
-defining this region have metric units (cm, mm, etc.). In general
-SimpleITK assumes units are in millimeters (historical reasons, due to
-DICOM standard). In practice SimpleITK is not aware of the specific
-units associated with each image, it just assumes that they are
-consistent. Thus, it is up to you the developer to ensure that all of
-the images you read and created are using the same units.</p>
-<p>A SimpleITK image can have an arbitrary number of channels with the
+</figure><p>As SITK images occupy a physical region in space, the quantities
+defining this region have metric units (cm, mm, etc.). In general SITK
+assumes units are in millimeters (historical reasons, due to DICOM
+standard). In practice SITK is not aware of the specific units
+associated with each image, it just assumes that they are consistent.
+Thus, it is up to you the developer to ensure that all of the images you
+read and created are using the same units.</p>
+<p>A SITK image can have an arbitrary number of channels with the
 content of the channels being a scalar or complex value. This is
 determined when an image is created.</p>
 <p>In the medical domain, many image types have a single scalar channel
@@ -464,9 +472,9 @@ image as an RGB image. This terminology implies that the three channels
 should be interpreted using the RGB color space. In some cases you can
 have the same image type, but the channel values represent another color
 space, such as HSV (it decouples the color and intensity information and
-is a bit more invariant to illumination changes). SimpleITK has no
-concept of color space, thus in both cases it will simply view a pixel
-value as a 3-tuple.</p>
+is a bit more invariant to illumination changes). SITK has no concept of
+color space, thus in both cases it will simply view a pixel value as a
+3-tuple.</p>
 <p>Let’s read an example of human brain CT, and let’s explore it with
 SITK.</p>
 <div class="codewrapper sourceCode" id="cb1">
@@ -541,17 +549,17 @@ index will be set to 0, and the origin adjusted accordingly.</li>
 <h3 class="callout-title">Displaying images<a class="anchor" aria-label="anchor" href="#displaying-images"></a>
 </h3>
 <div class="callout-content">
-<p>While SimpleITK does not do visualization, it does contain a built in
+<p>While SITK does not do visualization, it does contain a built in
 <code>Show</code> method. This function writes the image out to disk and
 than launches a program for visualization. By default it is configured
 to use ImageJ, because it is readily supports all the image types which
-SimpleITK has and load very quickly.</p>
+SITK has and load very quickly.</p>
 <div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>sitk.Show?</span></code></pre>
 </div>
-<p>SimpleITK provides two options for invoking an external viewer, use a
+<p>SITK provides two options for invoking an external viewer, use a
 procedural interface (the <code>Show</code> function) or an object
 oriented one. For more details about them, please refer to <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/04_Image_Display.html" class="external-link">this
 notebook</a> from the official documentation.</p>
@@ -562,25 +570,25 @@ arrays, and we will plot them as such.</p>
 </div>
 <div class="section level4">
 <h4 id="images-as-arrays">Images as arrays<a class="anchor" aria-label="anchor" href="#images-as-arrays"></a></h4>
-<p>We have two options for converting from SimpleITK to a
-<code>numpy</code> array:</p>
+<p>We have two options for converting from SITK to a <code>numpy</code>
+array:</p>
 <ul><li>
 <code>GetArrayFromImage()</code>: returns a copy of the image data.
 You can then freely modify the data as it has no effect on the original
-SimpleITK image.</li>
+SITK image.</li>
 <li>
 <code>GetArrayViewFromImage()</code>: returns a view on the image
 data which is useful for display in a memory efficient manner. You
 cannot modify the data and <strong>the view will be invalid if the
-original SimpleITK image is deleted</strong>.</li>
+original SITK image is deleted</strong>.</li>
 </ul><p>The order of index and dimensions need careful attention during
 conversion. ITK’s Image class has a <code>GetPixel</code> which takes an
 ITK Index object as an argument, which is ordered as (x,y,z). This is
-the convention that SimpleITK’s Image class uses for the
+the convention that SITK’s Image class uses for the
 <code>GetPixel</code> method and slicing operator as well. In
 <code>numpy</code>, an array is indexed in the opposite order (z,y,x).
-Also note that the access to channels is different. In SimpleITK you do
-not access the channel directly, rather the pixel value representing all
+Also note that the access to channels is different. In SITK you do not
+access the channel directly, rather the pixel value representing all
 channels for the specific pixel is returned and you then access the
 channel for that pixel. In the numpy array you are accessing the channel
 directly. Let’s see this in an example:</p>
@@ -647,7 +655,7 @@ different color maps:</p>
 <span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span></code></pre>
 </div>
 <figure><img src="fig/slice_cmaps.png" alt="Slice and cmaps example." class="figure mx-auto d-block"></figure><p>We can also do the reverse, i.e. converting a <code>numpy</code>
-array to the SimpleITK Image:</p>
+array to the SITK Image:</p>
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -767,7 +775,7 @@ grid, you will get an error. Can you guess what is it about?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>By default, SITK creates images centered in the origin, which all
 ones spacing. We need to have the same values in the grid and in the
@@ -788,8 +796,8 @@ to an image already containing data should be done cautiously.</p>
 </div>
 <div class="section level4">
 <h4 id="meta-dictionaries">Meta-dictionaries<a class="anchor" aria-label="anchor" href="#meta-dictionaries"></a></h4>
-<p>SimpleITK can read (and write) images stored in a single file, or a
-set of files (e.g. DICOM series).</p>
+<p>SITK can read (and write) images stored in a single file, or a set of
+files (e.g. DICOM series).</p>
 <p>Images stored in the DICOM format have a meta-data dictionary
 associated with them, which is populated with the DICOM tags. When a
 DICOM series is read as a single image, the meta-data information is not
@@ -874,18 +882,18 @@ documentation before adding extra dependencies.</li>
 </ul></div>
 </div>
 </div>
-<p>Generally speaking, SimpleITK represents color images as
-multi-channel images independent of a <a href="https://en.wikipedia.org/wiki/Color_space" class="external-link">color space</a>. It is
+<p>Generally speaking, SITK represents color images as multi-channel
+images independent of a <a href="https://en.wikipedia.org/wiki/Color_space" class="external-link">color space</a>. It is
 up to you to interpret the channels correctly based on additional color
 space knowledge prior to using them for display or any other
 purpose.</p>
-<p>Things to note: 1. When using SimpleITK to read a color DICOM image,
-the channel values will be transformed to the RGB color space. 2. When
-using SimpleITK to read a scalar image, it is assumed that the lowest
-intensity value is black and highest white. If the photometric
-interpretation tag is MONOCHROME2 (lowest value displayed as black)
-nothing is done. If it is MONOCHROME1 (lowest value displayed as white),
-the pixel values are inverted.</p>
+<p>Things to note: 1. When using SITK to read a color DICOM image, the
+channel values will be transformed to the RGB color space. 2. When using
+SITK to read a scalar image, it is assumed that the lowest intensity
+value is black and highest white. If the photometric interpretation tag
+is MONOCHROME2 (lowest value displayed as black) nothing is done. If it
+is MONOCHROME1 (lowest value displayed as white), the pixel values are
+inverted.</p>
 <div class="codewrapper sourceCode" id="cb22">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -955,9 +963,9 @@ sRGB to gray scale</a>:</p>
 </div>
 <div class="section level3">
 <h3 id="transforms">Transforms<a class="anchor" aria-label="anchor" href="#transforms"></a></h3>
-<p>SimpleITK supports two types of spatial transforms, ones with a
-global (unbounded) spatial domain and ones with a bounded spatial
-domain. Points in SimpleITK are mapped by the transform using the
+<p>SITK supports two types of spatial transforms, ones with a global
+(unbounded) spatial domain and ones with a bounded spatial domain.
+Points in SITK are mapped by the transform using the
 <code>TransformPoint</code> method.</p>
 <p>All <strong>global domain transforms</strong> are of the form:</p>
 <p><span class="math inline">\(T(x) = A(x - c) + t + c\)</span></p>
@@ -985,11 +993,10 @@ is appropriate in most cases. The displacement field transformation uses
 a dense set of vectors representing displacement in a bounded spatial
 domain. It has no implicit constraints on transformation continuity or
 smoothness.</p>
-<p>Finally, SimpleITK supports a <strong>composite
-transformation</strong> with either a bounded or global domain. This
-transformation represents multiple transformations applied one after the
-other <span class="math inline">\(T_0(T_1(T_2(...T_n(p))))\)</span>. The
-semantics are stack based, that is, first in last applied:</p>
+<p>Finally, SITK supports a <strong>composite transformation</strong>
+with either a bounded or global domain. This transformation represents
+multiple transformations applied one after the other <span class="math inline">\(T_0(T_1(T_2(...T_n(p))))\)</span>. The semantics
+are stack based, that is, first in last applied:</p>
 <div class="codewrapper sourceCode" id="cb26">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
@@ -1003,8 +1010,7 @@ tutorial notebook</a>.</p>
 <h3 id="resampling">Resampling<a class="anchor" aria-label="anchor" href="#resampling"></a></h3>
 <p>Resampling, as the verb implies, is the action of sampling an image,
 which itself is a sampling of an original continuous signal.</p>
-<p>Generally speaking, resampling in SimpleITK involves four
-components:</p>
+<p>Generally speaking, resampling in SITK involves four components:</p>
 <ol style="list-style-type: decimal"><li>Image - the image we resample, given in coordinate system <span class="math inline">\(m\)</span>.</li>
 <li>Resampling grid - a regular grid of points given in coordinate
 system <span class="math inline">\(f\)</span> which will be mapped to
@@ -1015,13 +1021,13 @@ coordinate system <span class="math inline">\(m\)</span>, <span class="math inli
 <li>Interpolator - method for obtaining the intensity values at
 arbitrary points in coordinate system <span class="math inline">\(m\)</span> from the values of the points defined
 by the Image.</li>
-</ol><p>While SimpleITK provides a large number of interpolation methods, the
-two most commonly used are sitkLinear and sitkNearestNeighbor. The
-former is used for most interpolation tasks and is a compromise between
-accuracy and computational efficiency. The later is used to interpolate
-labeled images representing a segmentation. It is the only interpolation
+</ol><p>While SITK provides a large number of interpolation methods, the two
+most commonly used are sitkLinear and sitkNearestNeighbor. The former is
+used for most interpolation tasks and is a compromise between accuracy
+and computational efficiency. The later is used to interpolate labeled
+images representing a segmentation. It is the only interpolation
 approach which will not introduce new labels into the result.</p>
-<p>The SimpleITK interface includes three variants for specifying the
+<p>The SITK interface includes three variants for specifying the
 resampling grid:</p>
 <ol style="list-style-type: decimal"><li>Use the same grid as defined by the resampled image.</li>
 <li>Provide a second, reference, image which defines the grid.</li>
@@ -1094,7 +1100,7 @@ which is readily addressed by invoking the transformation’s
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>In this case, there are only 26 images in the volume and the spacing
 between voxels is non-isotropic, and in particular it is the same across
@@ -1176,8 +1182,8 @@ conflicts.</li>
 </ul></div>
 </div>
 </div>
-<p>SimpleITK provides a configurable multi-resolution registration
-framework, implemented in the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html" class="external-link">ImageRegistrationMethod</a>
+<p>SITK provides a configurable multi-resolution registration framework,
+implemented in the <a href="https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html" class="external-link">ImageRegistrationMethod</a>
 class. In addition, a number of variations of the Demons registration
 algorithm are implemented independently from this class as they do not
 fit into the framework.</p>
@@ -1836,7 +1842,7 @@ order to select the slices on the y-axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1936,21 +1942,47 @@ notebook</a>.</p>
 </div>
 </section><section><h2 class="section-heading" id="acknowledgements">Acknowledgements<a class="anchor" aria-label="anchor" href="#acknowledgements"></a>
 <a class="anchor" aria-label="anchor" href="#acknowledgements"></a></h2>
-<hr class="half-width"><p>This episode was largely inspired by <a href="https://simpleitk.org/TUTORIAL/#tutorial" class="external-link">the official SITK
+<hr class="half-width"><p>This episode was largely inspired by <a href="https://SITK.org/TUTORIAL/#tutorial" class="external-link">the official SITK
 tutorial</a>, which is copyrighted by NumFOCUS and distributed under the
 <a href="https://creativecommons.org/licenses/by/4.0/" class="external-link">Creative Commons
-Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">SimpleITK
+Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SITK-Notebooks/" class="external-link">SITK
 Notebooks</a>.</p>
 <div class="section level3">
 <h3 id="additional-resources">Additional resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a></h3>
-<p>To really understand the structure of SimpleITK images and how to
-work with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SimpleITK
+<p>To really understand the structure of SITK images and how to work
+with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SITK
 Jupyter notebooks</a> from the SITK official channels. More detailed
 information about SITK fundamental concepts can also be found <a href="https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#" class="external-link">here</a>.</p>
 <p>Code illustrating various aspects of the registration and
-segmentation framework can be found in the set of <a href="https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples" class="external-link">examples</a>
-which are part of the SimpleITK distribution and in the SimpleITK <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">Jupyter
+segmentation framework can be found in the set of <a href="https://SITK.readthedocs.io/en/master/link_examples.html#lbl-examples" class="external-link">examples</a>
+which are part of the SITK distribution and in the SITK <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/" class="external-link">Jupyter
 notebook repository</a>.</p>
+<div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul><li>Registration aligns images for data merging or temporal tracking,
+while segmentation identifies objects within images, which is critical
+for detailed analysis.</li>
+<li>SITK simplifies segmentation, registration, and advanced analysis
+tasks using ITK algorithms and supporting several programming
+languages.</li>
+<li>Images in SITK are defined by physical space, unlike array-based
+libraries, ensuring accurate spatial representation and metadata
+management.</li>
+<li>SITK offers global and bounded domain transformations for spatial
+manipulation and efficient resampling techniques with various
+interpolation options.</li>
+<li>Use SITK’s robust capabilities for registration and classical
+segmentation methods such as thresholding and region growth, ensuring
+efficient analysis of medical images.</li>
+</ul></div>
+</div>
+</div>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
@@ -1959,7 +1991,7 @@ any links that you are not going to use.
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link" href="introduction_to_mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="introduction_to_generative_ai.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link float-end" href="introduction_to_anonymization.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
@@ -1967,8 +1999,8 @@ any links that you are not going to use.
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Working with MRI
         </a>
-        <a class="chapter-link float-end" href="introduction_to_generative_ai.html" rel="next">
-          Next: Generative AI in...
+        <a class="chapter-link float-end" href="introduction_to_anonymization.html" rel="next">
+          Next: Intro to...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
@@ -2014,7 +2046,7 @@ any links that you are not going to use.
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
   "dateCreated": "2024-07-18",
-  "dateModified": "2024-05-23",
+  "dateModified": "2024-07-18",
   "datePublished": "2024-07-18"
 }
 

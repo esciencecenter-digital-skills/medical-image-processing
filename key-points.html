@@ -291,7 +291,19 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="introduction_to_generative_ai.html">5. Generative AI in medical imaging</a>
+        <a href="introduction_to_anonymization.html">5. Intro to Anonymization</a>
+    </div>
+<!--/div.accordion-header-->
+
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
+<div class="accordion accordion-flush" id="accordionFlush7">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading7">
+        <a href="introduction_to_generative_ai.html">6. Generative AI in medical imaging</a>
     </div>
 <!--/div.accordion-header-->
 
@@ -384,7 +396,39 @@ matrix</li>
 <li>There are many various tractography methods, each with
 imperfections</li>
 </ul></section><section id="simpleitk"><h2 class="section-heading"><a href="simpleitk.html">Registration and Segmentation with SITK</a></h2>
-<hr class="half-width"></section><section id="introduction_to_generative_ai"><h2 class="section-heading"><a href="introduction_to_generative_ai.html">Generative AI in medical imaging</a></h2>
+<hr class="half-width">
+<ul>
+<li>Registration aligns images for data merging or temporal tracking,
+while segmentation identifies objects within images, which is critical
+for detailed analysis.</li>
+<li>SITK simplifies segmentation, registration, and advanced analysis
+tasks using ITK algorithms and supporting several programming
+languages.</li>
+<li>Images in SITK are defined by physical space, unlike array-based
+libraries, ensuring accurate spatial representation and metadata
+management.</li>
+<li>SITK offers global and bounded domain transformations for spatial
+manipulation and efficient resampling techniques with various
+interpolation options.</li>
+<li>Use SITK’s robust capabilities for registration and classical
+segmentation methods such as thresholding and region growth, ensuring
+efficient analysis of medical images.</li>
+</ul></section><section id="introduction_to_anonymization"><h2 class="section-heading"><a href="introduction_to_anonymization.html">Intro to Anonymization</a></h2>
+<hr class="half-width">
+<ul>
+<li>Certain metadata should almost always be removed from DICOM files
+before sharing</li>
+<li>Sharing only image files such as JPEGs or NIfTI can mitigate risks
+associated with metadata</li>
+<li>Imaging data alone, even without explicit metadata, can sometimes
+lead to patient identification</li>
+<li>Automated tools are available to strip metadata from DICOMs, but
+manual verification is necessary due to inconsistencies in how fields
+are utilized.</li>
+<li>Tools exist to deface images to further protect patient
+identity</li>
+<li>Several Python libraries enable access to DICOM metadata</li>
+</ul></section><section id="introduction_to_generative_ai"><h2 class="section-heading"><a href="introduction_to_generative_ai.html">Generative AI in medical imaging</a></h2>
 <hr class="half-width">
 <ul>
 <li>Generative programs can create synthetic data, potentially enhancing
