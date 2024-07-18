@@ -271,9 +271,6 @@ print(elem)
 ```
 
 ```output
-
-```
-```output
 (0010, 0010) Patient's Name                      PN: 'Citizen^Almoni'
 ```
 In some cases, as here we are dealing with a standard "element". The "element" `PatientName` is in programming terms technically an attribute, or a property of the class `FileDataset`, but here we are using "element" to refer to it and other very standard properties of the DICOM. Certain  elements can be modified by keyword :
@@ -292,9 +289,6 @@ You can also just set an alament to empty by using None:
 ```python
 ds.PatientName = None
 elem
-```
-```output
-(0010, 0010) Patient's Name                      PN: None
 ```
 
 You can also delete and add elements. After making modifications, remember to save your file:
