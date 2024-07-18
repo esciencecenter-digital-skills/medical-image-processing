@@ -288,6 +288,18 @@
 </div>
 <!--/div.accordion-flush-->
 
+<div class="accordion accordion-flush" id="accordionFlush6">
+  <div class="accordion-item">
+    <div class="accordion-header" id="flush-heading6">
+        <a href="introduction_to_generative_ai.html">5. Generative AI in medical imaging</a>
+    </div>
+<!--/div.accordion-header-->
+
+  </div>
+<!--/div.accordion-item-->
+</div>
+<!--/div.accordion-flush-->
+
                 </div>
               </div>
             </div>
@@ -3363,6 +3375,258 @@ Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
 </div>
+</section></section><section id="aio-introduction_to_generative_ai"><p>Content from <a href="introduction_to_generative_ai.html">Generative AI in medical imaging</a></p>
+<hr>
+<p>Last updated on 2024-07-18 |
+
+        <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/introduction_to_generative_ai.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
+<div class="text-end">
+          <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
+        </div>
+<div class="overview card">
+<h2 class="card-header">Overview</h2>
+<div class="row g-0">
+<div class="col-md-4">
+<div class="card-body">
+<div class="inner">
+<h3 class="card-title">Questions</h3>
+<ul>
+<li>What is generative AI?</li>
+<li>How can generative AI be safely used in my work?</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="col-md-8">
+<div class="card-body">
+<div class="inner bordered">
+<h3 class="card-title">Objectives</h3>
+<ul>
+<li>Showcase practical examples of generative AI applications</li>
+<li>Explore critical considerations regarding the risks and challenges
+associated with generative AI</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<section><h2 class="section-heading" id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
+<hr class="half-width">
+<p>Generative artificial intelligence (AI) includes technologies that
+create or generate data. Since the early 2020s, there has been
+significant attention on large language models like ChatGPT, Copilot,
+and LLaMA, alongside image generation tools such as Stable Diffusion,
+Midjourney, and DALL-E. These tools not only create images but can also
+manipulate styles.</p>
+<p>The applications of generative AI span widely across fields like
+medical imaging, where they hold potential for image interpretation and
+numerous other tasks. Of particular interest to participants in this
+course are the capabilities of large language models to generate code
+and produce large volumes of synthetic data. Ongoing research continues
+to explore these capabilities.</p>
+<p>However, the safety implications of these technologies remain a
+subject of debate. Depending on the software or model used, data entered
+into the system may become the property of the software’s creators. It
+is crucial to exercise caution when inputting sensitive information,
+such as patient data, into these systems. Understanding where and how
+data is stored (i.e., whether on your servers or in the cloud) is
+essential to safeguard privacy and confidentiality.</p>
+
+</section><section><h2 class="section-heading" id="mastering-the-use-of-generative-ai-tools">Mastering the use of generative AI tools<a class="anchor" aria-label="anchor" href="#mastering-the-use-of-generative-ai-tools"></a>
+<a class="anchor" aria-label="anchor" href="#mastering-the-use-of-generative-ai-tools"></a>
+</h2>
+<hr class="half-width">
+<div class="section level3">
+<h3 id="architectures-of-generative-ai">Architectures of generative AI<a class="anchor" aria-label="anchor" href="#architectures-of-generative-ai"></a>
+</h3>
+<p>Generative AI encompasses models capable of generating new data
+across various formats: text, images, video, or audio. Several prominent
+architectures, such as generative adversarial networks (GANs),
+variational autoencoders, diffusion models, and transformers, achieve
+this capability. While the technical intricacies of these architectures
+exceed this course’s scope, understanding their operational principles
+can illuminate the nature of their outputs. For instance, models
+treating data as sequential sequences (e.g., pixels or words) predict
+the next element based on probabilities derived from the training
+dataset, potentially perpetuating common patterns rather than reflecting
+absolute truths.</p>
+<p>However, using generative algorithms carries inherent risks,
+including inadvertently embedding biases into both data and algorithms.
+While humans cannot infer patient ethnicity from body imaging, recent
+studies demonstrate that certain AI algorithms can leverage correlations
+in data, introducing potential ethical implications. This represents
+just one facet of the risks associated with these technologies, which we
+will further explore in the following safety section.</p>
+</div>
+<div class="section level3">
+<h3 id="safely-leveraging-generative-ai">Safely leveraging generative AI<a class="anchor" aria-label="anchor" href="#safely-leveraging-generative-ai"></a>
+</h3>
+<ul>
+<li>Never upload non-anonymized sensitive patient data outside your
+secure servers</li>
+<li>Avoid using sensitive patient data with online tools (e.g., chatGPT,
+integrated tools like co-pilot, MS Office)</li>
+<li>Be mindful of internet connectivity with your code editors and
+tools</li>
+<li>Prefer systems that operate locally (on your machine or hospital
+servers)</li>
+<li>Acknowledge that tools may generate erroneous information
+(hallucinations)</li>
+<li>Don’t assume code generated by a large language model (LLM) lacks
+potential bugs or harmful code</li>
+<li>Address intellectual property and ethical considerations when
+utilizing generative AI models</li>
+<li>Document model usage thoroughly in academic work, detailing versions
+and exact applications</li>
+<li>Recognize that the training corpus of such models may introduce
+biases</li>
+</ul>
+<p><a href="https://github.com/Stability-AI/StableDiffusion" class="external-link">Stable
+Diffusion</a> is an open-source tool widely used for image generation,
+capable of running locally on your machine. While older versions
+typically require GPUs, recent builds are rumored to run on CPUs,
+although at a slower pace. For efficient large-scale image generation,
+utilizing a GPU is recommended to save time.</p>
+<p>One limitation of Stable Diffusion, and similar tools, is that the
+model cannot be customized with your own datasets, restricting the
+ability to train or modify it according to specific needs.</p>
+<div id="assessing-the-risks-of-local-model-deployment" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="assessing-the-risks-of-local-model-deployment" class="callout-inner">
+<h3 class="callout-title">Assessing the risks of local model deployment<a class="anchor" aria-label="anchor" href="#assessing-the-risks-of-local-model-deployment"></a>
+</h3>
+<div class="callout-content">
+<p>Can you identify a few risks associated with running a model entirely
+on your machine?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution1" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
+  <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
+</button>
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div class="accordion-body">
+<p>One significant risk of running any model locally is the potential
+for malicious code. Since you need to download the model to your
+machine, there is no guarantee that it will not contain malware. To
+mitigate this risk, we recommend using open-source models, which allow
+for community scrutiny and transparency.</p>
+<p>Another concern is the environmental impact of model usage. Training
+and maintaining these models consume considerable resources, including
+carbon and water. We advise against running models like ChatGPT
+continuously due to their substantial environmental footprint. Even when
+operating a model locally, there are inherent risks, such as relying on
+a smaller training dataset to fit on your machine, which could
+compromise the model’s quality and performance.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="maximizing-the-effectiveness-of-generative-ai">Maximizing the effectiveness of generative AI<a class="anchor" aria-label="anchor" href="#maximizing-the-effectiveness-of-generative-ai"></a>
+</h3>
+<p>The output of generative tools is highly dependent on the specific
+words or images inputted, a process known as prompt engineering.</p>
+<p>To create content that balances a dataset for machine learning, start
+by analyzing the dataset’s balance according to important labels. Then,
+describe images with these labels and build prompts based on the
+descriptions of label categories with fewer images. This approach helps
+focus the model’s use on generating useful outcomes while minimizing
+risks.</p>
+<p>Keep in mind that content generation can be a somewhat stochastic
+process. Therefore, you may need to experiment with and refine your
+prompts and even the sequences of prompts to achieve the desired
+results.</p>
+<div id="effective-prompting-tips" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="effective-prompting-tips" class="callout-inner">
+<h3 class="callout-title">Effective prompting tips<a class="anchor" aria-label="anchor" href="#effective-prompting-tips"></a>
+</h3>
+<div class="callout-content">
+<ol style="list-style-type: decimal">
+<li>Ensure accuracy in spelling and grammar to avoid misdirection</li>
+<li>Provide clear and detailed prompts</li>
+<li>Explain the context or goal (e.g., “helping my son… can you explain
+it in a specific way?”)</li>
+<li>Try different wordings to refine results</li>
+<li>Fact-check thoroughly
+<ul>
+<li>First, ask the tool to fact-check its output</li>
+<li>Then, verify using search engines and experts</li>
+<li>Never fully trust references or facts generated by an LLM, seek
+human-generated content for confirmation</li>
+</ul>
+</li>
+<li>Clearly indicate if you need a particular format (e.g., bullet
+points, square images)</li>
+<li>Use prompts like “you are a Python expert” or “you are an expert
+pathologist” to guide the tool</li>
+<li>For more accurate outputs, fine-tune foundation models with your
+specific data</li>
+</ol>
+<p>These tips will help you optimize the quality and relevance of the
+content generated by AI tools.</p>
+</div>
+</div>
+</div>
+<p>Attention to detail in creating prompts is critical. For example, the
+following image was generated from the misspelling of “X-ray” with a
+popular AI tool:</p>
+<figure><img src="fig/chest_xay.png" alt="Misled image" class="figure mx-auto d-block"><div class="figcaption">Image generated by Dr. Candace Makeda Moore
+prompting <a href="https://www.adobe.com/products/firefly.html" class="external-link">Adobe
+Firely</a>.</div>
+</figure><p>While this result is laughable, more subtle mistakes can be harder to
+identify, especially for those without extensive training in a specific
+field. Therefore, having a specialist review the generated data is
+crucial to ensure its validity.</p>
+<p>It is also important to remember that the training data for some
+algorithms is often sourced from the internet, which includes a lot of
+irrelevant or misleading content. For instance, while there are many
+cute cat pictures available, there are very few good examples of rare
+medical conditions like desmoplastic infantile ganglioma. Additionally,
+using terms like “CAT scan” (historically referring to computer axial
+tomography) might result in images of cats rather than the intended
+medical imagery:</p>
+<figure><img src="fig/CAT_scan.png" alt="Misled image of cats" class="figure mx-auto d-block"><div class="figcaption">Image generated by Dr. Candace Makeda Moore
+prompting <a href="https://www.adobe.com/products/firefly.html" class="external-link">Adobe
+Firely</a>.</div>
+</figure><div id="keypoints1" class="callout keypoints">
+<div class="callout-square">
+<i class="callout-icon" data-feather="key"></i>
+</div>
+<div class="callout-inner">
+<h3 class="callout-title">Key Points<a class="anchor" aria-label="anchor" href="#keypoints1"></a>
+</h3>
+<div class="callout-content">
+<ul>
+<li>Generative programs can create synthetic data, potentially enhancing
+various algorithms</li>
+<li>Generative AI models have inherent limitations</li>
+<li>Running generative AI programs locally on your own server is safer
+than using programs that send prompts to external servers</li>
+<li>Exercise caution when entering patient data into generative AI
+programs</li>
+<li>Numerous policies exist to ensure the safe and ethical use of
+generative AI tools across institutions</li>
+</ul>
+</div>
+</div>
+</div>
+<!--
+Place links that you need to refer to multiple times across pages here. Delete
+any links that you are not going to use.
+ -->
+</div>
 </section></section>
 </div>
     </main>
@@ -3410,9 +3674,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html",
-  "dateCreated": "2024-07-02",
-  "dateModified": "2024-07-16",
-  "datePublished": "2024-07-16"
+  "dateCreated": "2024-07-18",
+  "dateModified": "2024-07-18",
+  "datePublished": "2024-07-18"
 }
 
   </script><script>
