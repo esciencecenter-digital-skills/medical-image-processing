@@ -1,7 +1,7 @@
 ---
 title: "Intro to Anonymization"
-teaching: 50
-exercises: 2
+teaching: 40
+exercises: 15
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -28,8 +28,7 @@ Metadata elements in imaging, such as patient names and addresses, are often cle
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes: if Zenodo is unavailable some images should have  placed on 
-https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
+Inline instructor notes: if Zenodo is unavailable some images should be placed on https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -47,8 +46,7 @@ Various tools are available for defacing head imaging, ranging from fully develo
 
 One issue under current research is that some defacing algorithms may accidentally change more than the face. There is some research in pre-print which shows some may even alter the morphometry of the brain image. Proceed with caution, and if possible compare original to defaced images to make sure you did not lose or corrupt important data.
 
-![](fig/deface-example.jpg){alt='Defacing examples'}
-*Image from 'A reproducibility evaluation of the effects of MRI defacing on brain segmentation' by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass (preprint available at https://pubmed.ncbi.nlm.nih.gov/37293070/ or on MedRxiv )*
+![Image from 'A reproducibility evaluation of the effects of MRI defacing on brain segmentation' by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass (preprint available at https://pubmed.ncbi.nlm.nih.gov/37293070/ or on MedRxiv)](fig/deface-example.jpg){alt='Defacing examples'}
 
 ### Text on images
 
@@ -278,7 +276,8 @@ print(elem)
 ```output
 (0010, 0010) Patient's Name                      PN: 'Citizen^Almoni'
 ```
-In some cases, as here we are dealing with a standard "element". The "element" `PatientName` is in programming terms technically an attribute, or a property of the class `FileDataset`, but here we are using "element" to refer to it and other very standard properties of the DICOM. Certain  elements can be modified by keyword :
+
+In some cases, as here we are dealing with a standard [keyword](https://pydicom.github.io/pydicom/stable/reference/generated/pydicom.dataelem.DataElement.html#pydicom.dataelem.DataElement.keyword). The keyword `PatientName` is in programming terms technically a property of the class `FileDataset`, but here we are using "keyword" to refer to it and other very standard properties of the DICOM. Certain keywords can be modified as it follows:
 
 ```python
 ds.PatientName = 'Almoni^Shmalmoni'
@@ -286,14 +285,18 @@ print(elem)
 ```
 
 ```output
-'Almoni^Shmalmoni'
+(0010, 0010) Patient's Name                      PN: 'Almoni^Shmalmoni' 
 ```
 
-You can also just set an alament to empty by using None:
+You can also just set an element to empty by using None:
 
 ```python
 ds.PatientName = None
-elem
+print(elem)
+```
+
+```output
+(0010, 0010) Patient's Name                      PN: None
 ```
 
 You can also delete and add elements. After making modifications, remember to save your file:
