@@ -81,7 +81,6 @@ First, let's import Pydicom and read in a CT scan:
 ```python
 import pydicom
 from pydicom import dcmread
-from pydicom.data import get_testdata_file
 fpath = "our_sample_dicom.dcm"
 ds = dcmread(fpath)
 print(ds)
