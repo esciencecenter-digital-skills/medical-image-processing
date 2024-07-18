@@ -1,5 +1,5 @@
 ---
-title: "Generative AI"
+title: "Generative AI in medical imaging"
 teaching: 30
 exercises: 1
 ---
@@ -7,23 +7,24 @@ exercises: 1
 :::::::::::::::::::::::::::::::::::::: questions 
 
 - What is generative AI?
-- How can I safely use generative AI in my work?
+- How can generative AI be safely used in my work?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Show examples of generative AI
-- Discuss some potential dangers and pitfalls of generative AI
-
+- Showcase practical examples of generative AI applications
+- Explore critical considerations regarding the risks and challenges associated with generative AI
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-Generative AI is AI that creates or generates data. Since the early 2020s, there has been a lot of news about large language models, especially chatbots such as ChatGPT, Copilot, and LLaMA. There are also many programs which can create images such as Stable Diffusion, Midjourney and DALL-E. Some such programs can be used not only to generate images, but to transfer styles.
+Generative artificial intelligence (AI) includes technologies that create or generate data. Since the early 2020s, there has been significant attention on large language models like ChatGPT, Copilot, and LLaMA, alongside image generation tools such as Stable Diffusion, Midjourney, and DALL-E. These tools not only create images but can also manipulate styles.
 
-The potential uses of such technologies are quite broad in the field of medical imaging. Potentially such tools can even be used in the interpretation of medical images as well as a plethora of other tasks. Obviously participants in this course may be particularly interested in the facts that large language models (LLMs) can be used to generate code, and some models may be able to generate vast quantities of synthetic image or text data. Research is ongoing. There is also an ongoing debate about the safety of such models. What is certain is that depending upon the software or model you use, data given into the system may become the property of the software owners. Think twice before entering any patient data into such a system. Try to understand what might happen to the data. Does it stay on your server or go into the cloud somewhere (which may be then sent to data storage for the company that made the software)? 
+The applications of generative AI span widely across fields like medical imaging, where they hold potential for image interpretation and numerous other tasks. Of particular interest to participants in this course are the capabilities of large language models to generate code and produce large volumes of synthetic data. Ongoing research continues to explore these capabilities.
+
+However, the safety implications of these technologies remain a subject of debate. Depending on the software or model used, data entered into the system may become the property of the software's creators. It is crucial to exercise caution when inputting sensitive information, such as patient data, into these systems. Understanding where and how data is stored (i.e., whether on your servers or in the cloud) is essential to safeguard privacy and confidentiality.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -31,95 +32,92 @@ Inline instructor notes: if Zenodo is unavailable ...
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Using generative AI tools well
+## Mastering the use of generative AI tools
 
-### Architectures
+### Architectures of generative AI
 
-Generative AI encompasses any model that generates new data be is text, images, video, or audio. There are many architectures that can accomplish such a task. Some popular architectures are generative adversarial networks (GANs), variational autoencoders, diffusion models and transformers. The details of these architectures are beyond the scopre of this course, however understanding how an architecture works may provide insight into what it is generating. For example if we have used any model that views data as a sequence (whether it be a sequence of pixels or words), and generates the most probable next pixel or word, if we have no other controls, we are very much going to repeat what is common (as opposed to inherently correct and true) in our training dataset.   
-There is a risk with many generative algorithms that you may unwittingly inject your data and algorithms with all kinds of biases. While humans can not interpret patient ethnicity from body imaging, increasing research proves certain AI algorithms not only can, but may use correlations of this data. This is only one of many risks with these technologies. In the next section we will consider safety. 
+Generative AI encompasses models capable of generating new data across various formats: text, images, video, or audio. Several prominent architectures, such as generative adversarial networks (GANs), variational autoencoders, diffusion models, and transformers, achieve this capability. While the technical intricacies of these architectures exceed this course's scope, understanding their operational principles can illuminate the nature of their outputs. For instance, models treating data as sequential sequences (e.g., pixels or words) predict the next element based on probabilities derived from the training dataset, potentially perpetuating common patterns rather than reflecting absolute truths.
 
-### Using generative AI safely
+However, using generative algorithms carries inherent risks, including inadvertently embedding biases into both data and algorithms. While humans cannot infer patient ethnicity from body imaging, recent studies demonstrate that certain AI algorithms can leverage correlations in data, introducing potential ethical implications. This represents just one facet of the risks associated with these technologies, which we will further explore in the following safety section.
 
-- Never upload non-anonymized sensitive patient data away from your own servers
-- Never use sensitive patient data as input into online tools (e.g. chatGPT, potentially integrated tools like co-pilot, MSOffice) 
-- Remember your code editor, or other products may be connected to the internet 
-- Try to use systems that can be run locally (on your own machine or hospital servers)
-- Remember that tools could generate incorrect information (hallucinations)
-- Do not assume code generated by an LLM does not contain potentially harmful code e.g. with bugs
-- Check the intellectual property and all ethical issues around how you are using a gen AI model
-- Document your use of models in academic work (include versions and exact use)
-- Be aware that the corpus such models are trained on may introduce biases
+### Safely leveraging generative AI
 
-Stable Diffusion is an open source tool that can be run locally which many have used succesfully for image generation. Older versions probably needs some GPUs to run on. Internet rumor has it that there are now builds of this tool that can be run on a CPU, very slowly. If you need to generate a large number of images with any tool, save time and make sure you can run on a GPU.
-One downside to this tool, and many others like it, is that the model is not trained or changed by you, you can't put in your own dataset.
+- Never upload non-anonymized sensitive patient data outside your secure servers
+- Avoid using sensitive patient data with online tools (e.g., chatGPT, integrated tools like co-pilot, MS Office)
+- Be mindful of internet connectivity with your code editors and tools
+- Prefer systems that operate locally (on your machine or hospital servers)
+- Acknowledge that tools may generate erroneous information (hallucinations)
+- Don't assume code generated by a large language model (LLM) lacks potential bugs or harmful code
+- Address intellectual property and ethical considerations when utilizing generative AI models
+- Document model usage thoroughly in academic work, detailing versions and exact applications
+- Recognize that the training corpus of such models may introduce biases
 
+[Stable Diffusion](https://github.com/Stability-AI/StableDiffusion) is an open-source tool widely used for image generation, capable of running locally on your machine. While older versions typically require GPUs, recent builds are rumored to run on CPUs, although at a slower pace. For efficient large-scale image generation, utilizing a GPU is recommended to save time.
+
+One limitation of Stable Diffusion, and similar tools, is that the model cannot be customized with your own datasets, restricting the ability to train or modify it according to specific needs.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## What is safe
+## Assessing the risks of local model deployment
 
-Can you think of a few risks of a model run completely on your machine?
+Can you identify a few risks associated with running a model entirely on your machine?
 
 :::::::::::::::  solution
 
 ## Solution
 
-One risk of any model is that it could contain malicious code. Any model run entirely locally will need to be downloaded to your machine. There is no garuntee that such a model will not contain malware. We therefore encourage the use of open souce models.
+One significant risk of running any model locally is the potential for malicious code. Since you need to download the model to your machine, there is no guarantee that it will not contain malware. To mitigate this risk, we recommend using open-source models, which allow for community scrutiny and transparency.
 
-Another risk of some models is that the content generated will not be worth the environmental costs. The creation and maintenence of such models uses an astounding amount of resources including carbon and water. We do not suggest running models like ChatGPT endlessly. Even when you run a model locally, this is still in some sense a risk. In fact you could end up using a smaller training dataset so everything fits on your machine, but trade off quality.  
-
+Another concern is the environmental impact of model usage. Training and maintaining these models consume considerable resources, including carbon and water. We advise against running models like ChatGPT continuously due to their substantial environmental footprint. Even when operating a model locally, there are inherent risks, such as relying on a smaller training dataset to fit on your machine, which could compromise the model's quality and performance.
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-### Using generative programs effectively
+### Maximizing the effectiveness of generative AI
 
-The content generated by generative tools will differ based on exactly the words or images entered. The shaping of the words input is often called prompt engineering. 
+The output of generative tools is highly dependent on the specific words or images inputted, a process known as prompt engineering.
 
-A typical approach towards making content to balance a dataset for machine learning might include first understanding the dataset balance by important labels, then describing images with such labels and only then build prompts based on tthe description of label categories with fewer images. Such an approach limits the use of the model, which has risks and impact, towards useful outcomes.
+To create content that balances a dataset for machine learning, start by analyzing the dataset's balance according to important labels. Then, describe images with these labels and build prompts based on the descriptions of label categories with fewer images. This approach helps focus the model's use on generating useful outcomes while minimizing risks.
 
-Remember that content generation may be in some senses a nearly stochastic process. Therefore you may need to change prompts, and even sequences of prompts. 
+Keep in mind that content generation can be a somewhat stochastic process. Therefore, you may need to experiment with and refine your prompts and even the sequences of prompts to achieve the desired results.
 
 :::::::::::::::: callout
 
-### tips on prompting for outputs:
+### Effective prompting tips
 
-0. Make sure to use correct spelling and grammar (otherwise you may send the tool in a wrong direction)
-1. Try to be very specific in your prompt
-2. State your intent (helping my son ... can you explain it in a specific way?)
-3. Experiment with different phrasing
-4. Do effective fact checking on text: first pass the result back and ask it to fact-check, then use a search engine and/or expert to start to verify; never trust a reference (or any fact) generated by an LLM, look for human generated content
-5. If you want a format e.g. bullet points of text, or a square image , then specify the format
-6. Consider asking LLMs to be a role e.g. 'ýou are a python expert' or 'you are an expert pathologist' as part of prompt
-7. If you are using a foundation model, consider fine-tuning it
+1. Ensure accuracy in spelling and grammar to avoid misdirection
+2. Provide clear and detailed prompts
+3. Explain the context or goal (e.g., "helping my son... can you explain it in a specific way?")
+4. Try different wordings to refine results
+5. Fact-check thoroughly
+   - First, ask the tool to fact-check its output
+   - Then, verify using search engines and experts
+   - Never fully trust references or facts generated by an LLM, seek human-generated content for confirmation
+6. Clearly indicate if you need a particular format (e.g., bullet points, square images)
+7. Use prompts like "you are a Python expert" or "you are an expert pathologist" to guide the tool
+8. For more accurate outputs, fine-tune foundation models with your specific data
+
+These tips will help you optimize the quality and relevance of the content generated by AI tools.
 
 ::::::::::::::
 
-Attention to detail when prompting is critical. The following was generated with a popular tool by misspelling X-ray.
+Attention to detail in creating prompts is critical. For example, the following image was generated from the misspelling of “X-ray” with a popular AI tool:
 
-![](fig/chest_xay.png){alt='Misled image'}
+![Image generated by Dr. Candace Makeda Moore prompting [Adobe Firely](https://www.adobe.com/products/firefly.html).](fig/chest_xay.png){alt='Misled image'}
 
-*Image generated by Dr. Candace Makeda Moore prompting Adobe Firely*
+While this result is laughable, more subtle mistakes can be harder to identify, especially for those without extensive training in a specific field. Therefore, having a specialist review the generated data is crucial to ensure its validity.
 
+It is also important to remember that the training data for some algorithms is often sourced from the internet, which includes a lot of irrelevant or misleading content. For instance, while there are many cute cat pictures available, there are very few good examples of rare medical conditions like desmoplastic infantile ganglioma. Additionally, using terms like "CAT scan" (historically referring to computer axial tomography) might result in images of cats rather than the intended medical imagery:
 
-While the above result is laughable, more subtle mistakes may be hard to spot for someone who is not a medical specialist with years of training. A medical specialist may be required to check that your generated data is actually valid. 
-
-Remember the corpus for some of the algorithms is some stuff scraped off the internet. Lots of cute cat pictures, and very few good examples of desmoplastic infantile ganglioma. CTs used to be called CAT (computer axial tomography) images. But 'CAT scan' as a prompt will not produce an image of an old CT.
-
-
-![](fig/CAT_scan.png){alt='Misled image of cats'}
-
-*Image generated by Dr. Candace Makeda Moore prompting Adobe Firely*
-
-
+![Image generated by Dr. Candace Makeda Moore prompting [Adobe Firely](https://www.adobe.com/products/firefly.html).](fig/CAT_scan.png){alt='Misled image of cats'}
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Generative programs can create synthetic data which may help improve many algorithms
-- There are limitation to generative AI models
-- Running a program locally on your own server is safer than a program which sends prompts to other servers
-- Patient data should be entered into most programs with caution
-- Many policies are in place to ensure safe and ethical use of such tools across institutions.
+- Generative programs can create synthetic data, potentially enhancing various algorithms
+- Generative AI models have inherent limitations
+- Running generative AI programs locally on your own server is safer than using programs that send prompts to external servers
+- Exercise caution when entering patient data into generative AI programs
+- Numerous policies exist to ensure the safe and ethical use of generative AI tools across institutions
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
