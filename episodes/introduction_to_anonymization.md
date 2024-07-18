@@ -1,6 +1,6 @@
 ---
-title: "Data anonymization"
-teaching: 40
+title: "Intro to Anonymization"
+teaching: 50
 exercises: 2
 ---
 
@@ -28,7 +28,8 @@ Metadata elements in imaging, such as patient names and addresses, are often cle
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes: if Zenodo is unavailable ...
+Inline instructor notes: if Zenodo is unavailable some images should have  placed on 
+https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -261,7 +262,7 @@ print(elem.value)
 ```
 
 ```output
-
+'OurBeloved^Colleague'
 ```
 
 ```python
@@ -272,8 +273,10 @@ print(elem)
 ```output
 
 ```
-
-In certain cases, when working with a standard element, we can modify elements using keywords:
+```output
+(0010, 0010) Patient's Name                      PN: 'Citizen^Almoni'
+```
+In some cases, as here we are dealing with a standard "element". The "element" `PatientName` is in programming terms technically an attribute, or a property of the class `FileDataset`, but here we are using "element" to refer to it and other very standard properties of the DICOM. Certain  elements can be modified by keyword :
 
 ```python
 ds.PatientName = 'Almoni^Shmalmoni'
@@ -288,11 +291,10 @@ You can also just set an alament to empty by using None:
 
 ```python
 ds.PatientName = None
-print(elem)
+elem
 ```
-
 ```output
-
+(0010, 0010) Patient's Name                      PN: None
 ```
 
 You can also delete and add elements. After making modifications, remember to save your file:
