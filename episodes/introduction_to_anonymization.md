@@ -1,33 +1,30 @@
 ---
-title: "Intro to Anonymization"
+title: "Data anonymization"
 teaching: 40
 exercises: 2
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
 
-- What kinds of data make patient's imaging data identifiable?
-- How can I make medical image data safe to share?
-- How can I strip out some metadata from DICOMs?
+- What types of data make patient's imaging data identifiable?
+- How can I ensure the safe sharing of medical image data?
+- How can I remove specific metadata from DICOM files?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Show examples of data that makes patient images is identifiable
-- Discuss the concept of anonmyization
-- Use the Pydicom library as an example to handle DICOM metadata
+- Provide examples of data that makes patient images identifiable
+- Discuss the concept of anonymization
+- Demonstrate the use of the Pydicom library to manage DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-Each of us is similar yet unique. This reality makes us identifiable which can be a problem in terms of medical research.
-While the open sharing of data helps research move forward, few patients would want thier medical details shared with the broader world if they could be identified. Patient information is protected by law in most countries. 
+Each of us is similar yet unique, and this individuality can make us identifiable, posing challenges for medical research. While open data sharing advances research, most patients would not want their medical details shared if they could be identified. In most countries, patient information is protected by law.
 
- Metadata elements for imaging e.g. patient name and adress, are often obviously designed to be patient identifying. 
- 
- In certain contexts the uniqueness of patients means all kinds of images without obvious metadata such as patient name can also be identified as belonging to a certain person. With the advent of face recognition software and search engines, images we never previously thought of as identifiable, like a head CT, MRI [or even PET](https://doi.org/10.1016/j.neuroimage.2022.119357), can be theoretically traced back to a specific patient. We can however, implement de-identification strategies to create data that is shareable.
+Metadata elements in imaging, such as patient names and addresses, are often clearly designed to identify patients. However, the uniqueness of patients means that even images without obvious metadata, such as names, can potentially be identified as belonging to a specific individual. With advancements in facial recognition software and search engines, images we previously thought were non-identifiable, like head CTs, MRIs, [or even PET scans](https://doi.org/10.1016/j.neuroimage.2022.119357), can theoretically be traced back to a specific patient. To address this, we can implement de-identification strategies to create shareable data.
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
@@ -39,49 +36,47 @@ Inline instructor notes: if Zenodo is unavailable ...
 
 ### Metadata
 
-DICOMs contain metadata. This metadata will have all kinds of identifying data which should not be seen by anyone unless neccesary. The easiest way to avoid problems with DICOM metadata is to never have it in the first place. If you have a choice, it may be preferable to recieve simply images and select metadata, as opposed to whole DICOMs. Certainly when sharing data with collaborators there is almost no reason to share DICOMs. 
+DICOM files contain metadata, which includes various types of identifying information that should remain confidential. The easiest way to mitigate issues with DICOM metadata is to avoid having it in the first place. If possible, opt to receive just the images and select metadata rather than the entire DICOM file. When sharing data with collaborators, there is often no need to share the full DICOM files.
 
-### Faces in Images
+### Faces in images
 
-A full CT, MRI or PET of the head can be reconstructed into a face. Therefore many image analysis programs 'deface' these types of images. This is useful for not only avoiding the patient's specific identity but also to some extent their demographic identity (ethnicity and gender). 
+A full CT, MRI, or PET scan of the head can be reconstructed into a face. To prevent this, many image analysis programs 'deface' these types of images, which helps to obscure the patient's specific identity as well as some demographic information (e.g., ethnicity and gender).
 
-There are also variuos tools to deface head imaging from several fully built software products e.g. Freesurfer has defacing capabilities, to functions inside code libraries.
+Various tools are available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which has built-in defacing capabilities, to functions within code libraries.
 
-### Text on Images
+### Text on images
 
-Occasionaly for various reasons techs will burn information strauight onto images as part of a burned-in annotation. This may include anything from diagnosis to demographics to the patient's name. Luckily this text is not written but typed (thus will be recognizable by optical charecter recignition function), and often typed in the same place on images, away from the center such that clever cropping may eliminate it entirely in some datasets.
+Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
 ### Other parts of images
 
-With only a few pieces of data, we can often put together patient identity.
-Sometimes it would actually only take a single piece of data to track down someone's identity if you had access to medical files. For example the serial number or other medical device identifying number may be traceable back to a specific patient. 
-In other cases, it would only take slightly more data to figure out who a specific patient was. For example some patients may have jewlery which is relatively unique such as a medic-alert bracelet or necklace with initials or a name. While most routine ambulatory images should come without jewlery, in acute emergencies workers may not have had to time to strip all of this off of patients. The more data points we have on a patient the more easily we can figure out who it is.
+Patient identity can often be inferred with just a few pieces of data. In some cases, a single piece of information can be enough to track down a patient's identity, especially if medical files are accessible. For instance, a serial number or other identifying number on a medical device may be traceable back to a specific patient.
+
+In other situations, slightly more data might be required to identify a patient. Some patients may wear unique jewelry, such as a MedicAlert bracelet or necklace with initials or a name. While most routine ambulatory images are taken without jewelry, in emergency situations, medical personnel may not have had the time to remove these items. The more data points we have on a patient, the easier it becomes to identify them.
+
+![Case courtesy of Ian Bickle, <a href="https://radiopaedia.org/">Radiopaedia.org</a>. From the case <a href="https://radiopaedia.org/cases/61830">rID: 61830</a>](fig/jewellery_artifact.jpg){alt='jewlery artifact'}
 
 
-![](fig/jewellery_artifact.jpg){alt='jewlery artifact'}
+Various tools are available to help de-identify DICOM files in terms of metadata. A notable one is [DicomAnonymizer](https://github.com/KitwareMedical/dicom-anonymizer), an open-source tool written in Python.
 
-*Case courtesy of Ian Bickle, <a href="https://radiopaedia.org/">Radiopaedia.org</a>. From the case <a href="https://radiopaedia.org/cases/61830">rID: 61830</a>*
+In some cases, you may need to examine and remove metadata manually or programmatically. For example, in some countries, DICOM fields are used inconsistently, and patient-identifying data can appear in unexpected fields. Therefore, careful examination and customized removal of metadata may be necessary.
 
-
-
-
-There are varios tools available to help de-identify DICOMs in terms of metadata. Of note is [dicom-anonymizer](https://github.com/KitwareMedical/dicom-anonymizer) which is an open source tool written in Python. 
-In some cases you will want to examine metadata in DICOM or remove them by hand, or at least with code. For example in some countries they use DICOM fields inconsistently, and patient identifying data can appear in unexpected fields. 
 
 
 ::::::::::::::: callout
 
 ## Many ways to "skin" a DICOM:
 
-- Multiple libraries allow you to read, access and manipulate DICOM metadata including Pydicom and SITK.
-- DICOMs are an extremely complicated [standard](https://www.dicomstandard.org/), therefore it is usually better to use existing libraries as opposed to bare python to handle them
+- Multiple libraries, such as Pydicom and SimpleITK (SITK), allow you to read, access, and manipulate DICOM metadata.
+- DICOMs follow an extremely complex [standard](https://www.dicomstandard.org/), so it is usually better to use existing libraries rather than raw Python to handle them.
 
 :::::::::::::::::::::
 
-For various reasons we may prefer Pydicom or SITK or another method to handle DICOM metadata, usually based on the principle of minimizing dependances and keeping things as simple as possible. SITK was introduced in a previous part of this course. Pydicom is a great alternative not least of all because of it's [documentation](https://pydicom.github.io/pydicom/stable/).
-Let's now see how to open a DICOM and work with it in Pydicom: 
+For various reasons, we may prefer Pydicom, SITK, or another method to handle DICOM metadata, typically based on the principle of minimizing dependencies and maintaining simplicity. SITK was introduced earlier in this course. Pydicom is an excellent alternative, particularly because of its comprehensive [documentation](https://pydicom.github.io/pydicom/stable/).
 
-We will import Pydicom and read in a CT:
+Now, let's see how to open a DICOM file and work with it using Pydicom.
+
+First, let's import Pydicom and read in a CT scan:
 
 ```python
 import pydicom
@@ -243,45 +238,47 @@ Dataset.file_meta -------------------------------
 (7fe0, 0010) Pixel Data                          OB: Array of 309328 elements
 ```
 
+::::::::::::::::::::::::::::::::::::::: challenge
 
-:::::::::::::::::::::::::::::::::::::::  challenge
+## Identifying safe metadata in DICOM
 
-## What metadata is safe
+Can you determine which metadata for this CT scan is likely safe, meaning it does not lead to patient identification? When would you choose to retain such data?
 
-Can you identify for this CT which metadata is probably safe i.e. does not lead to patient identification.
-When might you keep such data?
-
-:::::::::::::::  solution
+::::::::::::::: solution
 
 ## Solution
 
-Metadata about the machine, image type and file type are pretty safe. 
-This data may be very useful is we are sorting through a lot of DICOMS 
-and only want a certain type of image, or need to create tabular data which helps harmonization.
+Metadata related to the machine, image type, and file type are generally safe. This information is particularly valuable when sorting through numerous DICOM files to locate specific types of images or when generating tabular data for harmonization purposes.
 
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-We can modify elements of our dicom metadata
+We can modify elements of our DICOM metadata:
 
 ```python
 elem = ds[0x0010, 0x0010]
-elem.value
+print(elem.value)
 ```
+
 ```output
 
 ```
+
 ```python
 elem.value = 'Citizen^Almoni'
-elem
+print(elem)
 ```
-In some cases, if we are dealing with a standard element, we can modify elements by keyword:
+
+```output
+
+```
+
+In certain cases, when working with a standard element, we can modify elements using keywords:
 
 ```python
 ds.PatientName = 'Almoni^Shmalmoni'
-elem
+print(elem)
 ```
 
 ```output
@@ -292,20 +289,27 @@ You can also just set an alament to empty by using None:
 
 ```python
 ds.PatientName = None
-elem
+print(elem)
 ```
-You can even delete elemnts and add elements. After modifications you should save your file
+
+```output
+
+```
+
+You can also delete and add elements. After making modifications, remember to save your file:
+
 ```python
 ds.save_as('my_modified_dicom.dcm')
 ```
-We reccomend stripping off at least the patient IDs and birthdates in most cases. Also look into the data elements'OtherPatientIDs' and 'OtherPatientIDsSequence'.
+
+We recommend removing at least the patient IDs and birthdates in most cases. Additionally, consider examining the data elements 'OtherPatientIDs' and 'OtherPatientIDsSequence'.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## More patient IDs?
+## Accessing additional patient identifying data
 
-How can you access and print more patient identifying data?
-Hint: check around the documentation, and compare what we printed
+How can you access and print additional patient identifying data?
+Hint: Refer to the documentation and compare with what we have already printed.
 
 :::::::::::::::  solution
 
@@ -318,28 +322,27 @@ print(ds.OtherPatientIDs)
 print(ds.PatientSex)
 print(ds.PatientAge)
 ```
+
 ```output
 19421104
 party like 1999
 1989442112
 M
 41Y
-
 ````
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-You can use Pydicom to do all sorts of things. You can show your DICOM data in a hierarchical tree for a GUI ready reading. You can downsize images. You can work with waveform data i.e. EKGs. If you add matplotlib you can load and plot files. The list goes on, so before adding more and more libraries, if you are using this one, try to use it's full potential.
+Pydicom offers a wide range of capabilities. You can visualize your DICOM data in a hierarchical tree format for user-friendly GUI reading. It supports downsizing images and handling waveform data such as EKGs. By integrating with Matplotlib, you can load and plot files seamlessly. Before adding additional libraries, explore Pydicom's full potential to leverage its extensive functionalities.
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
-- Certain metadata should almost always be removed from DICOMs if DICOMS will be shared
-- Sharing only image files e.g. jpegs or niftis can circumvent metadata dangers
-- Imaging itself without any metadata can be used to identify patients
-- Tooling is available to stip metadata automatically, but stripping should be re-checked as fields are not always used correctly
-- Tooling is available to deface images
-- Various python libraries allow metadata access
-
+- Certain metadata should almost always be removed from DICOM files before sharing
+- Sharing only image files such as JPEGs or NIfTI can mitigate risks associated with metadata
+- Imaging data alone, even without explicit metadata, can sometimes lead to patient identification
+- Automated tools are available to strip metadata from DICOMs, but manual verification is necessary due to inconsistencies in how fields are utilized.
+- Tools exist to deface images to further protect patient identity
+- Several Python libraries enable access to DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
