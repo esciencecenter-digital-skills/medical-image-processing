@@ -45,6 +45,11 @@ A full CT, MRI, or PET scan of the head can be reconstructed into a face. To pre
 
 Various tools are available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which has built-in defacing capabilities, to functions within code libraries.
 
+One issue under current research is that some defacing algorithms may accidentally change more than the face. There is some research in pre-print which shows some may even alter the morphometry of the brain image. Proceed with caution, and if possible compare original to defaced images to make sure you did not lose or corrupt important data.
+
+![](fig/deface-example.jpg){alt='Defacing examples'}
+*Image from 'A reproducibility evaluation of the effects of MRI defacing on brain segmentation' by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass (preprint available at https://pubmed.ncbi.nlm.nih.gov/37293070/ or on MedRxiv )*
+
 ### Text on images
 
 Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
