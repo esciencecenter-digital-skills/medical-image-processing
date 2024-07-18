@@ -1,7 +1,7 @@
 ---
 title: "Registration and Segmentation with SITK"
 teaching: 120
-exercises: 0
+exercises: 30
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -28,9 +28,9 @@ In the realm of medical imaging analysis, registration and segmentation play cru
 
 ![](fig/sitk.png){alt='SITK logo.'}
 
-SimpleITK is part of the [Insight Software Consortium](https://insightsoftwareconsortium.org/) a non-profit educational consortium dedicated to promoting and maintaining open-source, freely available software for medical image analysis. Its copyright is held by [NumFOCUS](https://numfocus.org/), and the software is distributed under the [Apache License 2.0](https://github.com/SimpleITK/SimpleITK/blob/master/LICENSE).
+SITK is part of the [Insight Software Consortium](https://insightsoftwareconsortium.org/) a non-profit educational consortium dedicated to promoting and maintaining open-source, freely available software for medical image analysis. Its copyright is held by [NumFOCUS](https://numfocus.org/), and the software is distributed under the [Apache License 2.0](https://github.com/SimpleITK/SimpleITK/blob/master/LICENSE).
 
-In this episode, we use a hands-on approach utilizing Python to show how to use SimpleITK for performing registration and segmentation tasks in medical imaging use cases.
+In this episode, we use a hands-on approach utilizing Python to show how to use SITK for performing registration and segmentation tasks in medical imaging use cases.
 
 ## Fundamental concepts
 
@@ -38,10 +38,10 @@ In this section, we’ll cover some fundamental image processing operations usin
 
 ### Images
 
-The fundamental tenet of an image in ITK and consequentially in SimpleITK is that an image is defined by a set of points on a grid occupying a **physical region in space**
+The fundamental tenet of an image in ITK and consequentially in SITK is that an image is defined by a set of points on a grid occupying a **physical region in space**
 . This significantly differs from many other image analysis libraries that treat an image as an array which has two implications: (1) pixel/voxel spacing is assumed to be isotropic and (2) there is no notion of an image’s location in physical space.
 
-SimpleITK images are multi-dimensional (the default configuration includes images from two dimensional up to five dimensional) and can be a scalar, labelmap (scalar with run length encoding), complex value or have an arbitrary number of scalar channels (also known as a vector image). The region in physical space which an image occupies is defined by the image’s:
+SITK images are multi-dimensional (the default configuration includes images from two dimensional up to five dimensional) and can be a scalar, labelmap (scalar with run length encoding), complex value or have an arbitrary number of scalar channels (also known as a vector image). The region in physical space which an image occupies is defined by the image’s:
 
 1. Origin (vector like type) - location in the world coordinate system of the voxel with all zero indexes.
 2. Spacing (vector like type) - distance between pixels along each of the dimensions.
@@ -50,28 +50,28 @@ SimpleITK images are multi-dimensional (the default configuration includes image
 
 The following figure illustrates these concepts. 
 
-![An image in SimpleITK occupies a region in physical space which is defined by its meta-data (origin, size, spacing, and direction cosine matrix). Note that the image’s physical extent starts half a voxel before the origin and ends half a voxel beyond the last voxel.](episodes/fig/sitk_origin_spacing.png){alt='SITK Image.'}
+![An image in SITK occupies a region in physical space which is defined by its meta-data (origin, size, spacing, and direction cosine matrix). Note that the image’s physical extent starts half a voxel before the origin and ends half a voxel beyond the last voxel.](episodes/fig/sitk_origin_spacing.png){alt='SITK Image.'}
 
-In SimpleITK, when we construct an image we specify its dimensionality, size and pixel type, all other components are set to **reasonable default values**:
+In SITK, when we construct an image we specify its dimensionality, size and pixel type, all other components are set to **reasonable default values**:
 
 1. Origin - all zeros.
 2. Spacing - all ones.
 3. Direction - identity.
 4. Intensities in all channels - all zero.
 
-The tenet that images occupy a spatial location in the physical world has to do with the original application domain of ITK and SimpleITK, medical imaging. In that domain images represent anatomical structures with metric sizes and spatial locations. Additionally, the spacing between voxels is often non-isotropic (most commonly the spacing along the inferior-superior/foot-to-head direction is larger). Viewers that treat images as an array will display a distorted image as shown below:
+The tenet that images occupy a spatial location in the physical world has to do with the original application domain of ITK and SITK, medical imaging. In that domain images represent anatomical structures with metric sizes and spatial locations. Additionally, the spacing between voxels is often non-isotropic (most commonly the spacing along the inferior-superior/foot-to-head direction is larger). Viewers that treat images as an array will display a distorted image as shown below:
 
 ![The same image displayed with a viewer that is not aware of spatial meta-data (left image) and one that is aware (right image). The image’s pixel spacing is (0.97656, 2.0)mm.](episodes/fig/isotropic_vs_non_isotropic.png){alt='Isotropic vs non-isotropic images.'}
 
 As an image is also defined by its spatial location, two images with the same pixel data and spacing may not be considered equivalent. Think of two CT scans of the same patient acquired at different sites. The following figure illustrates the notion of spatial location in the physical world, the two images are considered different even though the intensity values and pixel spacing are the same.
 
-![Two images with exactly the same pixel data, positioned in the world coordinate system. In SimpleITK these are not considered the same image, because they occupy different spatial locations.](episodes/fig/spatial_relationship.png){alt='Spatial relationship in images.'}
+![Two images with exactly the same pixel data, positioned in the world coordinate system. In SITK these are not considered the same image, because they occupy different spatial locations.](episodes/fig/spatial_relationship.png){alt='Spatial relationship in images.'}
 
-As SimpleITK images occupy a physical region in space, the quantities defining this region have metric units (cm, mm, etc.). In general SimpleITK assumes units are in millimeters (historical reasons, due to DICOM standard). In practice SimpleITK is not aware of the specific units associated with each image, it just assumes that they are consistent. Thus, it is up to you the developer to ensure that all of the images you read and created are using the same units.
+As SITK images occupy a physical region in space, the quantities defining this region have metric units (cm, mm, etc.). In general SITK assumes units are in millimeters (historical reasons, due to DICOM standard). In practice SITK is not aware of the specific units associated with each image, it just assumes that they are consistent. Thus, it is up to you the developer to ensure that all of the images you read and created are using the same units.
 
-A SimpleITK image can have an arbitrary number of channels with the content of the channels being a scalar or complex value. This is determined when an image is created.
+A SITK image can have an arbitrary number of channels with the content of the channels being a scalar or complex value. This is determined when an image is created.
 
-In the medical domain, many image types have a single scalar channel (e.g. CT, US). Another common image type is a three channel image where each channel has scalar values in [0,255], often people refer to such an image as an RGB image. This terminology implies that the three channels should be interpreted using the RGB color space. In some cases you can have the same image type, but the channel values represent another color space, such as HSV (it decouples the color and intensity information and is a bit more invariant to illumination changes). SimpleITK has no concept of color space, thus in both cases it will simply view a pixel value as a 3-tuple.
+In the medical domain, many image types have a single scalar channel (e.g. CT, US). Another common image type is a three channel image where each channel has scalar values in [0,255], often people refer to such an image as an RGB image. This terminology implies that the three channels should be interpreted using the RGB color space. In some cases you can have the same image type, but the channel values represent another color space, such as HSV (it decouples the color and intensity information and is a bit more invariant to illumination changes). SITK has no concept of color space, thus in both cases it will simply view a pixel value as a 3-tuple.
 
 Let's read an example of human brain CT, and let's explore it with SITK. 
 
@@ -130,13 +130,13 @@ Just inspecting these accessors, we deduce that the file contains a volume made 
 
 #### Displaying images
 
-While SimpleITK does not do visualization, it does contain a built in `Show` method. This function writes the image out to disk and than launches a program for visualization. By default it is configured to use ImageJ, because it is readily supports all the image types which SimpleITK has and load very quickly.
+While SITK does not do visualization, it does contain a built in `Show` method. This function writes the image out to disk and than launches a program for visualization. By default it is configured to use ImageJ, because it is readily supports all the image types which SITK has and load very quickly.
 
 ```python
 sitk.Show?
 ```
 
-SimpleITK provides two options for invoking an external viewer, use a procedural interface (the `Show` function) or an object oriented one. For more details about them, please refer to [this notebook](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/04_Image_Display.html) from the official documentation.
+SITK provides two options for invoking an external viewer, use a procedural interface (the `Show` function) or an object oriented one. For more details about them, please refer to [this notebook](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/04_Image_Display.html) from the official documentation.
 
 In this episode we will convert SITK images to `numpy` arrays, and we will plot them as such.
 
@@ -144,12 +144,12 @@ In this episode we will convert SITK images to `numpy` arrays, and we will plot 
 
 #### Images as arrays
 
-We have two options for converting from SimpleITK to a `numpy` array:
+We have two options for converting from SITK to a `numpy` array:
 
-- `GetArrayFromImage()`: returns a copy of the image data. You can then freely modify the data as it has no effect on the original SimpleITK image.
-- `GetArrayViewFromImage()`: returns a view on the image data which is useful for display in a memory efficient manner. You cannot modify the data and __the view will be invalid if the original SimpleITK image is deleted__.
+- `GetArrayFromImage()`: returns a copy of the image data. You can then freely modify the data as it has no effect on the original SITK image.
+- `GetArrayViewFromImage()`: returns a view on the image data which is useful for display in a memory efficient manner. You cannot modify the data and __the view will be invalid if the original SITK image is deleted__.
 
-The order of index and dimensions need careful attention during conversion. ITK's Image class has a `GetPixel` which takes an ITK Index object as an argument, which is ordered as (x,y,z). This is the convention that SimpleITK's Image class uses for the `GetPixel` method and slicing operator as well. In `numpy`, an array is indexed in the opposite order (z,y,x). Also note that the access to channels is different. In SimpleITK you do not access the channel directly, rather the pixel value representing all channels for the specific pixel is returned and you then access the channel for that pixel. In the numpy array you are accessing the channel directly. Let's see this in an example:
+The order of index and dimensions need careful attention during conversion. ITK's Image class has a `GetPixel` which takes an ITK Index object as an argument, which is ordered as (x,y,z). This is the convention that SITK's Image class uses for the `GetPixel` method and slicing operator as well. In `numpy`, an array is indexed in the opposite order (z,y,x). Also note that the access to channels is different. In SITK you do not access the channel directly, rather the pixel value representing all channels for the specific pixel is returned and you then access the channel for that pixel. In the numpy array you are accessing the channel directly. Let's see this in an example:
 
 ```python
 import numpy as np
@@ -211,7 +211,7 @@ plt.axis("off")
 
 ![](episodes/fig/slice_cmaps.png){alt='Slice and cmaps example.'}
 
-We can also do the reverse, i.e. converting a `numpy` array to the SimpleITK Image:
+We can also do the reverse, i.e. converting a `numpy` array to the SITK Image:
 
 ```python
 img_zslice = sitk.GetImageFromArray(npa_zslice)
@@ -331,7 +331,7 @@ Remember that making such changes to an image already containing data should be 
 
 #### Meta-dictionaries
 
-SimpleITK can read (and write) images stored in a single file, or a set of files (e.g. DICOM series).
+SITK can read (and write) images stored in a single file, or a set of files (e.g. DICOM series).
 
 Images stored in the DICOM format have a meta-data dictionary associated with them, which is populated with the DICOM tags. When a DICOM series is read as a single image, the meta-data information is not available since DICOM tags are specific to each file. If you need the meta-data, you have three options:
 
@@ -388,11 +388,11 @@ for key in img_xray.GetMetaDataKeys():
 
 :::::::::::::::::::::
 
-Generally speaking, SimpleITK represents color images as multi-channel images independent of a [color space](https://en.wikipedia.org/wiki/Color_space). It is up to you to interpret the channels correctly based on additional color space knowledge prior to using them for display or any other purpose.
+Generally speaking, SITK represents color images as multi-channel images independent of a [color space](https://en.wikipedia.org/wiki/Color_space). It is up to you to interpret the channels correctly based on additional color space knowledge prior to using them for display or any other purpose.
 
 Things to note:
-1. When using SimpleITK to read a color DICOM image, the channel values will be transformed to the RGB color space.
-2. When using SimpleITK to read a scalar image, it is assumed that the lowest intensity value is black and highest white. If the photometric interpretation tag is MONOCHROME2 (lowest value displayed as black) nothing is done. If it is MONOCHROME1 (lowest value displayed as white), the pixel values are inverted.
+1. When using SITK to read a color DICOM image, the channel values will be transformed to the RGB color space.
+2. When using SITK to read a scalar image, it is assumed that the lowest intensity value is black and highest white. If the photometric interpretation tag is MONOCHROME2 (lowest value displayed as black) nothing is done. If it is MONOCHROME1 (lowest value displayed as white), the pixel values are inverted.
 
 ```python
 print(f'Image Modality: {img_xray.GetMetaData("0008|0060")}')
@@ -449,7 +449,7 @@ plt.imshow(np.squeeze(nda), cmap="gray")
 
 ### Transforms
 
-SimpleITK supports two types of spatial transforms, ones with a global (unbounded) spatial domain and ones with a bounded spatial domain. Points in SimpleITK are mapped by the transform using the `TransformPoint` method.
+SITK supports two types of spatial transforms, ones with a global (unbounded) spatial domain and ones with a bounded spatial domain. Points in SITK are mapped by the transform using the `TransformPoint` method.
 
 All **global domain transforms** are of the form:
 
@@ -468,7 +468,7 @@ The second type of spatial transformation, **bounded domain transformations**, a
 
 The B-spline transform uses a grid of control points to represent a spline based transformation. To specify the transformation the user defines the number of control points and the spatial region which they overlap. The spline order can also be set, though the default of cubic is appropriate in most cases. The displacement field transformation uses a dense set of vectors representing displacement in a bounded spatial domain. It has no implicit constraints on transformation continuity or smoothness.
 
-Finally, SimpleITK supports a **composite transformation** with either a bounded or global domain. This transformation represents multiple transformations applied one after the other $T_0(T_1(T_2(...T_n(p))))$. The semantics are stack based, that is, first in last applied:
+Finally, SITK supports a **composite transformation** with either a bounded or global domain. This transformation represents multiple transformations applied one after the other $T_0(T_1(T_2(...T_n(p))))$. The semantics are stack based, that is, first in last applied:
 
 ```python
 composite_transform = CompositeTransform([T0, T1])
@@ -481,16 +481,16 @@ For more details about SITK transformation types and examples, see [this tutoria
 
 Resampling, as the verb implies, is the action of sampling an image, which itself is a sampling of an original continuous signal.
 
-Generally speaking, resampling in SimpleITK involves four components:
+Generally speaking, resampling in SITK involves four components:
 
 1. Image - the image we resample, given in coordinate system $m$.
 2. Resampling grid - a regular grid of points given in coordinate system $f$ which will be mapped to coordinate system $m$.
 3. Transformation $T_f^m$ - maps points from coordinate system $f$ to coordinate system $m$, $^mp=T_f^m(^fp)$.
 4. Interpolator - method for obtaining the intensity values at arbitrary points in coordinate system $m$ from the values of the points defined by the Image.
 
-While SimpleITK provides a large number of interpolation methods, the two most commonly used are sitkLinear and sitkNearestNeighbor. The former is used for most interpolation tasks and is a compromise between accuracy and computational efficiency. The later is used to interpolate labeled images representing a segmentation. It is the only interpolation approach which will not introduce new labels into the result.
+While SITK provides a large number of interpolation methods, the two most commonly used are sitkLinear and sitkNearestNeighbor. The former is used for most interpolation tasks and is a compromise between accuracy and computational efficiency. The later is used to interpolate labeled images representing a segmentation. It is the only interpolation approach which will not introduce new labels into the result.
 
-The SimpleITK interface includes three variants for specifying the resampling grid:
+The SITK interface includes three variants for specifying the resampling grid:
 
 1. Use the same grid as defined by the resampled image.
 2. Provide a second, reference, image which defines the grid.
@@ -607,7 +607,7 @@ Image registration involves spatially transforming the source/moving image(s) to
 
 :::::::::::::::::::::
 
-SimpleITK provides a configurable multi-resolution registration framework, implemented in the [ImageRegistrationMethod](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html) class. In addition, a number of variations of the Demons registration algorithm are implemented independently from this class as they do not fit into the framework.
+SITK provides a configurable multi-resolution registration framework, implemented in the [ImageRegistrationMethod](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1ImageRegistrationMethod.html) class. In addition, a number of variations of the Demons registration algorithm are implemented independently from this class as they do not fit into the framework.
 
 The task of registration is formulated using non-linear optimization which requires an initial estimate. The two most common initialization approaches are (1) Use the identity transform (a.k.a. forgot to initialize). (2) Align the physical centers of the two images (see [CenteredTransformInitializerFilter](https://simpleitk.org/doxygen/latest/html/classitk_1_1simple_1_1CenteredTransformInitializerFilter.html)). If after initialization there is no overlap between the images, registration will fail. The closer the initialization transformation is to the actual transformation, the higher the probability of convergence to the correct solution.
 
@@ -1241,10 +1241,20 @@ For detailed coding examples on segmentation evaluation, refer to [this notebook
 
 ## Acknowledgements
 
-This episode was largely inspired by [the official SITK tutorial](https://simpleitk.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/), and [SimpleITK Notebooks](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
+This episode was largely inspired by [the official SITK tutorial](https://SITK.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/), and [SITK Notebooks](https://insightsoftwareconsortium.github.io/SITK-Notebooks/).
 
 ### Additional resources
 
-To really understand the structure of SimpleITK images and how to work with them, we recommend some hands-on interaction using the [SimpleITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
+To really understand the structure of SITK images and how to work with them, we recommend some hands-on interaction using the [SITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
 
-Code illustrating various aspects of the registration and segmentation framework can be found in the set of [examples](https://simpleitk.readthedocs.io/en/master/link_examples.html#lbl-examples) which are part of the SimpleITK distribution and in the SimpleITK [Jupyter notebook repository](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
+Code illustrating various aspects of the registration and segmentation framework can be found in the set of [examples](https://SITK.readthedocs.io/en/master/link_examples.html#lbl-examples) which are part of the SITK distribution and in the SITK [Jupyter notebook repository](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/).
+
+:::::::::::::::::::::::::::::::::::::::: keypoints
+
+- Registration aligns images for data merging or temporal tracking, while segmentation identifies objects within images, which is critical for detailed analysis.
+- SITK simplifies segmentation, registration, and advanced analysis tasks using ITK algorithms and supporting several programming languages.
+- Images in SITK are defined by physical space, unlike array-based libraries, ensuring accurate spatial representation and metadata management.
+- SITK offers global and bounded domain transformations for spatial manipulation and efficient resampling techniques with various interpolation options.
+- Use SITK's robust capabilities for registration and classical segmentation methods such as thresholding and region growth, ensuring efficient analysis of medical images.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
