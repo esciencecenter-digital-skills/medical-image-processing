@@ -18,6 +18,8 @@ exercises: 2
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+## Introduction
+
 Medical imaging uses many technologies including X-rays, computed tomography (CT), magnetic resonance imaging (MRI), ultrasound, positron emmision tomography (PET) and microscopy. Although there are tendencies to use certain technologies, or modalities to answer certain clinical questions, many modalities may provide information of interest in terms of research questions. In order to work with digital images at scale we need to use information technology. We receive images in certain types of files, e.g., an x-ray stored at the hospital in DICOM format, but the image itself is contained in a JPEG inside the DICOM as a 2D-array. Understanding all the kinds of files we are dealing with and how the images within them were generated can help us deal with them computationally.
 
 Conceptually, we can think of medical images as signals. These signals need various kinds of processing
