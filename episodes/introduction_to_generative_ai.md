@@ -1,7 +1,7 @@
 ---
 title: "Generative AI in medical imaging"
 teaching: 30
-exercises: 1
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -28,7 +28,8 @@ However, the safety implications of these technologies remain a subject of debat
 
 :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
 
-Inline instructor notes: if Zenodo is unavailable ...
+Inline instructor notes: if Zenodo is unavailable some images should have  placed on 
+https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
