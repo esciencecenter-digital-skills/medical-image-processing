@@ -18,4 +18,5 @@ Positron emission tomography (PET)
 :    A PET scan is one which uses one of several radioactive tracers e.g. Fluorodeoxyglucose or 
 Oxygen-15 (15O) is administered to the patient, and then gamma ray detectors are used to create an image. PET scans can be acquired with and/or registered to other forms of imaging. 
 
-
+Tag image file format (TIFF)
+:    TIFF files are a file which conform to the tag image file format standard. The standard can accomodate grayscale or color images as raster images. TIFF files may be compressed with either lossy or lossless compresion, or even not compressed. 
