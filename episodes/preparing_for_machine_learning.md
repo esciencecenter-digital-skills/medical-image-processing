@@ -166,9 +166,9 @@ All of the following may pose potential problems:
 
 ## Challenge: Prepare the images for classic supervised ML
 
-Use `skimage.transform.rotate` to create two realistic augmented images (name them `new_pic1` and `new_pic2`) from the given 'normal' image stored in the `image_cxr1` variable.
+Use `skimage.transform.rotate` to create two realistic augmented images from the given 'normal' image stored in the  variables.
 
-Then, in a single block of code, apply what you perceive as the two most critical preprocessing algorithms to prepare these images for classic supervised ML.
+Then, in a single block of code, apply what you perceive as the most critical preprocessing algorithms to prepare these images for classic supervised ML.
 
 Hint: Carefully examine the shape of the cardiomegaly image from multiple perspectives. Consider the impact of harsh lines on ML performance.
 
@@ -193,9 +193,10 @@ cut sides: -208.5
 
 ```python
 cut_sides = abs(round((image_cxr_cmegaly.shape[1] - image_cxr1.shape[1])/2))
-list_images = [image_cxr1, new_pic1, new_pic2]
+list_images = [image_cxr1, image_cxr_cmegaly, image_cxr2]
 better_for_ml_list = []
 for image in list_images:
+    image = rotate(image,2)
     image = image[cut_top_bottom:-cut_top_bottom, cut_sides: -cut_sides]
     better_for_ml_list.append(image)
 
@@ -227,6 +228,7 @@ plt.imshow(better_for_ml_list[2])
 plt.axis('off')
 plt.title("Augment 2")
 
+
 ```
 
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
@@ -254,7 +256,8 @@ io.show()
 ![](fig/shear_cxr.png){alt='augmented by shear chest x-ray'}
 
 
-And finally, let's show a wave over a mesh:
+And finally, let's show a "wave over a mesh". Here we will create a grid, or "mesh" over our image, and 
+illustrate it in our plot with dots, then we will transform the image in the shape of wave through a warp funtion :
 
 ```python
 rows, cols = image_affine_tf.shape[0], image_affine_tf.shape[1]
@@ -410,7 +413,7 @@ Below are three examples from the field of neuroimaging:
 | Notes     | no standard release yet  | versioned but not released   | not release, not versioned |
 | Original website     | [GitHub](https://github.com/Jfortin1/ComBatHarmonization) | [GitHub](https://github.com/lianruizuo/haca3) | [GitHub](https://github.com/Alxaline/ComScan)    | 
 | Early publication |[doi: 10.1016/j.neuroimage.2017.08.047](https://doi.org/10.1016/j.neuroimage.2017.08.047)| [doi:10.1016/j.compmedimag.2023.102285](https://doi.org/10.1016/j.compmedimag.2023.102285)  |[doi: 10.1038/s41598-022-16609-1 ](https://doi.org/10.1038/s41598-022-16609-1)|
-| Versioned website |  [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/neurocombat) | [versioned on GitHub](https://github.com/lianruizuo/haca3)| [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/autocombat)  
+| Versioned website |  [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/neurocombat) | [versioned on GitHub](https://github.com/lianruizuo/haca3)| [versioned on cvasl](https://github.com/brainspinner/cvasl/tree/main/cvasl/vendor/comscan)  
 
 There are numerous packages available for brain MRI alone, not to mention those for imaging the rest of the body. We have selected these three examples to highlight some of the common issues and pitfalls associated with such packages.
 
