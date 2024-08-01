@@ -2,15 +2,8 @@
 title: Setup
 ---
 
-Setup instructions live in this document. 
-
 ## Data Sets
 
-<!--
-FIXME: place any data you want learners to use in `episodes/data` and then use
-       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
-       link to it, replacing the example.com link.
--->
 Downloading the data will be done with the requests library as part of each lesson.
 
 ## Software Setup
