@@ -168,9 +168,9 @@ All of the following may pose potential problems:
 
 Use `skimage.transform.rotate` to create two realistic augmented images from the given 'normal' image stored in the  variables.
 
-Then, in a single block of code, apply what you perceive as the most critical preprocessing algorithms to prepare these images for classic supervised ML.
+Then, in a single block of code, apply what you perceive as the most critical preprocessing algorithm to prepare these images for classic supervised ML.
 
-Hint: Carefully examine the shape of the cardiomegaly image from multiple perspectives. Consider the impact of harsh lines on ML performance.
+Hint: Carefully examine the shape of the cardiomegaly image. Consider the impact of harsh lines on ML performance.
 
 :::::::::::::::::::::::: solution 
 
@@ -255,9 +255,7 @@ io.show()
 ```
 ![](fig/shear_cxr.png){alt='augmented by shear chest x-ray'}
 
-
-And finally, let's show a "wave over a mesh". Here we will create a grid, or "mesh" over our image, and 
-illustrate it in our plot with dots, then we will transform the image in the shape of wave through a warp funtion :
+And finally, let's demonstrate a "wave over a mesh." We'll start by creating a grid, or "mesh," over our image, represented by dots in our plot. Then, we'll apply a warp function to transform the image into the shape of a wave.
 
 ```python
 rows, cols = image_affine_tf.shape[0], image_affine_tf.shape[1]
