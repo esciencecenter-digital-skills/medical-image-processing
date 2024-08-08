@@ -1,7 +1,7 @@
 ---
 title: "Preparing Images for Machine Learning"
 teaching: 90
-exercises: 5
+exercises: 35
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -46,7 +46,7 @@ In almost any radiological dataset, it is essential to examine the age and sex d
 :::::::::::::::::::::::::::::::::
 :::::::::::::::::::::::::::::::::::::::::::::::::
 
-In real-world scenarios, we often face the challenge of investigating a specific pathology that is relatively rare. Consequently, our dataset may contain thousands of normal subjects but relatively few with any pathology, and even fewer with the pathology of interest. This creates an imbalanced dataset and can introduce biases. For instance, if we aim to develop a model to detect heart failure on chest X-rays, but all our heart failure patients are older men, the model may incorrectly focus on the absence of female breasts and signs of aging instead of actual heart failure indicators, such as the cardiothoracic ratio.
+In real-world scenarios, we often face the challenge of investigating a specific pathology that is relatively rare. Consequently, our dataset may contain thousands of normal subjects but relatively few with any pathology, and even fewer with the pathology of interest. This creates an imbalanced dataset and can introduce biases. For instance, if we aim to develop a model to detect heart failure on chest X-rays, but all our heart failure patients are older men, the model may incorrectly ''focus' (by which we mean here exploit the statistical correlation) on the absence of female breasts and signs of aging instead of actual heart failure indicators, such as the cardiothoracic ratio.
 
 Here are some initial steps to understanding your dataset if you plan to do supervised ML:
 
@@ -63,7 +63,7 @@ Here are some initial steps to understanding your dataset if you plan to do supe
 
 When preparing images for unsupervised learning, many of these steps still apply. However, you must also consider the specific algorithm's requirements, as some segmentation algorithms may not benefit from additional data.
 
-In our supervised preparation step two, we suggest checking labeling, which is the target variable you want to predict. Ensure the labeling is accurate and examine the types of labels present versus what you want your models to predict. In step three, we emphasize checking for diversity among protected classes (i.e., groups that often have specific legislation regarding medical diagnostics due to historical underrepresentation). Specifically, ensure your dataset includes women and certain ethnic minority groups. For example, chest circumference and height can vary significantly between populations, such as Dutch people and those from Indonesia. While these differences might not matter for an algorithm focused on cerebral blood flow, they are crucial for others. In step five, anonymization is highlighted, particularly for ultrasounds, which may display patient names or diagnoses directly on the image. Simple cropping can sometimes suffice, but more sophisticated techniques like blurring, masking, or optical character recognition (OCR) can also be employed.
+In our preparation for ML list above in step two, we suggest checking labeling. The label is the target variable you want to predict. Ensure the labeling is accurate and examine the types of labels present versus what you want your models to predict. In step three, we emphasize checking for diversity among protected classes (i.e., groups that often have specific legislation regarding medical diagnostics due to historical underrepresentation). Specifically, ensure your dataset includes women and certain ethnic minority groups. There are population level variations. For example, chest circumference and height can vary significantly between populations, such as Dutch people and those from Indonesia. While these differences might not matter for an algorithm focused on cerebral blood flow, they are crucial for others. In step five, anonymization is highlighted, particularly for ultrasounds, which may display patient names or diagnoses directly on the image. Simple cropping can sometimes suffice, but more sophisticated techniques like blurring, masking, or optical character recognition (OCR) can also be employed.
 
 We will cover step nine, dataset harmonization, in a separate section. For step ten, creating more data, synthetic data generation will be discussed further in an episode on generative AI. In the next section, we will explore examples of augmented data creation.
 
@@ -168,7 +168,7 @@ All of the following may pose potential problems:
 
 Use `skimage.transform.rotate` to create two realistic augmented images from the given 'normal' image stored in the  variables.
 
-Then, in a single block of code, apply what you perceive as the most critical preprocessing algorithm to prepare these images for classic supervised ML.
+Then, in a single block of code, apply what you perceive as the most critical preprocessing operation to prepare these images for classic supervised ML.
 
 Hint: Carefully examine the shape of the cardiomegaly image. Consider the impact of harsh lines on ML performance.
 
@@ -233,7 +233,7 @@ plt.title("Augment 2")
 
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
 
-Note that the results are further enhanced by cropping. Typically, we aim to minimize harsh artificial lines in any images we feed to ML algorithms, unless they are consistent.
+There are a few important things to note about the choices here. The point is to make it realistic to data that may happen. Therefore a choice of 2 degrees is much better than a choice of 25 degrees. For the computer every pixel is now a bit different unless you are unsing a rotationally invariant algorithm or some other fancier algorithms, which allow for this kind of difference, yet with only a 2 degree rotation we have something that could be realistic to clinical life. Note that the results are further enhanced by cropping. Typically, we aim to minimize harsh artificial lines in any images we feed to ML algorithms, unless they are consistent. Many with practical experience have noticed that lots of ML algorithms will 'focus' on harsh lines so if they are not consistent in all images, it is better to get rid of them. But how much to crop? We chose a number based on the size of our images. You do not have to use exactly our method, but in the end we may want all our images to be the same size, and all the important features of the images to still be there. 
 
 :::::::::::::::::::::::::::::::::
 
@@ -353,6 +353,8 @@ One major concern is accuracy, as pipelines may mislabel or miscount features, p
 
 Proceed with caution when relying on pipeline outputs, especially without direct access to the original images.
 
+An additional issue with pipelines is that the results may vary significantly based on which we choose. For more information on how this can play out with fMRI data see the following [article from Nature](https://doi.org/10.1038/s41467-024-48781-5). Without access to the original images we have no idea which pipeline is more correct in terms of what we want from our data. 
+
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -373,10 +375,10 @@ Below is a list of open-source* libraries that facilitate this type of analysis:
 | IBSI-2 compliant     | yes        | no claim           | yes           | no claim        |
 | Interface            | high-level API       | high-level API, Docker| GUI, low-level API    | low-level API      |
 | Website     | [GitHub](https://github.com/oncoray/mirp) | [GitHub](https://github.com/AIM-Harvard/pyradiomics)  | [website](https://www.lifexsoft.org/) | [GitHub](https://github.com/mvallieres/radiomics)    | 
-| Early publication |[pending JOSS publication](https://joss.theoj.org/papers/165c85b1ecad891550a21b12c8b2e577)| [doi:10.1158/0008-5472.CAN-17-0339](https://doi.org/10.1158/0008-5472.CAN-17-0339)  |[doi:10.1158/0008-5472.CAN-18-0125](https://doi.org/10.1038/s41598-022-16609-1)|[doi:10.1088/0031-9155/60/14/5471](https://doi.org/10.1088/0031-9155/60/14/5471)| 
+| Early publication |[JOSS publication](https://joss.theoj.org/papers/10.21105/joss.06413)| [doi:10.1158/0008-5472.CAN-17-0339](https://doi.org/10.1158/0008-5472.CAN-17-0339)  |[doi:10.1158/0008-5472.CAN-18-0125](https://doi.org/10.1038/s41598-022-16609-1)|[doi:10.1088/0031-9155/60/14/5471](https://doi.org/10.1088/0031-9155/60/14/5471)| 
 | Notes |    relative newcomer    | very standard and supported| user-friendly   | * MATLAB requires a license | 
 
-Once we have tabular data, we can use different algorithms to analyze it. But applying machine learning isn't just about using algorithms and expecting quick results. In the next section, we'll look into one reason why this process can be more complicated.
+Once we have tabular data, we can use different algorithms to analyze it. Unfortunately applying machine learning isn't just about using algorithms and getting quick results. In the next section, we'll look into one reason why this process can be more complicated.
 
 ## Harmonization
 
@@ -392,7 +394,7 @@ Below are images of the same patient scanned with 1.5 Tesla and 3 Tesla machines
 
 Different contrast levels significantly affect the visibility of structures like the caudate and thalami in brain images. As a result, the radiomic characteristics of these images, including contrast and possibly other parameters, can vary even when they originate from the same patient.
 
-Building a dataset solely based on unharmonized derived data is not feasible. However, without access to the original images, understanding these variations becomes challenging.
+Building a dataset solely based on extensive unharmonized derived data is not always feasible. However, without access to the original images, understanding these variations becomes challenging.
 
 We recommend the following approach:
 
@@ -447,6 +449,6 @@ While each of these packages has its strengths for researchers, none are perfect
 - Evaluate the validity and utility of data augmentation methods before applying them
 - Radiomics enables the use of mathematical image qualities as features
 - There are several accessible pipelines for volumetrics and radiomics
-- Data from different machines often requires harmonization, achievable through coding and existing libraries
+- Data from different machines (or the same machines on different settings) often requires harmonization, achievable through coding and/or use of existing libraries
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
