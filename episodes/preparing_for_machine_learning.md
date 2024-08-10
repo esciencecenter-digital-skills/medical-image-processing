@@ -99,6 +99,7 @@ from skimage import img_as_float
 from skimage.transform import rotate
 from skimage import transform as tf
 from skimage.transform import PiecewiseAffineTransform
+from skimage.transform import resize
 ```
 
 Then, we import our example images and examine them.
@@ -216,21 +217,21 @@ fig.add_subplot(rows, columns, 1)
 # showing image
 plt.imshow(better_for_ml_list[0])
 plt.axis('off')
-plt.title("Normal 1")
+plt.title("Normal example rotated")
   
 # add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(better_for_ml_list[1])
 plt.axis('off')
-plt.title("Augment 1")
+plt.title("Cardiomegaly rotated")
 
 # add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(better_for_ml_list[2])
 plt.axis('off')
-plt.title("Augment 2")
+plt.title("Another normal rotated")
 
 
 ```
@@ -264,21 +265,21 @@ fig.add_subplot(rows, columns, 1)
 # showing image
 plt.imshow(resized[0])
 plt.axis('off')
-plt.title("Normal 1")
+plt.title("Normal Resized")
   
 # add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(resized[1])
 plt.axis('off')
-plt.title("Augment 1")
+plt.title("Augment 1 Resized")
 
 # add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(resized[2])
 plt.axis('off')
-plt.title("Augment 2")
+plt.title("Augment 2 Resized")
 ```
 
 
