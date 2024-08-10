@@ -172,7 +172,7 @@ All of the following may pose potential problems:
 
 Use `skimage.transform.rotate` to create two realistic augmented images from the given 'normal' image stored in the  variables.
 
-Then, in a single block of code, apply what you perceive as the most critical preprocessing operation to prepare these images for classic supervised ML.
+Then, in a single block of code, apply what you perceive as the most critical preprocessing operations to prepare these images for classic supervised ML.
 
 Hint: Carefully examine the shape of the cardiomegaly image. Consider the impact of harsh lines on ML performance.
 
@@ -234,8 +234,56 @@ plt.title("Augment 2")
 
 
 ```
+![](fig/augmented_cxr_rotate_interem.png){alt='augmented chest x-ray different sizes'}
+
+```python
+# find a size we want to resize to, here the smallest
+zero_side = []
+one_side = []
+for image in better_for_ml_list:
+    zero_side.append(image.shape[0])
+    zero_side.sort()
+    one_side.append(image.shape[1])
+    one_side.sort()
+smallest_size = zero_side[0], one_side[0]
+# make resized images
+resized = []
+for image in better_for_ml_list:
+    image =  resize(image, (smallest_size))
+    resized.append(image)
+
+# create figure for display
+fig = plt.figure(figsize=(10, 7))
+  
+# setting values to rows and column variables
+rows = 1
+columns = 3
+
+# add a subplot at the 1st position
+fig.add_subplot(rows, columns, 1)
+# showing image
+plt.imshow(resized[0])
+plt.axis('off')
+plt.title("Normal 1")
+  
+# add a subplot at the 2nd position
+fig.add_subplot(rows, columns, 2)
+# showing image
+plt.imshow(resized[1])
+plt.axis('off')
+plt.title("Augment 1")
+
+# add a subplot at the 3nd position
+fig.add_subplot(rows, columns, 3)
+# showing image
+plt.imshow(resized[2])
+plt.axis('off')
+plt.title("Augment 2")
+```
+
 
 ![](fig/augmented_cxr_rotate.png){alt='augmented chest x-ray'}
+
 
 There are a few key considerations to keep in mind regarding the choices made here. The goal is to create data that realistically represents what might occur in real-life scenarios. For example, a 2-degree rotation is far more realistic than a 25-degree rotation. Unless you are using a rotationally invariant algorithm or another advanced method that accounts for such differences, even small rotations can make every pixel slightly different for the computer. A 2-degree rotation closely mirrors what might happen in a clinical setting, making it a more practical choice.
 
