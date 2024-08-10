@@ -265,21 +265,21 @@ fig.add_subplot(rows, columns, 1)
 # showing image
 plt.imshow(resized[0])
 plt.axis('off')
-plt.title("Normal Resized")
+plt.title("Normal 1 Augmented Resized")
   
 # add a subplot at the 2nd position
 fig.add_subplot(rows, columns, 2)
 # showing image
 plt.imshow(resized[1])
 plt.axis('off')
-plt.title("Augment 1 Resized")
+plt.title("Augment Cardiomegaly Resized")
 
 # add a subplot at the 3nd position
 fig.add_subplot(rows, columns, 3)
 # showing image
 plt.imshow(resized[2])
 plt.axis('off')
-plt.title("Augment 2 Resized")
+plt.title("Normal 2 Augment  Resized")
 ```
 
 
