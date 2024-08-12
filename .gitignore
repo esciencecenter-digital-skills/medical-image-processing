@@ -50,4 +50,4 @@ docs/
 po/*~
 
 # Mac OS X temporary files
-.DS_Store
+*.DS_Store
