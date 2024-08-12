@@ -63,6 +63,8 @@ episodes:
 - introduction_to_medical_imaging.md
 - introduction_to_mri.md
 - simpleitk.md
+- introduction_to_anonymization.md
+- introduction_to_generative_ai.md
 
 # Information for Learners
 learners: 
