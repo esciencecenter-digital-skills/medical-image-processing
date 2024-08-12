@@ -40,13 +40,13 @@ DICOM files contain metadata, which includes various types of identifying inform
 
 ### Faces in images
 
-A full CT, MRI, or PET scan of the head can be reconstructed into a face. To prevent this, many image analysis programs 'deface' these types of images, which helps to obscure the patient's specific identity as well as some demographic information (e.g., ethnicity and gender).
+A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
 
-Various tools are available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which has built-in defacing capabilities, to functions within code libraries.
+There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries.
 
-One issue under current research is that some defacing algorithms may accidentally change more than the face. There is some research in pre-print which shows some may even alter the morphometry of the brain image. Proceed with caution, and if possible compare original to defaced images to make sure you did not lose or corrupt important data.
+However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
 
-![Image from 'A reproducibility evaluation of the effects of MRI defacing on brain segmentation' by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass (preprint available at https://pubmed.ncbi.nlm.nih.gov/37293070/ or on MedRxiv)](fig/deface-example.jpg){alt='Defacing examples'}
+![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
 ### Text on images
 
