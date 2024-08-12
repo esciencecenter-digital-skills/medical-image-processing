@@ -4,23 +4,14 @@ channels:
   
 dependencies:
   - python=3.10
-  - imageio=2.25.0
-  - ipympl=0.9.3
+  - dcm2niix=1.0.20240202
   - jupyter=1.0.0
   - jupyterlab=3.6.1
   - matplotlib=3.3.3
-  - pytest<8.1
-  - nibabel
+  - nibabel=5.2.1
   - notebook=6.4.10
+  - ipywidgets=8.1.3
   - numpy=1.22.3
-  - pandas
-  - pycodestyle
-  - scipy=1.7.3
-  - scikit-image=0.19.2
-  - scikit-learn
-  - seaborn
-  - simpleitk
-  - sphinx=4.5.0
-  - pydicom
-  - nest-asyncio=1.5.5
-  - numexpr=2.7.3
+  - pandas=2.2.2
+  - simpleitk=2.3.1
+  - pydicom=2.4.4
