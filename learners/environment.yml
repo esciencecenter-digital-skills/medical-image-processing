@@ -1,0 +1,26 @@
+name: medical_image_processing
+channels:
+  - conda-forge
+  
+dependencies:
+  - python=3.10
+  - imageio=2.25.0
+  - ipympl=0.9.3
+  - jupyter=1.0.0
+  - jupyterlab=3.6.1
+  - matplotlib=3.3.3
+  - pytest<8.1
+  - nibabel
+  - notebook=6.4.10
+  - numpy=1.22.3
+  - pandas
+  - pycodestyle
+  - scipy=1.7.3
+  - scikit-image=0.19.2
+  - scikit-learn
+  - seaborn
+  - simpleitk
+  - sphinx=4.5.0
+  - pydicom
+  - nest-asyncio=1.5.5
+  - numexpr=2.7.3
