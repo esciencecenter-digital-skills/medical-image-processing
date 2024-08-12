@@ -1,4 +1,4 @@
-name: medical_image_processing
+name: medical_image_proc
 channels:
   - conda-forge
   
@@ -16,3 +16,4 @@ dependencies:
   - pydicom=2.4.4
   - scikit-image=0.24.0
   - simpleitk=2.3.1
+  - zenodo_get=1.6.1
