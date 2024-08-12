@@ -89,11 +89,7 @@ MRI can also be used for spectroscopy, but this will not be covered here as it d
 
 From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
 
-In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images. We’ll load some example images from Zenodo, where [this data](https://doi.org/10.5281/zenodo.6466491) is available under an open license. We will use a **wget** command to download these from Zenodo.
-  
-```console
-wget https://zenodo.org/records/6466491/files/<file_name_to_fill>.zip
-```
+In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images.
 
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
 We can convert DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix) software.
@@ -128,7 +124,7 @@ import nibabel as nib
 First, use the `load()` function to create a `NiBabel` image object from a NIfTI file.
 
 ```python
-t2_img = nib.load("../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
+t2_img = nib.load("data/mri//OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
 ```
 
 When loading a NIfTI file with `NiBabel`, you get a specialized data object that includes all the information stored in the file. Each piece of information is referred to as an **attribute** in Python's terminology. To view all these attributes, simply type `t2_img.` followed by <kbd>Tab</kbd>.

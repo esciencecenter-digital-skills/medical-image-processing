@@ -26,13 +26,6 @@ The applications of generative AI span widely across fields like medical imaging
 
 However, the safety implications of these technologies remain a subject of debate. Depending on the software or model used, data entered into the system may become the property of the software's creators. It is crucial to exercise caution when inputting sensitive information, such as patient data, into these systems. Understanding where and how data is stored (i.e., whether on your servers or in the cloud) is essential to safeguard privacy and confidentiality.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes: if Zenodo is unavailable some images should have  placed on 
-https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ## Mastering the use of generative AI tools
 
 ### Architectures of generative AI
