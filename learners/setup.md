@@ -76,7 +76,7 @@ Now that you have the environment set up, let's download the necessary files fro
 
 ### Option A: manual download
 
-1. Open your web browser and navigate to [this lesson's data Zenodo record address](https://zenodo.org/records/13305860).
+1. Open your web browser and navigate to [this lesson's data Zenodo record address](https://zenodo.org/records/13311246).
 2. Look for the "Files" section on the page.
 3. Click tha download button for downloading the `data.zip` file containing the images.
 4. Once downloaded, extract the contents of the ZIP file.
@@ -89,7 +89,7 @@ You can use the Zenodo API to download the files. The `zenodo_get` package shoul
 1. Ensure you're in your lesson workspace directory and your `medical_image_proc` environment is activated.
 2. Use the following command in your terminal (Miniforge Prompt if you are a Windows user):
 ```bash
-zenodo_get 13305860
+zenodo_get 13311246
 ```
 3. Extract the contents of `data.zip`.
 
