@@ -20,7 +20,7 @@ exercises: 5
 
 ## Introduction
 
-Medical imaging uses many technologies including X-rays, computed tomography (CT), magnetic resonance imaging (MRI), ultrasound, positron emmision tomography (PET) and microscopy. Although there are tendencies to use certain technologies, or modalities to answer certain clinical questions, many modalities may provide information of interest in terms of research questions. In order to work with digital images at scale we need to use information technology. We receive images in certain types of files, e.g., an x-ray stored at the hospital in DICOM format, but the image itself is contained in a JPEG inside the DICOM as a 2D-array. Understanding all the kinds of files we are dealing with and how the images within them were generated can help us deal with them computationally.
+Medical imaging uses many technologies including X-rays, computed tomography (CT), magnetic resonance imaging (MRI), ultrasound, positron emission tomography (PET) and microscopy. Although there are tendencies to use certain technologies, or modalities to answer certain clinical questions, many modalities may provide information of interest in terms of research questions. In order to work with digital images at scale we need to use information technology. We receive images in certain types of files, e.g., an x-ray stored at the hospital in DICOM format, but the image itself is contained in a JPEG inside the DICOM as a 2D-array. Understanding all the kinds of files we are dealing with and how the images within them were generated can help us deal with them computationally.
 
 Conceptually, we can think of medical images as signals. These signals need various kinds of processing
 before they are 'readable' by humans or by many of the algorithms we write. 
@@ -51,7 +51,7 @@ Ultrasounds can produce multiple complex types of images. Typically, sonographer
 
 ::::::::::::::::::::::::: callout
 
-## What are some disadvantages to ultrasounds in terms of computational analysis?
+## What Are Some Disadvantages to Ultrasounds in Terms of Computational Analysis?
 
 Ultrasounds images are operator-dependent, often with embedded patient data, and the settings and patients' positions can vary widely.
 
@@ -59,11 +59,13 @@ Ultrasounds images are operator-dependent, often with embedded patient data, and
 
 ::::::::::::::::::::::::::::::::::::: challenge
 
-## How to reduce these problems?
+## Challenge: How to Reduce These Problems?
 
 How can we optimize research involving ultrasounds in terms of the challenges above?
 
 :::::::::::::::  solution
+
+## Solution
 
 Possible solutions include:
 
@@ -80,13 +82,13 @@ Possible solutions include:
 
 MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. Different ordering and timing of radiofrequency pulses and different magnetic gradients give us different MRI sequences. The actual signal on an anatomical MRI needs to be processed via Fourier transforms and some other computational work before it is recognizable as anatomy. The raw data is reffered to as the k-space data, and this can be kept in vendor specific formats or open common formats, e.g., ISMRMRD (International Society of Magnetic Resonance MR Raw Data). In practice, we rarely use the k-space data (unless perhaps we are medical physicists) for research on medical pathology. The final product we are used to looking at is a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in neuroscience research. These file types will be covered in more detail later in the course.   
 
-## Other image types
+## Other Image Types
 
 PET scans, nuclear medicine images in general and pathology images are also broadly available inside hospitals. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-## Image storage
+## Image Storage
 
 There is less standardization around file formats of certain types of imaging.
 
