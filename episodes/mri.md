@@ -1,7 +1,7 @@
 ---
 title: "Working with MRI"
 teaching: 60
-exercises: 2
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 

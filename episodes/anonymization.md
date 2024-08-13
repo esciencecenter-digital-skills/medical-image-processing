@@ -1,5 +1,5 @@
 ---
-title: "Intro to Anonymization"
+title: "Anonymizing Medical Images"
 teaching: 40
 exercises: 15
 ---

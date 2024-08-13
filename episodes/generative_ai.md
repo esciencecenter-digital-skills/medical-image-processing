@@ -1,5 +1,5 @@
 ---
-title: "Generative AI in medical imaging"
+title: "Generative AI in Medical Imaging"
 teaching: 30
 exercises: 10
 ---

@@ -1,7 +1,7 @@
 ---
-title: "Introduction to Medical Imaging"
+title: "Medical Imaging Modalities"
 teaching: 45
-exercises: 2
+exercises: 5
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -71,7 +71,9 @@ Possible solutions include:
 - Training technicians to use standardized settings only
 - Creating a machine set only on one power setting
 - Image harmonization/normalization algorithms
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Magnetic Resonance Imaging
