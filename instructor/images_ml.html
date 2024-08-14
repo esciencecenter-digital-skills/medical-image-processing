@@ -414,7 +414,7 @@ dataset?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In almost any radiological dataset, it is essential to examine the
 age and sex distribution. These metadata are crucial for both brain MRIs
@@ -483,74 +483,57 @@ anonymization.</p>
 section. For step ten, creating more data, synthetic data generation
 will be discussed further in an episode on generative AI. In the next
 section, we will explore examples of augmented data creation.</p>
-<p>To work through our dataset augmentation examples, you will need an
-appropriate environment. You can build the environment using our
-<code>ml_environment</code> file (see the setup instructions).</p>
-<p>Let’s switch environments (assuming your environment is called
-<code>image_libraries</code>):</p>
-<div class="codewrapper sourceCode" id="cb1">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">conda</span> deactivate </span>
-<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">conda</span> activate image_libraries</span></code></pre>
-</div>
-<p>Then we need to get our sample images:</p>
-<div class="codewrapper sourceCode" id="cb2">
-<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
-</h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">TBD</span></span></code></pre>
-</div>
 <p>Let’s go throught some examples. First, we import the libraries we
 need:</p>
-<div class="codewrapper sourceCode" id="cb3">
+<div class="codewrapper sourceCode" id="cb1">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
-<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
-<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> data</span>
-<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform</span>
-<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> io</span>
-<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> img_as_float</span>
-<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> rotate</span>
-<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform <span class="im">as</span> tf</span>
-<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> PiecewiseAffineTransform</span>
-<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> resize</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> data</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> io</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> img_as_float</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> rotate</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform <span class="im">as</span> tf</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> PiecewiseAffineTransform</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> resize</span></code></pre>
 </div>
 <p>Then, we import our example images and examine them.</p>
-<div class="codewrapper sourceCode" id="cb4">
+<div class="codewrapper sourceCode" id="cb2">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>image_cxr1 <span class="op">=</span> io.imread(<span class="st">'rotatechest.png'</span>) <span class="co"># a relatively normal chest X-ray (CXR)</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a>image_cxr_cmegaly <span class="op">=</span> io.imread(<span class="st">'cardiomegaly_cc0.png'</span>) <span class="co"># cardiomegaly CXR</span></span>
-<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>image_cxr2 <span class="op">=</span> io.imread(<span class="st">'other_op.png'</span>) <span class="co"># a relatively normal CXR</span></span>
-<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co"># create figure</span></span>
-<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  </span>
-<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
-<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a></span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co"># Adds a subplot at the 1st position</span></span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>plt.imshow(image_cxr1)</span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>plt.title(<span class="st">"Normal 1"</span>)</span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  </span>
-<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
-<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
-<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a>plt.imshow(image_cxr_cmegaly)</span>
-<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a>plt.title(<span class="st">"Cardiomegaly"</span>)</span>
-<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a></span>
-<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
-<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
-<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>plt.imshow(image_cxr2)</span>
-<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>plt.title(<span class="st">"Normal 2"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>image_cxr1 <span class="op">=</span> io.imread(<span class="st">'data/ml/rotatechest.png'</span>) <span class="co"># a relatively normal chest X-ray (CXR)</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>image_cxr_cmegaly <span class="op">=</span> io.imread(<span class="st">'data/ml/cardiomegaly_cc0.png'</span>) <span class="co"># cardiomegaly CXR</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>image_cxr2 <span class="op">=</span> io.imread(<span class="st">'data/ml/other_op.png'</span>) <span class="co"># a relatively normal CXR</span></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># create figure</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a><span class="co"># Adds a subplot at the 1st position</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>plt.imshow(image_cxr1)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>plt.title(<span class="st">"Normal 1"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  </span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>plt.imshow(image_cxr_cmegaly)</span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a>plt.title(<span class="st">"Cardiomegaly"</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>plt.imshow(image_cxr2)</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a>plt.title(<span class="st">"Normal 2"</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/cxr_display_mip.png" alt="CXR examples" class="figure mx-auto d-block"></figure><div id="challenge-can-you-see-some-problems-in-the-following-scenario" class="callout challenge">
 <div class="callout-square">
@@ -579,7 +562,7 @@ prestigious tertiary inpatient hospital.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>All of the following may pose potential problems:</p>
 <ul><li>We may have different quality images from different machines for our
@@ -617,16 +600,16 @@ the impact of harsh lines on ML performance.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
-<div class="codewrapper sourceCode" id="cb5">
+<div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># figure out how much to cut on sides</span></span>
-<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cut top/bottom:"</span>, (image_cxr_cmegaly.shape[<span class="dv">0</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">0</span>])<span class="op">/</span><span class="dv">2</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>cut_top_bottom <span class="op">=</span> <span class="bu">abs</span>(<span class="bu">round</span>((image_cxr_cmegaly.shape[<span class="dv">0</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">0</span>])<span class="op">/</span><span class="dv">2</span>))</span>
-<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co"># figure our how much to cut on top and bottom</span></span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cut sides:"</span>,(image_cxr_cmegaly.shape[<span class="dv">1</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># figure out how much to cut on sides</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cut top/bottom:"</span>, (image_cxr_cmegaly.shape[<span class="dv">0</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">0</span>])<span class="op">/</span><span class="dv">2</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>cut_top_bottom <span class="op">=</span> <span class="bu">abs</span>(<span class="bu">round</span>((image_cxr_cmegaly.shape[<span class="dv">0</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">0</span>])<span class="op">/</span><span class="dv">2</span>))</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># figure our how much to cut on top and bottom</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"cut sides:"</span>,(image_cxr_cmegaly.shape[<span class="dv">1</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>)</span></code></pre>
 </div>
 <div class="codewrapper">
 <h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -634,91 +617,91 @@ the impact of harsh lines on ML performance.</p>
 <pre class="output" tabindex="0"><code>cut top/bottom: -119.0
 cut sides: -208.5</code></pre>
 </div>
-<div class="codewrapper sourceCode" id="cb7">
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>cut_sides <span class="op">=</span> <span class="bu">abs</span>(<span class="bu">round</span>((image_cxr_cmegaly.shape[<span class="dv">1</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>))</span>
-<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>list_images <span class="op">=</span> [image_cxr1, image_cxr_cmegaly, image_cxr2]</span>
-<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>better_for_ml_list <span class="op">=</span> []</span>
-<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> list_images:</span>
-<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>    image <span class="op">=</span> rotate(image,<span class="dv">2</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>    image <span class="op">=</span> image[cut_top_bottom:<span class="op">-</span>cut_top_bottom, cut_sides: <span class="op">-</span>cut_sides]</span>
-<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>    better_for_ml_list.append(image)</span>
-<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a></span>
-<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a><span class="co"># create figure for display</span></span>
-<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  </span>
-<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
-<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a></span>
-<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
-<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
-<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">0</span>])</span>
-<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>plt.title(<span class="st">"Normal example rotated"</span>)</span>
-<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>  </span>
-<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
-<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
-<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">1</span>])</span>
-<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>plt.title(<span class="st">"Cardiomegaly rotated"</span>)</span>
-<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a></span>
-<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
-<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
-<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">2</span>])</span>
-<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>plt.title(<span class="st">"Another normal rotated"</span>)</span>
-<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a></span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>cut_sides <span class="op">=</span> <span class="bu">abs</span>(<span class="bu">round</span>((image_cxr_cmegaly.shape[<span class="dv">1</span>] <span class="op">-</span> image_cxr1.shape[<span class="dv">1</span>])<span class="op">/</span><span class="dv">2</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>list_images <span class="op">=</span> [image_cxr1, image_cxr_cmegaly, image_cxr2]</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a>better_for_ml_list <span class="op">=</span> []</span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> list_images:</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    image <span class="op">=</span> rotate(image,<span class="dv">2</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>    image <span class="op">=</span> image[cut_top_bottom:<span class="op">-</span>cut_top_bottom, cut_sides: <span class="op">-</span>cut_sides]</span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>    better_for_ml_list.append(image)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co"># create figure for display</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">0</span>])</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>plt.title(<span class="st">"Normal example rotated"</span>)</span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a>  </span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">1</span>])</span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a>plt.title(<span class="st">"Cardiomegaly rotated"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>plt.imshow(better_for_ml_list[<span class="dv">2</span>])</span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>plt.title(<span class="st">"Another normal rotated"</span>)</span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a></span></code></pre>
 </div>
-<figure><img src="../fig/augmented_cxr_rotate_interem.png" alt="augmented chest x-ray different sizes" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb8">
+<figure><img src="../fig/augmented_cxr_rotate_interem.png" alt="augmented chest x-ray different sizes" class="figure mx-auto d-block"></figure><div class="codewrapper sourceCode" id="cb6">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="co"># find a size we want to resize to, here the smallest</span></span>
-<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>zero_side <span class="op">=</span> []</span>
-<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>one_side <span class="op">=</span> []</span>
-<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> better_for_ml_list:</span>
-<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a>    zero_side.append(image.shape[<span class="dv">0</span>])</span>
-<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>    zero_side.sort()</span>
-<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>    one_side.append(image.shape[<span class="dv">1</span>])</span>
-<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>    one_side.sort()</span>
-<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>smallest_size <span class="op">=</span> zero_side[<span class="dv">0</span>], one_side[<span class="dv">0</span>]</span>
-<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a><span class="co"># make resized images</span></span>
-<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>resized <span class="op">=</span> []</span>
-<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> better_for_ml_list:</span>
-<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>    image <span class="op">=</span>  resize(image, (smallest_size))</span>
-<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>    resized.append(image)</span>
-<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a></span>
-<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a><span class="co"># create figure for display</span></span>
-<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>  </span>
-<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
-<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
-<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
-<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
-<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>plt.imshow(resized[<span class="dv">0</span>])</span>
-<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>plt.title(<span class="st">"Normal 1 Augmented Resized"</span>)</span>
-<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  </span>
-<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
-<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
-<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>plt.imshow(resized[<span class="dv">1</span>])</span>
-<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>plt.title(<span class="st">"Augment Cardiomegaly Resized"</span>)</span>
-<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a></span>
-<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
-<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
-<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>plt.imshow(resized[<span class="dv">2</span>])</span>
-<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>plt.title(<span class="st">"Normal 2 Augment  Resized"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># find a size we want to resize to, here the smallest</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>zero_side <span class="op">=</span> []</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>one_side <span class="op">=</span> []</span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> better_for_ml_list:</span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a>    zero_side.append(image.shape[<span class="dv">0</span>])</span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>    zero_side.sort()</span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>    one_side.append(image.shape[<span class="dv">1</span>])</span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>    one_side.sort()</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a>smallest_size <span class="op">=</span> zero_side[<span class="dv">0</span>], one_side[<span class="dv">0</span>]</span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co"># make resized images</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>resized <span class="op">=</span> []</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="cf">for</span> image <span class="kw">in</span> better_for_ml_list:</span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a>    image <span class="op">=</span>  resize(image, (smallest_size))</span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>    resized.append(image)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co"># create figure for display</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>  </span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">3</span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>plt.imshow(resized[<span class="dv">0</span>])</span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-28"><a href="#cb6-28" tabindex="-1"></a>plt.title(<span class="st">"Normal 1 Augmented Resized"</span>)</span>
+<span id="cb6-29"><a href="#cb6-29" tabindex="-1"></a>  </span>
+<span id="cb6-30"><a href="#cb6-30" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
+<span id="cb6-31"><a href="#cb6-31" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
+<span id="cb6-32"><a href="#cb6-32" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb6-33"><a href="#cb6-33" tabindex="-1"></a>plt.imshow(resized[<span class="dv">1</span>])</span>
+<span id="cb6-34"><a href="#cb6-34" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-35"><a href="#cb6-35" tabindex="-1"></a>plt.title(<span class="st">"Augment Cardiomegaly Resized"</span>)</span>
+<span id="cb6-36"><a href="#cb6-36" tabindex="-1"></a></span>
+<span id="cb6-37"><a href="#cb6-37" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
+<span id="cb6-38"><a href="#cb6-38" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
+<span id="cb6-39"><a href="#cb6-39" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb6-40"><a href="#cb6-40" tabindex="-1"></a>plt.imshow(resized[<span class="dv">2</span>])</span>
+<span id="cb6-41"><a href="#cb6-41" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb6-42"><a href="#cb6-42" tabindex="-1"></a>plt.title(<span class="st">"Normal 2 Augment  Resized"</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/augmented_cxr_rotate.png" alt="augmented chest x-ray" class="figure mx-auto d-block"></figure><p>There are a few key considerations to keep in mind regarding the
 choices made here. The goal is to create data that realistically
@@ -745,89 +728,89 @@ retained.</p>
 </div>
 <p>Of course, there are numerous other transformations we can apply to
 images beyond rotation. For example, let’s explore applying a shear:</p>
-<div class="codewrapper sourceCode" id="cb9">
+<div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># create affine transform</span></span>
-<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>affine_tf <span class="op">=</span> tf.AffineTransform(shear<span class="op">=</span><span class="fl">0.2</span>)</span>
-<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
-<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># apply transform to image data</span></span>
-<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a>image_affine_tf <span class="op">=</span> tf.warp(image_cxr_cmegaly, inverse_map<span class="op">=</span>affine_tf)</span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="co"># display the result</span></span>
-<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>io.imshow(image_affine_tf)</span>
-<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>io.show()</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># create affine transform</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>affine_tf <span class="op">=</span> tf.AffineTransform(shear<span class="op">=</span><span class="fl">0.2</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a><span class="co"># apply transform to image data</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>image_affine_tf <span class="op">=</span> tf.warp(image_cxr_cmegaly, inverse_map<span class="op">=</span>affine_tf)</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a><span class="co"># display the result</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>io.imshow(image_affine_tf)</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>io.show()</span></code></pre>
 </div>
 <figure><img src="../fig/shear_cxr.png" alt="augmented by shear chest x-ray" class="figure mx-auto d-block"></figure><p>And finally, let’s demonstrate a “wave over a mesh.” We’ll start by
 creating a grid, or “mesh,” over our image, represented by dots in our
 plot. Then, we’ll apply a warp function to transform the image into the
 shape of a wave.</p>
-<div class="codewrapper sourceCode" id="cb10">
+<div class="codewrapper sourceCode" id="cb8">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>rows, cols <span class="op">=</span> image_affine_tf.shape[<span class="dv">0</span>], image_affine_tf.shape[<span class="dv">1</span>]</span>
-<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="co"># np.linspace will return evenly spaced numbers over an interval</span></span>
-<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a>src_cols <span class="op">=</span> np.linspace(<span class="dv">0</span>, cols, <span class="dv">20</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a><span class="co"># ie above is start=0, stop = cols, num = 50, and num is the number of chops</span></span>
-<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>src_rows <span class="op">=</span> np.linspace(<span class="dv">0</span>, rows, <span class="dv">10</span>)</span>
-<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a><span class="co"># np.meshgrid returns coordinate matrices from coordinate vectors.</span></span>
-<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>src_rows, src_cols <span class="op">=</span> np.meshgrid(src_rows, src_cols)</span>
-<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a><span class="co"># numpy dstack stacks along a third dimension in the concatenation</span></span>
-<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>src <span class="op">=</span> np.dstack([src_cols.flat, src_rows.flat])[<span class="dv">0</span>]</span>
-<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>dst_rows <span class="op">=</span> src[:, <span class="dv">1</span>] <span class="op">-</span> np.sin(np.linspace(<span class="dv">0</span>, <span class="dv">3</span> <span class="op">*</span> np.pi, src.shape[<span class="dv">0</span>])) <span class="op">*</span> <span class="dv">50</span></span>
-<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a>dst_cols <span class="op">=</span> src[:, <span class="dv">0</span>]</span>
-<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>dst_rows <span class="op">*=</span> <span class="fl">1.5</span></span>
-<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>dst_rows <span class="op">-=</span> <span class="fl">1.5</span> <span class="op">*</span> <span class="dv">50</span></span>
-<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>dst <span class="op">=</span> np.vstack([dst_cols, dst_rows]).T</span>
-<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a></span>
-<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a>tform <span class="op">=</span> PiecewiseAffineTransform()</span>
-<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>tform.estimate(src, dst)</span>
-<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>noform <span class="op">=</span> PiecewiseAffineTransform()</span>
-<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>noform.estimate(src, src)</span>
-<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a></span>
-<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a>out_rows <span class="op">=</span> image_affine_tf.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> <span class="dv">50</span></span>
-<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>out_cols <span class="op">=</span> cols</span>
-<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>out <span class="op">=</span> tf.warp(image_affine_tf, tform, output_shape<span class="op">=</span>(out_rows, out_cols))</span>
-<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a><span class="co"># create figure</span></span>
-<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
-<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>  </span>
-<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
-<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
-<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">4</span></span>
-<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a></span>
-<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
-<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
-<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a>plt.imshow(image_affine_tf)</span>
-<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a>plt.title(<span class="st">"Normal"</span>)</span>
-<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a>  </span>
-<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
-<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
-<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a>plt.imshow(image_affine_tf)</span>
-<span id="cb10-45"><a href="#cb10-45" tabindex="-1"></a>plt.plot(noform.inverse(src)[:, <span class="dv">0</span>], noform.inverse(src)[:, <span class="dv">1</span>], <span class="st">'.b'</span>)</span>
-<span id="cb10-46"><a href="#cb10-46" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-47"><a href="#cb10-47" tabindex="-1"></a>plt.title(<span class="st">"Normal and Mesh"</span>)</span>
-<span id="cb10-48"><a href="#cb10-48" tabindex="-1"></a></span>
-<span id="cb10-49"><a href="#cb10-49" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
-<span id="cb10-50"><a href="#cb10-50" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
-<span id="cb10-51"><a href="#cb10-51" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb10-52"><a href="#cb10-52" tabindex="-1"></a>plt.imshow(out)</span>
-<span id="cb10-53"><a href="#cb10-53" tabindex="-1"></a></span>
-<span id="cb10-54"><a href="#cb10-54" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-55"><a href="#cb10-55" tabindex="-1"></a>plt.title(<span class="st">"Augment"</span>)</span>
-<span id="cb10-56"><a href="#cb10-56" tabindex="-1"></a></span>
-<span id="cb10-57"><a href="#cb10-57" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
-<span id="cb10-58"><a href="#cb10-58" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">4</span>)</span>
-<span id="cb10-59"><a href="#cb10-59" tabindex="-1"></a><span class="co"># showing image</span></span>
-<span id="cb10-60"><a href="#cb10-60" tabindex="-1"></a>plt.imshow(out)</span>
-<span id="cb10-61"><a href="#cb10-61" tabindex="-1"></a>plt.plot(tform.inverse(src)[:, <span class="dv">0</span>], tform.inverse(src)[:, <span class="dv">1</span>], <span class="st">'.b'</span>)</span>
-<span id="cb10-62"><a href="#cb10-62" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
-<span id="cb10-63"><a href="#cb10-63" tabindex="-1"></a>plt.title(<span class="st">"Augment and Mesh"</span>)</span></code></pre>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>rows, cols <span class="op">=</span> image_affine_tf.shape[<span class="dv">0</span>], image_affine_tf.shape[<span class="dv">1</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a><span class="co"># np.linspace will return evenly spaced numbers over an interval</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a>src_cols <span class="op">=</span> np.linspace(<span class="dv">0</span>, cols, <span class="dv">20</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co"># ie above is start=0, stop = cols, num = 50, and num is the number of chops</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>src_rows <span class="op">=</span> np.linspace(<span class="dv">0</span>, rows, <span class="dv">10</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a><span class="co"># np.meshgrid returns coordinate matrices from coordinate vectors.</span></span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>src_rows, src_cols <span class="op">=</span> np.meshgrid(src_rows, src_cols)</span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a><span class="co"># numpy dstack stacks along a third dimension in the concatenation</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a>src <span class="op">=</span> np.dstack([src_cols.flat, src_rows.flat])[<span class="dv">0</span>]</span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>dst_rows <span class="op">=</span> src[:, <span class="dv">1</span>] <span class="op">-</span> np.sin(np.linspace(<span class="dv">0</span>, <span class="dv">3</span> <span class="op">*</span> np.pi, src.shape[<span class="dv">0</span>])) <span class="op">*</span> <span class="dv">50</span></span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>dst_cols <span class="op">=</span> src[:, <span class="dv">0</span>]</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>dst_rows <span class="op">*=</span> <span class="fl">1.5</span></span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>dst_rows <span class="op">-=</span> <span class="fl">1.5</span> <span class="op">*</span> <span class="dv">50</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>dst <span class="op">=</span> np.vstack([dst_cols, dst_rows]).T</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>tform <span class="op">=</span> PiecewiseAffineTransform()</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a>tform.estimate(src, dst)</span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>noform <span class="op">=</span> PiecewiseAffineTransform()</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>noform.estimate(src, src)</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a></span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>out_rows <span class="op">=</span> image_affine_tf.shape[<span class="dv">0</span>] <span class="op">-</span> <span class="fl">1.5</span> <span class="op">*</span> <span class="dv">50</span></span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>out_cols <span class="op">=</span> cols</span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>out <span class="op">=</span> tf.warp(image_affine_tf, tform, output_shape<span class="op">=</span>(out_rows, out_cols))</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a><span class="co"># create figure</span></span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">7</span>))</span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>  </span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a><span class="co"># setting values to rows and column variables</span></span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>rows <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>columns <span class="op">=</span> <span class="dv">4</span></span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a><span class="co"># add a subplot at the 1st position</span></span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">1</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>plt.imshow(image_affine_tf)</span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>plt.title(<span class="st">"Normal"</span>)</span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a>  </span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co"># add a subplot at the 2nd position</span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">2</span>)</span>
+<span id="cb8-43"><a href="#cb8-43" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb8-44"><a href="#cb8-44" tabindex="-1"></a>plt.imshow(image_affine_tf)</span>
+<span id="cb8-45"><a href="#cb8-45" tabindex="-1"></a>plt.plot(noform.inverse(src)[:, <span class="dv">0</span>], noform.inverse(src)[:, <span class="dv">1</span>], <span class="st">'.b'</span>)</span>
+<span id="cb8-46"><a href="#cb8-46" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-47"><a href="#cb8-47" tabindex="-1"></a>plt.title(<span class="st">"Normal and Mesh"</span>)</span>
+<span id="cb8-48"><a href="#cb8-48" tabindex="-1"></a></span>
+<span id="cb8-49"><a href="#cb8-49" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
+<span id="cb8-50"><a href="#cb8-50" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">3</span>)</span>
+<span id="cb8-51"><a href="#cb8-51" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb8-52"><a href="#cb8-52" tabindex="-1"></a>plt.imshow(out)</span>
+<span id="cb8-53"><a href="#cb8-53" tabindex="-1"></a></span>
+<span id="cb8-54"><a href="#cb8-54" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-55"><a href="#cb8-55" tabindex="-1"></a>plt.title(<span class="st">"Augment"</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" tabindex="-1"></a></span>
+<span id="cb8-57"><a href="#cb8-57" tabindex="-1"></a><span class="co"># add a subplot at the 3nd position</span></span>
+<span id="cb8-58"><a href="#cb8-58" tabindex="-1"></a>fig.add_subplot(rows, columns, <span class="dv">4</span>)</span>
+<span id="cb8-59"><a href="#cb8-59" tabindex="-1"></a><span class="co"># showing image</span></span>
+<span id="cb8-60"><a href="#cb8-60" tabindex="-1"></a>plt.imshow(out)</span>
+<span id="cb8-61"><a href="#cb8-61" tabindex="-1"></a>plt.plot(tform.inverse(src)[:, <span class="dv">0</span>], tform.inverse(src)[:, <span class="dv">1</span>], <span class="st">'.b'</span>)</span>
+<span id="cb8-62"><a href="#cb8-62" tabindex="-1"></a>plt.axis(<span class="st">'off'</span>)</span>
+<span id="cb8-63"><a href="#cb8-63" tabindex="-1"></a>plt.title(<span class="st">"Augment and Mesh"</span>)</span></code></pre>
 </div>
 <figure><img src="../fig/augment_and_mesh.png" alt="augmented by waves chest x-ray" class="figure mx-auto d-block"></figure><p>The last transformation doesn’t appear realistic. The chest became
 noticeably widened, which could be problematic. When augmenting data,
@@ -873,7 +856,7 @@ pipeline without accessing the original images.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>One major concern is accuracy, as pipelines may mislabel or miscount
 features, potentially leading to unreliable data analysis or model
@@ -1074,7 +1057,7 @@ package.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>Aging code: <code>neurocombat</code> was last modified three years
 ago. It may rely on outdated dependencies that could pose compatibility

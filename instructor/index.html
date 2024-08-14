@@ -418,34 +418,33 @@ any links that you are not going to use.
  --></tbody></table><p>
       The actual schedule may vary slightly depending on the topics and exercises chosen by the instructor.
       </p>
-      </section><section id="setup"><p>FIXME: Setup instructions live in this document. Please specify the
-tools and the data sets the Learner needs to have installed.</p>
-<section><h2 class="section-heading" id="data-sets">Data Sets<a class="anchor" aria-label="anchor" href="#data-sets"></a>
-<a class="anchor" aria-label="anchor" href="#data-sets"></a></h2>
-<hr class="half-width"><!--
-FIXME: place any data you want learners to use in `episodes/data` and then use
-       a relative link ( [data zip file](data/lesson-data.zip) ) to provide a
-       link to it, replacing the example.com link.
---><p>Download the <a href="https://example.com/FIXME" class="external-link">data zip file</a>
-and unzip it to your Desktop</p>
-</section><section><h2 class="section-heading" id="software-setup">Software Setup<a class="anchor" aria-label="anchor" href="#software-setup"></a>
-<a class="anchor" aria-label="anchor" href="#software-setup"></a></h2>
-<hr class="half-width"><div id="details" class="callout discussion">
-<div class="callout-square">
-<i class="callout-icon" data-feather="message-circle"></i>
-</div>
-<div id="details" class="callout-inner">
-<h3 class="callout-title">Details<a class="anchor" aria-label="anchor" href="#details"></a>
-</h3>
-<div class="callout-content">
-<p>Setup for different systems can be presented in dropdown menus via a
-<code>spoiler</code> tag. They will join to this discussion block, so
-you can give a general overview of the software used in this lesson here
-and fill out the individual operating systems (and potentially add more,
-e.g. online setup) in the solutions blocks.</p>
-</div>
-</div>
-</div>
+      </section><section id="setup"><p>Medical image analysis has become an essential tool in clinical
+research, enabling scientists to extract valuable insights from complex
+imaging data. This course is designed to enhance your computational
+skills in medical imaging, leveraging the power of Python to address
+advanced research questions. You already possess foundational skills in
+Python, and basic image processing, and this course will build on that
+knowledge to help you conduct sophisticated analyses with medical
+images.</p>
+<p>The course begins with an overview of medical imaging and progresses
+to practical techniques for image processing using libraries like
+scikit-image, pydicom, and SimpleITK. You will then dive into feature
+extraction, machine learning applications, and statistical methods for
+analyzing anatomical differences. By the end of the course, you will
+have a comprehensive understanding of how to apply computational
+techniques to medical imaging research, enhancing your ability to
+conduct impactful studies and contribute to the advancement of clinical
+knowledge.</p>
+<section><h2 class="section-heading" id="installing-the-python-environment">Installing the Python environment<a class="anchor" aria-label="anchor" href="#installing-the-python-environment"></a>
+<a class="anchor" aria-label="anchor" href="#installing-the-python-environment"></a></h2>
+<hr class="half-width"><p>We’ll use <a href="https://mamba.readthedocs.io/en/latest/index.html" class="external-link">Mamba</a> (a
+faster alternative to <a href="https://docs.conda.io/en/latest/" class="external-link">Conda</a> fully compatible with
+it) to set up the Python environment. <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/learners/environment.yml" class="external-link">The
+environment YML file</a> for the lesson is available on GitHub.</p>
+<div class="section level3">
+<h3 id="installing-mamba-via-miniforge">Installing Mamba via Miniforge<a class="anchor" aria-label="anchor" href="#installing-mamba-via-miniforge"></a></h3>
+<p>Miniforge is a minimal installer for Conda that includes Mamba. Here
+are the installation instructions for different operating systems:</p>
 <div id="accordionSpoiler1" class="accordion spoiler-accordion accordion-flush">
 <div class="accordion-item">
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler1" aria-expanded="false" aria-controls="collapseSpoiler1">
@@ -454,10 +453,12 @@ e.g. online setup) in the solutions blocks.</p>
   Windows
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
-<p>Use PuTTY</p>
-</div>
+<ol style="list-style-type: decimal"><li>Download the Miniforge3 installer for Windows <a href="https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge3" class="external-link">from
+the official GitHub repository</a>.</li>
+<li>Run the installer and follow the prompts.</li>
+</ol></div>
 </div>
 </div>
 </div>
@@ -466,35 +467,109 @@ e.g. online setup) in the solutions blocks.</p>
 <button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler2" aria-expanded="false" aria-controls="collapseSpoiler2">
   <h3 class="accordion-header" id="headingSpoiler2">
   <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>
-  MacOS
+  macOS and Linux
   </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
-<p>Use Terminal.app</p>
+<ol style="list-style-type: decimal"><li>Open a terminal window.</li>
+<li>Download the installer using <code>curl</code> or <code>wget</code>
+or your favorite program and run:</li>
+</ol><div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-L</span> <span class="at">-O</span> <span class="st">"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-</span><span class="va">$(</span><span class="fu">uname</span><span class="va">)</span><span class="st">-</span><span class="va">$(</span><span class="fu">uname</span> <span class="at">-m</span><span class="va">)</span><span class="st">.sh"</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">bash</span> Miniforge3-<span class="va">$(</span><span class="fu">uname</span><span class="va">)</span>-<span class="va">$(</span><span class="fu">uname</span> <span class="at">-m</span><span class="va">)</span>.sh</span></code></pre>
+</div>
+<p>or</p>
+<div class="codewrapper sourceCode" id="cb2">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">wget</span> <span class="st">"https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-</span><span class="va">$(</span><span class="fu">uname</span><span class="va">)</span><span class="st">-</span><span class="va">$(</span><span class="fu">uname</span> <span class="at">-m</span><span class="va">)</span><span class="st">.sh"</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">bash</span> Miniforge3-<span class="va">$(</span><span class="fu">uname</span><span class="va">)</span>-<span class="va">$(</span><span class="fu">uname</span> <span class="at">-m</span><span class="va">)</span>.sh</span></code></pre>
+</div>
+<ol start="3" style="list-style-type: decimal"><li>Follow the prompts to complete the installation.</li>
+<li>Close and reopen your terminal to apply the changes.</li>
+</ol></div>
 </div>
 </div>
 </div>
+<p>If you encounter any issues, please refer to the <a href="https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html" class="external-link">official
+Mamba documentation</a>.</p>
+<p>If you’re unable to install Mamba, you can alternatively <a href="https://docs.conda.io/projects/conda/en/latest/user-guide/install/index.html" class="external-link">install
+Conda</a> as a fallback option. If you choose this route, remember to
+replace <code>mamba</code> with <code>conda</code> in all subsequent
+commands in these instructions.</p>
+<p>After you have a working Mamba (or Conda) installation you can
+proceed to create and activate the environment.</p>
 </div>
-<div id="accordionSpoiler3" class="accordion spoiler-accordion accordion-flush">
-<div class="accordion-item">
-<button class="accordion-button spoiler-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSpoiler3" aria-expanded="false" aria-controls="collapseSpoiler3">
-  <h3 class="accordion-header" id="headingSpoiler3">
-  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="eye"></i></div>
-  Linux
-  </h3>
-</button>
-<div id="collapseSpoiler3" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler3" aria-labelledby="headingSpoiler3">
-<div class="accordion-body">
-<p>Use Terminal</p>
+<div class="section level3">
+<h3 id="creating-the-environment">Creating the environment<a class="anchor" aria-label="anchor" href="#creating-the-environment"></a></h3>
+<ol style="list-style-type: decimal"><li>Open your terminal:
+<ul><li>On Windows: Open “Miniforge Prompt” or “Command Prompt”.</li>
+<li>On macOS/Linux: Open your regular terminal.</li>
+</ul></li>
+<li>Navigate to your lesson workspace directory.</li>
+<li>Run the following command:</li>
+</ol><div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">mamba</span> env create <span class="at">-f</span> https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/learners/environment.yml</span></code></pre>
+</div>
+<ol start="4" style="list-style-type: decimal"><li>Wait for the installation to complete. This may take a few
+minutes.</li>
+</ol></div>
+<div class="section level3">
+<h3 id="activating-the-environment">Activating the environment<a class="anchor" aria-label="anchor" href="#activating-the-environment"></a></h3>
+<p>After the installation is complete, activate the environment:</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">mamba</span> activate medical_image_proc</span></code></pre>
 </div>
 </div>
+</section><section><h2 class="section-heading" id="downloading-image-files-from-zenodo">Downloading image files from Zenodo<a class="anchor" aria-label="anchor" href="#downloading-image-files-from-zenodo"></a>
+<a class="anchor" aria-label="anchor" href="#downloading-image-files-from-zenodo"></a></h2>
+<hr class="half-width"><p>Now that you have the environment set up, let’s download the
+necessary files from Zenodo.</p>
+<div class="section level3">
+<h3 id="option-a-manual-download">Option A: manual download<a class="anchor" aria-label="anchor" href="#option-a-manual-download"></a></h3>
+<ol style="list-style-type: decimal"><li>Open your web browser and navigate to <a href="https://zenodo.org/records/13311246" class="external-link">this lesson’s data Zenodo
+record address</a>.</li>
+<li>Look for the “Files” section on the page.</li>
+<li>Click tha download button for downloading the <code>data.zip</code>
+file containing the images.</li>
+<li>Once downloaded, extract the contents of the ZIP file.</li>
+<li>Move the extracted folder to your lesson workspace directory (where
+you’ll create notebooks and work during the lesson).</li>
+</ol></div>
+<div class="section level3">
+<h3 id="option-b-using-zenodo-api">Option B: using Zenodo API<a class="anchor" aria-label="anchor" href="#option-b-using-zenodo-api"></a></h3>
+<p>You can use the Zenodo API to download the files. The
+<code>zenodo_get</code> package should already be installed in your
+environment.</p>
+<ol style="list-style-type: decimal"><li>Ensure you’re in your lesson workspace directory and your
+<code>medical_image_proc</code> environment is activated.</li>
+<li>Use the following command in your terminal (Miniforge Prompt if you
+are a Windows user):</li>
+</ol><div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">zenodo_get</span> 13311246</span></code></pre>
 </div>
-</div>
+<ol start="3" style="list-style-type: decimal"><li>Extract the contents of <code>data.zip</code>.</li>
+</ol><p>Remember to keep the <code>medical_image_proc</code> environment
+activated throughout the entire lesson. If you close your terminal or
+restart your computer, you’ll need to activate the environment again
+using the activation command above.</p>
+<p>Also, remember to verify that the extracted folder is in your lesson
+workspace directory (where you’ll create notebooks and work during the
+lesson).</p>
 <!--
 Place links that you need to refer to multiple times across pages here. Delete
 any links that you are not going to use.
  -->
+</div>
 </section></section></main><nav class="bottom-pagination mx-md-4" aria-label="Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
         <a class="chapter-link float-end" href="../instructor/introduction.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
