@@ -35,18 +35,11 @@ This lesson is heavily based on existing lessons from Carpentries; namely:
 
 We will not cover all the material from these lessons, but instead provide an overview of the key points.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes: if Zenodo is unavailable steer students to https://github.com/esciencecenter-digital-skills/med-image-ext then work in a notebook from there, so use the following:
-'../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii'
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ## Types of MR Scans
 
 ### Anatomical
 
-![](fig/t1t2flairbrain.jpg){alt='FLAIR brain'}
+<img src="fig/t1t2flairbrain.jpg" alt="FLAIR brain" width="width: 30vw;"/>
 
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
@@ -67,9 +60,10 @@ Inline instructor notes: if Zenodo is unavailable steer students to https://gith
 
 ### Diffusion 
 
-![](fig/dwi.gif){alt='DWI'}
-
-![](fig/dwi_tracts.png){alt='DWI tracts'}
+<div style="display: flex; justify-content: center;">
+  <img src="fig/dwi.gif" alt="DWI" style="width: 45%; margin-right: 10px;"/>
+  <img src="fig/dwi_tracts.png" alt="DWI tracts" style="width: 45%; margin-left: 10px;"/>
+</div>
 
 *Sourced from [http://brainsuite.org/processing/diffusion/tractography/](https://brainsuite.org/processing/diffusion/tractography/)*
 
@@ -95,11 +89,7 @@ MRI can also be used for spectroscopy, but this will not be covered here as it d
 
 From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
 
-In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images. We’ll load some example images from Zenodo, where [this data](https://doi.org/10.5281/zenodo.6466491) is available under an open license. We will use a **wget** command to download these from Zenodo.
-  
-```console
-wget https://zenodo.org/records/6466491/files/<file_name_to_fill>.zip
-```
+In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images.
 
 NIfTI is one of the most ubiquitous file formats for storing neuroimaging data.
 We can convert DICOM data to NIfTI using [dcm2niix](https://github.com/rordenlab/dcm2niix) software.
@@ -134,7 +124,7 @@ import nibabel as nib
 First, use the `load()` function to create a `NiBabel` image object from a NIfTI file.
 
 ```python
-t2_img = nib.load("../../data/geometry_medical_images/NIFTI/OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
+t2_img = nib.load("data/mri//OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
 ```
 
 When loading a NIfTI file with `NiBabel`, you get a specialized data object that includes all the information stored in the file. Each piece of information is referred to as an **attribute** in Python's terminology. To view all these attributes, simply type `t2_img.` followed by <kbd>Tab</kbd>.
@@ -315,31 +305,7 @@ array([[[0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.]],
 
-       [[0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        ...,
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.]],
-
        ...,
-
-       [[0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        ...,
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.]],
-
-       [[0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        ...,
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.],
-        [0., 0., 0., ..., 0., 0., 0.]],
 
        [[0., 0., 0., ..., 0., 0., 0.],
         [0., 0., 0., ..., 0., 0., 0.],
@@ -384,13 +350,13 @@ print(t2_data.ndim)
 
 `t2_data` contains 3 dimensions. You can think of the data as a 3D version of a picture (more accurately, a volume).
 
-![](fig/numpy_arrays.png){alt='Numpy arrays'}
+<img src="fig/numpy_arrays.png" alt="Numpy arrays" width="70%;"/>
 
 :::::::::::::::::::::::::
 
 Remember typical 2D pictures are made out of **pixels**, but a 3D MR image is made up of 3D cubes called **voxels**.
 
-![](fig/mri_slices.jpg){alt='MRI slices'}
+<img src="fig/mri_slices.jpg" alt="MRI slices" width="70%;"/>
 
 What is the shape of the image?
 
@@ -441,12 +407,15 @@ print(np.max(t2_data))
 
 For our data, the range of intensity values goes from 0 (black) to more positive digits (whiter).
 
-How do we examine what value a particular voxel is?
-We can inspect the value of a voxel by selecting an index as follows:
 
-`data[x,y,z]`
+To examine the value of a specific voxel, you can access it using its indices. For example, if you have a 3D array `data`, you can retrieve the value of a voxel at coordinates (x, y, z) with the following syntax:
 
-So for example we can inspect a voxel at coordinates (9,19,2) by doing the following:
+```python
+value = data[x, y, z]
+```
+This will give you the value stored at the voxel located at the specified index `(x, y, z)`. Make sure that the indices are within the bounds of the array dimensions.
+
+To inspect the value of a voxel at coordinates (9, 19, 2), you can use the following code:
 
 ```python
 print(t2_data[9, 19, 2])
@@ -456,8 +425,9 @@ print(t2_data[9, 19, 2])
 0.
 ```
 
-This yields a single value representing the intensity of the signal at a particular voxel.
-Next we will see how to not just pull one voxel but a slice or an array of voxels for visualization and analysis.
+This command retrieves and prints the intensity value at the specified voxel. The output represents the signal intensity at that particular location.
+
+Next, we will explore how to extract and visualize larger regions of interest, such as slices or arrays of voxels, for more comprehensive analysis.
 
 ## Working with Image Data
 
@@ -589,11 +559,11 @@ Increasing a coordinate value in the first dimension corresponds to moving to th
 
 A fundamental difference between many MRI sequences and fMRI is the inclusion of a time dimension in fMRI. Essentially, fMRI captures a signal in each voxel of the imaged object over time. We can visualize this as shown below:
 
-![](fig/4D_array_time.png){alt='4D array time'}
+<img src="fig/4D_array_time.png" alt="4D array time" width="70%;"/>
 
 Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/). Notably, `fmriprep` remains the go-to package for handling the complexities of fMRI data processing.
 
-![](fig/nipreps-chart.png){alt='Nipreps chart'}
+<img src="fig/nipreps-chart.png" alt="Nipreps chart" width="70%;"/>
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
 
@@ -632,7 +602,7 @@ In addition to the acquired images, two files are collected as part of the diffu
 
 Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there can be many things that might need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
 
-![](fig/dmri_preprocess_steps.jpg){alt='dMRI preprocess steps'}
+<img src="fig/dmri_preprocess_steps.jpg" alt="dMRI preprocess steps" width="70%;"/>
 
 Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
 A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
