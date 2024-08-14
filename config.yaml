@@ -60,11 +60,12 @@ contact: 'c.moore@esciencecenter.nl' # FIXME
 # Order of episodes in your lesson
 episodes: 
 - introduction.md
-- introduction_to_medical_imaging.md
-- introduction_to_mri.md
+- medical_imaging.md
+- mri.md
 - simpleitk.md
-- introduction_to_anonymization.md
-- introduction_to_generative_ai.md
+- images_ml.md
+- anonymization.md
+- generative_ai.md
 
 # Information for Learners
 learners: 

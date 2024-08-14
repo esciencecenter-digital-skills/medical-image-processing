@@ -43,13 +43,13 @@ the processing and analysis of medical images. This course is meant to aid you.
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge 1: Can you do it?
+## Challenge: Can You Do It?
 
 What is the way to use the challenges and question?
 
 :::::::::::::::::::::::: solution 
 
-## Best solution
+## Solution
  
 Do not peek, try to solve it yourself. The effort will pay off.
 

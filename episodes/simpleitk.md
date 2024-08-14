@@ -32,7 +32,7 @@ SITK is part of the [Insight Software Consortium](https://insightsoftwareconsor
 
 In this episode, we use a hands-on approach utilizing Python to show how to use SITK for performing registration and segmentation tasks in medical imaging use cases.
 
-## Fundamental concepts
+## Fundamental Concepts
 
 In this section, we’ll cover some fundamental image processing operations using SITK, such as reading and writing images, accessing pixel values, and resampling images.
 
@@ -80,7 +80,7 @@ Let's read an example of human brain CT, and let's explore it with SITK.
 import matplotlib.pyplot as plt
 import SimpleITK as sitk
 
-img_volume = sitk.ReadImage("../../data/A1_grayT1.nrrd")
+img_volume = sitk.ReadImage("data/sitk/A1_grayT1.nrrd")
 
 print(type(img_volume))
 print(img_volume.GetOrigin())
@@ -119,7 +119,7 @@ Just inspecting these accessors, we deduce that the file contains a volume made 
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-#### SITK conventions
+#### SITK Conventions
 
 * Image access is in x,y,z order, `image.GetPixel(x,y,z)` or `image[x,y,z]`, with zero based indexing.
 * If the output of an ITK filter has non-zero starting index, then the index will be set to 0, and the origin adjusted accordingly.
@@ -128,7 +128,7 @@ Just inspecting these accessors, we deduce that the file contains a volume made 
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-#### Displaying images
+#### Displaying Images
 
 While SITK does not do visualization, it does contain a built in `Show` method. This function writes the image out to disk and than launches a program for visualization. By default it is configured to use ImageJ, because it is readily supports all the image types which SITK has and load very quickly.
 
@@ -142,7 +142,7 @@ In this episode we will convert SITK images to `numpy` arrays, and we will plot 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-#### Images as arrays
+#### Images as Arrays
 
 We have two options for converting from SITK to a `numpy` array:
 
@@ -307,7 +307,7 @@ plt.imshow(nda, cmap="gray")
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-#### Fix the error (optional)
+## Challenge: Fix the Error (Optional)
 
 By running the lines of code above for masking the slice with the grid, you will get an error. Can you guess what is it about?
 
@@ -346,7 +346,7 @@ Images stored in the DICOM format have a meta-data dictionary associated with th
 Let's read in a digital x-ray image saved in a DICOM file format, and let's print the metadata's keys:
 
 ```python
-img_xray = sitk.ReadImage('../../data/digital_xray.dcm')
+img_xray = sitk.ReadImage('data/sitk/digital_xray.dcm')
 
 for key in img_xray.GetMetaDataKeys():
     print(f'"{key}":"{img_xray.GetMetaData(key)}"')
@@ -379,7 +379,7 @@ for key in img_xray.GetMetaDataKeys():
 
 ::::::::::::::: callout
 
-## Many ways to read a DICOM:
+## Reading a DICOM:
 
 - Many libraries allow you to read DICOM metadata.
 - PyDICOM will be explored for this task later.
@@ -408,7 +408,7 @@ Image Modality: XC
 
 ::::::::::::::::::::::::::::::::::::: callout
 
-#### Grayscale images stored as sRGB
+#### Grayscale Images Stored as sRGB
 
 "digital_xray.dcm" image is sRGB, even if an x-ray should be a single channel gray scale image. In some cases looks may be deceiving. Gray scale images are not always stored as a single channel image. In some cases an image that looks like a gray scale image is actually a three channel image with the intensity values repeated in each of the channels. Even worse, some gray scale images can be four channel images with the channels representing RGBA and the alpha channel set to all 255. This can result in a significant waste of memory and computation time. Always become familiar with your data.
 
@@ -506,7 +506,7 @@ It is not uncommon to end up with an empty (all black) image after resampling. T
 Let's try to plot multiple slices across different axis for the image "training_001_mr_T1.mha". 
 
 ```python
-img_volume = sitk.ReadImage("../../data/training_001_mr_T1.mha")
+img_volume = sitk.ReadImage("data/sitk/training_001_mr_T1.mha")
 print(img_volume.GetSize())
 print(img_volume.GetSpacing())
 ```
@@ -543,7 +543,7 @@ ax3.set_title('Z slices')
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-#### Distorted images
+## Challenge: Distorted Images
 
 What is the main difference with the first image we plotted ("A1_grayT1.nrrd")? 
 
@@ -597,7 +597,7 @@ Image registration involves spatially transforming the source/moving image(s) to
 
 ::::::::::::::: callout
 
-## Many ways to do registration:
+## Many Ways to Do Registration:
 
 - Several libraries offer built-in registration functionalities.
 - Registration can be performed with [DIPY](https://dipy.org/index.html) (mentioned in the MRI episode), specifically for diffusion imaging using the `SymmetricDiffeomorphicRegistration` functionality.
@@ -635,9 +635,9 @@ from ipywidgets import interact, fixed
 from IPython.display import clear_output
 import os
 
-OUTPUT_DIR = "episodes/data"
-fixed_image =  sitk.ReadImage("episodes/data/training_001_ct.mha", sitk.sitkFloat32)
-moving_image = sitk.ReadImage("episodes/data/training_001_mr_T1.mha", sitk.sitkFloat32)
+OUTPUT_DIR = "data/sitk/"
+fixed_image =  sitk.ReadImage(f"{OUTPUT_DIR}training_001_ct.mha", sitk.sitkFloat32)
+moving_image = sitk.ReadImage(f"{OUTPUT_DIR}training_001_mr_T1.mha", sitk.sitkFloat32)
 
 print(f"Origin for fixed image: {fixed_image.GetOrigin()}, moving image: {moving_image.GetOrigin()}")
 print(f"Spacing for fixed image: {fixed_image.GetSpacing()}, moving image: {moving_image.GetSpacing()}")
@@ -856,7 +856,7 @@ import matplotlib.pyplot as plt
 from ipywidgets import interact, fixed
 import SimpleITK as sitk
 
-img_T1 = sitk.ReadImage("episodes/data/A1_grayT1.nrrd")
+img_T1 = sitk.ReadImage("data/sitk/A1_grayT1.nrrd")
 # To visualize the labels image in RGB with needs a image with 0-255 range
 img_T1_255 = sitk.Cast(sitk.RescaleIntensity(img_T1), sitk.sitkUInt8)
 
@@ -1008,7 +1008,7 @@ Since we have available also another MRI scan of the same patient, T2-weighted, 
 We first load a T2 image from the same person and combine it with the T1 image to create a vector image. This region growing algorithm is similar to the previous one, `ConfidenceConnected`, and allows the user to implicitly specify the threshold bounds based on the statistics estimated from the seed points. The main difference is that in this case we are using the Mahalanobis and not the intensity difference.
 
 ```python
-img_T2 = sitk.ReadImage("episodes/data/A1_grayT2.nrrd")
+img_T2 = sitk.ReadImage("data/sitk/A1_grayT2.nrrd")
 img_multi = sitk.Compose(img_T1, img_T2)
 seg = sitk.VectorConfidenceConnected(img_multi, seedList=[seed],
                                              numberOfIterations=1,
@@ -1025,7 +1025,7 @@ interact(
 
 ![](episodes/fig/reg_grow.png){alt='Region growing segmentations.'}
 
-#### Clean up
+#### Clean Up
 
 Use of low level segmentation algorithms such as region growing is often followed by a clean up step. In this step we fill holes and remove small connected components. Both of these operations are achieved by using binary morphological operations, opening (`BinaryMorphologicalOpening`) to remove small connected components and closing (`BinaryMorphologicalClosing`) to fill holes.
 
@@ -1147,7 +1147,7 @@ interact(
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Segment on the y-axis
+## Challenge: Segment on the y-Axis
 
 Try to segment the lateral ventricle using volume's slices on y-axis instead of z-axis. 
 
@@ -1243,7 +1243,7 @@ For detailed coding examples on segmentation evaluation, refer to [this notebook
 
 This episode was largely inspired by [the official SITK tutorial](https://SITK.org/TUTORIAL/#tutorial), which is copyrighted by NumFOCUS and distributed under the [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/), and [SITK Notebooks](https://insightsoftwareconsortium.github.io/SITK-Notebooks/).
 
-### Additional resources
+### Additional Resources
 
 To really understand the structure of SITK images and how to work with them, we recommend some hands-on interaction using the [SITK Jupyter notebooks](https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks) from the SITK official channels. More detailed information about SITK fundamental concepts can also be found [here](https://simpleitk.readthedocs.io/en/master/fundamentalConcepts.html#).
 
