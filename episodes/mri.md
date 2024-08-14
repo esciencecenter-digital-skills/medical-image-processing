@@ -1,7 +1,7 @@
 ---
 title: "Working with MRI"
 teaching: 60
-exercises: 2
+exercises: 10
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -35,7 +35,7 @@ This lesson is heavily based on existing lessons from Carpentries; namely:
 
 We will not cover all the material from these lessons, but instead provide an overview of the key points.
 
-## Types of MR scans
+## Types of MR Scans
 
 ### Anatomical
 
@@ -71,13 +71,13 @@ We will not cover all the material from these lessons, but instead provide an ov
 - Four dimensional images (x, y, z + direction of diffusion)
 - Has parameters about the strength of the diffusion "gradient" and its direction in `.bval` and `.bvec` files
 
-### Other types of MRI
+### Other Types of MRI
 
 Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced MR perfusion, dynamic susceptibility contrast MR perfusion, and arterial spin labelled perfusion. 
 
 MRI can also be used for spectroscopy, but this will not be covered here as it does not produce traditional images.
 
-## Common MRI file formats
+## Common MRI File Formats
 
 | Format Name | File Extension | Origin/Group                                  | More info|
 | ----------- | -------------- | --------------------------------------------- |-----------
@@ -112,7 +112,7 @@ We recommend the [BIDS starter-kit website](https://bids-standard.github.io/bids
 
 Next, we'll cover some details on working with NIfTI files.
 
-## Reading NIfTI images
+## Reading NIfTI Images
 
 [NiBabel](https://nipy.org/nibabel/) is a Python package for reading and writing neuroimaging data.
 To learn more about how NiBabel handles NIfTIs, refer to the [NiBabel documentation on working with NIfTIs](https://nipy.org/nibabel/nifti_images.html), which this episode heavily references.
@@ -259,7 +259,7 @@ print(t2_hdr['<key_name>'])
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Extract values from the NIfTI header
+## Challenge: Extract Values from the NIfTI Header
 
 Extract the value of 'pixdim' from `t2_hdr`.
 
@@ -332,7 +332,7 @@ The data is a multidimensional **array**.
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Check out attributes of the array
+## Challenge: Check Out Attributes of the Array
 
 How can we see the number of dimensions in the `t2_data` array? Once again, all of the attributes of the array can be seen by typing `t2_data.` followed by <kbd>Tab</kbd>.
 
@@ -429,7 +429,7 @@ This command retrieves and prints the intensity value at the specified voxel. Th
 
 Next, we will explore how to extract and visualize larger regions of interest, such as slices or arrays of voxels, for more comprehensive analysis.
 
-## Working with image data
+## Working with Image Data
 
 Slicing does exactly what it seems to imply. Given a 3D volume, slicing involves extracting a 2D **slice** from our data.
 
@@ -447,7 +447,7 @@ This is similar to the indexing we did before to select a single voxel. However,
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Slicing MRI data
+## Challenge: Slicing MRI Data
 
 Now try selecting the 20th slice from the y-axis.
 
@@ -477,7 +477,7 @@ x_slice = t2_data[3, :, :]
 
 We've been slicing and dicing images but we have no idea what they look like. In the next section we'll show you one way you can visualize it all together.
 
-## Visualizing the data
+## Visualizing the Data
 
 We previously inspected the signal intensity of the voxel at coordinates (10,20,3). Let's see what out data looks like when we slice it at this location. We've already indexed the data at each x-, y-, and z-axis. Let's use `matplotlib`:
 
@@ -555,7 +555,7 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
 
-## Functional MRI data and general workflow pipelines
+## Functional MRI Data
 
 A fundamental difference between many MRI sequences and fMRI is the inclusion of a time dimension in fMRI. Essentially, fMRI captures a signal in each voxel of the imaged object over time. We can visualize this as shown below:
 
@@ -569,7 +569,7 @@ Unfortunately, any signal will contain some noise, and fMRI data is inherently n
 
 :::::::::::::::: callout
 
-### nipreps and beyond:
+### Nipreps and Beyond:
 
 - There are many, many packages for medical image analysis
 - There are known pre-built pipelines with possibilities in python
@@ -582,7 +582,7 @@ If you are less interested in coding, but still need it to accomplish your resea
 
 :::::::::::::::: callout
 
-### Adantages of NIlearn:
+### Advantages of NIlearn:
 
 - Fully free and open source
 - Extremely popular
@@ -592,7 +592,7 @@ If you are less interested in coding, but still need it to accomplish your resea
 
 ::::::::::::::
 
-## Diffusion MRI data
+## Diffusion MRI Data
 
 Diffusion MRIs have additional data when compared to anatomical MRIs.
 
