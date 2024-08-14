@@ -1,5 +1,5 @@
 ---
-title: "Generative AI in medical imaging"
+title: "Generative AI in Medical Imaging"
 teaching: 30
 exercises: 10
 ---
@@ -33,15 +33,15 @@ https://github.com/esciencecenter-digital-skills/med-image-ext and students can 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Mastering the use of generative AI tools
+## Mastering the Use of Generative AI Tools
 
-### Architectures of generative AI
+### Architectures of Generative AI
 
 Generative AI encompasses models capable of generating new data across various formats: text, images, video, or audio. Several prominent architectures, such as generative adversarial networks (GANs), variational autoencoders, diffusion models, and transformers, achieve this capability. While the technical intricacies of these architectures exceed this course's scope, understanding their operational principles can illuminate the nature of their outputs. For instance, models treating data as sequential sequences (e.g., pixels or words) predict the next element based on probabilities derived from the training dataset, potentially perpetuating common patterns rather than reflecting absolute truths.
 
 However, using generative algorithms carries inherent risks, including inadvertently embedding biases into both data and algorithms. While humans cannot infer patient ethnicity from body imaging, recent studies demonstrate that certain AI algorithms can leverage correlations in data, introducing potential ethical implications. This represents just one facet of the risks associated with these technologies, which we will further explore in the following safety section.
 
-### Safely leveraging generative AI
+### Safely Leveraging Generative AI
 
 - Never upload non-anonymized sensitive patient data outside your secure servers
 - Avoid using sensitive patient data with online tools (e.g., chatGPT, integrated tools like co-pilot, MS Office)
@@ -59,7 +59,7 @@ One limitation of Stable Diffusion, and similar tools, is that the model cannot 
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Assessing the risks of local model deployment
+## Challenge: Assessing the Risks of Local Model Deployment
 
 Can you identify a few risks associated with running a model entirely on your machine?
 
@@ -75,7 +75,7 @@ Another concern is the environmental impact of model usage. Training and maintai
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-### Maximizing the effectiveness of generative AI
+### Maximizing the Effectiveness of Generative AI
 
 The output of generative tools is highly dependent on the specific words or images inputted, a process known as prompt engineering.
 
@@ -85,7 +85,7 @@ Keep in mind that content generation can be a somewhat stochastic process. There
 
 :::::::::::::::: callout
 
-### Effective prompting tips
+### Effective Prompting Tips
 
 1. Ensure accuracy in spelling and grammar to avoid misdirection
 2. Provide clear and detailed prompts

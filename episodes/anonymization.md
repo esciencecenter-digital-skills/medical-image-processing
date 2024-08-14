@@ -1,5 +1,5 @@
 ---
-title: "Intro to Anonymization"
+title: "Anonymizing Medical Images"
 teaching: 40
 exercises: 15
 ---
@@ -32,13 +32,13 @@ Inline instructor notes: if Zenodo is unavailable some images should be placed o
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Types of patient identifying data 
+## Types of Patient Identifying Data 
 
 ### Metadata
 
 DICOM files contain metadata, which includes various types of identifying information that should remain confidential. The easiest way to mitigate issues with DICOM metadata is to avoid having it in the first place. If possible, opt to receive just the images and select metadata rather than the entire DICOM file. When sharing data with collaborators, there is often no need to share the full DICOM files.
 
-### Faces in images
+### Faces in Images
 
 A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
 
@@ -48,11 +48,11 @@ However, a key issue under current investigation is that some defacing algorithm
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
-### Text on images
+### Text on Images
 
 Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
-### Other parts of images
+### Other Parts of Images
 
 Patient identity can often be inferred with just a few pieces of data. In some cases, a single piece of information can be enough to track down a patient's identity, especially if medical files are accessible. For instance, a serial number or other identifying number on a medical device may be traceable back to a specific patient.
 
@@ -60,16 +60,13 @@ In other situations, slightly more data might be required to identify a patient.
 
 ![Case courtesy of Ian Bickle, <a href="https://radiopaedia.org/">Radiopaedia.org</a>. From the case <a href="https://radiopaedia.org/cases/61830">rID: 61830</a>](fig/jewellery_artifact.jpg){alt='jewlery artifact'}
 
-
 Various tools are available to help de-identify DICOM files in terms of metadata. A notable one is [DicomAnonymizer](https://github.com/KitwareMedical/dicom-anonymizer), an open-source tool written in Python.
 
 In some cases, you may need to examine and remove metadata manually or programmatically. For example, in some countries, DICOM fields are used inconsistently, and patient-identifying data can appear in unexpected fields. Therefore, careful examination and customized removal of metadata may be necessary.
 
-
-
 ::::::::::::::: callout
 
-## Many ways to "skin" a DICOM:
+## Many Ways to Handle a DICOM:
 
 - Multiple libraries, such as Pydicom and SimpleITK (SITK), allow you to read, access, and manipulate DICOM metadata.
 - DICOMs follow an extremely complex [standard](https://www.dicomstandard.org/), so it is usually better to use existing libraries rather than raw Python to handle them.
@@ -243,7 +240,7 @@ Dataset.file_meta -------------------------------
 
 ::::::::::::::::::::::::::::::::::::::: challenge
 
-## Identifying safe metadata in DICOM
+## Challenge: Identifying Safe Metadata in DICOM
 
 Can you determine which metadata for this CT scan is likely safe, meaning it does not lead to patient identification? When would you choose to retain such data?
 
@@ -309,7 +306,7 @@ We recommend removing at least the patient IDs and birthdates in most cases. Add
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
-## Accessing additional patient identifying data
+## Challenge: Accessing Additional Patient Identifying Data
 
 How can you access and print additional patient identifying data?
 Hint: Refer to the documentation and compare with what we have already printed.
