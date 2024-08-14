@@ -23,7 +23,7 @@ exercises: 35
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Basic steps
+## Basic Steps
 
 Datasets of images can serve as the raw data for machine learning (ML). While in rare cases they might be ready for use with minimal effort, in most projects, a significant portion of time is dedicated to cleaning and preparing the data. The quality of the data directly impacts the quality of the resulting models.
 
@@ -31,7 +31,7 @@ One of the initial steps in building a model involves manually inspecting both t
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge: Thinking about metadata
+## Challenge: Thinking About Metadata
 
 What metadata should you examine in almost any radiological dataset?
 
@@ -143,7 +143,7 @@ plt.title("Normal 2")
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge: Can you see some problems in the following scenario?
+## Challenge: Can You See Some problems in the Following Scenario?
 
 Imagine you got the above images and many more because you have been assigned to make an algorithm for cardiomegaly detection. The goal is to notify patients if their hospital-acquired X-rays, taken for any reason, show signs of cardiomegaly. This is an example of using ML for opportunistic screening.
 
@@ -169,7 +169,7 @@ All of the following may pose potential problems:
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
-## Challenge: Prepare the images for classic supervised ML
+## Challenge: Prepare the Images for Classic Supervised ML
 
 Use `skimage.transform.rotate` to create two realistic augmented images from the given 'normal' image stored in the  variables.
 
@@ -382,7 +382,7 @@ plt.title("Augment and Mesh")
 
 The last transformation doesn’t appear realistic. The chest became noticeably widened, which could be problematic. When augmenting data, there are numerous possibilities, but it's crucial to ensure the augmented data remains realistic. Only a subject matter expert (typically a pathologist, nuclear medicine specialist, or radiologist) can accurately determine what realistic data should look like.
 
-## Images' features
+## Images' Features
 
 So far, we've focused on examples where we directly manipulate images. However, much of ML involves working with derived values from images, often converted into tabular data. In fact, it's possible to combine images with various types of tabular data in multiple ways for ML. But before exploring these methods, let's first consider using image features alone as inputs for ML.
 
@@ -392,7 +392,7 @@ We aim to integrate images into a pipeline that automatically generates various 
 
 ::::::::::::::::::::::::::::::::::::: challenge  
 
-## Challenge: Identifying issues with pipeline outputs in the absence of original images
+## Challenge: Identifying Issues with Pipeline Outputs in the Absence of Original Images
 
 Consider potential issues that could arise from using the output of a pipeline without accessing the original images.
 
@@ -474,7 +474,7 @@ There are numerous packages available for brain MRI alone, not to mention those 
 
 ::::::::::::::::::::::::::::::::::::: challenge  
 
-## Challenge: Identifying potential problems in each package
+## Challenge: Identifying Potential Problems in Each Package
 
 Consider issues that might hinder your implementation with each package.
 
