@@ -118,11 +118,11 @@
   Medical Image Processing
 </div>
 
-<aside class="col-md-12 lesson-progress"><div style="width: 24%" class="percentage">
-    24%
+<aside class="col-md-12 lesson-progress"><div style="width: 26%" class="percentage">
+    26%
   </div>
   <div class="progress incubator">
-    <div class="progress-bar incubator" role="progressbar" style="width: 24%" aria-valuenow="24" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
+    <div class="progress-bar incubator" role="progressbar" style="width: 26%" aria-valuenow="26" aria-label="Lesson Progress" aria-valuemin="0" aria-valuemax="100">
     </div>
   </div>
 </aside><div class="container">
@@ -215,7 +215,7 @@
 <div class="accordion accordion-flush" id="accordionFlush3">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading3">
-        <a href="introduction_to_medical_imaging.html">2. Introduction to Medical Imaging</a>
+        <a href="medical_imaging.html">2. Medical Imaging Modalities</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -224,7 +224,7 @@
 <div class="accordion accordion-flush" id="accordionFlush4">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading4">
-        <a href="introduction_to_mri.html">3. Working with MRI</a>
+        <a href="mri.html">3. Working with MRI</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -244,7 +244,7 @@
     <div id="flush-collapsecurrent" class="accordion-collapse collapse show" aria-labelledby="flush-headingcurrent" data-bs-parent="#accordionFlushcurrent">
       <div class="accordion-body">
         <ul><li><a href="#introduction">Introduction</a></li>
-<li><a href="#fundamental-concepts">Fundamental concepts</a></li>
+<li><a href="#fundamental-concepts">Fundamental Concepts</a></li>
 <li><a href="#registration">Registration</a></li>
 <li><a href="#segmentation">Segmentation</a></li>
 <li><a href="#acknowledgements">Acknowledgements</a></li>
@@ -257,7 +257,7 @@
 <div class="accordion accordion-flush" id="accordionFlush6">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading6">
-        <a href="preparing_for_machine_learning.html">5. Preparing Images for Machine Learning</a>
+        <a href="images_ml.html">5. Preparing Images for Machine Learning</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -266,7 +266,7 @@
 <div class="accordion accordion-flush" id="accordionFlush7">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading7">
-        <a href="introduction_to_anonymization.html">6. Intro to Anonymization</a>
+        <a href="anonymization.html">6. Anonymizing Medical Images</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -275,7 +275,7 @@
 <div class="accordion accordion-flush" id="accordionFlush8">
   <div class="accordion-item">
     <div class="accordion-header" id="flush-heading8">
-        <a href="introduction_to_generative_ai.html">7. Generative AI in medical imaging</a>
+        <a href="generative_ai.html">7. Generative AI in Medical Imaging</a>
     </div><!--/div.accordion-header-->
 
   </div><!--/div.accordion-item-->
@@ -323,23 +323,23 @@
         <!-- START: inst/pkgdown/templates/content-instructor.html -->
   <div class="col-xl-8 col-lg-12 primary-content">
     <nav class="lesson-content mx-md-4" aria-label="Previous and Next Chapter"><!-- content for small screens --><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="introduction_to_mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="preparing_for_machine_learning.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link" href="mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link float-end" href="images_ml.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="introduction_to_mri.html" rel="prev">
+        <a class="chapter-link" href="mri.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Working with MRI
         </a>
-        <a class="chapter-link float-end" href="preparing_for_machine_learning.html" rel="next">
+        <a class="chapter-link float-end" href="images_ml.html" rel="next">
           Next: Preparing Images for...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Registration and Segmentation with SITK</h1>
-        <p>Last updated on 2024-07-18 |
+        <p>Last updated on 2024-08-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/simpleitk.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -403,7 +403,7 @@ License 2.0</a>.</p>
 <p>In this episode, we use a hands-on approach utilizing Python to show
 how to use SITK for performing registration and segmentation tasks in
 medical imaging use cases.</p>
-</section><section><h2 class="section-heading" id="fundamental-concepts">Fundamental concepts<a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
+</section><section><h2 class="section-heading" id="fundamental-concepts">Fundamental Concepts<a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a>
 <a class="anchor" aria-label="anchor" href="#fundamental-concepts"></a></h2>
 <hr class="half-width"><p>In this section, we’ll cover some fundamental image processing
 operations using SITK, such as reading and writing images, accessing
@@ -540,7 +540,7 @@ only (grayscale).</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="sitk-conventions" class="callout-inner">
-<h3 class="callout-title">SITK conventions<a class="anchor" aria-label="anchor" href="#sitk-conventions"></a>
+<h3 class="callout-title">SITK Conventions<a class="anchor" aria-label="anchor" href="#sitk-conventions"></a>
 </h3>
 <div class="callout-content">
 <ul><li>Image access is in x,y,z order, <code>image.GetPixel(x,y,z)</code>
@@ -555,7 +555,7 @@ index will be set to 0, and the origin adjusted accordingly.</li>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="displaying-images" class="callout-inner">
-<h3 class="callout-title">Displaying images<a class="anchor" aria-label="anchor" href="#displaying-images"></a>
+<h3 class="callout-title">Displaying Images<a class="anchor" aria-label="anchor" href="#displaying-images"></a>
 </h3>
 <div class="callout-content">
 <p>While SITK does not do visualization, it does contain a built in
@@ -578,7 +578,7 @@ arrays, and we will plot them as such.</p>
 </div>
 </div>
 <div class="section level4">
-<h4 id="images-as-arrays">Images as arrays<a class="anchor" aria-label="anchor" href="#images-as-arrays"></a></h4>
+<h4 id="images-as-arrays">Images as Arrays<a class="anchor" aria-label="anchor" href="#images-as-arrays"></a></h4>
 <p>We have two options for converting from SITK to a <code>numpy</code>
 array:</p>
 <ul><li>
@@ -766,12 +766,12 @@ and apply it to an image:</p>
 <span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayViewFromImage(<span class="bu">slice</span>)</span>
 <span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>plt.imshow(nda, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
-<div id="fix-the-error-optional" class="callout challenge">
+<div id="challenge-fix-the-error-optional" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="fix-the-error-optional" class="callout-inner">
-<h3 class="callout-title">Fix the error (optional)<a class="anchor" aria-label="anchor" href="#fix-the-error-optional"></a>
+<div id="challenge-fix-the-error-optional" class="callout-inner">
+<h3 class="callout-title">Challenge: Fix the Error (Optional)<a class="anchor" aria-label="anchor" href="#challenge-fix-the-error-optional"></a>
 </h3>
 <div class="callout-content">
 <p>By running the lines of code above for masking the slice with the
@@ -874,12 +874,12 @@ let’s print the metadata’s keys:</p>
 <span><span class="st">"ITK_original_spacing"</span><span class="op">:</span><span class="st">"[UNKNOWN_PRINT_CHARACTERISTICS]</span></span>
 <span><span class="st">"</span></span></code></pre>
 </div>
-<div id="many-ways-to-read-a-dicom" class="callout">
+<div id="reading-a-dicom" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="many-ways-to-read-a-dicom" class="callout-inner">
-<h3 class="callout-title">Many ways to read a DICOM:<a class="anchor" aria-label="anchor" href="#many-ways-to-read-a-dicom"></a>
+<div id="reading-a-dicom" class="callout-inner">
+<h3 class="callout-title">Reading a DICOM:<a class="anchor" aria-label="anchor" href="#reading-a-dicom"></a>
 </h3>
 <div class="callout-content">
 <ul><li>Many libraries allow you to read DICOM metadata.</li>
@@ -922,7 +922,7 @@ inverted.</p>
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="grayscale-images-stored-as-srgb" class="callout-inner">
-<h3 class="callout-title">Grayscale images stored as sRGB<a class="anchor" aria-label="anchor" href="#grayscale-images-stored-as-srgb"></a>
+<h3 class="callout-title">Grayscale Images Stored as sRGB<a class="anchor" aria-label="anchor" href="#grayscale-images-stored-as-srgb"></a>
 </h3>
 <div class="callout-content">
 <p>“digital_xray.dcm” image is sRGB, even if an x-ray should be a single
@@ -1091,12 +1091,12 @@ which is readily addressed by invoking the transformation’s
 <span id="cb29-18"><a href="#cb29-18" tabindex="-1"></a>ax2.set_title(<span class="st">'Y slices'</span>)</span>
 <span id="cb29-19"><a href="#cb29-19" tabindex="-1"></a>ax3.set_title(<span class="st">'Z slices'</span>)</span></code></pre>
 </div>
-<figure><img src="fig/non-iso_slices.png" alt="Non-isotropic slices example." class="figure mx-auto d-block"></figure><div id="distorted-images" class="callout challenge">
+<figure><img src="fig/non-iso_slices.png" alt="Non-isotropic slices example." class="figure mx-auto d-block"></figure><div id="challenge-distorted-images" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="distorted-images" class="callout-inner">
-<h3 class="callout-title">Distorted images<a class="anchor" aria-label="anchor" href="#distorted-images"></a>
+<div id="challenge-distorted-images" class="callout-inner">
+<h3 class="callout-title">Challenge: Distorted Images<a class="anchor" aria-label="anchor" href="#challenge-distorted-images"></a>
 </h3>
 <div class="callout-content">
 <p>What is the main difference with the first image we plotted
@@ -1172,7 +1172,7 @@ transformation estimated via registration is said to map points from the
 <i class="callout-icon" data-feather="bell"></i>
 </div>
 <div id="many-ways-to-do-registration" class="callout-inner">
-<h3 class="callout-title">Many ways to do registration:<a class="anchor" aria-label="anchor" href="#many-ways-to-do-registration"></a>
+<h3 class="callout-title">Many Ways to Do Registration:<a class="anchor" aria-label="anchor" href="#many-ways-to-do-registration"></a>
 </h3>
 <div class="callout-content">
 <ul><li>Several libraries offer built-in registration functionalities.</li>
@@ -1705,7 +1705,7 @@ we are using the Mahalanobis and not the intensity difference.</p>
 <span id="cb50-13"><a href="#cb50-13" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Vector confidence connected"</span>))</span></code></pre>
 </div>
 <figure><img src="fig/reg_grow.png" alt="Region growing segmentations." class="figure mx-auto d-block"></figure><div class="section level4">
-<h4 id="clean-up">Clean up<a class="anchor" aria-label="anchor" href="#clean-up"></a></h4>
+<h4 id="clean-up">Clean Up<a class="anchor" aria-label="anchor" href="#clean-up"></a></h4>
 <p>Use of low level segmentation algorithms such as region growing is
 often followed by a clean up step. In this step we fill holes and remove
 small connected components. Both of these operations are achieved by
@@ -1831,12 +1831,12 @@ extension in C++.</p>
 <span id="cb57-6"><a href="#cb57-6" tabindex="-1"></a>    npa <span class="op">=</span> fixed(sitk.GetArrayViewFromImage(seg_img)),</span>
 <span id="cb57-7"><a href="#cb57-7" tabindex="-1"></a>    title <span class="op">=</span> fixed(<span class="st">"Level set segmentation"</span>))</span></code></pre>
 </div>
-<figure><img src="fig/level_set_seg.png" alt="Level-set segmentation." class="figure mx-auto d-block"></figure><div id="segment-on-the-y-axis" class="callout challenge">
+<figure><img src="fig/level_set_seg.png" alt="Level-set segmentation." class="figure mx-auto d-block"></figure><div id="challenge-segment-on-the-y-axis" class="callout challenge">
 <div class="callout-square">
 <i class="callout-icon" data-feather="zap"></i>
 </div>
-<div id="segment-on-the-y-axis" class="callout-inner">
-<h3 class="callout-title">Segment on the y-axis<a class="anchor" aria-label="anchor" href="#segment-on-the-y-axis"></a>
+<div id="challenge-segment-on-the-y-axis" class="callout-inner">
+<h3 class="callout-title">Challenge: Segment on the y-Axis<a class="anchor" aria-label="anchor" href="#challenge-segment-on-the-y-axis"></a>
 </h3>
 <div class="callout-content">
 <p>Try to segment the lateral ventricle using volume’s slices on y-axis
@@ -1957,7 +1957,7 @@ tutorial</a>, which is copyrighted by NumFOCUS and distributed under the
 Attribution 4.0 International License</a>, and <a href="https://insightsoftwareconsortium.github.io/SITK-Notebooks/" class="external-link">SITK
 Notebooks</a>.</p>
 <div class="section level3">
-<h3 id="additional-resources">Additional resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a></h3>
+<h3 id="additional-resources">Additional Resources<a class="anchor" aria-label="anchor" href="#additional-resources"></a></h3>
 <p>To really understand the structure of SITK images and how to work
 with them, we recommend some hands-on interaction using the <a href="https://github.com/InsightSoftwareConsortium/SimpleITK-Notebooks" class="external-link">SITK
 Jupyter notebooks</a> from the SITK official channels. More detailed
@@ -1999,16 +1999,16 @@ any links that you are not going to use.
 </div>
 </section></div> <!-- / div.lesson-content -->
     </main><!-- / main#main-content.main-content --><nav class="bottom-pagination mx-md-4" aria-label="Previous and Next Chapter"><div class="d-block d-sm-block d-md-none">
-        <a class="chapter-link" href="introduction_to_mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
-        <a class="chapter-link float-end" href="preparing_for_machine_learning.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
+        <a class="chapter-link" href="mri.html"><i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>Previous</a>
+        <a class="chapter-link float-end" href="images_ml.html">Next<i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i></a>
       </div>
       <!-- content for large screens -->
       <div class="d-none d-sm-none d-md-block">
-        <a class="chapter-link" href="introduction_to_mri.html" rel="prev">
+        <a class="chapter-link" href="mri.html" rel="prev">
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-left"></i>
           Previous: Working with MRI
         </a>
-        <a class="chapter-link float-end" href="preparing_for_machine_learning.html" rel="next">
+        <a class="chapter-link float-end" href="images_ml.html" rel="next">
           Next: Preparing Images for...
           <i aria-hidden="true" class="small-arrow" data-feather="arrow-right"></i>
         </a>
@@ -2054,9 +2054,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
-  "dateCreated": "2024-08-10",
-  "dateModified": "2024-07-18",
-  "datePublished": "2024-08-13"
+  "dateCreated": "2024-08-14",
+  "dateModified": "2024-08-14",
+  "datePublished": "2024-08-14"
 }
 
   </script><script>

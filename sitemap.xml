@@ -13,7 +13,16 @@
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/anonymization.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/generative_ai.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/images.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/images_ml.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/index.html</loc>
@@ -31,7 +40,16 @@
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html</loc>
   </url>
   <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/anonymization.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/generative_ai.html</loc>
+  </url>
+  <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/images.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/images_ml.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/index.html</loc>
@@ -56,6 +74,12 @@
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/medical_imaging.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/mri.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/preparing_for_machine_learning.html</loc>
@@ -89,6 +113,12 @@
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/key-points.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/medical_imaging.html</loc>
+  </url>
+  <url>
+    <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/mri.html</loc>
   </url>
   <url>
     <loc>https://esciencecenter-digital-skills.github.io/medical-image-processing/preparing_for_machine_learning.html</loc>
