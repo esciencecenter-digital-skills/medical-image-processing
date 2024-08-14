@@ -398,7 +398,7 @@ to create shareable data.</p>
 <button class="accordion-button instructor-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseInstructor1" aria-expanded="false" aria-controls="collapseInstructor1">
   <h3 class="accordion-header" id="headingInstructor1">  <div class="note-square"><i aria-hidden="true" class="callout-icon" data-feather="edit-2"></i></div> Instructor Note </h3>
 </button>
-<div id="collapseInstructor1" class="accordion-collapse collapse" aria-labelledby="headingInstructor1" data-bs-parent="#accordionInstructor1">
+<div id="collapseInstructor1" class="accordion-collapse collapse" data-bs-parent="#accordionInstructor1" aria-labelledby="headingInstructor1">
 <div class="accordion-body">
 <p>Inline instructor notes: if Zenodo is unavailable some images should
 be placed on <a href="https://github.com/esciencecenter-digital-skills/med-image-ext" class="external-link uri">https://github.com/esciencecenter-digital-skills/med-image-ext</a>
@@ -421,21 +421,25 @@ collaborators, there is often no need to share the full DICOM files.</p>
 <div class="section level3">
 <h3 id="faces-in-images">Faces in Images<a class="anchor" aria-label="anchor" href="#faces-in-images"></a></h3>
 <p>A full CT, MRI, or PET scan of the head can be reconstructed into a
-face. To prevent this, many image analysis programs ‘deface’ these types
-of images, which helps to obscure the patient’s specific identity as
-well as some demographic information (e.g., ethnicity and gender).</p>
-<p>Various tools are available for defacing head imaging, ranging from
-fully developed software products like <a href="https://surfer.nmr.mgh.harvard.edu/" class="external-link">FreeSurfer</a>, which has
-built-in defacing capabilities, to functions within code libraries.</p>
-<p>One issue under current research is that some defacing algorithms may
-accidentally change more than the face. There is some research in
-pre-print which shows some may even alter the morphometry of the brain
-image. Proceed with caution, and if possible compare original to defaced
-images to make sure you did not lose or corrupt important data.</p>
-<figure><img src="../fig/deface-example.jpg" alt="Defacing examples" class="figure mx-auto d-block"><div class="figcaption">Image from ‘A reproducibility evaluation of the
-effects of MRI defacing on brain segmentation’ by Chenyu Gao, Bennett A.
-Landman, Jerry L. Prince, and Aaron Carass (preprint available at <a href="https://pubmed.ncbi.nlm.nih.gov/37293070/" class="external-link uri">https://pubmed.ncbi.nlm.nih.gov/37293070/</a> or on
-MedRxiv)</div>
+detailed facial image, potentially revealing the patient’s identity and
+demographic information, such as ethnicity and gender. To mitigate this
+risk, many image analysis programs employ ‘defacing’ techniques to
+obscure these identifiable features.</p>
+<p>There are various tools available for defacing head imaging, ranging
+from fully developed software products like <a href="https://surfer.nmr.mgh.harvard.edu/" class="external-link">FreeSurfer</a>, which
+includes built-in defacing capabilities, to specialized functions within
+coding libraries.</p>
+<p>However, a key issue under current investigation is that some
+defacing algorithms may inadvertently alter more than just the facial
+features. Emerging research, including studies still in pre-print,
+suggests that these algorithms might also affect the morphometry of the
+brain image. This could lead to the unintended loss or distortion of
+critical data. Therefore, it is advisable to proceed with caution and,
+whenever possible, compare the original and defaced images to ensure
+that important information remains intact and unaltered.</p>
+<figure><img src="../fig/deface-example.jpg" alt="Defacing examples" class="figure mx-auto d-block"><div class="figcaption">Image from “A reproducibility evaluation of the
+effects of MRI defacing on brain segmentation” by Chenyu Gao, Bennett A.
+Landman, Jerry L. Prince, and Aaron Carass. The preprint is available <a href="https://pubmed.ncbi.nlm.nih.gov/37293070/" class="external-link">here</a>.</div>
 </figure></div>
 <div class="section level3">
 <h3 id="text-on-images">Text on Images<a class="anchor" aria-label="anchor" href="#text-on-images"></a></h3>
@@ -677,7 +681,7 @@ choose to retain such data?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Metadata related to the machine, image type, and file type are
 generally safe. This information is particularly valuable when sorting
@@ -767,7 +771,7 @@ printed.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
