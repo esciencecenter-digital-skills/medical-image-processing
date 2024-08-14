@@ -71,21 +71,6 @@ In step five, the focus is on anonymization, particularly in imaging data like u
 
 We will cover step nine, dataset harmonization, in a separate section. For step ten, creating more data, synthetic data generation will be discussed further in an episode on generative AI. In the next section, we will explore examples of augmented data creation.
 
-To work through our dataset augmentation examples, you will need an appropriate environment. You can build the environment using our `ml_environment` file (see the setup instructions).
-
-Let's switch environments (assuming your environment is called `image_libraries`):
-
-```bash
-conda deactivate 
-conda activate image_libraries
-```
-
-Then we need to get our sample images:
-
-```bash
-TBD
-```
-
 Let's go throught some examples. First, we import the libraries we need:
 
 ```python
@@ -105,9 +90,9 @@ from skimage.transform import resize
 Then, we import our example images and examine them.
 
 ```python
-image_cxr1 = io.imread('rotatechest.png') # a relatively normal chest X-ray (CXR)
-image_cxr_cmegaly = io.imread('cardiomegaly_cc0.png') # cardiomegaly CXR
-image_cxr2 = io.imread('other_op.png') # a relatively normal CXR
+image_cxr1 = io.imread('data/ml/rotatechest.png') # a relatively normal chest X-ray (CXR)
+image_cxr_cmegaly = io.imread('data/ml/cardiomegaly_cc0.png') # cardiomegaly CXR
+image_cxr2 = io.imread('data/ml/other_op.png') # a relatively normal CXR
 # create figure
 fig = plt.figure(figsize=(10, 7))
   
@@ -139,8 +124,6 @@ plt.title("Normal 2")
 
 ![](fig/cxr_display_mip.png){alt='CXR examples'}
 
-
-
 ::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Challenge: Can You See Some problems in the Following Scenario?
@@ -165,7 +148,6 @@ All of the following may pose potential problems:
 :::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -295,7 +277,6 @@ Additionally, the results can be further improved by cropping the images. Genera
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 Of course, there are numerous other transformations we can apply to images beyond rotation. For example, let's explore applying a shear:
-
 
 ```python
 # create affine transform

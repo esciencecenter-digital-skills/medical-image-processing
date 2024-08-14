@@ -80,7 +80,7 @@ Let's read an example of human brain CT, and let's explore it with SITK.
 import matplotlib.pyplot as plt
 import SimpleITK as sitk
 
-img_volume = sitk.ReadImage("../../data/A1_grayT1.nrrd")
+img_volume = sitk.ReadImage("data/sitk/A1_grayT1.nrrd")
 
 print(type(img_volume))
 print(img_volume.GetOrigin())
@@ -346,7 +346,7 @@ Images stored in the DICOM format have a meta-data dictionary associated with th
 Let's read in a digital x-ray image saved in a DICOM file format, and let's print the metadata's keys:
 
 ```python
-img_xray = sitk.ReadImage('../../data/digital_xray.dcm')
+img_xray = sitk.ReadImage('data/sitk/digital_xray.dcm')
 
 for key in img_xray.GetMetaDataKeys():
     print(f'"{key}":"{img_xray.GetMetaData(key)}"')
@@ -506,7 +506,7 @@ It is not uncommon to end up with an empty (all black) image after resampling. T
 Let's try to plot multiple slices across different axis for the image "training_001_mr_T1.mha". 
 
 ```python
-img_volume = sitk.ReadImage("../../data/training_001_mr_T1.mha")
+img_volume = sitk.ReadImage("data/sitk/training_001_mr_T1.mha")
 print(img_volume.GetSize())
 print(img_volume.GetSpacing())
 ```
@@ -635,9 +635,9 @@ from ipywidgets import interact, fixed
 from IPython.display import clear_output
 import os
 
-OUTPUT_DIR = "episodes/data"
-fixed_image =  sitk.ReadImage("episodes/data/training_001_ct.mha", sitk.sitkFloat32)
-moving_image = sitk.ReadImage("episodes/data/training_001_mr_T1.mha", sitk.sitkFloat32)
+OUTPUT_DIR = "data/sitk/"
+fixed_image =  sitk.ReadImage(f"{OUTPUT_DIR}training_001_ct.mha", sitk.sitkFloat32)
+moving_image = sitk.ReadImage(f"{OUTPUT_DIR}training_001_mr_T1.mha", sitk.sitkFloat32)
 
 print(f"Origin for fixed image: {fixed_image.GetOrigin()}, moving image: {moving_image.GetOrigin()}")
 print(f"Spacing for fixed image: {fixed_image.GetSpacing()}, moving image: {moving_image.GetSpacing()}")
@@ -856,7 +856,7 @@ import matplotlib.pyplot as plt
 from ipywidgets import interact, fixed
 import SimpleITK as sitk
 
-img_T1 = sitk.ReadImage("episodes/data/A1_grayT1.nrrd")
+img_T1 = sitk.ReadImage("data/sitk/A1_grayT1.nrrd")
 # To visualize the labels image in RGB with needs a image with 0-255 range
 img_T1_255 = sitk.Cast(sitk.RescaleIntensity(img_T1), sitk.sitkUInt8)
 
@@ -1008,7 +1008,7 @@ Since we have available also another MRI scan of the same patient, T2-weighted, 
 We first load a T2 image from the same person and combine it with the T1 image to create a vector image. This region growing algorithm is similar to the previous one, `ConfidenceConnected`, and allows the user to implicitly specify the threshold bounds based on the statistics estimated from the seed points. The main difference is that in this case we are using the Mahalanobis and not the intensity difference.
 
 ```python
-img_T2 = sitk.ReadImage("episodes/data/A1_grayT2.nrrd")
+img_T2 = sitk.ReadImage("data/sitk/A1_grayT2.nrrd")
 img_multi = sitk.Compose(img_T1, img_T2)
 seg = sitk.VectorConfidenceConnected(img_multi, seedList=[seed],
                                              numberOfIterations=1,

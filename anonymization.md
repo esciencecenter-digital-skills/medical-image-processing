@@ -26,12 +26,6 @@ Each of us is similar yet unique, and this individuality can make us identifiabl
 
 Metadata elements in imaging, such as patient names and addresses, are often clearly designed to identify patients. However, the uniqueness of patients means that even images without obvious metadata, such as names, can potentially be identified as belonging to a specific individual. With advancements in facial recognition software and search engines, images we previously thought were non-identifiable, like head CTs, MRIs, [or even PET scans](https://doi.org/10.1016/j.neuroimage.2022.119357), can theoretically be traced back to a specific patient. To address this, we can implement de-identification strategies to create shareable data.
 
-:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::: instructor
-
-Inline instructor notes: if Zenodo is unavailable some images should be placed on https://github.com/esciencecenter-digital-skills/med-image-ext and students can download from there.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ## Types of Patient Identifying Data 
 
 ### Metadata
@@ -82,7 +76,7 @@ First, let's import Pydicom and read in a CT scan:
 ```python
 import pydicom
 from pydicom import dcmread
-fpath = "our_sample_dicom.dcm"
+fpath = "data/anonym/our_sample_dicom.dcm"
 ds = dcmread(fpath)
 print(ds)
 ```
@@ -299,7 +293,7 @@ print(elem)
 You can also delete and add elements. After making modifications, remember to save your file:
 
 ```python
-ds.save_as('my_modified_dicom.dcm')
+ds.save_as('data/anonym/my_modified_dicom.dcm')
 ```
 
 We recommend removing at least the patient IDs and birthdates in most cases. Additionally, consider examining the data elements 'OtherPatientIDs' and 'OtherPatientIDsSequence'.
