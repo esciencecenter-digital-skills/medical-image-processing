@@ -24,7 +24,7 @@ Positron emission tomography (PET)
 : A PET scan involves the use of radioactive tracers, such as Fluorodeoxyglucose or Oxygen-15 (15O), which are administered to the patient. Gamma ray detectors then create an image based on the tracer's distribution in the body. PET scans can be combined with or registered to other forms of imaging for enhanced diagnostic accuracy.
 
 Radiomics
-: Radiomics is the process of extracting large amounts of quantitative features from medical images using data-characterization algorithms. These features, which may not be visible to the human eye, can be used for improved diagnosis, prognosis, and treatment planning.
+: Radiomics implies a quantitiative approach to medical image analysis. Quantitative features are extracted from medical images using data-characterization algorithms. These features, which may not be visible to the human eye, can potentially be used for improved diagnosis, prognosis, and treatment planning.
 
 Tag image file format (TIFF)
 : TIFF files conform to the Tag Image File Format standard and can store grayscale or color images as raster images. They support both lossy and lossless compression, and can also be left uncompressed.
