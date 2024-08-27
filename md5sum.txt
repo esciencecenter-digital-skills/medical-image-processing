@@ -4,6 +4,7 @@
 "config.yaml" "e8d351c7e0bd38fe98a9dac91567de33" "site/built/config.yaml" "2024-08-14"
 "index.md" "a02c9c785ed98ddd84fe3d34ddb12fcd" "site/built/index.md" "2024-04-29"
 "links.md" "8184cf4149eafbf03ce8da8ff0778c14" "site/built/links.md" "2024-04-29"
+"workshops.md" "20660a4f88e3a0b3b37c2186138e96ff" "site/built/workshops.md" "2024-08-27"
 "episodes/introduction.md" "bd941065f88230ee1d3c9d67a8dc6e4d" "site/built/introduction.md" "2024-08-14"
 "episodes/medical_imaging.md" "df9361da5e59550f75f0964ebe91c22f" "site/built/medical_imaging.md" "2024-08-14"
 "episodes/mri.md" "fd8629446b9d15c10c38d613fa259c93" "site/built/mri.md" "2024-08-14"
