@@ -69,6 +69,12 @@ After the installation is complete, activate the environment:
 ```bash
 mamba activate medical_image_proc
 ```
+Note: In the case that this setup does not work due to conflicting previous conda or mamba configurations on your machine, you can try cloning the repository, navigating into it, and then building the environment there.
+
+The cloning step is as follows: 
+```bash
+git clone https://github.com/esciencecenter-digital-skills/medical-image-processing.git
+```
 
 ## Downloading image files from Zenodo
 
