@@ -57,7 +57,7 @@ After you have a working Mamba (or Conda) installation you can proceed to create
 3. Run the following command:
 
 ```bash
-mamba env create -f https://github.com/esciencecenter-digital-skills/medical-image-processing/blob/main/learners/environment.yml
+mamba env create -f https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml
 ```
 
 4. Wait for the installation to complete. This may take a few minutes.
