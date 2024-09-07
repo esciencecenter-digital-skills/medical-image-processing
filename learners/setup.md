@@ -78,7 +78,7 @@ Now that you have the environment set up, let's download the necessary files fro
 
 1. Open your web browser and navigate to [this lesson's data Zenodo record address](https://zenodo.org/records/13311246).
 2. Look for the "Files" section on the page.
-3. Click tha download button for downloading the `data.zip` file containing the images.
+3. Click the download button for downloading the `data.zip` file containing the images.
 4. Once downloaded, extract the contents of the ZIP file.
 5. Move the extracted folder to your lesson workspace directory (where you'll create notebooks and work during the lesson).
 
