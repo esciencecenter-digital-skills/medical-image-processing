@@ -244,11 +244,11 @@ print(t2_hdr.keys())
  'magic']
 ```
 
-Notice that **methods** require you to include () at the end of them whereas **attributes** do not.
+Notice that **methods** require you to include () at the end of them  when you call them whereas **attributes** do not.
 The key difference between a method and an attribute is:
 
 - Attributes are *variables* belonging to an object and containing information about their properties or characteristics
-- Methods are *processes* that belong to an object and are designed to perform actions involving the object's attributes
+- Methods are *processes* that belong to an object and are designed to perform actions involving the object's attributes. All methods are functions. 
 
 When you type in `t2_img.` followed by <kbd>Tab</kbd>, you may see that attributes are highlighted in orange and methods highlighted in blue. 
 
