@@ -262,7 +262,7 @@ print(t2_hdr['<key_name>'])
 
 ## Challenge: Extract Values from the NIfTI Header
 
-Extract the value of 'pixdim' from the NiFTI header on the image read in.
+Extract the 'pixdim' field from the NiFTI header of the loaded image.
 
 :::::::::::::::  solution
 
