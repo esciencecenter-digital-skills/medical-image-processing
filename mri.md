@@ -99,9 +99,10 @@ We can learn how to run `dcm2niix` by taking a look at its help menu:
 ```bash
 dcm2niix -help
 ```
-One of the advaantages of working with `dcm2niix` is that it can be used to create Brain Imaging Data Structure (BIDS) files, since it outputs a NIfTI and a JSON with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. The organization of data and files is crucial for seamless collaboration across research groups and even between individual researchers. Some pipelines assume your data is organized in BIDS structure, and these are sometimes called [BIDS Apps](https://bids-apps.neuroimaging.io/apps/).
+One of the advantages of working with `dcm2niix` is that it can be used to create Brain Imaging Data Structure (BIDS) files, since it outputs a NIfTI and a JSON with metadata ready to fit into the BIDS standard. [BIDS](https://bids.neuroimaging.io/) is a widely adopted standard of how data from neuroimaging research can be organized. The organization of data and files is crucial for seamless collaboration across research groups and even between individual researchers. Some pipelines assume your data is organized in BIDS structure, and these are sometimes called [BIDS Apps](https://bids-apps.neuroimaging.io/apps/).
 
 Some of the more popular examples are:
+
 - `fmriprep`
 - `freesurfer`
 - `micapipe`
@@ -243,11 +244,11 @@ print(t2_hdr.keys())
  'magic']
 ```
 
-Notice that **methods** require you to include () at the end of them whereas **attributes** do not.
+Notice that **methods** require you to include () at the end of them  when you call them whereas **attributes** do not.
 The key difference between a method and an attribute is:
 
 - Attributes are *variables* belonging to an object and containing information about their properties or characteristics
-- Methods are *processes* that belong to an object and are designed to perform actions involving the object's attributes
+- Methods are functions that belong to an object and operate on its attributes. They differ from regular functions by implicitly receiving the object (`self`) as their first argument.
 
 When you type in `t2_img.` followed by <kbd>Tab</kbd>, you may see that attributes are highlighted in orange and methods highlighted in blue. 
 
@@ -261,7 +262,7 @@ print(t2_hdr['<key_name>'])
 
 ## Challenge: Extract Values from the NIfTI Header
 
-Extract the value of 'pixdim' from `t2_hdr`.
+Extract the 'pixdim' field from the NiFTI header of the loaded image.
 
 :::::::::::::::  solution
 
@@ -328,7 +329,15 @@ print(type(t2_data))
 numpy.ndarray
 ```
 
-The data is a multidimensional **array**.
+The data is stored as a multidimensional **array**, which can also be accessed through the file's `dataobj` property:
+
+```python
+t2_img.dataobj
+```
+
+```output
+<nibabel.arrayproxy.ArrayProxy at 0x20c63b5a4a0>
+```
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -449,7 +458,8 @@ This is similar to the indexing we did before to select a single voxel. However,
 
 ## Challenge: Slicing MRI Data
 
-Now try selecting the 20th slice from the y-axis.
+Select the 20th slice along the y-axis and store it in a variable.
+Then, select the 4th slice along the x-axis and store it in another variable.
 
 :::::::::::::::  solution
 
@@ -457,17 +467,6 @@ Now try selecting the 20th slice from the y-axis.
 
 ```python
 y_slice = t2_data[:, 19, :]
-```
-
-:::::::::::::::::::::::::
-
-Finally, try grabbing the 3rd slice from the x-axis.
-
-:::::::::::::::  solution
-
-## Solution
-
-```python
 x_slice = t2_data[3, :, :]
 ```
 
