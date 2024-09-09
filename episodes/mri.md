@@ -329,7 +329,7 @@ print(type(t2_data))
 numpy.ndarray
 ```
 
-The data is a multidimensional **array**. Of note we can also use the array by accessing the loaded file's dataobj property:
+The data is stored as a multidimensional **array**, which can also be accessed through the file's `dataobj` property:
 
 ```python
 t2_img.dataobj
