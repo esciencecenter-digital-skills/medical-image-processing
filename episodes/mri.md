@@ -458,7 +458,7 @@ This is similar to the indexing we did before to select a single voxel. However,
 
 ## Challenge: Slicing MRI Data
 
-Now try selecting the 20th slice from the y-axis (load it into a variable).
+Select the 20th slice along the y-axis and store it in a variable.
 Then, select the 4th slice along the x-axis and store it in another variable.
 
 :::::::::::::::  solution
