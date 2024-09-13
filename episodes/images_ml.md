@@ -363,6 +363,19 @@ plt.title("Augment and Mesh")
 
 The last transformation doesn’t appear realistic. The chest became noticeably widened, which could be problematic. When augmenting data, there are numerous possibilities, but it's crucial to ensure the augmented data remains realistic. Only a subject matter expert (typically a pathologist, nuclear medicine specialist, or radiologist) can accurately determine what realistic data should look like.
 
+
+::::::::::::::::::::::::: callout
+
+## Which libraries can augment medical images?
+
+We have shown augmentation with scikit-image.
+You can also find [ready-made help for augmentation with SITK](http://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/70_Data_Augmentation.html)
+You can also augment with opencv or some other libraries.
+We reccomend keeping your environment down to as fewer libraries,
+any of the mentioned three can be used to perform decent augmentations.
+
+:::::::::::::::::::::::::::::::::
+
 ## Images' Features
 
 So far, we've focused on examples where we directly manipulate images. However, much of ML involves working with derived values from images, often converted into tabular data. In fact, it's possible to combine images with various types of tabular data in multiple ways for ML. But before exploring these methods, let's first consider using image features alone as inputs for ML.
