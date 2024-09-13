@@ -77,10 +77,8 @@ Let's go throught some examples. First, we import the libraries we need:
 import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
-from skimage import data
 from skimage import transform
 from skimage import io
-from skimage import img_as_float
 from skimage.transform import rotate
 from skimage import transform as tf
 from skimage.transform import PiecewiseAffineTransform
