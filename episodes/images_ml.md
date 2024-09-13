@@ -364,13 +364,11 @@ The last transformation doesn’t appear realistic. The chest became noticeably 
 
 ::::::::::::::::::::::::: callout
 
-## Which libraries can augment medical images?
+### Libraries for Medical Image Augmentation
 
-We have shown augmentation with scikit-image.
-You can also find [ready-made help for augmentation with SITK](http://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/70_Data_Augmentation.html)
-You can also augment with opencv or some other libraries.
-We reccomend keeping your environment down to as fewer libraries,
-any of the mentioned three can be used to perform decent augmentations.
+We demonstrated how to augment medical images using scikit-image. Another great resource for augmentation is SimpleITK, which offers a dedicated [tutorial on data augmentation](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/70_Data_Augmentation.html). Additionally, OpenCV provides versatile tools for image processing and augmentations.
+
+To keep your environment manageable, we recommend using just one of these libraries. scikit-image, SimpleITK, and OpenCV all offer effective solutions for medical image augmentation.
 
 :::::::::::::::::::::::::::::::::
 
