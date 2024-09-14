@@ -2108,7 +2108,7 @@ grid, you will get an error. Can you guess what is it about?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>By default, SITK creates images centered in the origin, which all
 ones spacing. We need to have the same values in the grid and in the
@@ -2447,7 +2447,7 @@ which is readily addressed by invoking the transformation’s
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>In this case, there are only 26 images in the volume and the spacing
 between voxels is non-isotropic, and in particular it is the same across
@@ -3221,7 +3221,7 @@ order to select the slices on the y-axis.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb58">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3372,7 +3372,7 @@ any links that you are not going to use.
 </div>
 </section></section><section id="aio-images_ml"><p>Content from <a href="images_ml.html">Preparing Images for Machine Learning</a></p>
 <hr>
-<p>Last updated on 2024-08-14 |
+<p>Last updated on 2024-09-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/images_ml.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 125 minutes</p>
@@ -3446,7 +3446,7 @@ dataset?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In almost any radiological dataset, it is essential to examine the
 age and sex distribution. These metadata are crucial for both brain MRIs
@@ -3525,14 +3525,12 @@ need:</p>
 <pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
-<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> data</span>
-<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform</span>
-<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> io</span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> img_as_float</span>
-<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> rotate</span>
-<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform <span class="im">as</span> tf</span>
-<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> PiecewiseAffineTransform</span>
-<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> resize</span></code></pre>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> io</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> rotate</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="im">from</span> skimage <span class="im">import</span> transform <span class="im">as</span> tf</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> PiecewiseAffineTransform</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> resize</span></code></pre>
 </div>
 <p>Then, we import our example images and examine them.</p>
 <div class="codewrapper sourceCode" id="cb2">
@@ -3597,7 +3595,7 @@ prestigious tertiary inpatient hospital.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>All of the following may pose potential problems:</p>
 <ul>
@@ -3636,7 +3634,7 @@ the impact of harsh lines on ML performance.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3854,6 +3852,24 @@ there are numerous possibilities, but it’s crucial to ensure the
 augmented data remains realistic. Only a subject matter expert
 (typically a pathologist, nuclear medicine specialist, or radiologist)
 can accurately determine what realistic data should look like.</p>
+<div id="libraries-for-medical-image-augmentation" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="libraries-for-medical-image-augmentation" class="callout-inner">
+<h3 class="callout-title">Libraries for Medical Image Augmentation</h3>
+<div class="callout-content">
+<p>We demonstrated how to augment medical images using scikit-image.
+Another great resource for augmentation is SimpleITK, which offers a
+dedicated <a href="https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/70_Data_Augmentation.html" class="external-link">tutorial
+on data augmentation</a>. Additionally, OpenCV provides versatile tools
+for image processing and augmentations.</p>
+<p>To keep your environment manageable, we recommend using just one of
+these libraries. scikit-image, SimpleITK, and OpenCV all offer effective
+solutions for medical image augmentation.</p>
+</div>
+</div>
+</div>
 </section><section><h2 class="section-heading" id="images-features">Images’ Features<a class="anchor" aria-label="anchor" href="#images-features"></a>
 </h2>
 <hr class="half-width">
@@ -3892,7 +3908,7 @@ pipeline without accessing the original images.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>One major concern is accuracy, as pipelines may mislabel or miscount
 features, potentially leading to unreliable data analysis or model
@@ -4158,7 +4174,7 @@ package.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>Aging code: <code>neurocombat</code> was last modified three years
 ago. It may rely on outdated dependencies that could pose compatibility
@@ -4551,7 +4567,7 @@ choose to retain such data?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>Metadata related to the machine, image type, and file type are
 generally safe. This information is particularly valuable when sorting
@@ -4640,7 +4656,7 @@ printed.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb12">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4832,7 +4848,7 @@ on your machine?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <p>One significant risk of running any model locally is the potential
 for malicious code. Since you need to download the model to your
@@ -4993,9 +5009,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/aio.html",
-  "dateCreated": "2024-09-09",
-  "dateModified": "2024-09-10",
-  "datePublished": "2024-09-10"
+  "dateCreated": "2024-09-14",
+  "dateModified": "2024-09-14",
+  "datePublished": "2024-09-14"
 }
 
   </script><script>
