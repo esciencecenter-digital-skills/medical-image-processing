@@ -77,10 +77,8 @@ Let's go throught some examples. First, we import the libraries we need:
 import numpy as np
 import matplotlib
 from matplotlib import pyplot as plt
-from skimage import data
 from skimage import transform
 from skimage import io
-from skimage import img_as_float
 from skimage.transform import rotate
 from skimage import transform as tf
 from skimage.transform import PiecewiseAffineTransform
@@ -362,6 +360,17 @@ plt.title("Augment and Mesh")
 ![](fig/augment_and_mesh.png){alt='augmented by waves chest x-ray'}
 
 The last transformation doesn’t appear realistic. The chest became noticeably widened, which could be problematic. When augmenting data, there are numerous possibilities, but it's crucial to ensure the augmented data remains realistic. Only a subject matter expert (typically a pathologist, nuclear medicine specialist, or radiologist) can accurately determine what realistic data should look like.
+
+
+::::::::::::::::::::::::: callout
+
+### Libraries for Medical Image Augmentation
+
+We demonstrated how to augment medical images using scikit-image. Another great resource for augmentation is SimpleITK, which offers a dedicated [tutorial on data augmentation](https://insightsoftwareconsortium.github.io/SimpleITK-Notebooks/Python_html/70_Data_Augmentation.html). Additionally, OpenCV provides versatile tools for image processing and augmentations.
+
+To keep your environment manageable, we recommend using just one of these libraries. scikit-image, SimpleITK, and OpenCV all offer effective solutions for medical image augmentation.
+
+:::::::::::::::::::::::::::::::::
 
 ## Images' Features
 
