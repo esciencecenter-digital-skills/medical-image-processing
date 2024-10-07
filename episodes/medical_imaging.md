@@ -35,13 +35,53 @@ Historically, x-rays were the first common form of medical imaging. The diagram 
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
-Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no x-ray can be interpreted clinically without multiple perspectives. In chest-x-rays implies a anteroposterior and a lateral view. We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
+Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones typically used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no x-ray can be interpreted clinically without multiple perspectives. In chest-x-rays implies a anteroposterior and a lateral view. We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
+
+
 
 ## Computed Tomography and Tomosynthesis
 
 There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
 
-CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. Tomosynthesis uses a limited angle instead of going all the way around the patient. In both cases, the image output is then made by processing this into a 3D-array. We see again, similarly to x-ray, what tissues attenuated the radiation, and what tissues let it pass, but we can visualize it in either 3D or single layer "slices" of voxels. It is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types.
+CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a sinogram. Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get.Let's examine two ways to process our sinograms:
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage.transform import iradon
+from skimage.transform import iradon_sart
+
+# load a sinogram of a simple phantom of the head
+sino = np.load('Schepp_Logan_sinogram.npy')
+# make a filtered back projection reconstruction
+theta = np.linspace(0.0, 180.0, max(sino.shape), endpoint=False)
+reconstruction_fbp = iradon(sino, theta=theta, filter_name='ramp')
+# make a reconstruction with Simultaneous Algebraic Reconstruction Technique
+reconstruction_sart = iradon_sart(sino, theta=theta)
+# plot with matplotlib
+fig, (ax1, ax2, ax3, ax4) = plt.subplots(1, 4, figsize=(9, 5), sharex=True, sharey=True)
+ax1.set_title("Sinogram")
+ax1.imshow(sino, cmap=plt.cm.Greys_r,)
+ax2.set_title("Reconstruction\nFiltered back projection")
+ax2.imshow(reconstruction_fbp, cmap=plt.cm.Greys_r)
+ax3.set_title("Reconstruction\nSART")
+ax3.imshow(reconstruction_sart, cmap=plt.cm.Greys_r)
+ax4.set_title("Difference\n between reconstructions")
+ax4.imshow(reconstruction_sart - reconstruction_fbp, cmap=plt.cm.Greys_r)
+
+plt.show()
+```
+```output
+```
+![singogram and processed images.](fig/output_sinogram_plus.png){alt='Graph of sinogram and processed images.'}
+
+
+ While you may get an already processed CT (Some commercial machines come with proprietary reconstruction algorithms which will already have been executed), it is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types.
+
+ 
+Tomosynthesis makes images using a limited angle instead of going all the way around the patient. The data from a tomosynthetic image is then processed so that you get multiple angles visible . This gets around the issue of overlapping objects in an X-ray. In both the case of CT and tomosynthesis, the image output is then made by processing this acquired data. 
+
 
 ## Ultrasounds
 
