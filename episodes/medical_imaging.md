@@ -35,6 +35,10 @@ Historically, x-rays were the first common form of medical imaging. The diagram 
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
+As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. In the case of chest X-rays this could be a PA and a lateral. In the case of joints the views may be specific, however remember that in each view objects in the same line between the generator and receptor will be superimposed.
+
+![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
+
 Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones typically used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no x-ray can be interpreted clinically without multiple perspectives. In chest-x-rays implies a anteroposterior and a lateral view. We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
 
 
@@ -80,7 +84,7 @@ plt.show()
  While you may get an already processed CT (Some commercial machines come with proprietary reconstruction algorithms which will already have been executed), it is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types.
 
  
-Tomosynthesis makes images using a limited angle instead of going all the way around the patient. The data from a tomosynthetic image is then processed so that you get multiple angles visible . This gets around the issue of overlapping objects in an X-ray. In both the case of CT and tomosynthesis, the image output is then made by processing this acquired data. 
+Tomosynthesis makes images using a limited angle instead of going all the way around the patient. The data from a tomosynthetic image is then processed so that you get multiple angles visible. This gets around the issue of overlapping objects in an X-ray. In both the case of CT and tomosynthesis, the image output is made by processing the originally acquired data. Although most researchers work with already processed images, it is important to keep in mind that in theory the originally acquired data can be processed in a variety of ways. 
 
 
 ## Ultrasounds
