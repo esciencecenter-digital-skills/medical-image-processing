@@ -80,6 +80,8 @@ plt.show()
 ```
 ![singogram and processed images.](fig/output_sinogram_plus.png){alt='Graph of sinogram and processed images.'}
 
+*Images generated from the [Shepp–Logan phantom](https://doi.org/10.1109/TNS.1974.6499235) *
+
 
  While you may get an already processed CT (Some commercial machines come with proprietary reconstruction algorithms which will already have been executed), it is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types.
 
