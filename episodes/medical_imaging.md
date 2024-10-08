@@ -124,7 +124,16 @@ Possible solutions include:
 
 ## Magnetic Resonance Imaging
 
-MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. Different ordering and timing of radiofrequency pulses and different magnetic gradients give us different MRI sequences. The actual signal on an anatomical MRI needs to be processed via Fourier transforms and some other computational work before it is recognizable as anatomy. The raw data is reffered to as the k-space data, and this can be kept in vendor specific formats or open common formats, e.g., ISMRMRD (International Society of Magnetic Resonance MR Raw Data). In practice, we rarely use the k-space data (unless perhaps we are medical physicists) for research on medical pathology. The final product we are used to looking at is a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in neuroscience research. These file types will be covered in more detail later in the course.   
+MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. Different ordering and timing of radiofrequency pulses and different magnetic gradients give us different MRI sequences. The actual signal on an anatomical MRI needs to be processed typically via Fourier transforms and some other computational work before it is recognizable as anatomy. The raw data is reffered to as the k-space data, and this can be kept in vendor specific formats or open common formats, e.g., ISMRMRD (International Society of Magnetic Resonance MR Raw Data). In practice, we rarely use the k-space data (unless perhaps we are medical physicists) for research on medical pathology. Nonetheless researchers in new sequences for MRI will be very interested in such data, and typically getting the fastest transformations of it possible. There are many ways the raw data could be transformed or used to produce an MRI. While an inverse Fourier transform is typical, a Hartley transform could be used, and some scientists even use deep learning based methods. Let's look at k-space with a viridis color map:
+
+
+![k-space image.](fig/k-space.png){alt='K-space.'}
+
+*Sourced from the FastMRI data set of NYU, 2024 (Knoll et al Radiol Artif Intell. 2020 Jan 29;2(1):e190007.
+doi: 10.1148/ryai.2020190007.https://pubs.rsna.org/doi/10.1148/ryai.2020190007
+and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
+
+A transformed type of image, one a radiologist will be able to read, is often what we have. The final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in neuroscience research. These file types will be covered in more detail later in the course.   
 
 ## Other Image Types
 
@@ -144,6 +153,7 @@ For example, while typical radiological images have settled in how they are reco
 
 - Each imaging modality provides distinct sets of information
 - In computational imaging, images are essentially arrays, although embedded in additional data structures
+- Many images we may get e.g. MRIs and CTs have already been processed with some algorithms to make them human readable
 - Research should be thoughtfully designed, taking into account the constraints and capabilities inherent in human capacities
 - We can expect the emergence of additional imaging modalities in the future
 
