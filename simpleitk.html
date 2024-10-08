@@ -339,7 +339,7 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Registration and Segmentation with SITK</h1>
-        <p>Last updated on 2024-08-14 |
+        <p>Last updated on 2024-10-08 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/simpleitk.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
@@ -759,7 +759,7 @@ and apply it to an image:</p>
 <span id="cb18-10"><a href="#cb18-10" tabindex="-1"></a><span class="co"># zero out the values in the original image that correspond to</span></span>
 <span id="cb18-11"><a href="#cb18-11" tabindex="-1"></a><span class="co"># the grid lines in the grid_image</span></span>
 <span id="cb18-12"><a href="#cb18-12" tabindex="-1"></a>img_zslice[grid_image <span class="op">==</span> <span class="dv">0</span>] <span class="op">=</span> <span class="dv">0</span></span>
-<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayViewFromImage(<span class="bu">slice</span>)</span>
+<span id="cb18-13"><a href="#cb18-13" tabindex="-1"></a>nda <span class="op">=</span> sitk.GetArrayViewFromImage(img_zslice)</span>
 <span id="cb18-14"><a href="#cb18-14" tabindex="-1"></a>plt.imshow(nda, cmap<span class="op">=</span><span class="st">"gray"</span>)</span></code></pre>
 </div>
 <div id="challenge-fix-the-error-optional" class="callout challenge">
@@ -2039,8 +2039,8 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/simpleitk.html",
-  "dateCreated": "2024-09-14",
-  "dateModified": "2024-08-14",
+  "dateCreated": "2024-10-08",
+  "dateModified": "2024-10-08",
   "datePublished": "2024-10-08"
 }
 
