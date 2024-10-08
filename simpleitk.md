@@ -301,7 +301,7 @@ grid_image = sitk.GridSource(
 # zero out the values in the original image that correspond to
 # the grid lines in the grid_image
 img_zslice[grid_image == 0] = 0
-nda = sitk.GetArrayViewFromImage(slice)
+nda = sitk.GetArrayViewFromImage(img_zslice)
 plt.imshow(nda, cmap="gray")
 ```
 
