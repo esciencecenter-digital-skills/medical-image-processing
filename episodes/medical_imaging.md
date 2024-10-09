@@ -152,20 +152,32 @@ MRIs are images made by utilizing some fairly complicated physics in terms of wh
 doi: 10.1148/ryai.2020190007.https://pubs.rsna.org/doi/10.1148/ryai.2020190007
 and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 
-A transformed type of image, one a radiologist will be able to read, is often what we have. The final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in neuroscience research. These file types will be covered in more detail later in the course.   
+A transformed type of image, one a radiologist will be able to read, is often what we have. The final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in research. These file types will be covered in more detail later in the course.   
 
 ## Other Image Types
 
 Nuclear medicine images e.g. PET and SPECT scans and pathology images are also broadly available inside hospitals. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
-::::::::::::::::::::::::::::::::::::: callout
-
-## Image Storage
-
 There is less standardization around file formats of certain types of imaging.
 
-For example, while typical radiological images have settled in how they are recorded in DICOM, more novel sequences, such as arterial spin-labeled ones, do not have a standardized way of how they are recorded in it. As mentioned above, pathology images are not neccesarily stored in DICOM, and there is some controversy as to what file format will dominate this important form of medical imaging. 
+For example, while typical radiological images have settled in how they are recorded in DICOM, more novel sequences, such as arterial spin-labeled ones, do not have a standardized way of how they are recorded in it. Some newer forms of imaging such as electrical impedence tomography use entirely different kinds of technologies and signals than anything already existing.
+When it comes to truly novel imaging types there can be no standardization at all. 
 
+
+::::::::::::::::::::::::::::::::::::: callout
+
+## Standard Image types 
+
+
+|Type          |Signal                |Standard File  | Image file| Image array |
+|--------------|----------------------|---------------|-----------|--------|
+|X-ray         |ionizing radiation    |DICOM          |JPEG 2000   | 2D arrays|
+|Standard CT   |ionizing radiation    |DICOM          |Raw or compressed voxel data|3D arrays|
+|Ultrasound    |high frequency sound  |DICOM           |CINE     |2D array or 4D tensors|
+|MRI (spin or gradient echo)|patient's molecules   |DICOM    |Raw or compressed voxel data|3D arrays|
+|Digital Pathology slides| light through stained tissue| no consensus| often converted to TIFF| multichannel 2D or 3D arrays|
+
+The above table is a drastic simplification as there are always cases where people use novel files or novel designs. There are also novel technologies like 4D CT. Nonetheless it is useful to know the typical data structures you will find. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
