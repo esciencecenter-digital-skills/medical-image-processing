@@ -40,7 +40,11 @@ As you can imagine if you only have one view in an X-ray every object in the lin
 ![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
 *image courtesy of Radiopaedia, author and ID on image*
 
-Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones typically used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Because flouroscopy adds a time dimension to X-ray , you could argue they are three dimensional images in a philisophical sense, possesing an X, Y and time dimension. Below is an flouroscopy image of a patient swalloing barium.
+Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which typically contains arrays in JPEG files.
+
+We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  
+
+We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Because fluoroscopy adds a time dimension to X-ray the data becomes 3-dimensional, possessing an X, Y and time dimension. Below is a fluoroscopy image of a patient swallowing barium.
 
 ![Floursocopy.](fig/fluoro.gif){alt='Floursocopy.'}
 *image courtesy of Ptrump16, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons*
