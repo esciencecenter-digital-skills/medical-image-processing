@@ -35,11 +35,17 @@ Historically, x-rays were the first common form of medical imaging. The diagram 
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
-As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. In the case of chest X-rays this could be a PA and a lateral. In the case of joints the views may be specific, however remember that in each view objects in the same line between the generator and receptor will be superimposed.
+As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. In the case of chest X-rays these could be a posteroanterior(PA) view and a lateral view. In the case of joints the views may be specific, however remember that in each view objects in the same line between the generator and receptor will be superimposed.
 
 ![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
+*image courtesy of Radiopaedia, author and ID on image*
 
-Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones typically used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) because almost no x-ray can be interpreted clinically without multiple perspectives. In chest-x-rays implies a anteroposterior and a lateral view. We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
+Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which contains arrays in JPEG files. Technically, the arrays could have been (and sometimes even are) put in PNG or other types of files, but typically JPEGs are the ones typically used for x-rays. We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Because flouroscopy adds a time dimension to X-ray , you could argue they are three dimensional images in a philisophical sense, possesing an X, Y and time dimension. Below is an flouroscopy image of a patient swalloing barium.
+
+![Floursocopy.](fig/fluoro.gif){alt='Floursocopy.'}
+*image courtesy of Ptrump16, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons*
+
+ Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
 
 
 
@@ -47,7 +53,7 @@ Modern x-rays are born digital. No actual "film" is produced, rather a DICOM fil
 
 There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
 
-CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a sinogram. Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get.Let's examine two ways to process our sinograms:
+CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get.Let's examine two ways to process our sinograms:
 
 
 ```python
@@ -83,7 +89,8 @@ plt.show()
 *Images generated from the [Shepp–Logan phantom](https://doi.org/10.1109/TNS.1974.6499235) *
 
 
- While you may get an already processed CT (Some commercial machines come with proprietary reconstruction algorithms which will already have been executed), it is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types.
+ While you may get an already processed CT (Some commercial machines come with proprietary reconstruction algorithms which will already have been executed), it is not uncommon to get CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be processed before viewing, or in some cases stored off as other file types. As shown in the code above there is more than one way to process the data into a radiologist friendly CT. Filtered Back Projection or Algebraic Reconstruction methods are shown but there are other methods such as iterative reconstruction, convolution back projection and even deep learning based methods.
+
 
  
 Tomosynthesis makes X-ray based images using a limited angle instead of going all the way around the patient as in CT. The data from a tomosynthetic image is then processed so that you get multiple angles visible. This gets around the issue of overlapping objects in a plain film X-ray. In both the case of CT and tomosynthesis, the image output is made by processing the originally acquired data. Although most researchers work with already processed images, it is important to keep in mind that in theory the originally acquired data can be processed in a variety of ways. 
@@ -91,7 +98,7 @@ Tomosynthesis makes X-ray based images using a limited angle instead of going al
 
 ## Ultrasounds
 
-Ultrasounds can produce multiple complex types of images. Typically, sonographers produce a lot of B-mode images. They use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get 2D-images. Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they can be saved as cine-files inside DICOMs. On the other hand, the sonographer can choose to record only a single 'frame', in which case a 2D-array will ultimately be saved. B-mode is far from the only type of ultrasounds. M-mode, like the cine-files in B-mode, can also capture motion, but puts it into a a single 2D-array of one line of the image over time. In the compound image below you can see a B-mode 2D-image and an M-mode made on the line in it.    
+Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they can be saved as cine-files inside DICOMs. On the other hand, the sonographer can choose to record only a single 'frame', in which case a 2D-array will ultimately be saved. Typically, sonographers produce a lot of [B-mode](learners/reference.md#b) images buy B-mode is far from the only type of ultrasounds. M-mode or motion mode, like the cine-files in B-mode, can also capture motion, but puts it into a a single 2D-array of one line of the image over time. In the compound image below you can see a B-mode 2D-image and an M-mode made on the line in it.    
 
 ![Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence.](fig/MItral_Valve_M_Mode.jpg){alt='Mitral valve prolapse.'}
 

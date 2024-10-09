@@ -2,6 +2,12 @@
 title: Glossary
 ---
 
+
+<h5 id="b">B-mode</h5>
+B-mode
+: B-mode is short for brightness mode of ultrasound. It is a mode in which 2-D cross sectional images are made with highly echogenic tissues are represented with bright pixels.
+
+
 Brain Imaging Data Structure (BIDS)
 : BIDS is a standardized way of organizing and describing neuroimaging and behavioral data. It aims to simplify data sharing and analysis by providing a consistent file structure and naming convention across different studies and institutions.
 
@@ -25,6 +31,10 @@ Positron emission tomography (PET)
 
 Radiomics
 : Radiomics implies a quantitiative approach to medical image analysis. Quantitative features are extracted from medical images using data-characterization algorithms. These features, which may not be visible to the human eye, can potentially be used for improved diagnosis, prognosis, and treatment planning.
+
+<h5 id="sinogram">Sinogram</h5>
+Sinogram
+: Sinogram is a word with multiple definitions in radiology. Sinogram may refer to an X-ray of the sinuses or imaging or a fistule.  However in terms of CT reconstruction it refers to the data from which a final CT is reconstructed. The raw data of CT is a lot of 2D projections (a lot of X-rays). A sinogram is a way to visualize this data by having the angle as one of the axes of the image. 
 
 Tag image file format (TIFF)
 : TIFF files conform to the Tag Image File Format standard and can store grayscale or color images as raster images. They support both lossy and lossless compression, and can also be left uncompressed.
