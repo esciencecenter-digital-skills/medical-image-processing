@@ -154,9 +154,20 @@ and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 
 A transformed type of image, one a radiologist will be able to read, is often what we have. The final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in research. These file types will be covered in more detail later in the course.   
 
+::::::::::::::::::::::::::::::::::::: callout
+
+## CT versus MRI
+
+
+After processing both CT and standard MRIs will give a 3D image. However, it is important to understand that there are differences.
+An standard MRI sequence will give better differentiation between various soft tissues, wheras a CT will provide better images of bones.
+CTs can be acquired more quickly and cheaply, but have the hidden cost of radiation.   
+::::::::::::::::::::::::::::::::::::::::::::::::
 ## Other Image Types
 
-Nuclear medicine images e.g. PET and SPECT scans and pathology images are also broadly available inside hospitals. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
+Nuclear medicine images e.g. PET and SPECT scans and pathology images are also broadly available inside hospitals. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. 
+
+Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
 There is less standardization around file formats of certain types of imaging.
 
