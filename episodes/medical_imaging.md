@@ -46,7 +46,7 @@ We could use the metaphor of a wrapped present here. The DICOM file contains met
 
 We can take x-rays from any angle and even do them repeatedly, and this allows for flouroscopy. Because fluoroscopy adds a time dimension to X-ray the data becomes 3-dimensional, possessing an X, Y and time dimension. Below is a fluoroscopy image of a patient swallowing barium.
 
-![Floursocopy.](fig/fluoro.gif){alt='Floursocopy.'}
+![Fluorsocopy.](fig/fluoro.gif){alt='Fluorsocopy.'}
 *image courtesy of Ptrump16, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons*
 
  Flouroscopy images are stored in a DICOM but can be displayed as movies because they are typically cine-files. Cine- is a file format that lets you store images in sequence with a frame rate.
