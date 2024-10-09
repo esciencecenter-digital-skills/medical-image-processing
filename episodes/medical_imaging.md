@@ -98,7 +98,13 @@ Tomosynthesis makes X-ray based images using a limited angle instead of going al
 
 ## Ultrasounds
 
-Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. These images can be captured in rapid succession over time, so they can be saved as cine-files inside DICOMs. On the other hand, the sonographer can choose to record only a single 'frame', in which case a 2D-array will ultimately be saved. Typically, sonographers produce a lot of [B-mode](learners/reference.md#b) images buy B-mode is far from the only type of ultrasounds. M-mode or motion mode, like the cine-files in B-mode, can also capture motion, but puts it into a a single 2D-array of one line of the image over time. In the compound image below you can see a B-mode 2D-image and an M-mode made on the line in it.    
+Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
+
+Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. 
+
+These images can be captured in rapid succession over time, so they can be saved as cine-files inside DICOMs. On the other hand, the sonographer can choose to record only a single 'frame', in which case a 2D-array will ultimately be saved. 
+
+Typically, sonographers produce a lot of [B-mode](learners/reference.md#b) images, but B-mode is far from the only type of ultrasounds. M-mode or motion mode, like the cine-files in B-mode, can also capture motion, but puts it into a a single 2D-array of one line of the image over time. In the compound image below you can see a B-mode 2D-image and an M-mode made on the line in it.    
 
 ![Image of mitral valve prolapse from Cafer Zorkun, MD, PhD on wikidoc.org with creative commons lisence.](fig/MItral_Valve_M_Mode.jpg){alt='Mitral valve prolapse.'}
 
