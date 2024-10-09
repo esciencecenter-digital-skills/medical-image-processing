@@ -53,7 +53,7 @@ Modern x-rays are born digital. No actual "film" is produced, rather a DICOM fil
 
 There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
 
-CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get.Let's examine two ways to process our sinograms:
+CTs and tomosynthetic images are produced with the same technology. The difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get. Let's examine two ways to process our sinograms:
 
 
 ```python
