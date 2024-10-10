@@ -163,9 +163,24 @@ After processing both CT and standard MRIs will give a 3D image. However, it is 
 An standard MRI sequence will give better differentiation between various soft tissues, wheras a CT will provide better images of bones.
 CTs can be acquired more quickly and cheaply, but have the hidden cost of radiation.   
 ::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Other Image Types
 
-Nuclear medicine images e.g. PET and SPECT scans and pathology images are also broadly available inside hospitals. Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. 
+Nuclear medicine images scans and pathology images are also broadly available inside hospitals. 
+
+Nuclear medicine images e.g. PET and SPECT can be 2D or 3D images based on a signal of a radiotracer given to the patient. When the radiotracer is consumed it lets off gamma rays which are then used as a signal. This type of image can be extremely useful in processes like looking for metastases. While 3D images [registered](learners/reference.md#registration) with a CT or MRI give anatomic precision, in some cases a 2D image awnsers basic questions. In the image below a 2D bone scan shows metastasis from prostate cancer.
+
+![Nuclear medicine image.](fig/Prostate-mets-102.jpg){alt='Nuclear Medicine Image.'}
+
+
+*sourced from RadsWiki, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*
+
+Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Pathology is an entire medical discipline in which various types of images are used, both 2D, 3D and often multi-channel i.e. in color. However, one classic type of pathology image is that of a stained tissue slide seen by a microscope. With various stains we can see what is going on in a tissue on a cellular level. In the image below you can see macrophages that have come to sorround actinomyces in someone's lung.
+
+![Pathology image.](fig/Actinomycosis.jpg){alt='Pathology Image.'}
+
+
+*sourced from By Yale Rosen from USA - Actinomycosis, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=31127755*
 
 Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
@@ -184,11 +199,11 @@ When it comes to truly novel imaging types there can be no standardization at al
 |--------------|----------------------|---------------|-----------|--------|
 |X-ray         |ionizing radiation    |DICOM          |JPEG 2000   | 2D arrays|
 |Standard CT   |ionizing radiation    |DICOM          |Raw or compressed voxel data|3D arrays|
-|Ultrasound    |high frequency sound  |DICOM           |CINE     |2D array or 4D tensors|
+|Ultrasound (B-mode)|high frequency sound  |DICOM           |CINE     |2D array or 4D tensors|
 |MRI (spin or gradient echo)|patient's molecules   |DICOM    |Raw or compressed voxel data|3D arrays|
 |Digital Pathology slides| light through stained tissue| no consensus| often converted to TIFF| multichannel 2D or 3D arrays|
 
-The above table is a drastic simplification as there are always cases where people use novel files or novel designs. There are also novel technologies like 4D CT. Nonetheless it is useful to know the typical data structures you will find. 
+The above table is a drastic simplification as there are always cases where people use novel files or novel designs. There are also many newer technologies like 4D CT. Nonetheless it is useful to know some of the typical data structures you will usually find. 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::: keypoints 
