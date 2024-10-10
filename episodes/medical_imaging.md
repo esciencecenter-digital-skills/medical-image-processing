@@ -152,7 +152,43 @@ MRIs are images made by utilizing some fairly complicated physics in terms of wh
 doi: 10.1148/ryai.2020190007.https://pubs.rsna.org/doi/10.1148/ryai.2020190007
 and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 
-A transformed type of image, one a radiologist will be able to read, is often what we have. The final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in research. These file types will be covered in more detail later in the course.   
+Let's do an example of a k-space transform
+
+```python
+slice_kspace = np.load('slice_kspace.npy')
+# show shape
+print(slice_kspace.shape)
+# show type
+print(type(slice_kspace))
+# print type of an example pixel
+print(type(slice_kspace[3,3]))
+```
+```output
+(640, 368)
+<class 'numpy.ndarray'>
+<class 'numpy.complex64'>
+```
+Note we have an array that contains numbers with an imaginary element therefore the type is complex. We can extract and graph the real part, and also graph a transformation:
+
+```python
+real_from_slice_kspace = slice_kspace.real
+# make an inverse fourier
+def inverse_fft2_shift(kspace):
+    return np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(kspace, axes=(-2,-1)), norm='ortho'),axes=(-2,-1))
+# graph both    
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 5), sharex=True, sharey=True)
+ax1.set_title("K space")
+ax1.imshow(real_from_slice_kspace, cmap=plt.cm.Greys_r,)
+ax2.set_title("Transformed Kspace")
+ax2.imshow(np.abs(inverse_fft2_shift(slice_kspace)), cmap=plt.cm.Greys_r)
+
+```
+
+![K space and processed images.](fig/kspacetransform.png){alt='Graph of k space and processed images.'}
+
+
+
+Hopefully you can see that our K-space like our sinogram is not so human-readable, and the transformed image is recognizable as a knee. A transformed type of image, one a radiologist will be able to read, is often what we are given. This final product we are used to looking at is such a post-processed 3D-array wrapped inside a DICOM file. We can transform the image, and parts of the metadata, to a variety of file types commonly used in research. These file types will be covered in more detail later in the course.   
 
 ::::::::::::::::::::::::::::::::::::: callout
 
