@@ -200,6 +200,27 @@ An standard MRI sequence will give better differentiation between various soft t
 CTs can be acquired more quickly and cheaply, but have the hidden cost of radiation.   
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: CT, MRIs and Artifacts?
+
+You are researching tumors in adults. You team up with the best radiologist you can find and ask for imaging.
+She hands you DICOM files of some patient MRIs and CTs, and states "These are exactly the images I use. I have checked that they are all without artifacts"
+You have the images straight from the radiologist, could there potentially be any artifacts?
+
+:::::::::::::::  solution
+
+## Solution
+
+In an absolute total sense, they could have artifacts. Both CT and MRI are reconstructed from original data, and the
+reconstruction will introduce artifacts. The radiologist thinks of artifacts as things like motion blurring from when the 
+patient moves or wrap-around in MRIs when the field of view was set too small. These are obvious to the human eye. However technically every reconstruction algorithm can potentially introduce tiny artifacts not visible to the human eye in the reconstruction.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Other Image Types
 
 Nuclear medicine images scans and pathology images are also broadly available inside hospitals. 
