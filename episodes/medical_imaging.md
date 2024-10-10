@@ -155,7 +155,7 @@ and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 Let's do an example of a k-space transform
 
 ```python
-slice_kspace = np.load('slice_kspace.npy')
+slice_kspace = np.load('data/slice_kspace.npy')
 # show shape
 print(slice_kspace.shape)
 # show type
