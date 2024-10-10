@@ -67,7 +67,7 @@ from skimage.transform import iradon
 from skimage.transform import iradon_sart
 
 # load a sinogram of a simple phantom of the head
-sino = np.load('Schepp_Logan_sinogram.npy')
+sino = np.load('data/Schepp_Logan_sinogram.npy')
 # make a filtered back projection reconstruction
 theta = np.linspace(0.0, 180.0, max(sino.shape), endpoint=False)
 reconstruction_fbp = iradon(sino, theta=theta, filter_name='ramp')
