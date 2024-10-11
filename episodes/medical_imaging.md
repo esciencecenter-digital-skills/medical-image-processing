@@ -168,19 +168,22 @@ print(type(slice_kspace[3,3]))
 <class 'numpy.ndarray'>
 <class 'numpy.complex64'>
 ```
-Note we have an array that contains numbers with an imaginary element therefore the type is complex. We can extract and graph the real part, and also graph a transformation:
+Note we have an array that contains numbers with an imaginary element therefore the type is complex. We can extract and graph the real and imaginary parts, and also graph a transformation:
 
 ```python
 real_from_slice_kspace = slice_kspace.real
+imaginary_from_slice_kspace = slice_kspace.imag
 # make an inverse fourier
 def inverse_fft2_shift(kspace):
     return np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(kspace, axes=(-2,-1)), norm='ortho'),axes=(-2,-1))
 # graph both    
-fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(9, 5), sharex=True, sharey=True)
-ax1.set_title("K space")
+fig, (ax1, ax2, ax3) = plt.subplots(1, 3, figsize=(9, 5), sharex=True, sharey=True)
+ax1.set_title("K-space real part")
 ax1.imshow(real_from_slice_kspace, cmap=plt.cm.Greys_r,)
-ax2.set_title("Transformed Kspace")
-ax2.imshow(np.abs(inverse_fft2_shift(slice_kspace)), cmap=plt.cm.Greys_r)
+ax2.set_title("K-space imaginary part")
+ax2.imshow(imaginary_from_slice_kspace, cmap=plt.cm.Greys_r,)
+ax3.set_title("Transformed K-space")
+ax3.imshow(np.abs(inverse_fft2_shift(slice_kspace)), cmap=plt.cm.Greys_r)
 
 ```
 
