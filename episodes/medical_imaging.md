@@ -1,7 +1,7 @@
 ---
 title: "Medical Imaging Modalities"
-teaching: 45
-exercises: 5
+teaching: 35
+exercises: 25
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
