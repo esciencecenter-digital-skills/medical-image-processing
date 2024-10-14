@@ -29,8 +29,16 @@ Neuroimaging Informatics Technology Initiative (NIfTI)
 Positron emission tomography (PET)
 : A PET scan involves the use of radioactive tracers, such as Fluorodeoxyglucose or Oxygen-15 (15O), which are administered to the patient. Gamma ray detectors then create an image based on the tracer's distribution in the body. PET scans can be combined with or registered to other forms of imaging for enhanced diagnostic accuracy.
 
+
+
 Radiomics
 : Radiomics implies a quantitiative approach to medical image analysis. Quantitative features are extracted from medical images using data-characterization algorithms. These features, which may not be visible to the human eye, can potentially be used for improved diagnosis, prognosis, and treatment planning.
+
+
+<h5 id="Registration">registration</h5>
+Registration
+: Image gegistration is a process by which different images of the same object are aligned on the same coordinate system. This process usually required transformation of at least one of the images. In an example where one image was taken with a patient lying face down and the other image with the patient face up, one of the images will have to be flipped about 180 degrees to register the images. 
+
 
 <h5 id="sinogram">Sinogram</h5>
 Sinogram
