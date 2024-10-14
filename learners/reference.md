@@ -37,7 +37,7 @@ Radiomics
 
 <h5 id="Registration">registration</h5>
 Registration
-: Image gegistration is a process by which different images of the same object are aligned on the same coordinate system. This process usually required transformation of at least one of the images. In an example where one image was taken with a patient lying face down and the other image with the patient face up, one of the images will have to be flipped about 180 degrees to register the images. 
+: Image registration is a process by which different images of the same object are aligned on the same coordinate system. This process usually requires transformation of at least one of the images. In an example where one image was taken with a patient lying face down and the other image with the patient face up, one of the images will have to be flipped about 180 degrees to register the images. 
 
 
 <h5 id="sinogram">Sinogram</h5>
