@@ -67,7 +67,7 @@ from skimage.transform import iradon
 from skimage.transform import iradon_sart
 
 # load a sinogram of a simple phantom of the head
-sino = np.load('data/Schepp_Logan_sinogram.npy')
+sino = np.load('data/medical/Schepp_Logan_sinogram.npy')
 # make a filtered back projection reconstruction
 theta = np.linspace(0.0, 180.0, max(sino.shape), endpoint=False)
 reconstruction_fbp = iradon(sino, theta=theta, filter_name='ramp')
@@ -155,7 +155,7 @@ and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 Let's do an example of a k-space transform
 
 ```python
-slice_kspace = np.load('data/slice_kspace.npy')
+slice_kspace = np.load('data/medical/slice_kspace.npy')
 # show shape
 print(slice_kspace.shape)
 # show type
