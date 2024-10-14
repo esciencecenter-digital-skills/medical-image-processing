@@ -340,13 +340,13 @@
       </div>
       <hr></nav><main id="main-content" class="main-content"><div class="container lesson-content">
         <h1>Medical Imaging Modalities</h1>
-        <p>Last updated on 2024-08-14 |
+        <p>Last updated on 2024-10-14 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/medical_imaging.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 
 
 
-        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 50 minutes</p>
+        <p>Estimated time: <i aria-hidden="true" data-feather="clock"></i> 60 minutes</p>
 
         <div class="text-end">
           <button role="button" aria-pressed="false" tabindex="0" id="expand-code" class="pull-right" data-expand="Expand All Solutions " data-collapse="Collapse All Solutions "> Expand All Solutions <i aria-hidden="true" data-feather="plus"></i></button>
@@ -415,55 +415,121 @@ attenuate the radiation more than others. The signal is captured by an
 x-ray detector (you can think of this metaphorically like photographic
 film) on the other side of the subject.</p>
 <figure><img src="../fig/x_ray_dia.png" alt="X-ray image creation schematic." class="figure mx-auto d-block"><div class="figcaption">Schematic of x-ray image creation.</div>
-</figure><p>Modern x-rays are born digital. No actual “film” is produced, rather
-a DICOM file which contains arrays in JPEG files. Technically, the
-arrays could have been (and sometimes even are) put in PNG or other
-types of files, but typically JPEGs are the ones used for x-rays. We
-could use the metaphor of a wrapped present here. The DICOM file
+</figure><p>As you can imagine if you only have one view in an X-ray every object
+in the line of radiation from the generator is superimposed on every
+object below it. Even in the days of film X-rays often two views would
+be made. In the case of chest X-rays these could be a
+posteroanterior(PA) view and a lateral view. In the case of joints the
+views may be specific, however remember that in each view objects in the
+same line between the generator and receptor will be superimposed.</p>
+<p><img src="../fig/knee_gallery.jpeg" alt="Knee series." class="figure"><em>image
+courtesy of Radiopaedia, author and ID on image</em></p>
+<p>Modern x-rays are born digital. No actual “film” is produced, rather
+a DICOM file which typically contains arrays in JPEG files.</p>
+<p>We could use the metaphor of a wrapped present here. The DICOM file
 contains metadata around the image data, wrapping it. The image data
 itself is a bunch of 2D-arrays, but these have been organized to a
 specific shape - they are “boxed” by JPEG files. JPEG is a container
-format. There are JPEG files (emphasis on the plural) because almost no
-x-ray can be interpreted clinically without multiple perspectives. In
-chest-x-rays implies a anteroposterior and a lateral view. We can take
-x-rays from any angle and even do them repeatedly, and this allows for
-flouroscopy. Flouroscopy images are stored in a DICOM but can be
-displayed as movies because they are typically cine-files. Cine- is a
-file format that lets you store images in sequence with a frame
-rate.</p>
+format. There are JPEG files (emphasis on the plural) in a single DICOM
+file which typically contain images of the same body part with different
+angles of acquisition.</p>
+<p>We can take x-rays from any angle and even do them repeatedly, and
+this allows for fluoroscopy. Because fluoroscopy adds a time dimension
+to X-ray the data becomes 3-dimensional, possessing an X, Y and time
+dimension. Below is a fluoroscopy image of a patient swallowing
+barium.</p>
+<p><img src="../fig/fluoro.gif" alt="Fluorsocopy." class="figure"><em>image courtesy of
+Ptrump16, CC BY-SA 4.0 <a href="https://creativecommons.org/licenses/by-sa/4.0" class="external-link uri">https://creativecommons.org/licenses/by-sa/4.0</a>, via
+Wikimedia Commons</em></p>
+<p>Fluoroscopy images are stored in a DICOM but can be displayed as
+movies because they are typically cine-files. Cine- is a file format
+that lets you store images in sequence with a frame rate.</p>
 </section><section><h2 class="section-heading" id="computed-tomography-and-tomosynthesis">Computed Tomography and Tomosynthesis<a class="anchor" aria-label="anchor" href="#computed-tomography-and-tomosynthesis"></a></h2>
 <hr class="half-width"><p>There are several kinds of tomography. This technique produces
 3D-images, made of voxels, that allow us to see structures within a
 subject. CTs are extremely common, and helpful for many diagnostic
 questions, but have certain costs in terms of not only time and money,
 but also radiation to patients.</p>
-<p>CTs and tomosynthetic images are produced with the same technology.
-The difference is that in a CT the image is based on a 360 degree
+<p>CTs and tomosynthetic images are produced with similar technology.
+One key difference is that in a CT the image is based on a 360 degree
 capture of the signal. You can conceptualize this as a spinning donut
-with the generator and receptor opposite to each other. Tomosynthesis
-uses a limited angle instead of going all the way around the patient. In
-both cases, the image output is then made by processing this into a
-3D-array. We see again, similarly to x-ray, what tissues attenuated the
-radiation, and what tissues let it pass, but we can visualize it in
-either 3D or single layer “slices” of voxels. It is not uncommon to get
-CTs as DICOM CT projection data (DICOM-CT-PD) files which can then be
-processed before viewing, or in some cases stored off as other file
-types.</p>
+with the generator and receptor opposite to each other. The raw data of
+a CT is a <a href="reference.html#sinogram">sinogram</a>. Only by
+processing this data do we get what most people would recognize as a CT.
+At this level of processing there are already choices effecting the data
+we get. Let’s examine two ways to process our sinograms:</p>
+<div class="codewrapper sourceCode" id="cb1">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> iradon</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> iradon_sart</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># load a sinogram of a simple phantom of the head</span></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>sino <span class="op">=</span> np.load(<span class="st">'data/Schepp_Logan_sinogram.npy'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># make a filtered back projection reconstruction</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">180.0</span>, <span class="bu">max</span>(sino.shape), endpoint<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>reconstruction_fbp <span class="op">=</span> iradon(sino, theta<span class="op">=</span>theta, filter_name<span class="op">=</span><span class="st">'ramp'</span>)</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a><span class="co"># make a reconstruction with Simultaneous Algebraic Reconstruction Technique</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>reconstruction_sart <span class="op">=</span> iradon_sart(sino, theta<span class="op">=</span>theta)</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a><span class="co"># plot with matplotlib</span></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>fig, (ax1, ax2, ax3, ax4) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>ax1.set_title(<span class="st">"Sinogram"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" tabindex="-1"></a>ax1.imshow(sino, cmap<span class="op">=</span>plt.cm.Greys_r,)</span>
+<span id="cb1-17"><a href="#cb1-17" tabindex="-1"></a>ax2.set_title(<span class="st">"Reconstruction</span><span class="ch">\n</span><span class="st">Filtered back projection"</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" tabindex="-1"></a>ax2.imshow(reconstruction_fbp, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a>ax3.set_title(<span class="st">"Reconstruction</span><span class="ch">\n</span><span class="st">SART"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a>ax3.imshow(reconstruction_sart, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb1-21"><a href="#cb1-21" tabindex="-1"></a>ax4.set_title(<span class="st">"Difference</span><span class="ch">\n</span><span class="st"> between reconstructions"</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" tabindex="-1"></a>ax4.imshow(reconstruction_sart <span class="op">-</span> reconstruction_fbp, cmap<span class="op">=</span>plt.cm.Greys_r)</span>
+<span id="cb1-23"><a href="#cb1-23" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" tabindex="-1"></a>plt.show()</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code></code></pre>
+</div>
+<figure><img src="../fig/output_sinogram_plus.png" alt="Graph of sinogram and processed images." class="figure mx-auto d-block"><div class="figcaption">singogram and processed images.</div>
+</figure><p><em>Images generated from the <a href="https://doi.org/10.1109/TNS.1974.6499235" class="external-link">Shepp–Logan phantom</a>
+</em></p>
+<p>While you may get an already processed CT (Some commercial machines
+come with proprietary reconstruction algorithms which will already have
+been executed), it is not uncommon to get CTs as DICOM CT projection
+data (DICOM-CT-PD) files which can then be processed before viewing, or
+in some cases stored off as other file types. As shown in the code above
+there is more than one way to process the data into a radiologist
+friendly CT. Filtered Back Projection or Algebraic Reconstruction
+methods are shown but there are other methods such as iterative
+reconstruction, convolution back projection and even deep learning based
+methods.</p>
+<p>Tomosynthesis makes X-ray based images using a limited angle instead
+of going all the way around the patient as in CT. The data from a
+tomosynthetic image is then processed so that you get multiple angles
+visible. This gets around the issue of overlapping objects in a plain
+film X-ray. In both the case of CT and tomosynthesis, the image output
+is made by processing the originally acquired data. Although most
+researchers work with already processed images, it is important to keep
+in mind that in theory the originally acquired data can be processed in
+a variety of ways.</p>
 </section><section><h2 class="section-heading" id="ultrasounds">Ultrasounds<a class="anchor" aria-label="anchor" href="#ultrasounds"></a></h2>
-<hr class="half-width"><p>Ultrasounds can produce multiple complex types of images. Typically,
-sonographers produce a lot of B-mode images. They use high frequency
-sound waves, sent and captured from a piezoelectric probe (also known as
-a transducer) to get 2D-images. Just as different tissues attenuate
-radiation differently, different tissues attenuate these waves
-differently, and this can help us create images after some processing of
-the signal. These images can be captured in rapid succession over time,
-so they can be saved as cine-files inside DICOMs. On the other hand, the
+<hr class="half-width"><p>Ultrasounds can produce multiple complex types of images. Ultrasound
+use high frequency sound waves, sent and captured from a piezoelectric
+probe (also known as a transducer) to get images.</p>
+<p>Just as different tissues attenuate radiation differently, different
+tissues attenuate the sound waves differently. To be more precise
+different tissues reflect and absorb the waves differently and this can
+help us create images after some processing of the signal.</p>
+<p>These images can be captured in rapid succession over time, so they
+can be saved as cine-files inside DICOMs. On the other hand, the
 sonographer can choose to record only a single ‘frame’, in which case a
-2D-array will ultimately be saved. B-mode is far from the only type of
-ultrasounds. M-mode, like the cine-files in B-mode, can also capture
-motion, but puts it into a a single 2D-array of one line of the image
-over time. In the compound image below you can see a B-mode 2D-image and
-an M-mode made on the line in it.</p>
+2D-array will ultimately be saved.</p>
+<p>Typically, sonographers produce a lot of <a href="reference.html#b">B-mode</a> images, but B-mode is far from the
+only type of ultrasounds. M-mode or motion mode, like the cine-files in
+B-mode, can also capture motion, but puts it into a a single 2D-array of
+one line of the image over time. In the compound image below you can see
+a B-mode 2D-image and an M-mode made on the line in it.</p>
 <figure><img src="../fig/MItral_Valve_M_Mode.jpg" alt="Mitral valve prolapse." class="figure mx-auto d-block"><div class="figcaption">Image of mitral valve prolapse from Cafer
 Zorkun, MD, PhD on wikidoc.org with creative commons lisence.</div>
 </figure><div id="what-are-some-disadvantages-to-ultrasounds-in-terms-of-computational-analysis" class="callout">
@@ -514,50 +580,212 @@ terms of what we can do to protons (abundant in human tissue) with
 magnets and radiofrequency waves, and how we capture their signal.
 Different ordering and timing of radiofrequency pulses and different
 magnetic gradients give us different MRI sequences. The actual signal on
-an anatomical MRI needs to be processed via Fourier transforms and some
-other computational work before it is recognizable as anatomy. The raw
-data is reffered to as the k-space data, and this can be kept in vendor
-specific formats or open common formats, e.g., ISMRMRD (International
-Society of Magnetic Resonance MR Raw Data). In practice, we rarely use
-the k-space data (unless perhaps we are medical physicists) for research
-on medical pathology. The final product we are used to looking at is a
-post-processed 3D-array wrapped inside a DICOM file. We can transform
-the image, and parts of the metadata, to a variety of file types
-commonly used in neuroscience research. These file types will be covered
-in more detail later in the course.</p>
-</section><section><h2 class="section-heading" id="other-image-types">Other Image Types<a class="anchor" aria-label="anchor" href="#other-image-types"></a></h2>
-<hr class="half-width"><p>PET scans, nuclear medicine images in general and pathology images
-are also broadly available inside hospitals. Pathology is currently
-undergoing a revolution of digitalization, and a typical file format has
-not emerged yet. Pathology images may be DICOM, but could also be stored
-as specific kinds of TIFF files or other file types. Beyond the more
-common types of imaging, researchers are actively looking into new forms
-of imaging. Some add new information to old modalities, like
-contrast-enhanced ultrasounds. Other new forms of imaging are novel in
-terms of the signal, such as terahertz imaging, which uses a previously
-‘unused’ part of the electomagnetic radiation spectrum. As you might
-guess, the more novel the imaging, usually the less consolidation there
-is around file types and how they are organized. It is useful to
-remember that all these file types, whether on established image types
-or novel ones, are sorts of ‘containers’ for the ‘payload’ of the actual
-images which are the arrays. Often we simply need to know how to get the
-payload array out of its container and/or where to find certain
-metadata.</p>
-<div id="image-storage" class="callout">
+an anatomical MRI needs to be processed typically via Fourier transforms
+and some other computational work before it is recognizable as anatomy.
+The raw data is reffered to as the k-space data, and this can be kept in
+vendor specific formats or open common formats, e.g., ISMRMRD
+(International Society of Magnetic Resonance MR Raw Data). In practice,
+we rarely use the k-space data (unless perhaps we are medical
+physicists) for research on medical pathology. Nonetheless researchers
+in new sequences for MRI will be very interested in such data, and
+typically getting the fastest transformations of it possible. There are
+many ways the raw data could be transformed or used to produce an MRI.
+While an inverse Fourier transform is typical, a Hartley transform could
+be used, and some scientists even use deep learning based methods. Let’s
+look at k-space with a viridis color map:</p>
+<figure><img src="../fig/k-space.png" alt="K-space." class="figure mx-auto d-block"><div class="figcaption">k-space image.</div>
+</figure><p><em>Sourced from the FastMRI data set of NYU, 2024 (Knoll et al
+Radiol Artif Intell. 2020 Jan 29;2(1):e190007. doi:
+10.1148/ryai.2020190007.https://pubs.rsna.org/doi/10.1148/ryai.2020190007
+and the arXiv paper, <a href="https://arxiv.org/abs/1811.08839" class="external-link uri">https://arxiv.org/abs/1811.08839</a>.)</em></p>
+<p>Let’s do an example of a k-space transform</p>
+<div class="codewrapper sourceCode" id="cb3">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>slice_kspace <span class="op">=</span> np.load(<span class="st">'data/slice_kspace.npy'</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># show shape</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">print</span>(slice_kspace.shape)</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># show type</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(slice_kspace))</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co"># print type of an example pixel</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">type</span>(slice_kspace[<span class="dv">3</span>,<span class="dv">3</span>]))</span></code></pre>
+</div>
+<div class="codewrapper">
+<h3 class="code-label">OUTPUT<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="output" tabindex="0"><code>(640, 368)
+&lt;class 'numpy.ndarray'&gt;
+&lt;class 'numpy.complex64'&gt;</code></pre>
+</div>
+<p>Note we have an array that contains numbers with an imaginary element
+therefore the type is complex. We can extract and graph the real and
+imaginary parts, and also graph a transformation:</p>
+<div class="codewrapper sourceCode" id="cb5">
+<h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>real_from_slice_kspace <span class="op">=</span> slice_kspace.real</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>imaginary_from_slice_kspace <span class="op">=</span> slice_kspace.imag</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co"># make an inverse fourier</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="kw">def</span> inverse_fft2_shift(kspace):</span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>    <span class="cf">return</span> np.fft.fftshift(np.fft.ifft2(np.fft.ifftshift(kspace, axes<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>)), norm<span class="op">=</span><span class="st">'ortho'</span>),axes<span class="op">=</span>(<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># graph both    </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>fig, (ax1, ax2, ax3) <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">9</span>, <span class="dv">5</span>), sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a>ax1.set_title(<span class="st">"K-space real part"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>ax1.imshow(real_from_slice_kspace, cmap<span class="op">=</span>plt.cm.Greys_r,)</span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a>ax2.set_title(<span class="st">"K-space imaginary part"</span>)</span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>ax2.imshow(imaginary_from_slice_kspace, cmap<span class="op">=</span>plt.cm.Greys_r,)</span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a>ax3.set_title(<span class="st">"Transformed K-space"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>ax3.imshow(np.<span class="bu">abs</span>(inverse_fft2_shift(slice_kspace)), cmap<span class="op">=</span>plt.cm.Greys_r)</span></code></pre>
+</div>
+<figure><img src="../fig/kspacetransform.png" alt="Graph of k space and processed images." class="figure mx-auto d-block"><div class="figcaption">K space and processed images.</div>
+</figure><p>Hopefully you can see that our K-space like our sinogram is not so
+human-readable, and the transformed image is recognizable as a knee. A
+transformed type of image, one a radiologist will be able to read, is
+often what we are given. This final product we are used to looking at is
+such a post-processed 3D-array wrapped inside a DICOM file. We can
+transform the image, and parts of the metadata, to a variety of file
+types commonly used in research. These file types will be covered in
+more detail later in the course.</p>
+<div id="ct-versus-mri" class="callout">
 <div class="callout-square">
 <i class="callout-icon" data-feather="bell"></i>
 </div>
-<div id="image-storage" class="callout-inner">
-<h3 class="callout-title">Image Storage</h3>
+<div id="ct-versus-mri" class="callout-inner">
+<h3 class="callout-title">CT versus MRI</h3>
 <div class="callout-content">
+<p>After processing both CT and standard MRIs will give a 3D image.
+However, it is important to understand that there are differences. An
+standard MRI sequence will give better differentiation between various
+soft tissues, wheras a CT will provide better images of bones. CTs can
+be acquired more quickly and cheaply, but have the hidden cost of
+radiation.</p>
+</div>
+</div>
+</div>
+<div id="challenge-ct-mris-and-artifacts" class="callout challenge">
+<div class="callout-square">
+<i class="callout-icon" data-feather="zap"></i>
+</div>
+<div id="challenge-ct-mris-and-artifacts" class="callout-inner">
+<h3 class="callout-title">Challenge: CT, MRIs and Artifacts?</h3>
+<div class="callout-content">
+<p>You are researching tumors in adults. You team up with the best
+radiologist you can find and ask for imaging. She hands you DICOM files
+of some patient MRIs and CTs, and states “These are exactly the images I
+use. I have checked that they are all without artifacts” You have the
+images straight from the radiologist, could there potentially be any
+artifacts?</p>
+</div>
+</div>
+</div>
+<div id="accordionSolution2" class="accordion challenge-accordion accordion-flush">
+<div class="accordion-item">
+<button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
+  <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
+</button>
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div class="accordion-body">
+<p>In an absolute total sense, they could have artifacts. Both CT and
+MRI are reconstructed from original data, and the reconstruction will
+introduce artifacts. The radiologist thinks of artifacts as things like
+motion blurring from when the patient moves or wrap-around in MRIs when
+the field of view was set too small. These are obvious to the human eye.
+However technically every reconstruction algorithm can potentially
+introduce tiny artifacts not visible to the human eye in the
+reconstruction.</p>
+</div>
+</div>
+</div>
+</div>
+</section><section><h2 class="section-heading" id="other-image-types">Other Image Types<a class="anchor" aria-label="anchor" href="#other-image-types"></a></h2>
+<hr class="half-width"><p>Nuclear medicine images scans and pathology images are also broadly
+available inside hospitals.</p>
+<p>Nuclear medicine images e.g. PET and SPECT can be 2D or 3D images
+based on a signal of a radiotracer given to the patient. When the
+radiotracer is consumed it lets off gamma rays which are then used as a
+signal. This type of image can be extremely useful in processes like
+looking for metastases. While 3D images <a href="reference.html#registration">registered</a> with a CT or MRI give
+anatomic precision, in some cases a 2D image awnsers basic questions. In
+the image below a 2D bone scan shows metastasis from prostate
+cancer.</p>
+<figure><img src="../fig/Prostate-mets-102.jpg" alt="Nuclear Medicine Image." class="figure mx-auto d-block"><div class="figcaption">Nuclear medicine image.</div>
+</figure><p><em>sourced from RadsWiki, CC BY-SA 3.0 <a href="https://creativecommons.org/licenses/by-sa/3.0" class="external-link uri">https://creativecommons.org/licenses/by-sa/3.0</a>, via
+Wikimedia Commons</em></p>
+<p>Pathology is currently undergoing a revolution of digitalization, and
+a typical file format has not emerged yet. Pathology images may be
+DICOM, but could also be stored as specific kinds of TIFF files or other
+file types. Pathology is an entire medical discipline in which various
+types of images are used, both 2D, 3D and often multi-channel i.e. in
+color. However, one classic type of pathology image is that of a stained
+tissue slide seen by a microscope. With various stains we can see what
+is going on in a tissue on a cellular level. In the image below you can
+see macrophages that have come to sorround actinomyces in someone’s
+lung.</p>
+<figure><img src="../fig/Actinomycosis.jpg" alt="Pathology Image." class="figure mx-auto d-block"><div class="figcaption">Pathology image.</div>
+</figure><p><em>sourced from By Yale Rosen from USA - Actinomycosis, CC BY-SA
+2.0, <a href="https://commons.wikimedia.org/w/index.php?curid=31127755" class="external-link uri">https://commons.wikimedia.org/w/index.php?curid=31127755</a></em></p>
+<p>Beyond the more common types of imaging, researchers are actively
+looking into new forms of imaging. Some add new information to old
+modalities, like contrast-enhanced ultrasounds. Other new forms of
+imaging are novel in terms of the signal, such as terahertz imaging,
+which uses a previously ‘unused’ part of the electomagnetic radiation
+spectrum. As you might guess, the more novel the imaging, usually the
+less consolidation there is around file types and how they are
+organized. It is useful to remember that all these file types, whether
+on established image types or novel ones, are sorts of ‘containers’ for
+the ‘payload’ of the actual images which are the arrays. Often we simply
+need to know how to get the payload array out of its container and/or
+where to find certain metadata.</p>
 <p>There is less standardization around file formats of certain types of
 imaging.</p>
 <p>For example, while typical radiological images have settled in how
 they are recorded in DICOM, more novel sequences, such as arterial
 spin-labeled ones, do not have a standardized way of how they are
-recorded in it. As mentioned above, pathology images are not neccesarily
-stored in DICOM, and there is some controversy as to what file format
-will dominate this important form of medical imaging.</p>
+recorded in it. Some newer forms of imaging such as electrical impedence
+tomography use entirely different kinds of technologies and signals than
+anything already existing. When it comes to truly novel imaging types
+there can be no standardization at all.</p>
+<div id="standard-image-types" class="callout">
+<div class="callout-square">
+<i class="callout-icon" data-feather="bell"></i>
+</div>
+<div id="standard-image-types" class="callout-inner">
+<h3 class="callout-title">Standard Image types</h3>
+<div class="callout-content">
+<table class="table"><colgroup><col width="20%"><col width="31%"><col width="21%"><col width="15%"><col width="11%"></colgroup><thead><tr class="header"><th>Type</th>
+<th>Signal</th>
+<th>Standard File</th>
+<th>Image file</th>
+<th>Image array</th>
+</tr></thead><tbody><tr class="odd"><td>X-ray</td>
+<td>ionizing radiation</td>
+<td>DICOM</td>
+<td>JPEG 2000</td>
+<td>2D arrays</td>
+</tr><tr class="even"><td>Standard CT</td>
+<td>ionizing radiation</td>
+<td>DICOM</td>
+<td>Raw or compressed voxel data</td>
+<td>3D arrays</td>
+</tr><tr class="odd"><td>Ultrasound (B-mode)</td>
+<td>high frequency sound</td>
+<td>DICOM</td>
+<td>CINE</td>
+<td>2D array or 4D tensors</td>
+</tr><tr class="even"><td>MRI (spin or gradient echo)</td>
+<td>patient’s molecules</td>
+<td>DICOM</td>
+<td>Raw or compressed voxel data</td>
+<td>3D arrays</td>
+</tr><tr class="odd"><td>Digital Pathology slides</td>
+<td>light through stained tissue</td>
+<td>no consensus</td>
+<td>often converted to TIFF</td>
+<td>multichannel 2D or 3D arrays</td>
+</tr></tbody></table><p>The above table is a drastic simplification as there are always cases
+where people use novel files or novel designs. There are also many newer
+technologies like 4D CT. Nonetheless it is useful to know some of the
+typical data structures you will usually find.</p>
 </div>
 </div>
 </div>
@@ -571,6 +799,8 @@ will dominate this important form of medical imaging.</p>
 <ul><li>Each imaging modality provides distinct sets of information</li>
 <li>In computational imaging, images are essentially arrays, although
 embedded in additional data structures</li>
+<li>Many images we may get e.g. MRIs and CTs have already been processed
+with some algorithms to make them human readable</li>
 <li>Research should be thoughtfully designed, taking into account the
 constraints and capabilities inherent in human capacities</li>
 <li>We can expect the emergence of additional imaging modalities in the
@@ -618,7 +848,7 @@ any links that you are not going to use.
         <p>Materials licensed under <a href="LICENSE.html">CC-BY 4.0</a> by the authors</p>
 
         <p>Template licensed under <a href="https://creativecommons.org/licenses/by-sa/4.0/" class="external-link">CC-BY 4.0</a> by <a href="https://carpentries.org/" class="external-link">The Carpentries</a></p>
-        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.7" class="external-link">sandpaper (0.16.7)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.4" class="external-link">varnish (1.0.4)</a></p>
+        <p>Built with <a href="https://github.com/carpentries/sandpaper/tree/0.16.8" class="external-link">sandpaper (0.16.8)</a>, <a href="https://github.com/carpentries/pegboard/tree/0.7.6" class="external-link">pegboard (0.7.6)</a>, and <a href="https://github.com/carpentries/varnish/tree/1.0.4" class="external-link">varnish (1.0.4)</a></p>
 			</div>
 		</footer></div> <!-- / div.container -->
 	<div id="to-top">
@@ -639,9 +869,9 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/medical_imaging.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/instructor/medical_imaging.html",
-  "dateCreated": "2024-10-08",
-  "dateModified": "2024-08-14",
-  "datePublished": "2024-10-08"
+  "dateCreated": "2024-10-14",
+  "dateModified": "2024-10-14",
+  "datePublished": "2024-10-14"
 }
 
   </script><script>
