@@ -35,7 +35,7 @@ Radiomics
 : Radiomics implies a quantitiative approach to medical image analysis. Quantitative features are extracted from medical images using data-characterization algorithms. These features, which may not be visible to the human eye, can potentially be used for improved diagnosis, prognosis, and treatment planning.
 
 
-<h5 id="Registration">registration</h5>
+<h5 id="Registration">Registration</h5>
 Registration
 : Image registration is a process by which different images of the same object are aligned on the same coordinate system. This process usually requires transformation of at least one of the images. In an example where one image was taken with a patient lying face down and the other image with the patient face up, one of the images will have to be flipped about 180 degrees to register the images. 
 
