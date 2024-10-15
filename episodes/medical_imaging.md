@@ -27,7 +27,7 @@ before they are 'readable' by humans or by many of the algorithms we write.
 
 While thinking about how the information from these signals is stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is necessary to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
 
-The details of various forms of imaging will be covered in a lecture with slides that accompanies this episode. Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
+Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
 
 ## X-Rays
 
