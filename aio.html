@@ -462,7 +462,7 @@ open-source terms.</em></p>
 </div>
 </div></section><section id="aio-medical_imaging"><p>Content from <a href="medical_imaging.html">Medical Imaging Modalities</a></p>
 <hr>
-<p>Last updated on 2024-10-14 |
+<p>Last updated on 2024-10-15 |
 
         <a href="https://github.com/esciencecenter-digital-skills/medical-image-processing/edit/main/episodes/medical_imaging.md" class="external-link">Edit this page <i aria-hidden="true" data-feather="edit"></i></a></p>
 <div class="text-end">
@@ -520,13 +520,11 @@ information” or final diagnosis from the image was, it is necessary to
 understand this to make the best algorithms possible. For example, a lot
 of hospital images are essentially JPEGs. This has implications in terms
 of image quality as we manipulate and resize the images.</p>
-<p>The details of various forms of imaging will be covered in a lecture
-with slides that accompanies this episode. Below are a few summaries
-about various ultra-common imaging types. Keep in mind that
-manufacturers may have specificities in terms of file types not covered
-here, and there are many possibilities in terms of how images could
-potentially be stored. Here we will discuss what is common to get in
-terms of files given to researchers.</p>
+<p>Below are a few summaries about various ultra-common imaging types.
+Keep in mind that manufacturers may have specificities in terms of file
+types not covered here, and there are many possibilities in terms of how
+images could potentially be stored. Here we will discuss what is common
+to get in terms of files given to researchers.</p>
 </section><section><h2 class="section-heading" id="x-rays">X-Rays<a class="anchor" aria-label="anchor" href="#x-rays"></a>
 </h2>
 <hr class="half-width">
@@ -591,7 +589,7 @@ we get. Let’s examine two ways to process our sinograms:</p>
 <span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="im">from</span> skimage.transform <span class="im">import</span> iradon_sart</span>
 <span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="co"># load a sinogram of a simple phantom of the head</span></span>
-<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>sino <span class="op">=</span> np.load(<span class="st">'data/Schepp_Logan_sinogram.npy'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>sino <span class="op">=</span> np.load(<span class="st">'data/medical/Schepp_Logan_sinogram.npy'</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># make a filtered back projection reconstruction</span></span>
 <span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>theta <span class="op">=</span> np.linspace(<span class="fl">0.0</span>, <span class="fl">180.0</span>, <span class="bu">max</span>(sino.shape), endpoint<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>reconstruction_fbp <span class="op">=</span> iradon(sino, theta<span class="op">=</span>theta, filter_name<span class="op">=</span><span class="st">'ramp'</span>)</span>
@@ -732,7 +730,7 @@ and the arXiv paper, <a href="https://arxiv.org/abs/1811.08839" class="external-
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>slice_kspace <span class="op">=</span> np.load(<span class="st">'data/slice_kspace.npy'</span>)</span>
+<pre class="sourceCode python" tabindex="0"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a>slice_kspace <span class="op">=</span> np.load(<span class="st">'data/medical/slice_kspace.npy'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co"># show shape</span></span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="bu">print</span>(slice_kspace.shape)</span>
 <span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co"># show type</span></span>
@@ -1348,7 +1346,7 @@ image.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb9">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1458,7 +1456,7 @@ typing <code>t2_data.</code> followed by <kbd>Tab</kbd>.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb17">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1498,7 +1496,7 @@ but a 3D MR image is made up of 3D cubes called
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb19">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -1616,7 +1614,7 @@ variable.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb29">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -3692,7 +3690,7 @@ dataset?</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution1" aria-expanded="false" aria-controls="collapseSolution1">
   <h4 class="accordion-header" id="headingSolution1"> Show me the solution </h4>
 </button>
-<div id="collapseSolution1" class="accordion-collapse collapse" data-bs-parent="#accordionSolution1" aria-labelledby="headingSolution1">
+<div id="collapseSolution1" class="accordion-collapse collapse" aria-labelledby="headingSolution1" data-bs-parent="#accordionSolution1">
 <div class="accordion-body">
 <p>In almost any radiological dataset, it is essential to examine the
 age and sex distribution. These metadata are crucial for both brain MRIs
@@ -3841,7 +3839,7 @@ prestigious tertiary inpatient hospital.</li>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution2" aria-expanded="false" aria-controls="collapseSolution2">
   <h4 class="accordion-header" id="headingSolution2"> Show me the solution </h4>
 </button>
-<div id="collapseSolution2" class="accordion-collapse collapse" data-bs-parent="#accordionSolution2" aria-labelledby="headingSolution2">
+<div id="collapseSolution2" class="accordion-collapse collapse" aria-labelledby="headingSolution2" data-bs-parent="#accordionSolution2">
 <div class="accordion-body">
 <p>All of the following may pose potential problems:</p>
 <ul>
@@ -3880,7 +3878,7 @@ the impact of harsh lines on ML performance.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution3" aria-expanded="false" aria-controls="collapseSolution3">
   <h4 class="accordion-header" id="headingSolution3"> Show me the solution </h4>
 </button>
-<div id="collapseSolution3" class="accordion-collapse collapse" data-bs-parent="#accordionSolution3" aria-labelledby="headingSolution3">
+<div id="collapseSolution3" class="accordion-collapse collapse" aria-labelledby="headingSolution3" data-bs-parent="#accordionSolution3">
 <div class="accordion-body">
 <div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">PYTHON<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
@@ -4154,7 +4152,7 @@ pipeline without accessing the original images.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution4" aria-expanded="false" aria-controls="collapseSolution4">
   <h4 class="accordion-header" id="headingSolution4"> Show me the solution </h4>
 </button>
-<div id="collapseSolution4" class="accordion-collapse collapse" data-bs-parent="#accordionSolution4" aria-labelledby="headingSolution4">
+<div id="collapseSolution4" class="accordion-collapse collapse" aria-labelledby="headingSolution4" data-bs-parent="#accordionSolution4">
 <div class="accordion-body">
 <p>One major concern is accuracy, as pipelines may mislabel or miscount
 features, potentially leading to unreliable data analysis or model
@@ -4420,7 +4418,7 @@ package.</p>
 <button class="accordion-button solution-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSolution5" aria-expanded="false" aria-controls="collapseSolution5">
   <h4 class="accordion-header" id="headingSolution5"> Show me the solution </h4>
 </button>
-<div id="collapseSolution5" class="accordion-collapse collapse" data-bs-parent="#accordionSolution5" aria-labelledby="headingSolution5">
+<div id="collapseSolution5" class="accordion-collapse collapse" aria-labelledby="headingSolution5" data-bs-parent="#accordionSolution5">
 <div class="accordion-body">
 <p>Aging code: <code>neurocombat</code> was last modified three years
 ago. It may rely on outdated dependencies that could pose compatibility
@@ -5253,7 +5251,7 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/aio.html",
-  "dateCreated": "2024-10-14",
+  "dateCreated": "2024-10-15",
   "dateModified": "2024-10-15",
   "datePublished": "2024-10-15"
 }

@@ -371,7 +371,7 @@ are the installation instructions for different operating systems:</p>
   Windows
   </h3>
 </button>
-<div id="collapseSpoiler1" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler1" aria-labelledby="headingSpoiler1">
+<div id="collapseSpoiler1" class="accordion-collapse collapse" aria-labelledby="headingSpoiler1" data-bs-parent="#accordionSpoiler1">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Download the Miniforge3 installer for Windows <a href="https://github.com/conda-forge/miniforge?tab=readme-ov-file#miniforge3" class="external-link">from
 the official GitHub repository</a>.</li>
@@ -388,7 +388,7 @@ the official GitHub repository</a>.</li>
   macOS and Linux
   </h3>
 </button>
-<div id="collapseSpoiler2" class="accordion-collapse collapse" data-bs-parent="#accordionSpoiler2" aria-labelledby="headingSpoiler2">
+<div id="collapseSpoiler2" class="accordion-collapse collapse" aria-labelledby="headingSpoiler2" data-bs-parent="#accordionSpoiler2">
 <div class="accordion-body">
 <ol style="list-style-type: decimal"><li>Open a terminal window.</li>
 <li>Download the installer using <code>curl</code> or <code>wget</code>
@@ -428,22 +428,36 @@ proceed to create and activate the environment.</p>
 <li>On macOS/Linux: Open your regular terminal.</li>
 </ul></li>
 <li>Navigate to your lesson workspace directory.</li>
-<li>Run the following command:</li>
+<li>Run one of the following commands (based on your preference for
+mamba or conda):</li>
 </ol><div class="codewrapper sourceCode" id="cb3">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">mamba</span> env create <span class="at">-f</span> https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">conda</span> env create <span class="at">-f</span> https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml</span></code></pre>
+</div>
+<p>or</p>
+<div class="codewrapper sourceCode" id="cb4">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">mamba</span> env create <span class="at">-f</span> https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml</span></code></pre>
 </div>
 <ol start="4" style="list-style-type: decimal"><li>Wait for the installation to complete. This may take a few
 minutes.</li>
 </ol></div>
 <div class="section level3">
 <h3 id="activating-the-environment">Activating the environment<a class="anchor" aria-label="anchor" href="#activating-the-environment"></a></h3>
-<p>After the installation is complete, activate the environment:</p>
-<div class="codewrapper sourceCode" id="cb4">
+<p>After the installation is complete, activate the environment with
+conda or mamba:</p>
+<div class="codewrapper sourceCode" id="cb5">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="ex">mamba</span> activate medical_image_proc</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">conda</span> activate edical_image_proc</span></code></pre>
+</div>
+<p>or</p>
+<div class="codewrapper sourceCode" id="cb6">
+<h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
+</h3>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="ex">mamba</span> activate medical_image_proc</span></code></pre>
 </div>
 </div>
 </section><section><h2 class="section-heading" id="downloading-image-files-from-zenodo">Downloading image files from Zenodo<a class="anchor" aria-label="anchor" href="#downloading-image-files-from-zenodo"></a></h2>
@@ -451,7 +465,7 @@ minutes.</li>
 necessary files from Zenodo.</p>
 <div class="section level3">
 <h3 id="option-a-manual-download">Option A: manual download<a class="anchor" aria-label="anchor" href="#option-a-manual-download"></a></h3>
-<ol style="list-style-type: decimal"><li>Open your web browser and navigate to <a href="https://zenodo.org/records/13311246" class="external-link">this lesson’s data Zenodo
+<ol style="list-style-type: decimal"><li>Open your web browser and navigate to <a href="https://zenodo.org/records/13932977" class="external-link">this lesson’s data Zenodo
 record address</a>.</li>
 <li>Look for the “Files” section on the page.</li>
 <li>Click the download button for downloading the <code>data.zip</code>
@@ -469,10 +483,10 @@ environment.</p>
 <code>medical_image_proc</code> environment is activated.</li>
 <li>Use the following command in your terminal (Miniforge Prompt if you
 are a Windows user):</li>
-</ol><div class="codewrapper sourceCode" id="cb5">
+</ol><div class="codewrapper sourceCode" id="cb7">
 <h3 class="code-label">BASH<i aria-hidden="true" data-feather="chevron-left"></i><i aria-hidden="true" data-feather="chevron-right"></i>
 </h3>
-<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="ex">zenodo_get</span> 13311246</span></code></pre>
+<pre class="sourceCode bash" tabindex="0"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="ex">zenodo_get</span> 13311246</span></code></pre>
 </div>
 <ol start="3" style="list-style-type: decimal"><li>Extract the contents of <code>data.zip</code>.</li>
 </ol><p>Remember to keep the <code>medical_image_proc</code> environment
@@ -535,7 +549,7 @@ any links that you are not going to use.
   "creativeWorkStatus": "active",
   "url": "https://esciencecenter-digital-skills.github.io/medical-image-processing/index.html",
   "identifier": "https://esciencecenter-digital-skills.github.io/medical-image-processing/index.html",
-  "dateCreated": "2024-10-14",
+  "dateCreated": "2024-10-15",
   "dateModified": "2024-10-15",
   "datePublished": "2024-10-15"
 }
