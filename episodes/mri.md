@@ -557,6 +557,18 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 - In the S axis, positive values mean move up, negative values mean move inferior
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
+In the real world whatever orientation you put something in may make someone unhappy. Luckily you can quickly change arrays around in terms of direction by simply using an already efficient numpy functions. 
+
+```python
+import numpy as np
+slices = [z_slice, np.fliplr(z_slice), np.flipud(z_slice)]
+fig, axes = plt.subplots(1, len(slices))
+for i, slice in enumerate(slices):
+    axes[i].imshow(slice, cmap="gray", origin="lower")
+```
+```output
+```
+<img src="fig/flipper.png" alt="flipped images" width="70%;"/>
 
 ## Functional MRI Data
 
@@ -572,10 +584,9 @@ Unfortunately, any signal will contain some noise, and fMRI data is inherently n
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
 
  `fmriprep` is considered by many the go-to package for handling the complexities of fMRI data processing. However there are many alternatives for suitable for non-physicists researchers with many online tutorials/pipelines available including: 
- [SPM](www.fil.ion.ucl.ac.uk/spm), [AFNI](afni.nimh.nih.gov/afni), and  [FSL](www.fmrib.ox.ac.uk/fsl).
+ [SPM](https://www.fil.ion.ucl.ac.uk/spm), [AFNI](https://afni.nimh.nih.gov/afni), and  [FSL](https://www.fmrib.ox.ac.uk/fsl).
 
 If you are trying to compare outputs with an existing study, it is worth considering using the same pipeline and software version of the pipeline. Then you know differences between your outcomes are not artifacts of the softwares. 
-
 
 
 :::::::::::::::: callout
