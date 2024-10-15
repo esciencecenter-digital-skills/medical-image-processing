@@ -27,7 +27,7 @@ before they are 'readable' by humans or by many of the algorithms we write.
 
 While thinking about how the information from these signals is stored in different file types may seem less exciting than what the "true information" or final diagnosis from the image was, it is necessary to understand this to make the best algorithms possible. For example, a lot of hospital images are essentially JPEGs. This has implications in terms of image quality as we manipulate and resize the images. 
 
-The details of various forms of imaging will be covered in a lecture with slides that accompanies this episode. Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
+Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
 
 ## X-Rays
 
@@ -67,7 +67,7 @@ from skimage.transform import iradon
 from skimage.transform import iradon_sart
 
 # load a sinogram of a simple phantom of the head
-sino = np.load('data/Schepp_Logan_sinogram.npy')
+sino = np.load('data/medical/Schepp_Logan_sinogram.npy')
 # make a filtered back projection reconstruction
 theta = np.linspace(0.0, 180.0, max(sino.shape), endpoint=False)
 reconstruction_fbp = iradon(sino, theta=theta, filter_name='ramp')
@@ -155,7 +155,7 @@ and the arXiv paper, https://arxiv.org/abs/1811.08839.)*
 Let's do an example of a k-space transform
 
 ```python
-slice_kspace = np.load('data/slice_kspace.npy')
+slice_kspace = np.load('data/medical/slice_kspace.npy')
 # show shape
 print(slice_kspace.shape)
 # show type

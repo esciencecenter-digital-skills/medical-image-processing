@@ -54,8 +54,13 @@ After you have a working Mamba (or Conda) installation you can proceed to create
    - On Windows: Open "Miniforge Prompt" or "Command Prompt".
    - On macOS/Linux: Open your regular terminal.
 2. Navigate to your lesson workspace directory.
-3. Run the following command:
+3. Run one of the following commands (based on your preference for mamba or conda):
 
+
+```bash
+conda env create -f https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml
+``` 
+or 
 ```bash
 mamba env create -f https://raw.githubusercontent.com/esciencecenter-digital-skills/medical-image-processing/main/learners/environment.yml
 ```
@@ -64,8 +69,12 @@ mamba env create -f https://raw.githubusercontent.com/esciencecenter-digital-ski
 
 ### Activating the environment
 
-After the installation is complete, activate the environment:
+After the installation is complete, activate the environment with conda or mamba:
 
+```bash
+conda activate edical_image_proc
+```
+or
 ```bash
 mamba activate medical_image_proc
 ```
@@ -76,7 +85,7 @@ Now that you have the environment set up, let's download the necessary files fro
 
 ### Option A: manual download
 
-1. Open your web browser and navigate to [this lesson's data Zenodo record address](https://zenodo.org/records/13311246).
+1. Open your web browser and navigate to [this lesson's data Zenodo record address](https://zenodo.org/records/13932977).
 2. Look for the "Files" section on the page.
 3. Click the download button for downloading the `data.zip` file containing the images.
 4. Once downloaded, extract the contents of the ZIP file.
