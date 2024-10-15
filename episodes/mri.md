@@ -33,7 +33,7 @@ This lesson is heavily based on existing lessons from Carpentries; namely:
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
  3. [Functional Neuroimaging Analysis in Python ](https://carpentries-incubator.github.io/SDC-BIDS-fMRI/)
 
-We will not cover all the material from these lessons, but instead provide an overview of the key points.
+We will not cover all the material from these lessons, but instead provide an overview of the key points about MRI.
 
 ## Types of MR Scans
 
@@ -44,8 +44,9 @@ We will not cover all the material from these lessons, but instead provide an ov
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
 - 3D images of anatomy 
-- Different tissue types produce different intensities 
 - Different sequences produce different intensities for various phenomena and tissues
+
+Some radiologists will refer to T1 as the anatomical sequence, but here we use the term to describe the broad category of images that show anatomy as opposed to function, perfusion or diffusion. Such images could be T1, T2 or Proton density weighted. The term structural MRI can also be used for these sequences. 
 
 ### Functional
 
@@ -55,7 +56,8 @@ We will not cover all the material from these lessons, but instead provide an ov
 
 *Sourced from Wagner and Lindquist, 2015*
 
-- Reveals blood oxygen level-dependant (BOLD) signal 
+- Reveals neuronal activity
+- BOLD (the most common type of fMRI) reveals blood oxygen level-dependant (BOLD) signal 
 - Four dimensional image (x, y, z and time)
 
 ### Diffusion 
@@ -338,6 +340,8 @@ t2_img.dataobj
 ```output
 <nibabel.arrayproxy.ArrayProxy at 0x20c63b5a4a0>
 ```
+SOOOOO
+
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -560,11 +564,19 @@ A fundamental difference between many MRI sequences and fMRI is the inclusion of
 
 <img src="fig/4D_array_time.png" alt="4D array time" width="70%;"/>
 
-Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/). Notably, `fmriprep` remains the go-to package for handling the complexities of fMRI data processing.
+Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/).
+
 
 <img src="fig/nipreps-chart.png" alt="Nipreps chart" width="70%;"/>
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
+
+ `fmriprep` is considered by many the go-to package for handling the complexities of fMRI data processing. However there are many alternatives for suitable for non-physicists researchers with many online tutorials/pipelines available including: 
+ [SPM](www.fil.ion.ucl.ac.uk/spm), [AFNI](afni.nimh.nih.gov/afni), and  [FSL](www.fmrib.ox.ac.uk/fsl).
+
+If you are trying to compare outputs with an existing study, it is worth considering using the same pipeline and software version of the pipeline. Then you know differences between your outcomes are not artifacts of the softwares. 
+
+
 
 :::::::::::::::: callout
 
