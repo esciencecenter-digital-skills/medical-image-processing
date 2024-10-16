@@ -265,7 +265,7 @@ Pathology is currently undergoing a revolution of digitalization, and a typical 
 
 ## Challenge: What does the shape of a pathology image mean?
 
-You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array as he closely gaurds his new proprietary format for pathology images. He tells you there will be two channels, on for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Visualize this images in terms of the middle slide from both the top and the side on the middle focal depth slice.   
+You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array as he closely gaurds his new proprietary format for pathology images. He tells you there will be two channels, one for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Visualize this images in terms of the middle slide from both the top and the side on the middle focal depth slice.   
 
 You can import the image from data as follows:
 
@@ -278,7 +278,7 @@ img1 = np.load('data/medical/proprietary_pathology.npy')
 ## Solution
 
 Your image will be a 3D multichanel image. 
-The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)),  generally this would be include a plane (z), row (y), column (x) , channel number (c). This is different from CT data where we would expect only x, y and z axes. As you know that channels are two you can figure out that this multichannel array comes with with dimensions provided in (z, c, y, x) order. Now you can make images of the slide at around the middle of the depths.
+The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)),  generally this would be include a plane (z), row (y), column (x) , channel number (c). This is different from CT data where we would expect only x, y and z axes. As you know that there are two channels you can figure out that this multichannel array comes with with dimensions provided in (z, c, y, x) order. Now you can make images of the slide at around the middle of the depths.
 ```python
 print(img1.shape)
 stain0_slice_side = img1[:, 0, 125,:]
