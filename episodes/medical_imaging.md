@@ -1,7 +1,7 @@
 ---
 title: "Medical Imaging Modalities"
-teaching: 35
-exercises: 25
+teaching: 40
+exercises: 40
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -265,22 +265,59 @@ Pathology is currently undergoing a revolution of digitalization, and a typical 
 
 ## Challenge: What does the shape of a pathology image mean?
 
-You work with a pathologist who has developed a technique for producing digital images with different focal planes at different depths of a pathology specimen. The images are stained with flouresence markers of various colors. Cell membranes are stained red. What shape do you expect the data to have? If your image is named mystery, what should mystery.shape return assuming you imported numpy? How can you visualize these images best for someone who only cares and wants to see cell membranes?   
+You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array as he closely gaurds his new proprietary format for pathology images. He tells you there will be two channels, on for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Visualize this images in terms of the middle slide from both the top and the side on the middle focal depth slice.   
+
+You can import the image from data as follows:
+
+```python
+img1 = np.load('data/medical/proprietary_pathology.npy')
+```
 
 :::::::::::::::  solution
 
 ## Solution
 
-Your image will be a 3D multichanel image. The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)),  generally (plane, row, column, channel). If your research partner needs to visualize only the red stained membranes, you could simply visualize the red channel only, setting the image to mystery[:,:,:,r] where r is the red channel number, and then display the images.
+Your image will be a 3D multichanel image. 
+The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)),  generally this would be include a plane (z), row (y), column (x) , channel number (c). This is different from CT data where we would expect only x, y and z axes. As you know that channels are two you can figure out that this multichannel array comes with with dimensions provided in (z, c, y, x) order. Now you can make images of the slide at around the middle of the depths.
+```python
+print(img1.shape)
+stain0_slice_side = img1[:, 0, 125,:]
+stain1_slice_side = img1[:, 1, 125,:]
+stain0_slice_top = img1[30, 0,: ,:]
+stain1_slice_top = img1[30, 1,: ,:]
 
- 
+fig, axs = plt.subplots(1, 4)
+
+axs[0].imshow(stain0_slice_side)
+axs[0].set(xlabel='Side view, stain 1')
+axs[0].set(xticks=[], yticks=[])
+
+axs[1].imshow(stain1_slice_side)
+axs[1].set(xlabel='Side view, stain 2')
+axs[1].set(xticks=[], yticks=[])
+
+
+axs[2].imshow(stain0_slice_top)
+axs[2].set(xlabel='Top view, stain 1')
+axs[2].set(xticks=[], yticks=[])
+
+axs[3].imshow(stain1_slice_top)
+axs[3].set(xlabel='Top view, stain 2')
+axs[3].set(xticks=[], yticks=[])
+
+```
+```output
+(60, 2, 256, 256)
+```
+
+![](fig/pathy.png){alt=''}
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
+Beyond the more common types of imaging i.e. X-ray, CT, ultrasound, MRI and pathology slides, researchers are actively looking into new forms of imaging. Some new forms of imaging add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
 There is less standardization around file formats of certain types of imaging.
 
