@@ -340,7 +340,7 @@ t2_img.dataobj
 ```output
 <nibabel.arrayproxy.ArrayProxy at 0x20c63b5a4a0>
 ```
-SOOOOO
+As you might guess there are differences in how your computer handles something made with dataobj and an actual array. These differences effect memory and processing speed. These are not trivial issues if you deal with a very large dataset of MRIs. You can save time and memory by being conscious about what is cached and using the dataobj property when dealing with slices of the array as detailed [here](https://nipy.org/nibabel/images_and_memory.html) 
 
 
 :::::::::::::::::::::::::::::::::::::::  challenge
@@ -557,7 +557,7 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 - In the S axis, positive values mean move up, negative values mean move inferior
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
-In the real world whatever orientation you put something in may make someone unhappy. Luckily you can quickly change arrays around in terms of direction by simply using an already efficient numpy functions. 
+In the real world whatever orientation you put something in may make someone unhappy. Luckily you can quickly change arrays around in terms of direction by simply using an already efficient numpy functions. Two functions in numpy that can be generalized to make any orientation of an image are numpy.flip() and numpy.rot90(), however there are other functions which are quite convenient for 2D arrays, as displayed below. 
 
 ```python
 import numpy as np
@@ -622,11 +622,11 @@ Diffusion sequences are sensitive to the signals from the random, microscropic m
 
 In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix `.bval`) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix `.bvec`) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
 
-Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there can be many things that might need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
+Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there will be many artifacts that typically need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
 
 <img src="fig/dmri_preprocess_steps.jpg" alt="dMRI preprocess steps" width="70%;"/>
 
-Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
+Depending open what you want to do with your imaging you may use a pre-contructed pipeline (e.g. FSL or Freesurfer's Tracula) only, or you may want to code.
 A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
 
 ::::::::::::::: callout
@@ -641,7 +641,9 @@ A strong possible library for coding with diffusion images is the [Diffusion Ima
 
 :::::::::::::::::::::
 
-Diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a signal for axonal organization. Tractography is a group of techniques to visualize neural tracts using data collected by DTI.
+Another interesting possibility for people who want to code is to use code as an interface for command-line tools, and this can be done with nipype.interfaces i.e. nipype.interfaces.fsl.dti.
+
+As stated above, diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a signal for axonal organization. Tractography is a group of techniques to visualize neural tracts using data collected by DTI.
 
 ::::::::::::::: callout
 
