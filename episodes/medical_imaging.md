@@ -253,12 +253,32 @@ Nuclear medicine images e.g. PET and SPECT can be 2D or 3D images based on a sig
 
 *sourced from RadsWiki, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*
 
-Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Pathology is an entire medical discipline in which various types of images are used, both 2D, 3D and often multi-channel i.e. in color. However, one classic type of pathology image is that of a stained tissue slide seen by a microscope. With various stains we can see what is going on in a tissue on a cellular level. In the image below you can see macrophages that have come to sorround actinomyces in someone's lung.
+Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Pathology is an entire medical discipline in which various types of images are used, both 2D, 3D and often multi-channel e.g. in color with RGB channels. However, one classic type of pathology image is that of a stained tissue slide seen by a microscope. With various stains we can see what is going on in a tissue on a cellular level. In the image below you can see macrophages that have come to sorround actinomyces in someone's lung.
 
 ![Pathology image.](fig/Actinomycosis.jpg){alt='Pathology Image.'}
 
 
 *sourced from By Yale Rosen from USA - Actinomycosis, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=31127755*
+
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: What does the shape of a pathology image mean?
+
+You work with a pathologist who has developed a technique for producing digital images with different focal planes at different depths of a pathology specimen. The images are stained with flouresence markers of various colors. Cell membranes are stained red. What shape do you expect the data to have? If your image is named mystery, what should mystery.shape return assuming you imported numpy? How can you visualize these images best for someone who only cares and wants to see cell membranes?   
+
+:::::::::::::::  solution
+
+## Solution
+
+Your image will be a 3D multichanel image. The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)),  generally (plane, row, column, channel). If your research partner needs to visualize only the red stained membranes, you could simply visualize the red channel only, setting the image to mystery[:,:,:,r] where r is the red channel number, and then display the images.
+
+ 
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
