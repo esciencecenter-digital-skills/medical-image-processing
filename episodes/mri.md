@@ -101,11 +101,12 @@ All the listed techniques could provide useful information. Spectroscopy could g
 | ----------- | -------------- | --------------------------------------------- |-----------
 | DICOM       | none or `.dc`    | ACR/NEMA Consortium                           |https://www.dicomstandard.org/  |
 | Analyze     | `.img`/`.hdr`      | Analyze Software, Mayo Clinic                 |https://eeg.sourceforge.net/ANALYZE75.pdf|
-| NIfTI       | `.nii`           | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
+| NIfTI       | `.nii`  (or `.nii.gz`) | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
 | MINC        | `.mnc`           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
 | NRRD        | `.nrrd`          |                                               |https://teem.sourceforge.net/nrrd/format.html|
+| MGH         |`.mgz`  or `.mgh` (or `.mgh.gz`) | Massachusetts General Hospital|https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/MghFormat|
 
-From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
+From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier. Some file formats can be converted to others, for exaple NiFTIs or Analyze files can be converted to MINC, but not conversions can not be made from all file formats in all directions.
 
 
 In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images.
