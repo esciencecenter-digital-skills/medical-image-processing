@@ -1,7 +1,7 @@
 ---
 title: "Working with MRI"
-teaching: 60
-exercises: 10
+teaching: 45
+exercises: 30
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -33,7 +33,7 @@ This lesson is heavily based on existing lessons from Carpentries; namely:
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
  3. [Functional Neuroimaging Analysis in Python ](https://carpentries-incubator.github.io/SDC-BIDS-fMRI/)
 
-We will not cover all the material from these lessons, but instead provide an overview of the key points.
+We will not cover all the material from these lessons, but instead provide an overview of the key points about MRI.
 
 ## Types of MR Scans
 
@@ -44,8 +44,9 @@ We will not cover all the material from these lessons, but instead provide an ov
 *Sourced from [https://case.edu/med/neurology/NR/MRI%20Basics.htm](https://case.edu/med/neurology/NR/MRI%20Basics.htm)*
 
 - 3D images of anatomy 
-- Different tissue types produce different intensities 
 - Different sequences produce different intensities for various phenomena and tissues
+
+Some radiologists will refer to T1 as the anatomical sequence, but here we use the term to describe the broad category of images that show anatomy as opposed to function, perfusion or diffusion. Such images could be T1, T2 or Proton density weighted. The term structural MRI can also be used for these sequences. 
 
 ### Functional
 
@@ -55,7 +56,8 @@ We will not cover all the material from these lessons, but instead provide an ov
 
 *Sourced from Wagner and Lindquist, 2015*
 
-- Reveals blood oxygen level-dependant (BOLD) signal 
+- Reveals neuronal activity
+- BOLD (the most common type of fMRI) reveals blood oxygen level-dependant (BOLD) signal 
 - Four dimensional image (x, y, z and time)
 
 ### Diffusion 
@@ -75,7 +77,23 @@ We will not cover all the material from these lessons, but instead provide an ov
 
 Perfusion weighted imaging includes relatively novel sequences such as dynamic contrast-enhanced MR perfusion, dynamic susceptibility contrast MR perfusion, and arterial spin labelled perfusion. 
 
-MRI can also be used for spectroscopy, but this will not be covered here as it does not produce traditional images.
+MRI can also be used for spectroscopy, which gives information about chemical metabolites, but this will not be covered in depth here as it does not produce traditional images.
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Which type of MRI?
+
+Imagine you study a newly discovered form of dementia (cognitive decline) found in elderly people living in a remote area of Lesotho. Nothing is known about how this particular dementia works but the symptoms are somewhat unique from those of other forms of dementia. You can rule out neither infectious or genetic causes. If you have infinite resources, which combination of MRI techniques (fMRI, DTI, spectroscopy and/or anatomical MRI) would you use and why?
+
+:::::::::::::::  solution
+
+## Solution
+
+All the listed techniques could provide useful information. Spectroscopy could give us insight into chemical changes in the brain that indicate neuronal function or levels of inflammation. Anatomical MRI will allow us to see if there are changes in brain structure like atrophy of a certain region, DTI will allow us to see if there is damage in the tracts that connect different regions and fMRI could show how changes in brain structure and connectivity impact functional activity, especially during tasks involving memory and cognition. Therefore the best combination of techniques in this case includes all of them.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Common MRI File Formats
 
@@ -83,11 +101,13 @@ MRI can also be used for spectroscopy, but this will not be covered here as it d
 | ----------- | -------------- | --------------------------------------------- |-----------
 | DICOM       | none or `.dc`    | ACR/NEMA Consortium                           |https://www.dicomstandard.org/  |
 | Analyze     | `.img`/`.hdr`      | Analyze Software, Mayo Clinic                 |https://eeg.sourceforge.net/ANALYZE75.pdf|
-| NIfTI       | `.nii`           | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
+| NIfTI       | `.nii`  (or `.nii.gz`) | Neuroimaging Informatics Technology Initiative|https://brainder.org/2012/09/23/the-nifti-file-format/|
 | MINC        | `.mnc`           | Montreal Neurological Institute               |https://www.mcgill.ca/bic/software/minc|
 | NRRD        | `.nrrd`          |                                               |https://teem.sourceforge.net/nrrd/format.html|
+| MGH         |`.mgz`  or `.mgh` (or `.mgh.gz`) | Massachusetts General Hospital|https://surfer.nmr.mgh.harvard.edu/fswiki/FsTutorial/MghFormat|
 
-From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier.
+From the MRI scanner, images are initially collected and put in the DICOM format but  can be converted to these other formats to make working with the data easier. Some file formats can be converted to others, for exaple NiFTIs or Analyze files can be converted to MINC, but not conversions can not be made from all file formats in all directions.
+
 
 In a later episode, we will delve deeper into DICOM data, which includes various information such as the patient's name. In this episode, we will focus on accessing the images.
 
@@ -110,6 +130,23 @@ Some of the more popular examples are:
 - `MRtrix3_connectome`
 
 We recommend the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) for learning the basics of this standard.
+
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Which format of MRI?
+
+Imagine you are still studying the aforementioned newly discovered form of dementia (cognitive decline) found in elderly people living in a remote area of Lesotho. You used fMRI, DTI, and anatomical MRI imaging to investigate this disease. You published in high profile journals. You are contacted by a research team that does work on dementia in the Andes. They think they have observed the same kind of dementia. Both you and them want to share data. You have DICOMs but also know a research software engineer who can convert these files into any format before sharing them. How would you decide on a file format you choose to send, and is there a best file format?
+
+:::::::::::::::  solution
+
+## Solution
+
+To ensure you don't send patient metadata it is best to stay away from DICOMs. The best approach in picking  a file format to send would probably involve speaking with your collaborators about which pipelines you want to run, what format of files they already know how to work with and your goals in general. There is no one size fits all awnser to which file format is better, and in some scenarios minc files may be a better solution than NiFTIs. That said, to ensure the data is already compatible with most tools, sending NifTis organized in a BIDS structure is probably a good choice and compatible with a lot of future pipelines you may want to run later.
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 Next, we'll cover some details on working with NIfTI files.
 
@@ -338,6 +375,8 @@ t2_img.dataobj
 ```output
 <nibabel.arrayproxy.ArrayProxy at 0x20c63b5a4a0>
 ```
+As you might guess there are differences in how your computer handles something made with dataobj and an actual array. These differences effect memory and processing speed. These are not trivial issues if you deal with a very large dataset of MRIs. You can save time and memory by being conscious about what is cached and using the dataobj property when dealing with slices of the array as detailed [here](https://nipy.org/nibabel/images_and_memory.html) 
+
 
 :::::::::::::::::::::::::::::::::::::::  challenge
 
@@ -553,6 +592,18 @@ NIfTI images, by definition, have an affine with the voxel coordinates relating 
 - In the S axis, positive values mean move up, negative values mean move inferior
 
 Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on.
+In the real world whatever orientation you put something in may make someone unhappy. Luckily you can quickly change arrays around in terms of direction by simply using an already efficient numpy functions. Two functions in numpy that can be generalized to make any orientation of an image are numpy.flip() and numpy.rot90(), however there are other functions which are quite convenient for 2D arrays, as displayed below. 
+
+```python
+import numpy as np
+slices = [z_slice, np.fliplr(z_slice), np.flipud(z_slice)]
+fig, axes = plt.subplots(1, len(slices))
+for i, slice in enumerate(slices):
+    axes[i].imshow(slice, cmap="gray", origin="lower")
+```
+```output
+```
+<img src="fig/flipper.png" alt="flipped images" width="70%;"/>
 
 ## Functional MRI Data
 
@@ -560,11 +611,18 @@ A fundamental difference between many MRI sequences and fMRI is the inclusion of
 
 <img src="fig/4D_array_time.png" alt="4D array time" width="70%;"/>
 
-Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/). Notably, `fmriprep` remains the go-to package for handling the complexities of fMRI data processing.
+Unfortunately, any signal will contain some noise, and fMRI data is inherently noisy, particularly due to head movements. While our primary interest is in grey matter brain cells, signals from other cells and structures can also be detected. Various filtering and processing techniques are employed to clean up fMRI data. Despite the challenges in interpreting this type of imaging, the effort has led to numerous positive outcomes for the neuroimaging community. For example, [fMRIPrep](https://github.com/nipreps/fmriprep) has set a standard across new modalities, leading to the broader concept of [nipreps]( https://www.nipreps.org/).
+
 
 <img src="fig/nipreps-chart.png" alt="Nipreps chart" width="70%;"/>
 
 *Sourced from [https://www.nipreps.org/](https://www.nipreps.org/)*
+
+ `fmriprep` is considered by many the go-to package for handling the complexities of fMRI data processing. However there are many alternatives for suitable for non-physicists researchers with many online tutorials/pipelines available including: 
+ [SPM](https://www.fil.ion.ucl.ac.uk/spm), [AFNI](https://afni.nimh.nih.gov/afni), and  [FSL](https://www.fmrib.ox.ac.uk/fsl).
+
+If you are trying to compare outputs with an existing study, it is worth considering using the same pipeline and software version of the pipeline. Then you know differences between your outcomes are not artifacts of the softwares. 
+
 
 :::::::::::::::: callout
 
@@ -599,11 +657,11 @@ Diffusion sequences are sensitive to the signals from the random, microscropic m
 
 In addition to the acquired images, two files are collected as part of the diffusion dataset, known as the b-vectors and b-values. The b-value (file suffix `.bval`) is the diffusion-sensitizing factor, and reflects the diffusion gradient timing and strength. The b-vector (file suffix `.bvec`) corresponds to the direction with which diffusion was measured. Together, these two files define the diffusion MRI measurement as a set of gradient directions and corresponding amplitudes, and are necessary to calculate useful measures of the microscopic properties. 
 
-Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there can be many things that might need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
+Just like fMRI, diffusion MRI data does not typically come off the scanner ready to be analyzed, as there will be many artifacts that typically need to be corrected before analysis. To illustrate what the preprocessing step may look like, here is an example preprocessing workflow from QSIPrep (Cieslak et al, 2020):
 
 <img src="fig/dmri_preprocess_steps.jpg" alt="dMRI preprocess steps" width="70%;"/>
 
-Depending open what you want to do with your imaging you may use a pre-contructed pipeline only, or you may want to code.
+Depending open what you want to do with your imaging you may use a pre-contructed pipeline (e.g. FSL or Freesurfer's Tracula) only, or you may want to code.
 A strong possible library for coding with diffusion images is the [Diffusion Imaging in Python (DIPY)](https://dipy.org/index.html#) package.
 
 ::::::::::::::: callout
@@ -618,7 +676,9 @@ A strong possible library for coding with diffusion images is the [Diffusion Ima
 
 :::::::::::::::::::::
 
-Diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a signal for axonal organization. Tractography is a group of techniques to visualize neural tracts using data collected by DTI.
+Another interesting possibility for people who want to code is to use code as an interface for command-line tools, and this can be done with nipype.interfaces i.e. nipype.interfaces.fsl.dti.
+
+As stated above, diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a signal for axonal organization. Tractography is a group of techniques to visualize neural tracts using data collected by DTI.
 
 ::::::::::::::: callout
 
@@ -627,6 +687,9 @@ Diffusion tensor imaging (DTI) is a technique that uses diffusion of water as a 
 Tractography is a reconstruction technique used to visually represent neural fiber tracts using data collected by diffusion MRI. Tractography models axonal trajectories as 'streamlines' from local directional information. There are several families methods for tractopraphy. No known methods is exact and perfect, they all have biases and limitations. The streamlines generated by a tractography method and the required meta-data are usually saved into files called tractograms. 
 
 :::::::::::::::::::::
+
+
+
 
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
