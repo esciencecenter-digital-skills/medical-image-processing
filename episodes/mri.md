@@ -135,13 +135,13 @@ We recommend the [BIDS starter-kit website](https://bids-standard.github.io/bids
 
 ## Challenge: Which format of MRI?
 
-Imagine you are still study a newly discovered form of dementia (cognitive decline) found in elderly people living in a remote area of Lesotho. You used fMRI, DTI, and anatomical MRI imaging to investigate this disease. You published in high profile journals. You are contacted by a research team that does work on dementia in the Andes. They think they have observed what they think is the same kind of dementia and want to share data. You have DICOMs but also know a research software engineer who can convert these files into any format before sharing them. How would you decide on a file format you choose to send, and is there a best file format?
+Imagine you are still studying the aforementioned newly discovered form of dementia (cognitive decline) found in elderly people living in a remote area of Lesotho. You used fMRI, DTI, and anatomical MRI imaging to investigate this disease. You published in high profile journals. You are contacted by a research team that does work on dementia in the Andes. They think they have observed the same kind of dementia. Both you and them want to share data. You have DICOMs but also know a research software engineer who can convert these files into any format before sharing them. How would you decide on a file format you choose to send, and is there a best file format?
 
 :::::::::::::::  solution
 
 ## Solution
 
-To ensure you don't send patient metadata it is best to stay away from DICOMs. The best approach would probably involve speaking with your collaborators about which pipelines you want to run, what format of files they know how to work with and your goals in general. There is no one size fits all awnser to which file format is better, and in some scenarios minc files may be a better solution than NiFTIs. That said, to ensure the data is already compatible with most tools, sending NifTis organized in a BIDS structure is probably a good choice and compatible with a lot of future pipelines you may want to run later.
+To ensure you don't send patient metadata it is best to stay away from DICOMs. The best approach in picking  a file format to send would probably involve speaking with your collaborators about which pipelines you want to run, what format of files they already know how to work with and your goals in general. There is no one size fits all awnser to which file format is better, and in some scenarios minc files may be a better solution than NiFTIs. That said, to ensure the data is already compatible with most tools, sending NifTis organized in a BIDS structure is probably a good choice and compatible with a lot of future pipelines you may want to run later.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
