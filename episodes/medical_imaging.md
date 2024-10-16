@@ -100,6 +100,24 @@ plt.show()
 Tomosynthesis makes X-ray based images using a limited angle instead of going all the way around the patient as in CT. The data from a tomosynthetic image is then processed so that you get multiple angles visible. This gets around the issue of overlapping objects in a plain film X-ray. In both the case of CT and tomosynthesis, the image output is made by processing the originally acquired data. Although most researchers work with already processed images, it is important to keep in mind that in theory the originally acquired data can be processed in a variety of ways. 
 
 
+
+::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Which X-ray based technology?
+
+You are a lung cancer researcher. You want to asses some patients with lung cancers with an eye to the question of how to most precisely target radiotherapy.
+What unique information will traditional 3D CT and flouroscopy each provide over simple plain film X-rays? 
+
+:::::::::::::::  solution
+
+## Solution
+
+Traditional 3D CT will provide a 3D image of the tumors and the surrounding tissues. This will allow for things like realistic volume calculations which could not be done with plain X-rays or flouroscopy. Flouroscopy's unique information will allow you to asses movement of the tumor during breathing. 
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
 ## Ultrasounds
 
 Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
