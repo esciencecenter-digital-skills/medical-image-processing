@@ -26,12 +26,12 @@ exercises: 30
 ## Introduction
 
 There are various types of CTs and various ways to visualize them. 
-Here we will briefly mention some emerging types of CTs so you can know what to expect in terms of the data and file types. Then we will explore algorithms for visualization. Someone without a background in radiology might assume that once a CT is converted out of a <>sinogram<> into a scrollable image, there is little left to be done. This depends upon your perspective. For human readers who want to do any kind of qualitative analysis, or even in some cases simply check the results of a machine learning algorithm, various visualization techniques can be of use. These include not only maximum intensity and minimum intensity projections but also volume rendering or even taking the CT out of the computer into 3D printing. In other cases we will want to visualize the CT and another modality at the same time. This is accomplished with fusion imaging. The basics of some visualizations will be covered in this episode as visualization is a worthy research topic in and of itself. 
+Here we will briefly mention some emerging types of CTs so you can know what to expect in terms of the data and file types. Then we will explore algorithms for visualization. Someone without a background in radiology might assume that once a CT is converted out of a <>sinogram<> into a scrollable image, there is little left to be done. This depends upon your perspective. For human readers who want to do any kind of qualitative analysis, or even in some cases simply check the results of a machine learning algorithm, various visualization techniques can be of use. These include not only maximum intensity and minimum intensity projections but also volume rendering or even taking the CT out of the computer into 3D printing, holograms or virtual reality. In other cases we will want to visualize the CT and another modality at the same time. This is accomplished with fusion imaging. The basics of some visualizations will be covered in this episode as visualization is a worthy and active research topic in and of itself. 
 
 
 ### Different types of CT data
 
-From the perspective of computation there is not always a significant difference in all CTs even if they have different acquisition protocols. For example a high resolution CT (HRCT) may look prettier, and have had a different scanning protocol,  but in the end we are still speaking about a 3D array of voxels. There are however a few kinds of CT where the shape of the data will be different. 
+From the perspective of computation there is not always a significant difference in all CTs even if they have different acquisition protocols. For example a high resolution CT (HRCT) may look prettier, and have had a different scanning protocol,  but in the end we still have a 3D array of voxels albeit with different real-world measurements. There are however a few kinds of CT where the shape of the data will be different. 
 
 The most prominent case of this is perfusion CT where the data is taken to show blood flow.  TRATRA
 HERE WE WILL PUT IN AN EXPLANATION ABOUT THESE FILES
@@ -49,23 +49,41 @@ Let's look at an image where some different projections are rendered.
 As you can imagine each type of visualization leds itself to awnsering different questions. 
 
 
-```python
 
-python
+HERE example code for min and mip, explanation of connection to ray casting
+
+
+
+
+
+
+With all the infinite kinds of visualizations we could invent, there are however some questions where you simply want more than a CT. A possible case of this is when you want to see both bones, and soft tissue well so you fuse CT and MRI. The classic case is of course PET-CT. These images are  If you have gone through the material sequentially, you should already know how to do a registration.   
+
+
+![PET-CT images.](fig/PETCT_presentation.jpg){alt='PET-CT visualization images.'}
+*sourced from Mco44, Public domain, via Wikimedia Commons*
+
+Fusion imaging can be made simply by just adding two registered images. However, many software packages allow this to be done in a more elegant manner because if the point is optimal visualization, you will want to think about the intensity and color mapping of the images you add them together. 
+
+
+here example code of fusion
+
+
+```python
 import numpy as np
 import matplotlib.pyplot as plt
 from skimage import io, color, img_as_float
 
-# Load two images (assuming grayscale, convert to grayscale if necessary)
-image1 = io.imread('image1.jpg')  # Replace with your image path
-image2 = io.imread('image2.jpg')  # Replace with your image path
+# Load two images (assuming grayscale, convert to RGB one)
+image1 = io.imread('image1.jpg')  
+image2 = io.imread('image2.jpg')  
 
 # Convert to grayscale if they are in color
 if len(image1.shape) == 3:
     image1 = color.rgb2gray(image1)
 
 if len(image2.shape) == 3:
-    image2 = color.rgb2gray(image2)
+#    image2 = color.rgb2gray(image2)
 
 # Convert images to float (skimage handles images as floats between 0 and 1)
 image1 = img_as_float(image1)
@@ -87,7 +105,7 @@ ax[0].imshow(image1_resized, cmap='gray')
 ax[0].set_title("Image 1")
 ax[1].imshow(image2_resized, cmap='gray')
 ax[1].set_title("Image 2")
-ax[2].imshow(fused_image, cmap='gray')
+ax[2].imshow(fused_image,)
 ax[2].set_title("Fused Image")
 
 for a in ax:
