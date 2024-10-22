@@ -46,6 +46,64 @@ However, a key issue under current investigation is that some defacing algorithm
 
 Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
+
+
+::::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Getting rid of identifying burned in data
+
+An ultrasound (scraped from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height- width dimensions. You should resize away from RGB to grayscale. It can be opened as follows:
+
+```python
+
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, filters
+
+image = 'data/anonym/identifiable_us.jpg'
+io.imshow(image)
+io.show()
+```
+
+Write code for two approaches that de-identify the ultrasound. 
+
+
+::::::::::::::: solution
+
+## Solution
+
+The image  has identifying metdata. You should identify not only the name, but the date and place as problematic.  You can take two different approaches. One would be to mask the data, the other would be to blur it. First we will show a blurred image:
+
+```python
+
+from skimage.filters import gaussian
+from skimage.color import rgb2gray
+
+image_base = io.imread(image)
+image_base = rgb2gray(image_base)
+sub_im = image_base[0:78,:].copy()
+blur_sub_im = gaussian(sub_im, sigma=5)
+final_image = np.zeros(image_base.shape)
+final_image[0:78,:] = blur_sub_im
+final_image[79:,:]= image_base[79:, :]
+io.imshow(final_image)
+
+```
+We could have also just make a simple zero-mask: 
+
+```python
+image_masked = io.imread(image)
+image_masked[0:78,:] = 0
+io.imshow(image_masked)
+
+```
+
+Note there are other valid solutions, but these two are very common and straightforward. 
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 ### Other Parts of Images
 
 Patient identity can often be inferred with just a few pieces of data. In some cases, a single piece of information can be enough to track down a patient's identity, especially if medical files are accessible. For instance, a serial number or other identifying number on a medical device may be traceable back to a specific patient.
