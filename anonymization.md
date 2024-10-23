@@ -32,6 +32,87 @@ Metadata elements in imaging, such as patient names and addresses, are often cle
 
 DICOM files contain metadata, which includes various types of identifying information that should remain confidential. The easiest way to mitigate issues with DICOM metadata is to avoid having it in the first place. If possible, opt to receive just the images and select metadata rather than the entire DICOM file. When sharing data with collaborators, there is often no need to share the full DICOM files.
 
+
+### Text on Images
+
+Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
+
+
+
+::::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Getting rid of identifying burned in data
+
+An ultrasound (scraped from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height- width dimensions. You should resize away from RGB to grayscale. It can be opened as follows:
+
+```python
+
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, filters
+
+image = 'data/anonym/identifiable_us.jpg'
+io.imshow(image)
+io.show()
+```
+
+```output
+```
+
+![Image from flikr website published with a permissive lisence.](fig/identifiable_us.jpg){alt='Identifiable ultrasound'}
+
+Write code for two approaches that de-identify the ultrasound. 
+
+
+::::::::::::::: solution
+
+## Solution
+
+The image  has identifying metdata. You should identify not only the name, but the date and place as problematic.  You can take two different approaches. One would be to mask the data, the other would be to blur it. First we will show a blurred image:
+
+```python
+
+from skimage.filters import gaussian
+from skimage.color import rgb2gray
+
+image_base = io.imread(image)
+image_base = rgb2gray(image_base)
+sub_im = image_base[0:78,:].copy()
+blur_sub_im = gaussian(sub_im, sigma=9)
+final_image = np.zeros(image_base.shape)
+final_image[0:78,:] = blur_sub_im
+final_image[79:,:]= image_base[79:, :]
+io.imshow(final_image)
+
+```
+
+
+```output
+```
+
+![Image after blurring in one area.](fig/blurred_us.png){alt='Non-Identifiable blurred ultrasound'}
+We could have also just make a simple zero-mask: 
+
+```python
+image_masked = io.imread(image)
+image_masked[0:78,:] = 0
+io.imshow(image_masked)
+
+```
+
+
+```output
+```
+
+![Image after masking in one area.](fig/masked_us.png){alt='Non-Identifiable masked ultrasound'}
+
+Note there are other valid solutions, but these two are very common and straightforward. 
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+You have now seen two approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. You could, for example, mask the nose of the face of a brain MRI. We will explain why this may be a good idea in the next section.
+
 ### Faces in Images
 
 A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
@@ -42,9 +123,7 @@ However, a key issue under current investigation is that some defacing algorithm
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
-### Text on Images
 
-Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
 ### Other Parts of Images
 
