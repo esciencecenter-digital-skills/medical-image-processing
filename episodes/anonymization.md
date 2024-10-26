@@ -197,14 +197,9 @@ We are probably de-identified. The image above is only an image, not a DICOM wit
 
 A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
 
-There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
-
-However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
-
-![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
 
-We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including erosion, dilation, connected component analyses and masking. 
+We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, and other types of operations such as connected component analyses and masking. 
 
 ::::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -300,7 +295,14 @@ interact(
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In the provided solution we didn't get rid of a lot of the neck. But one approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solution shows one potential approach to removing tissue (which could in some cases lead to identifiation) you don't want in an image. 
+In the provided solution to the above optional challenge we didn't get rid of a lot of the neck. But one approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solution shows one potential approach to removing tissue (which could in some cases lead to identifiation) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
+
+
+There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
+
+However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
+
+![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
 
 ### Other Parts of Images
