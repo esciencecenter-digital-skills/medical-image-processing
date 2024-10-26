@@ -68,7 +68,7 @@ Write code for two approaches that de-identify the ultrasound.
 
 ## Solution
 
-The image  has identifying metdata. You should identify not only the name, but the date and place as problematic.  You can take two different approaches. One would be to mask the data, the other would be to blur it. First we will show a blurred image:
+The image  has identifying metdata. You should identify not only the name, but the date and place as problematic.  You can take three different approaches. One would be to mask the data, the other would be to blur it. First we will show a blurred image:
 
 ```python
 
@@ -107,22 +107,200 @@ io.imshow(image_masked)
 ![Image after masking in one area.](fig/masked_us.png){alt='Non-Identifiable masked ultrasound'}
 
 Note there are other valid solutions, but these two are very common and straightforward. 
+
+Finally, you could always just chop off the offending part so to speak, and resize:
+
+```python
+from skimage.transform import resize
+
+final_image= image_base[79:, :]
+final_image = resize(final_image,image_base.shape)
+io.imshow(final_image)
+```
+
+```output
+```
+
+![Image after crop and resize.](fig/resize_us1.png){alt='Non-Identifiable cropped ultrasound'}
 :::::::::::::::::::::::::
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-You have now seen two approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. You could, for example, mask the nose of the face of a brain MRI. We will explain why this may be a good idea in the next section.
+You have now seen three approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. 
+
+Let's take another look at an image we used earlier:
+
+```python
+import matplotlib.pyplot as plt
+import SimpleITK as sitk
+from skimage import io
+from ipywidgets import interact, fixed
+from IPython.display import clear_output
+import os
+
+
+sag_image =  sitk.ReadImage("data/sitk/A1_grayT1.nrrd", sitk.sitkFloat32)
+cor_image = sitk.PermuteAxes(sag_image, [2, 1, 0])
+
+# Callback invoked by the interact IPython method for scrolling through the image stacks of
+# two images (coronal and sagital), which are really the same image in different view.
+def display_images(sag_image_z, cor_image_z, sag_npa, cor_npa):
+    # Create a figure with two subplots and the specified size.
+    plt.subplots(1,2,figsize=(10,8))
+    
+    # Draw the sagitalimage in the first subplot.
+    plt.subplot(1,2,1)
+    plt.imshow(sag_npa[sag_image_z,:,:],cmap=plt.cm.Greys_r)
+    plt.title('saggital cut')
+    plt.axis('off')
+    
+    # Draw the coronal image in the second subplot.
+    plt.subplot(1,2,2)
+    plt.imshow(cor_npa[cor_image_z,:,:],cmap=plt.cm.Greys_r)
+    plt.title('coronal cut')
+    plt.axis('off')
+    
+    plt.show()
+
+interact(
+    display_images,
+    sag_image_z = (0,sag_image.GetSize()[2]-1),
+    cor_image_z = (0,cor_image.GetSize()[2]-1),
+    sag_npa = fixed(sitk.GetArrayViewFromImage(sag_image)),
+    cor_npa = fixed(sitk.GetArrayViewFromImage(cor_image)))
+```
+```output
+```
+![Images of SITK head.](fig/headcutsscroll.png){alt='Non-Identifiable head'}
+
+Here we can see an analagous technique to one we used with the 2D ultrasound. Identifying data has been cropped out. 
+
+::::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge: Are we truly deidentified?(Optional)
+
+Look at the head MRI above. Are all such images, including CTs, with some of the soft tissue stripped 100 percent deidentified? Give arguments why and why not
+
+
+::::::::::::::: solution
+
+## Solution
+
+We are probably de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reserve look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. As in life there is always the edge case, and one potential edge case could be someone with a very idenfiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of pathology and surgery, they may still be identifiable for some. 
+
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ### Faces in Images
 
 A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
 
-There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries.
+There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
 
 However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
+
+We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including erosion, dilation, connected component analyses and masking. 
+
+::::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge: Soft tissue stripping(Optional)
+
+Look at the head MRI above. Try using SITK to get rid off some of the soft tissue in the image (already loaded into sag_image). 
+
+
+::::::::::::::: solution
+
+## Solution
+
+We can apprach the problem in various ways. Below is one solution:
+
+```python
+# Apply thresholding to remove soft tissues by first taking out the air then dilating and cleaning
+lower_thresh = 0
+upper_thresh = 100
+brain_mask = sitk.BinaryThreshold(sag_image, lowerThreshold=lower_thresh, upperThreshold=upper_thresh)
+
+# morphological operations to clean the mask
+brain_mask_cleaned= sitk.BinaryDilate(brain_mask, [5, 5, 5])
+brain_mask_cleaned = sitk.BinaryErode(brain_mask_cleaned, [5,5,5])
+# optional- make variables a bit smaller
+bmc_image = brain_mask_cleaned
+bm_image = brain_mask
+# check the images so far using our previously written display function
+interact(
+    display_images,
+    bmc_image_z = (0,bmc_image.GetSize()[2]-1),
+    bm_image_z = (0,bm_image.GetSize()[2]-1),
+    bmc_npa = fixed(sitk.GetArrayViewFromImage(bmc_image)),
+    bm_npa = fixed(sitk.GetArrayViewFromImage(bm_image)))
+```
+Then we can further clean with a connection component analysis that throws out small floaters, and use the inverse as out final mask.
+
+```python
+
+def keep_largest_component(mask_image):
+    # Ensure mask_image is binary (0 and 1 values)
+    mask_image = sitk.Cast(mask_image, sitk.sitkUInt8)
+    
+    # Label connected components in the mask image
+    labeled_image = sitk.ConnectedComponent(mask_image)
+    
+    # Measure the size of each labeled component
+    label_shape_statistics = sitk.LabelShapeStatisticsImageFilter()
+    label_shape_statistics.Execute(labeled_image)
+    
+    # Count and print the number of connected components
+    component_count = len(label_shape_statistics.GetLabels())
+    print(f"Number of connected components before filtering: {component_count}")
+    
+    # Find the label with the largest size
+    largest_label = max(
+        label_shape_statistics.GetLabels(),
+        key=lambda label: label_shape_statistics.GetPhysicalSize(label)
+    )
+    
+    # Create a new mask with only the largest component
+    largest_component_mask = sitk.BinaryThreshold(labeled_image, lowerThreshold=largest_label, upperThreshold=largest_label, insideValue=1, outsideValue=0)
+    
+    # Verify the result by counting the components in the resulting image
+    labeled_result = sitk.ConnectedComponent(largest_component_mask)
+    label_shape_statistics.Execute(labeled_result)
+    result_component_count = len(label_shape_statistics.GetLabels())
+    print(f"Number of connected components after filtering: {result_component_count}")
+    
+    return largest_component_mask
+
+largest_component_mask = keep_largest_component(brain_mask_cleaned)
+# we actually want the opposite mask so we will invert the mask
+inverted_mask = sitk.BinaryNot(largest_component_mask) 
+# Apply the mask to the image
+brain_only = sitk.Mask(sag_image, inverted_mask)
+
+interact(
+    display_images,
+    bmc_image_z = (0,largest_component_mask.GetSize()[2]-1),
+    bm_image_z = (0,brain_only.GetSize()[2]-1),
+    bmc_npa = fixed(sitk.GetArrayViewFromImage(largest_component_mask)),
+    bm_npa = fixed(sitk.GetArrayViewFromImage(brain_only)))
+
+```
+```output
+```
+
+![Our partial soft tissue stripping.](fig/our_cca_stripped.png){alt='Home-made deface'}
+
+
+:::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+In the provided solution we didn't get rid of a lot of the neck. But one approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solution shows one potential approach to removing tissue (which could in some cases lead to identifiation) you don't want in an image. 
 
 
 ### Other Parts of Images
