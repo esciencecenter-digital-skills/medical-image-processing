@@ -286,7 +286,10 @@ interact(
     bmc_image_z = (0,largest_component_mask.GetSize()[2]-1),
     bm_image_z = (0,brain_only.GetSize()[2]-1),
     bmc_npa = fixed(sitk.GetArrayViewFromImage(largest_component_mask)),
-    bm_npa = fixed(sitk.GetArrayViewFromImage(brain_only)))
+    bm_npa = fixed(sitk.GetArrayViewFromImage(brain_only))
+    title1=fixed("New IMage"),
+    title2=fixed("Mask")
+    )
 
 ```
 ```output
