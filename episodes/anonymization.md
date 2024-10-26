@@ -142,32 +142,34 @@ import os
 sag_image =  sitk.ReadImage("data/sitk/A1_grayT1.nrrd", sitk.sitkFloat32)
 cor_image = sitk.PermuteAxes(sag_image, [2, 1, 0])
 
-# Callback invoked by the interact IPython method for scrolling through the image stacks of
-# two images (coronal and sagital), which are really the same image in different view.
-def display_images(sag_image_z, cor_image_z, sag_npa, cor_npa):
-    # Create a figure with two subplots and the specified size.
-    plt.subplots(1,2,figsize=(10,8))
+# General display function for any two 3D images
+def display_images(image1_z, image2_z, image1_npa, image2_npa, title1="Image 1", title2="Image 2"):
+    plt.subplots(1, 2, figsize=(10, 8))
     
-    # Draw the sagitalimage in the first subplot.
-    plt.subplot(1,2,1)
-    plt.imshow(sag_npa[sag_image_z,:,:],cmap=plt.cm.Greys_r)
-    plt.title('saggital cut')
+    # Display the first image
+    plt.subplot(1, 2, 1)
+    plt.imshow(image1_npa[image1_z, :, :], cmap=plt.cm.Greys_r)
+    plt.title(title1)
     plt.axis('off')
     
-    # Draw the coronal image in the second subplot.
-    plt.subplot(1,2,2)
-    plt.imshow(cor_npa[cor_image_z,:,:],cmap=plt.cm.Greys_r)
-    plt.title('coronal cut')
+    # Display the second image
+    plt.subplot(1, 2, 2)
+    plt.imshow(image2_npa[image2_z, :, :], cmap=plt.cm.Greys_r)
+    plt.title(title2)
     plt.axis('off')
     
     plt.show()
 
+# Display the sagittal and coronal views of the original image
 interact(
     display_images,
-    sag_image_z = (0,sag_image.GetSize()[2]-1),
-    cor_image_z = (0,cor_image.GetSize()[2]-1),
-    sag_npa = fixed(sitk.GetArrayViewFromImage(sag_image)),
-    cor_npa = fixed(sitk.GetArrayViewFromImage(cor_image)))
+    image1_z=(0, sag_image.GetSize()[2] - 1),
+    image2_z=(0, cor_image.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(sag_image)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(cor_image)),
+    title1=fixed("Sagittal Cut"),
+    title2=fixed("Coronal Cut")
+)
 ```
 ```output
 ```
@@ -216,23 +218,26 @@ We can apprach the problem in various ways. Below is one solution:
 
 ```python
 # Apply thresholding to remove soft tissues by first taking out the air then dilating and cleaning
+# the assumption is that the black around the brain is zero and low values
+# Create the brain mask
 lower_thresh = 0
 upper_thresh = 100
 brain_mask = sitk.BinaryThreshold(sag_image, lowerThreshold=lower_thresh, upperThreshold=upper_thresh)
 
-# morphological operations to clean the mask
-brain_mask_cleaned= sitk.BinaryDilate(brain_mask, [5, 5, 5])
-brain_mask_cleaned = sitk.BinaryErode(brain_mask_cleaned, [5,5,5])
-# optional- make variables a bit smaller
-bmc_image = brain_mask_cleaned
-bm_image = brain_mask
-# check the images so far using our previously written display function
+# Morphological operations to clean the mask
+brain_mask_cleaned = sitk.BinaryDilate(brain_mask, [5, 5, 5])
+brain_mask_cleaned = sitk.BinaryErode(brain_mask_cleaned, [5, 5, 5])
+
+# Display the original and cleaned mask images using the general display function
 interact(
     display_images,
-    bmc_image_z = (0,bmc_image.GetSize()[2]-1),
-    bm_image_z = (0,bm_image.GetSize()[2]-1),
-    bmc_npa = fixed(sitk.GetArrayViewFromImage(bmc_image)),
-    bm_npa = fixed(sitk.GetArrayViewFromImage(bm_image)))
+    image1_z=(0, brain_mask.GetSize()[2] - 1),
+    image2_z=(0, brain_mask_cleaned.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(brain_mask)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(brain_mask_cleaned)),
+    title1=fixed("Original Mask"),
+    title2=fixed("Cleaned Mask")
+)
 ```
 Then we can further clean with a connection component analysis that throws out small floaters, and use the inverse as out final mask.
 
