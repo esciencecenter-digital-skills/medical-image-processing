@@ -1,7 +1,7 @@
 ---
 title: "Anonymizing Medical Images"
 teaching: 40
-exercises: 15
+exercises: 30
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -15,7 +15,8 @@ exercises: 15
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Provide examples of data that makes patient images identifiable
-- Discuss the concept of anonymization
+- Discuss the concepts of identifiable data and anonymization
+- Demonstrate how approaches to anonymizing identifiable images
 - Demonstrate the use of the Pydicom library to manage DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -188,7 +189,7 @@ Look at the head MRI above. Are all such images, including CTs, with some of the
 
 ## Solution
 
-We are probably de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reserve look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. As in life there is always the edge case, and one potential edge case could be someone with a very idenfiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of pathology and surgery, they may still be identifiable for some. 
+In most cases images like the above are de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reserve look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. One potentially identifiable case could be someone with a very idenfiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of rare pathology and surgery, they may still be identifiable for some familiar with thier cases. 
 
 
 :::::::::::::::::::::::::
@@ -606,10 +607,11 @@ Pydicom offers a wide range of capabilities. You can visualize your DICOM data i
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Certain metadata should almost always be removed from DICOM files before sharing
+- Automated tools are available to strip metadata from DICOMs, but manual verification is necessary due to inconsistencies in how fields are utilized
+- Several Python libraries enable access to DICOM metadata
 - Sharing only image files such as JPEGs or NIfTI can mitigate risks associated with metadata
 - Imaging data alone, even without explicit metadata, can sometimes lead to patient identification
-- Automated tools are available to strip metadata from DICOMs, but manual verification is necessary due to inconsistencies in how fields are utilized.
+- You may need to preprocess images themselves so patients are de-identified 
 - Tools exist to deface images to further protect patient identity
-- Several Python libraries enable access to DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
