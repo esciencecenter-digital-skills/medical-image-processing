@@ -31,11 +31,11 @@ Below are a few summaries about various ultra-common imaging types. Keep in mind
 
 ## X-Rays
 
-Historically, x-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
+The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
-As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. In the case of chest X-rays these could be a posteroanterior(PA) view and a lateral view. In the case of joints the views may be specific, however remember that in each view objects in the same line between the generator and receptor will be superimposed.
+As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. Remember that in each view objects in the same line between the generator and receptor will be superimposed.
 
 ![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
 *image courtesy of Radiopaedia, author and ID on image*
@@ -44,7 +44,7 @@ Modern x-rays are born digital. No actual "film" is produced, rather a DICOM fil
 
 We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  
 
-We can take x-rays from any angle and even do them repeatedly, and this allows for fluoroscopy. Because fluoroscopy adds a time dimension to X-ray the data becomes 3-dimensional, possessing an X, Y and time dimension. Below is a fluoroscopy image of a patient swallowing barium.
+We can take x-rays from any angle and even do them repeatedly. Repeating x-rays rapidly over time allows for fluoroscopy. Because fluoroscopy adds a time dimension to X-ray the data becomes 3-dimensional, possessing an X, Y and time dimension. Below is a fluoroscopy image of a patient swallowing barium.
 
 ![Fluorsocopy.](fig/fluoro.gif){alt='Fluorsocopy.'}
 *image courtesy of Ptrump16, CC BY-SA 4.0 <https://creativecommons.org/licenses/by-sa/4.0>, via Wikimedia Commons*
@@ -55,9 +55,9 @@ We can take x-rays from any angle and even do them repeatedly, and this allows f
 
 ## Computed Tomography and Tomosynthesis
 
-There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
+Computed tomography is an X-ray based technique which produces 3D-images, made of voxels, that allow us to see structures within a subject. 
 
-CTs and tomosynthetic images are produced with similar technology. One key difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get. Let's examine two ways to process our sinograms:
+Computed tomographs (CTs) and tomosynthetic images are produced with similar technology. One key difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get. Let's examine two ways to process our sinograms:
 
 
 ```python
@@ -235,7 +235,7 @@ You have the images straight from the radiologist, could there potentially be an
 ## Solution
 
 In an absolute total sense, they could have artifacts. Both CT and MRI are reconstructed from original data, and the
-reconstruction will introduce artifacts. The radiologist thinks of artifacts as things like motion blurring from when the 
+reconstruction will introduce artifacts. The typical radiologist thinks of artifacts as things like motion blurring from when the 
 patient moves or wrap-around in MRIs when the field of view was set too small. These are obvious to the human eye. However technically every reconstruction algorithm can potentially introduce tiny artifacts not visible to the human eye in the reconstruction.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -253,7 +253,7 @@ Nuclear medicine images e.g. PET and SPECT can be 2D or 3D images based on a sig
 
 *sourced from RadsWiki, CC BY-SA 3.0 <https://creativecommons.org/licenses/by-sa/3.0>, via Wikimedia Commons*
 
-Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Pathology is an entire medical discipline in which various types of images are used, both 2D, 3D and often multi-channel e.g. in color with RGB channels. However, one classic type of pathology image is that of a stained tissue slide seen by a microscope. With various stains we can see what is going on in a tissue on a cellular level. In the image below you can see macrophages that have come to sorround actinomyces in someone's lung.
+Pathology is currently undergoing a revolution of digitalization, and a typical file format has not emerged yet. Pathology images may be DICOM, but could also be stored as specific kinds of TIFF files or other file types. Pathology is an entire medical discipline in which various types of images are used, both 2D, 3D and often multi-channel e.g. in color with RGB or even more channels. However, one classic type of pathology image is that of a stained tissue slide seen by a microscope. With various stains we can see what is going on in a tissue on a cellular level. In the image below you can see macrophages that have come to sorround actinomyces in someone's lung.
 
 ![Pathology image.](fig/Actinomycosis.jpg){alt='Pathology Image.'}
 
@@ -265,7 +265,7 @@ Pathology is currently undergoing a revolution of digitalization, and a typical 
 
 ## Challenge: What does the shape of a pathology image mean?
 
-You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array as he closely gaurds his new proprietary format for pathology images. He tells you there will be two channels, one for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Visualize this images in terms of the middle slide from both the top and the side on the middle focal depth slice.   
+You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array and reduced the data to two channels, one for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Visualize this images in terms of the middle slide from both the top and the side on the middle focal depth slice.   
 
 You can import the image from data as follows:
 
