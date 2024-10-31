@@ -202,7 +202,7 @@ A full CT, MRI, or PET scan of the head can be reconstructed into a detailed fac
 
 
 
-We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, and other types of operations such as connected component analyses and masking. 
+We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, grow-from-seed and other types of operations such as connected component analyses and masking. 
 
 ::::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -215,7 +215,7 @@ Look at the head MRI above. Try using SITK to get rid off some of the soft tissu
 
 ## Solution
 
-We can apprach the problem in various ways. Below is one solution:
+We can apprach the problem in various ways. Below is one solution with erosion, dilation and masking:
 
 ```python
 # Apply thresholding to remove soft tissues by first taking out the air then dilating and cleaning
@@ -299,6 +299,62 @@ interact(
 
 ![Our partial soft tissue stripping.](fig/our_cca_stripped.png){alt='Home-made deface'}
 
+
+ Now you may notice that we put together and erosion and dilation, and we could have used instead a closure. There are many ways to solve this problem. An entirely different approach would be to use grow-from seed as below (not this may take a while to execute):
+
+ ```python
+ def guess_seed_point(img):
+    """
+    This function guesses a seed point for the brain in the middle of the image, and returns some seed points.
+    """
+    possible_point = round(img.GetSize()[0]/2), round(img.GetSize()[1]/2), round(img.GetSize()[2]/2)
+    # Get the pixel value at the potential location
+    pixel_value = img.GetPixel(*possible_point)
+    if pixel_value > 0:
+        picked_point = possible_point
+    else:
+        # just move over a bit and hope for better
+        new_possible_point = round(img.GetSize()[0]/2) + round(img.GetSize()[0]/10) , round(img.GetSize()[1]/2), round(img.GetSize()[2]/2)
+        picked_point = new_possible_point
+    return picked_point
+# do some reality check of a look at the value in your seed point  
+seed_point = guess_seed_point(sag_image) 
+pixel_value = sag_image.GetPixel(seed_point)
+print(pixel_value)
+ ```
+
+ ```output
+ 394.37042236328125
+ ```
+Grow from seed, then display:
+ ```python
+seed_point = guess_seed_point(sag_image)  
+lower_threshold = 370   # Example lower threshold
+upper_threshold = 480   # Example upper threshold
+
+
+seed_mask = sitk.ConnectedThreshold(
+    sag_image, seedList=[seed_point],
+    lower=lower_threshold,
+    upper=upper_threshold)
+# let's dilate up a bit
+seed_mask= sitk.BinaryDilate(seed_mask, [5, 5, 5])
+
+# Apply the mask to the image
+brain_only = sitk.Mask(sag_image, seed_mask)
+    # Display to see what happened
+interact(
+    display_images,
+    image1_z=(0, sag_image.GetSize()[2] - 1),
+    image2_z=(0, brain_only.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(sag_image)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(brain_only)),
+    title1=fixed("Original"),
+    title2=fixed("Seeded and Masked")
+)
+ ```
+
+ If we want a better image, we can then use erosion and dilation again
 
 :::::::::::::::::::::::::
 
