@@ -326,11 +326,14 @@ print(pixel_value)
  ```output
  394.37042236328125
  ```
+
 Grow from seed, then display:
+
+
  ```python
 seed_point = guess_seed_point(sag_image)  
-lower_threshold = 370   # Example lower threshold
-upper_threshold = 480   # Example upper threshold
+lower_threshold = 370   # lower threshold
+upper_threshold = 480   # upper threshold
 
 
 seed_mask = sitk.ConnectedThreshold(
@@ -340,9 +343,9 @@ seed_mask = sitk.ConnectedThreshold(
 # let's dilate up a bit
 seed_mask= sitk.BinaryDilate(seed_mask, [5, 5, 5])
 
-# Apply the mask to the image
+# apply the mask to the image
 brain_only = sitk.Mask(sag_image, seed_mask)
-    # Display to see what happened
+# display to see what happened
 interact(
     display_images,
     image1_z=(0, sag_image.GetSize()[2] - 1),
@@ -354,7 +357,13 @@ interact(
 )
  ```
 
- If we want a better image, we can then use erosion and dilation again
+
+ ```output
+```
+
+![Our grown from seed soft tissue stripping.](fig/grown_from_seed.png){alt='Home-made deface by grow from seed'}
+
+ In the two solutions above we made masks. They each have different problems we can see. For example in the grown from seed images we stripped out part of the genu and splenium of the corpus callosum not to mention the entire pons. An alternative is that could also have used a registered atlas as a mask. Regardless of the base algorithms we begin with, if we want a better image, we can keep tinkering with our algorithms.
 
 :::::::::::::::::::::::::
 
