@@ -375,7 +375,7 @@ In the provided solutions to the above optional challenge we didn't get rid of a
 
 There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
 
-However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
+However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
@@ -391,7 +391,7 @@ In other situations, slightly more data might be required to identify a patient.
 
 ### Metadata
 
-Metadata is the place outside the image that identifying data may be lurking. 
+Metadata is in the broadest sense data about our data. In the practical sense we need to understand it is a place outside the image that identifying data may be lurking. 
 
 Various tools are available to help de-identify DICOM files in terms of metadata. A notable one is [DicomAnonymizer](https://github.com/KitwareMedical/dicom-anonymizer), an open-source tool written in Python.
 
