@@ -44,7 +44,7 @@ Occasionally, technicians will burn information directly onto images as part of 
 
 ## Challenge: Getting rid of identifying burned in data
 
-An ultrasound (scraped from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height- width dimensions. You should resize away from RGB to grayscale. It can be opened as follows:
+An ultrasound (scraped from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height and width dimensions. You should change the image from RGB to grayscale. It can be opened as follows:
 
 ```python
 
@@ -62,7 +62,7 @@ io.show()
 
 ![Image from flikr website published with a permissive lisence.](fig/identifiable_us.jpg){alt='Identifiable ultrasound'}
 
-Write code for two approaches that de-identify the ultrasound. 
+Write code for two approaches that de-identify (remove the annotations from) the ultrasound image data. 
 
 
 ::::::::::::::: solution
@@ -370,7 +370,7 @@ interact(
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In the provided solutions to the above optional challenge we didn't get rid of a lot of the neck, and had other issues. A different approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solutions shows two potential approaches to removing tissue (which could in some cases lead to identifiation) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
+In the provided solutions to the above optional challenge we didn't get rid of a lot of the neck, and had other issues. A different approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solutions shows two potential approaches to removing tissue (which could in some cases lead to identification) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
 
 
 There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
