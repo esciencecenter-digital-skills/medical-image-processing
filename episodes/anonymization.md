@@ -370,7 +370,7 @@ interact(
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-In the provided solution to the above optional challenge we didn't get rid of a lot of the neck. But one approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solution shows one potential approach to removing tissue (which could in some cases lead to identifiation) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
+In the provided solutions to the above optional challenge we didn't get rid of a lot of the neck, and had other issues. A different approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solutions shows two potential approaches to removing tissue (which could in some cases lead to identifiation) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
 
 
 There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
