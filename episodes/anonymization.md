@@ -391,7 +391,7 @@ In other situations, slightly more data might be required to identify a patient.
 
 ### Metadata
 
-Metadata is in the broadest sense data about our data. In the practical sense we need to understand it is a place outside the image that identifying data may be lurking. 
+Metadata is in the broadest sense data about our data. In the practical sense we need to understand it is a place outside the image that identifying data may be lurking in. 
 
 Various tools are available to help de-identify DICOM files in terms of metadata. A notable one is [DicomAnonymizer](https://github.com/KitwareMedical/dicom-anonymizer), an open-source tool written in Python.
 
