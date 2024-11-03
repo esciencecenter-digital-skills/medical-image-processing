@@ -245,7 +245,7 @@ Then we can further clean with a connected component analysis that throws out ou
 ```python
 
 def keep_largest_component(mask_image):
-    # Ensure mask_image is binary (0 and 1 values)
+    # Ensure mask_image is going to work as a mask in SITK 
     mask_image = sitk.Cast(mask_image, sitk.sitkUInt8)
     
     # Label connected components in the mask image
