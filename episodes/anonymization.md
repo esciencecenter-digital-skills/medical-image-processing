@@ -36,7 +36,7 @@ DICOM files contain metadata, which includes various types of identifying inform
 
 ### Text on Images
 
-Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
+Occasionally, technicians will "burn" information directly onto images as part of a burned-in annotation. This means they change the image itself with text that becomes part of the image pixels. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
 
 
@@ -44,7 +44,7 @@ Occasionally, technicians will burn information directly onto images as part of 
 
 ## Challenge: Getting rid of identifying burned in data
 
-An ultrasound (scraped from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height and width dimensions. You should change the image from RGB to grayscale. It can be opened as follows:
+An ultrasound (taken from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height and width dimensions. You should change the image from RGB to grayscale for your operations. It can be opened as follows:
 
 ```python
 
@@ -69,7 +69,7 @@ Write code for two approaches that de-identify (remove the annotations from) the
 
 ## Solution
 
-The image  has identifying metdata. You should identify not only the name, but the date and place as problematic.  You can take three different approaches. One would be to mask the data, the other would be to blur it. First we will show a blurred image:
+The image  has identifying metadata. You should identify not only the name, but the date and place as problematic.  You can take three different approaches. One would be to mask the data, the other would be to blur it, and finally you can just crop it out entirely. First we will show a selectively blurred image:
 
 ```python
 
@@ -92,6 +92,7 @@ io.imshow(final_image)
 ```
 
 ![Image after blurring in one area.](fig/blurred_us.png){alt='Non-Identifiable blurred ultrasound'}
+
 We could have also just make a simple zero-mask: 
 
 ```python
@@ -107,9 +108,8 @@ io.imshow(image_masked)
 
 ![Image after masking in one area.](fig/masked_us.png){alt='Non-Identifiable masked ultrasound'}
 
-Note there are other valid solutions, but these two are very common and straightforward. 
 
-Finally, you could always just chop off the offending part so to speak, and resize:
+Finally, you could always just chop off the offending part so to speak, and resize. However if you examine the image when we try this solution you should notice that the image has changed in aspect ratio, thus pixels values have changed. This may not be the ideal solution for situations when you want to maintain the exact image pixels. Nonetheless you can crop and resize as below:
 
 ```python
 from skimage.transform import resize
@@ -127,7 +127,7 @@ io.imshow(final_image)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-You have now seen three approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. 
+Note there are other valid solutions to getting rid of what is identifying image data, but the first two shown (blurring and masking) are very common and straightforward. You have now seen three approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. 
 
 Let's take another look at an image we used earlier:
 
@@ -189,7 +189,7 @@ Look at the head MRI above. Are all such images, including CTs, with some of the
 
 ## Solution
 
-In most cases images like the above are de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reserve look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. One potentially identifiable case could be someone with a very idenfiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of rare pathology and surgery, they may still be identifiable for some familiar with thier cases. 
+In most cases images like the above are de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reverse look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. One potentially identifiable case could be someone with a very identifiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of rare pathology and surgery, they may still be identifiable for some familiar with their cases. 
 
 
 :::::::::::::::::::::::::
@@ -202,20 +202,20 @@ A full CT, MRI, or PET scan of the head can be reconstructed into a detailed fac
 
 
 
-We could in theory write our own defacing algorithm. For such an algorithm either SITK or skimage provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, grow-from-seed and other types of operations such as connected component analyses and masking. 
+We could in theory write our own defacing algorithm. For such an algorithm libraries such as SITK or skimage (sci-kit image) or even openCV provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, grow-from-seed and other types of operations such as connected component analysis and masking. Which library you choose will often be based on minimizing the number of libraries in your total code, because mixing close libraries with similarly named functions is a bad idea. 
 
 ::::::::::::::::::::::::::::::::::::::: challenge 
 
 ## Challenge: Soft tissue stripping(Optional)
 
-Look at the head MRI above. Try using SITK to get rid off some of the soft tissue in the image (already loaded into sag_image). 
+Look at the head MRI above. Try using SITK to get rid of some of the soft tissue in the image (already loaded into sag_image). 
 
 
 ::::::::::::::: solution
 
 ## Solution
 
-We can apprach the problem in various ways. Below is one solution with erosion, dilation and masking:
+We can approach the problem in various ways. Below is one solution with erosion, dilation and masking:
 
 ```python
 # Apply thresholding to remove soft tissues by first taking out the air then dilating and cleaning
@@ -240,7 +240,7 @@ interact(
     title2=fixed("Cleaned Mask")
 )
 ```
-Then we can further clean with a connection component analysis that throws out small floaters, and use the inverse as out final mask.
+Then we can further clean with a connected component analysis that throws out our small floaters, and use the inverse as out final mask.
 
 ```python
 
@@ -307,14 +307,14 @@ interact(
     """
     This function guesses a seed point for the brain in the middle of the image, and returns some seed points.
     """
-    possible_point = round(img.GetSize()[0]/2), round(img.GetSize()[1]/2), round(img.GetSize()[2]/2)
+    possible_point = img.GetSize()[0]//2, img.GetSize()[1]//2, img.GetSize()[2]//2
     # Get the pixel value at the potential location
     pixel_value = img.GetPixel(*possible_point)
     if pixel_value > 0:
         picked_point = possible_point
     else:
         # just move over a bit and hope for better
-        new_possible_point = round(img.GetSize()[0]/2) + round(img.GetSize()[0]/10) , round(img.GetSize()[1]/2), round(img.GetSize()[2]/2)
+        new_possible_point = img.GetSize()[0]//2 + img.GetSize()[0]//10 , img.GetSize()[1]//2, img.GetSize()[2]//2
         picked_point = new_possible_point
     return picked_point
 # do some reality check of a look at the value in your seed point  
