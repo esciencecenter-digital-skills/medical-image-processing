@@ -23,6 +23,10 @@ Large language model (LLM)
 Magnetic resonance imaging (MRI)
 : MRI is a non-invasive imaging technique that uses strong magnetic fields and radio waves to generate detailed images of organs and tissues. It's particularly useful for visualizing soft tissues and doesn't use ionizing radiation, making it suitable for repeated scans.
 
+<h5 id="b">Morphological operations</h5>
+Morphological Operations
+: Morphological operations are image processing operations that are based on shapes of objects within an image. Two critical operations for several compound operations are erosion or dilation. Erosion shrinks an object within an image. Dilation expands an object within an image. In both cases the change is based on a structuring element, which is a predefined shape. Opening, closing and morphological gradient are morphologicl operations based on combining erosion and dilation.
+
 Neuroimaging Informatics Technology Initiative (NIfTI)
 : NIfTI is a file format commonly used in neuroimaging to store and share brain imaging data. It was developed to address limitations in previous formats and includes support for storing image orientation and other metadata crucial for accurate analysis.
 

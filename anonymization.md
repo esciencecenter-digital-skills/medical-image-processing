@@ -1,7 +1,7 @@
 ---
 title: "Anonymizing Medical Images"
 teaching: 40
-exercises: 15
+exercises: 30
 ---
 
 :::::::::::::::::::::::::::::::::::::: questions 
@@ -15,7 +15,8 @@ exercises: 15
 ::::::::::::::::::::::::::::::::::::: objectives
 
 - Provide examples of data that makes patient images identifiable
-- Discuss the concept of anonymization
+- Discuss the concepts of identifiable data and anonymization
+- Demonstrate how approaches to anonymizing identifiable images
 - Demonstrate the use of the Pydicom library to manage DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
@@ -32,19 +33,352 @@ Metadata elements in imaging, such as patient names and addresses, are often cle
 
 DICOM files contain metadata, which includes various types of identifying information that should remain confidential. The easiest way to mitigate issues with DICOM metadata is to avoid having it in the first place. If possible, opt to receive just the images and select metadata rather than the entire DICOM file. When sharing data with collaborators, there is often no need to share the full DICOM files.
 
+
+### Text on Images
+
+Occasionally, technicians will "burn" information directly onto images as part of a burned-in annotation. This means they change the image itself with text that becomes part of the image pixels. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
+
+
+
+::::::::::::::::::::::::::::::::::::::: challenge
+
+## Challenge: Getting rid of identifying burned in data
+
+An ultrasound (taken from the public internet on a creative commons license lisence [here](https://www.flickr.com/photos/jcarter/2461223727).) must be kept at it's existing height and width dimensions. You should change the image from RGB to grayscale for your operations. It can be opened as follows:
+
+```python
+
+import numpy as np
+import matplotlib.pyplot as plt
+from skimage import io, filters
+
+image = 'data/anonym/identifiable_us.jpg'
+io.imshow(image)
+io.show()
+```
+
+```output
+```
+
+![Image from flikr website published with a permissive lisence.](fig/identifiable_us.jpg){alt='Identifiable ultrasound'}
+
+Write code for two approaches that de-identify (remove the annotations from) the ultrasound image data. 
+
+
+::::::::::::::: solution
+
+## Solution
+
+The image  has identifying metadata. You should identify not only the name, but the date and place as problematic.  You can take three different approaches. One would be to mask the data, the other would be to blur it, and finally you can just crop it out entirely. First we will show a selectively blurred image:
+
+```python
+
+from skimage.filters import gaussian
+from skimage.color import rgb2gray
+
+image_base = io.imread(image)
+image_base = rgb2gray(image_base)
+sub_im = image_base[0:78,:].copy()
+blur_sub_im = gaussian(sub_im, sigma=9)
+final_image = np.zeros(image_base.shape)
+final_image[0:78,:] = blur_sub_im
+final_image[79:,:]= image_base[79:, :]
+io.imshow(final_image)
+
+```
+
+
+```output
+```
+
+![Image after blurring in one area.](fig/blurred_us.png){alt='Non-Identifiable blurred ultrasound'}
+
+We could have also just make a simple zero-mask: 
+
+```python
+image_masked = io.imread(image)
+image_masked[0:78,:] = 0
+io.imshow(image_masked)
+
+```
+
+
+```output
+```
+
+![Image after masking in one area.](fig/masked_us.png){alt='Non-Identifiable masked ultrasound'}
+
+
+Finally, you could always just chop off the offending part so to speak, and resize. However if you examine the image when we try this solution you should notice that the image has changed in aspect ratio, thus pixels values have changed. This may not be the ideal solution for situations when you want to maintain the exact image pixels. Nonetheless you can crop and resize as below:
+
+```python
+from skimage.transform import resize
+
+final_image= image_base[79:, :]
+final_image = resize(final_image,image_base.shape)
+io.imshow(final_image)
+```
+
+```output
+```
+
+![Image after crop and resize.](fig/resize_us1.png){alt='Non-Identifiable cropped ultrasound'}
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Note there are other valid solutions to getting rid of what is identifying image data, but the first two shown (blurring and masking) are very common and straightforward. You have now seen three approaches to removing some of the visual data on a 2-D image. The same approaches can be taken on a 3D image. 
+
+Let's take another look at an image we used earlier:
+
+```python
+import matplotlib.pyplot as plt
+import SimpleITK as sitk
+from skimage import io
+from ipywidgets import interact, fixed
+from IPython.display import clear_output
+import os
+
+
+sag_image =  sitk.ReadImage("data/sitk/A1_grayT1.nrrd", sitk.sitkFloat32)
+cor_image = sitk.PermuteAxes(sag_image, [2, 1, 0])
+
+# General display function for any two 3D images
+def display_images(image1_z, image2_z, image1_npa, image2_npa, title1="Image 1", title2="Image 2"):
+    plt.subplots(1, 2, figsize=(10, 8))
+    
+    # Display the first image
+    plt.subplot(1, 2, 1)
+    plt.imshow(image1_npa[image1_z, :, :], cmap=plt.cm.Greys_r)
+    plt.title(title1)
+    plt.axis('off')
+    
+    # Display the second image
+    plt.subplot(1, 2, 2)
+    plt.imshow(image2_npa[image2_z, :, :], cmap=plt.cm.Greys_r)
+    plt.title(title2)
+    plt.axis('off')
+    
+    plt.show()
+
+# Display the sagittal and coronal views of the original image
+interact(
+    display_images,
+    image1_z=(0, sag_image.GetSize()[2] - 1),
+    image2_z=(0, cor_image.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(sag_image)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(cor_image)),
+    title1=fixed("Sagittal Cut"),
+    title2=fixed("Coronal Cut")
+)
+```
+```output
+```
+![Images of SITK head.](fig/headcutsscroll.png){alt='Non-Identifiable head'}
+
+Here we can see an analagous technique to one we used with the 2D ultrasound. Identifying data has been cropped out. 
+
+::::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge: Are we truly deidentified?(Optional)
+
+Look at the head MRI above. Are all such images, including CTs, with some of the soft tissue stripped 100 percent deidentified? Give arguments why and why not
+
+
+::::::::::::::: solution
+
+## Solution
+
+In most cases images like the above are de-identified. The image above is only an image, not a DICOM with potentially identifying metadata. Further we are missing the nose, therefore putting this in a reverse look-up engine online will not yield identifying results. On the other hand theoretically we could have an identifiable image. One potentially identifiable case could be someone with a very identifiable neck, skull bones (these will be more visible on CT) and/or ears. Additionally in the case of patients who have had some kind of rare pathology and surgery, they may still be identifiable for some familiar with their cases. 
+
+
+:::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
 ### Faces in Images
 
 A full CT, MRI, or PET scan of the head can be reconstructed into a detailed facial image, potentially revealing the patient's identity and demographic information, such as ethnicity and gender. To mitigate this risk, many image analysis programs employ ‘defacing’ techniques to obscure these identifiable features.
 
-There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries.
 
-However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research, including studies still in pre-print, suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
+
+We could in theory write our own defacing algorithm. For such an algorithm libraries such as SITK or skimage (sci-kit image) or even openCV provide several useful built in functions including [morphological operations](learners/reference.md#Morphological operations) such as erosion, dilation, grow-from-seed and other types of operations such as connected component analysis and masking. Which library you choose will often be based on minimizing the number of libraries in your total code, because mixing close libraries with similarly named functions is a bad idea. 
+
+::::::::::::::::::::::::::::::::::::::: challenge 
+
+## Challenge: Soft tissue stripping(Optional)
+
+Look at the head MRI above. Try using SITK to get rid of some of the soft tissue in the image (already loaded into sag_image). 
+
+
+::::::::::::::: solution
+
+## Solution
+
+We can approach the problem in various ways. Below is one solution with erosion, dilation and masking:
+
+```python
+# Apply thresholding to remove soft tissues by first taking out the air then dilating and cleaning
+# the assumption is that the black around the brain is zero and low values
+# Create the brain mask
+lower_thresh = 0
+upper_thresh = 100
+brain_mask = sitk.BinaryThreshold(sag_image, lowerThreshold=lower_thresh, upperThreshold=upper_thresh)
+
+# Morphological operations to clean the mask
+brain_mask_cleaned = sitk.BinaryDilate(brain_mask, [5, 5, 5])
+brain_mask_cleaned = sitk.BinaryErode(brain_mask_cleaned, [5, 5, 5])
+
+# Display the original and cleaned mask images using the general display function
+interact(
+    display_images,
+    image1_z=(0, brain_mask.GetSize()[2] - 1),
+    image2_z=(0, brain_mask_cleaned.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(brain_mask)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(brain_mask_cleaned)),
+    title1=fixed("Original Mask"),
+    title2=fixed("Cleaned Mask")
+)
+```
+Then we can further clean with a connected component analysis that throws out our small floaters, and use the inverse as out final mask.
+
+```python
+
+def keep_largest_component(mask_image):
+    # Ensure mask_image is binary (0 and 1 values)
+    mask_image = sitk.Cast(mask_image, sitk.sitkUInt8)
+    
+    # Label connected components in the mask image
+    labeled_image = sitk.ConnectedComponent(mask_image)
+    
+    # Measure the size of each labeled component
+    label_shape_statistics = sitk.LabelShapeStatisticsImageFilter()
+    label_shape_statistics.Execute(labeled_image)
+    
+    # Count and print the number of connected components
+    component_count = len(label_shape_statistics.GetLabels())
+    print(f"Number of connected components before filtering: {component_count}")
+    
+    # Find the label with the largest size
+    largest_label = max(
+        label_shape_statistics.GetLabels(),
+        key=lambda label: label_shape_statistics.GetPhysicalSize(label)
+    )
+    
+    # Create a new mask with only the largest component
+    largest_component_mask = sitk.BinaryThreshold(labeled_image, lowerThreshold=largest_label, upperThreshold=largest_label, insideValue=1, outsideValue=0)
+    
+    # Verify the result by counting the components in the resulting image
+    labeled_result = sitk.ConnectedComponent(largest_component_mask)
+    label_shape_statistics.Execute(labeled_result)
+    result_component_count = len(label_shape_statistics.GetLabels())
+    print(f"Number of connected components after filtering: {result_component_count}")
+    
+    return largest_component_mask
+
+largest_component_mask = keep_largest_component(brain_mask_cleaned)
+# we actually want the opposite mask so we will invert the mask
+inverted_mask = sitk.BinaryNot(largest_component_mask) 
+# Apply the mask to the image
+brain_only = sitk.Mask(sag_image, inverted_mask)
+
+interact(
+    display_images,
+    image1_z = (0,brain_only.GetSize()[2]-1),
+    image2_z = (0,largest_component_mask.GetSize()[2]-1),
+    image1_npa = fixed(sitk.GetArrayViewFromImage(brain_only)),
+    image2_npa = fixed(sitk.GetArrayViewFromImage(largest_component_mask)),
+    title1=fixed("new image"),
+    title2=fixed("mask")
+    )
+
+
+```
+```output
+```
+
+![Our partial soft tissue stripping.](fig/our_cca_stripped.png){alt='Home-made deface'}
+
+
+ Now you may notice that we put together and erosion and dilation, and we could have used instead a closure. There are many ways to solve this problem. An entirely different approach would be to use grow-from seed as below (not this may take a while to execute):
+
+ ```python
+ def guess_seed_point(img):
+    """
+    This function guesses a seed point for the brain in the middle of the image, and returns some seed points.
+    """
+    possible_point = img.GetSize()[0]//2, img.GetSize()[1]//2, img.GetSize()[2]//2
+    # Get the pixel value at the potential location
+    pixel_value = img.GetPixel(*possible_point)
+    if pixel_value > 0:
+        picked_point = possible_point
+    else:
+        # just move over a bit and hope for better
+        new_possible_point = img.GetSize()[0]//2 + img.GetSize()[0]//10 , img.GetSize()[1]//2, img.GetSize()[2]//2
+        picked_point = new_possible_point
+    return picked_point
+# do some reality check of a look at the value in your seed point  
+seed_point = guess_seed_point(sag_image) 
+pixel_value = sag_image.GetPixel(seed_point)
+print(pixel_value)
+ ```
+
+ ```output
+ 394.37042236328125
+ ```
+
+Grow from seed, then display:
+
+
+ ```python
+seed_point = guess_seed_point(sag_image)  
+lower_threshold = 370   # lower threshold
+upper_threshold = 480   # upper threshold
+
+
+seed_mask = sitk.ConnectedThreshold(
+    sag_image, seedList=[seed_point],
+    lower=lower_threshold,
+    upper=upper_threshold)
+# let's dilate up a bit
+seed_mask= sitk.BinaryDilate(seed_mask, [5, 5, 5])
+
+# apply the mask to the image
+brain_only = sitk.Mask(sag_image, seed_mask)
+# display to see what happened
+interact(
+    display_images,
+    image1_z=(0, sag_image.GetSize()[2] - 1),
+    image2_z=(0, brain_only.GetSize()[2] - 1),
+    image1_npa=fixed(sitk.GetArrayViewFromImage(sag_image)),
+    image2_npa=fixed(sitk.GetArrayViewFromImage(brain_only)),
+    title1=fixed("Original"),
+    title2=fixed("Seeded and Masked")
+)
+ ```
+
+
+ ```output
+```
+
+![Our grown from seed soft tissue stripping.](fig/grown_from_seed.png){alt='Home-made deface by grow from seed'}
+
+ In the two solutions above we made masks. They each have different problems we can see. For example in the grown from seed images we stripped out part of the genu and splenium of the corpus callosum not to mention the entire pons. An alternative is that could also have used a registered atlas as a mask. Regardless of the base algorithms we begin with, if we want a better image, we can keep tinkering with our algorithms.
+
+:::::::::::::::::::::::::
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::
+
+In the provided solutions to the above optional challenge we didn't get rid of a lot of the neck, and had other issues. A different approach we could have taken would have been to register the brain to a brain-like shape and use this as a mask. Nonetheless the given solutions shows two potential approaches to removing tissue (which could in some cases lead to identification) you don't want in an image. Many researchers do not want to waste time optimizing a skull stripping technique if this was not the research question, so they use a pre-made technique.
+
+
+There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
+
+However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
-### Text on Images
-
-Occasionally, technicians will burn information directly onto images as part of a burned-in annotation. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
 ### Other Parts of Images
 
@@ -53,6 +387,11 @@ Patient identity can often be inferred with just a few pieces of data. In some c
 In other situations, slightly more data might be required to identify a patient. Some patients may wear unique jewelry, such as a MedicAlert bracelet or necklace with initials or a name. While most routine ambulatory images are taken without jewelry, in emergency situations, medical personnel may not have had the time to remove these items. The more data points we have on a patient, the easier it becomes to identify them.
 
 ![Case courtesy of Ian Bickle, <a href="https://radiopaedia.org/">Radiopaedia.org</a>. From the case <a href="https://radiopaedia.org/cases/61830">rID: 61830</a>](fig/jewellery_artifact.jpg){alt='jewlery artifact'}
+
+
+### Metadata
+
+Metadata is in the broadest sense data about our data. In the practical sense we need to understand it is a place outside the image that identifying data may be lurking in. 
 
 Various tools are available to help de-identify DICOM files in terms of metadata. A notable one is [DicomAnonymizer](https://github.com/KitwareMedical/dicom-anonymizer), an open-source tool written in Python.
 
@@ -333,10 +672,11 @@ Pydicom offers a wide range of capabilities. You can visualize your DICOM data i
 :::::::::::::::::::::::::::::::::::::::: keypoints
 
 - Certain metadata should almost always be removed from DICOM files before sharing
+- Automated tools are available to strip metadata from DICOMs, but manual verification is necessary due to inconsistencies in how fields are utilized
+- Several Python libraries enable access to DICOM metadata
 - Sharing only image files such as JPEGs or NIfTI can mitigate risks associated with metadata
 - Imaging data alone, even without explicit metadata, can sometimes lead to patient identification
-- Automated tools are available to strip metadata from DICOMs, but manual verification is necessary due to inconsistencies in how fields are utilized.
+- You may need to preprocess images themselves so patients are de-identified 
 - Tools exist to deface images to further protect patient identity
-- Several Python libraries enable access to DICOM metadata
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
