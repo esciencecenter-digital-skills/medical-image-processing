@@ -9,6 +9,7 @@ exercises: 30
 - What types of data make patient's imaging data identifiable?
 - How can I ensure the safe sharing of medical image data?
 - How can I remove specific metadata from DICOM files?
+- How can I deal with identifying data within images themselves?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -36,7 +37,7 @@ DICOM files contain metadata, which includes various types of identifying inform
 
 ### Text on Images
 
-Occasionally, technicians will "burn" information directly onto images as part of a burned-in annotation. This means they change the image itself with text that becomes part of the image pixels. This may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
+Occasionally, technicians will "burn" information directly onto images. This means they change the image itself with text that becomes part of the image pixels. This "burned-in" annotation may include details such as diagnoses, demographics, or the patient's name. Fortunately, this text is usually typed rather than handwritten, making it recognizable by optical character recognition (OCR) functions. Often, this text is placed away from the center of the image, allowing for clever cropping to eliminate it entirely in some datasets.
 
 
 
@@ -62,7 +63,7 @@ io.show()
 
 ![Image from flikr website published with a permissive lisence.](fig/identifiable_us.jpg){alt='Identifiable ultrasound'}
 
-Write code for two approaches that de-identify (remove the annotations from) the ultrasound image data. 
+Write code for more than one approach to de-identify (remove the annotations from) the ultrasound image data. 
 
 
 ::::::::::::::: solution
@@ -176,7 +177,7 @@ interact(
 ```
 ![Images of SITK head.](fig/headcutsscroll.png){alt='Non-Identifiable head'}
 
-Here we can see an analagous technique to one we used with the 2D ultrasound. Identifying data has been cropped out. 
+Here we can see an analagous technique to one we used with the 2D ultrasound. Identifying data (the nose and part of the ears) has been cropped out. 
 
 ::::::::::::::::::::::::::::::::::::::: challenge 
 
@@ -245,7 +246,7 @@ Then we can further clean with a connected component analysis that throws out ou
 ```python
 
 def keep_largest_component(mask_image):
-    # Ensure mask_image is binary (0 and 1 values)
+    # Ensure mask_image is will work and use as little memory as possible 
     mask_image = sitk.Cast(mask_image, sitk.sitkUInt8)
     
     # Label connected components in the mask image
@@ -375,7 +376,7 @@ In the provided solutions to the above optional challenge we didn't get rid of a
 
 There are various tools available for defacing head imaging, ranging from fully developed software products like [FreeSurfer](https://surfer.nmr.mgh.harvard.edu/), which includes built-in defacing capabilities, to specialized functions within coding libraries. Some of these tools strip off all of the skull and soft tissue which may be useful for analysis even if we don't care about deidentification e.g. if we only want to look at brain tissue.  
 
-However, a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
+Unfortunately a key issue under current investigation is that some defacing algorithms may inadvertently alter more than just the facial features. Emerging research suggests that these algorithms might also affect the morphometry of the brain image. This could lead to the unintended loss or distortion of critical data. Therefore, it is advisable to proceed with caution and, whenever possible, compare the original and defaced images to ensure that important information remains intact and unaltered.
 
 ![Image from "A reproducibility evaluation of the effects of MRI defacing on brain segmentation" by Chenyu Gao, Bennett A. Landman, Jerry L. Prince, and Aaron Carass. The preprint is available [here](https://pubmed.ncbi.nlm.nih.gov/37293070/).](fig/deface-example.jpg){alt='Defacing examples'}
 
@@ -677,6 +678,6 @@ Pydicom offers a wide range of capabilities. You can visualize your DICOM data i
 - Sharing only image files such as JPEGs or NIfTI can mitigate risks associated with metadata
 - Imaging data alone, even without explicit metadata, can sometimes lead to patient identification
 - You may need to preprocess images themselves so patients are de-identified 
-- Tools exist to deface images to further protect patient identity
+- Tools exist to deface head images to further protect patient identity
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
