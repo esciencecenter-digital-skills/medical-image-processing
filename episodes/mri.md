@@ -9,6 +9,9 @@ exercises: 30
 - What kinds of MRI are there?
 - How are MRI data represented digitally?
 - How should I organize and structure files for neuroimaging MRI data?
+- What kinds of file formats are there for MRIs
+- What python libraries are best for dealing with MRI data?
+- How does MRI data relate to real world space?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
