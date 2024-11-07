@@ -8,6 +8,7 @@ exercises: 25
 
 - What are the common different types of diagnostic imaging?
 - What sorts of computational challenges do they present?
+- How is raw data from a machine transformed to make an image?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -15,12 +16,13 @@ exercises: 25
 
 - Explain various common types of medical images
 - Explain at a high level how images' metadata is created and organized
+- Show potential reconstruction algorithms
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## Introduction
 
-Medical imaging uses many technologies including X-rays, computed tomography (CT), magnetic resonance imaging (MRI), ultrasound, positron emission tomography (PET) and microscopy. Although there are tendencies to use certain technologies, or modalities to answer certain clinical questions, many modalities may provide information of interest in terms of research questions. In order to work with digital images at scale we need to use information technology. We receive images in certain types of files, e.g., an x-ray stored at the hospital in DICOM format, but the image itself is contained in a JPEG inside the DICOM as a 2D-array. Understanding all the kinds of files we are dealing with and how the images within them were generated can help us deal with them computationally.
+Medical imaging uses many technologies including X-rays, [computed tomography (CT)](learners/reference.md#ct), [magnetic resonance imaging (MRI)](learners/reference.md#mri), ultrasound, [positron emission tomography (PET)](learners/reference.md#pet) and microscopy. Although there are tendencies to use certain technologies, or modalities to answer certain clinical questions, many modalities may provide information of interest in terms of research questions. In order to work with digital images at scale we need to use information technology. We receive images in certain types of files, e.g., an x-ray stored at the hospital in [DICOM](learners/reference.md#dicom) format, but the image itself is contained in a JPEG inside the DICOM as a 2D-array. Understanding all the kinds of files we are dealing with and how the images within them were generated can help us deal with them computationally.
 
 Conceptually, we can think of medical images as signals. These signals need various kinds of processing
 before they are 'readable' by humans or by many of the algorithms we write. 
@@ -29,20 +31,20 @@ While thinking about how the information from these signals is stored in differe
 
 Below are a few summaries about various ultra-common imaging types. Keep in mind that manufacturers may have specificities in terms of file types not covered here, and there are many possibilities in terms of how images could potentially be stored. Here we will discuss what is common to get in terms of files given to researchers.
 
-## X-Rays
+## X-Ray based imaging
 
-Historically, x-rays were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
+Historically, [plain film x-rays](learners/reference.md#plain) were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an [x-ray](learners/reference.md#x-ray) generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
-As you can imagine if you only have one view in an X-ray every object in the line of radiation from the generator is superimposed on every object below it. Even in the days of film X-rays often two views would be made. In the case of chest X-rays these could be a posteroanterior(PA) view and a lateral view. In the case of joints the views may be specific, however remember that in each view objects in the same line between the generator and receptor will be superimposed.
+In an X-ray every object in the line of radiation from the generator is superimposed on every object below it, therefore in many cases multiple views are taken. 
 
 ![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
 *image courtesy of Radiopaedia, author and ID on image*
 
 Modern x-rays are born digital. No actual "film" is produced, rather a DICOM file which typically contains arrays in JPEG files.
 
-We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  
+We could use the metaphor of a wrapped present here. The DICOM file contains metadata around the image data, wrapping it. The image data itself is a bunch of 2D-arrays, but these have been organized to a specific shape - they are "boxed" by JPEG files. JPEG is a container format. There are usually JPEG files (emphasis on the plural) in a single DICOM file which typically contain images of the same body part with different angles of acquisition.  
 
 We can take x-rays from any angle and even do them repeatedly, and this allows for fluoroscopy. Because fluoroscopy adds a time dimension to X-ray the data becomes 3-dimensional, possessing an X, Y and time dimension. Below is a fluoroscopy image of a patient swallowing barium.
 
@@ -53,9 +55,9 @@ We can take x-rays from any angle and even do them repeatedly, and this allows f
 
 
 
-## Computed Tomography and Tomosynthesis
+### Computed Tomography and Tomosynthesis
 
-There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
+The technique of computed tomography (CT) produces 3D-images, made of voxels, that allow us to see structures within a subject. 
 
 CTs and tomosynthetic images are produced with similar technology. One key difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get. Let's examine two ways to process our sinograms:
 
@@ -102,7 +104,7 @@ Tomosynthesis makes X-ray based images using a limited angle instead of going al
 
 ## Ultrasounds
 
-Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
+Ultrasounds can produce multiple complex types of images. Ultrasound uses high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
 
 Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. 
 
@@ -143,7 +145,7 @@ Possible solutions include:
 
 ## Magnetic Resonance Imaging
 
-MRIs are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. Different ordering and timing of radiofrequency pulses and different magnetic gradients give us different MRI sequences. The actual signal on an anatomical MRI needs to be processed typically via Fourier transforms and some other computational work before it is recognizable as anatomy. The raw data is reffered to as the k-space data, and this can be kept in vendor specific formats or open common formats, e.g., ISMRMRD (International Society of Magnetic Resonance MR Raw Data). In practice, we rarely use the k-space data (unless perhaps we are medical physicists) for research on medical pathology. Nonetheless researchers in new sequences for MRI will be very interested in such data, and typically getting the fastest transformations of it possible. There are many ways the raw data could be transformed or used to produce an MRI. While an inverse Fourier transform is typical, a Hartley transform could be used, and some scientists even use deep learning based methods. Let's look at k-space with a viridis color map:
+[MRIs]((learners/reference.md#mri)) are images made by utilizing some fairly complicated physics in terms of what we can do to protons (abundant in human tissue) with magnets and radiofrequency waves, and how we capture their signal. Different ordering and timing of radiofrequency pulses and different magnetic gradients give us different MRI sequences. The actual signal on an anatomical MRI needs to be processed typically via Fourier transforms and some other computational work before it is recognizable as anatomy. The raw data is reffered to as the k-space data, and this can be kept in vendor specific formats or open common formats, e.g., ISMRMRD (International Society of Magnetic Resonance MR Raw Data). In practice, we rarely use the k-space data (unless perhaps we are medical physicists) for research on medical pathology. Nonetheless researchers in new sequences for MRI will be very interested in such data, and typically getting the fastest transformations of it possible. There are many ways the raw data could be transformed or used to produce an MRI. While an inverse Fourier transform is typical, a Hartley transform could be used, and some scientists even use deep learning based methods. Let's look at k-space with a viridis color map:
 
 
 ![k-space image.](fig/k-space.png){alt='K-space.'}
@@ -241,6 +243,73 @@ Pathology is currently undergoing a revolution of digitalization, and a typical 
 
 
 *sourced from By Yale Rosen from USA - Actinomycosis, CC BY-SA 2.0, https://commons.wikimedia.org/w/index.php?curid=31127755*
+
+
+::::::::::::::::::::::::::::::::::::: challenge
+Challenge: What does the shape of a pathology image mean?
+
+You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array and reduced the data to two channels, one for each stain. Consider the following 5 questions:
+
+
+1. What shape do you expect the data to have?
+2. How is this shape different from typical CT data?
+
+You can import/load the image from data as follows:
+
+ ```python
+img1 = np.load('data/medical/proprietary_pathology.npy')
+```
+
+3. Load in the data with numpy, and examine the shape. Which part of this shape is the color part?
+4. Can you know the original shape of the raw data in terms of channels?
+5. (optional) Visualize these images in terms of the middle slide from both the top and the side on the middle focal depth slice.
+
+
+
+::::::::::::::: solution
+Solution
+
+Your image is  a 3D multichanel image. The shape if you look at it with numpy.shape will include 4 numbers e.g. ((60, 2, 256, 256)), generally this would be include a plane (z), row (y), column (x) , channel number (c). This is different from CT data where we would expect only x, y and z axes. As you know that there are two channels you can figure out that this multichannel array comes with with dimensions provided in (z, c, y, x) order. You can not from this image know how many channels the original image had. It is not uncommon to have raw data in pathology with more than three channels. It is also not uncommon for a clever programmer to remake the channels so they neatly fit stains in the data, as here. 
+
+Now you can make images of the slide at around the middle of the depths.
+
+```python
+print(img1.shape)
+stain0_slice_side = img1[:, 0, 125,:]
+stain1_slice_side = img1[:, 1, 125,:]
+stain0_slice_top = img1[30, 0,: ,:]
+stain1_slice_top = img1[30, 1,: ,:]
+
+fig, axs = plt.subplots(1, 4)
+
+axs[0].imshow(stain0_slice_side)
+axs[0].set(xlabel='Side view, stain 1')
+axs[0].set(xticks=[], yticks=[])
+
+axs[1].imshow(stain1_slice_side)
+axs[1].set(xlabel='Side view, stain 2')
+axs[1].set(xticks=[], yticks=[])
+
+
+axs[2].imshow(stain0_slice_top)
+axs[2].set(xlabel='Top view, stain 1')
+axs[2].set(xticks=[], yticks=[])
+
+axs[3].imshow(stain1_slice_top)
+axs[3].set(xlabel='Top view, stain 2')
+axs[3].set(xticks=[], yticks=[])
+```
+
+```output
+(60, 2, 256, 256)
+
+```
+
+![Two channel pathology image.](fig/pathy.png){alt='Two Channel Pathology Image.'}
+
+::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::::::::::::::::::::::::::::::::::::::::::::::
 
 Beyond the more common types of imaging, researchers are actively looking into new forms of imaging. Some add new information to old modalities, like contrast-enhanced ultrasounds. Other new forms of imaging are novel in terms of the signal, such as terahertz imaging, which uses a previously 'unused' part of the electomagnetic radiation spectrum. As you might guess, the more novel the imaging, usually the less consolidation there is around file types and how they are organized. It is useful to remember that all these file types, whether on established image types or novel ones, are sorts of 'containers' for the 'payload' of the actual images which are the arrays. Often we simply need to know how to get the payload array out of its container and/or where to find certain metadata.
 
