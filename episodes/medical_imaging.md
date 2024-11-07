@@ -31,11 +31,11 @@ Below are a few summaries about various ultra-common imaging types. Keep in mind
 
 ## X-Ray based imaging
 
-Historically, [plain film x-rays](learners/reference.md#plain) were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an x-ray generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
+Historically, [plain film x-rays](learners/reference.md#plain) were the first common form of medical imaging. The diagram below should help you visualize how they are produced. The signal from an [x-ray](learners/reference.md#x-ray) generator crosses the subject. Some tissues attenuate the radiation more than others. The signal is captured by an x-ray detector (you can think of this metaphorically like photographic film) on the other side of the subject.
 
 ![Schematic of x-ray image creation.](fig/x_ray_dia.png){alt='X-ray image creation schematic.'}
 
-In an X-ray every object in the line of radiation from the generator is superimposed on every object below it therefore in many cases multiple views are taken. Remember that in each view objects in the same line between the generator and receptor will be superimposed.
+In an X-ray every object in the line of radiation from the generator is superimposed on every object below it, therefore in many cases multiple views are taken. 
 
 ![Knee series.](fig/knee_gallery.jpeg){alt='Knee series.'}
 *image courtesy of Radiopaedia, author and ID on image*
@@ -55,7 +55,7 @@ We can take x-rays from any angle and even do them repeatedly, and this allows f
 
 ### Computed Tomography and Tomosynthesis
 
-There are several kinds of tomography. This technique produces 3D-images, made of voxels, that allow us to see structures within a subject. CTs are extremely common, and helpful for many diagnostic questions, but have certain costs in terms of not only time and money, but also radiation to patients.
+The technique of computed tomography (CT) produces 3D-images, made of voxels, that allow us to see structures within a subject. 
 
 CTs and tomosynthetic images are produced with similar technology. One key difference is that in a CT the image is based on a 360 degree capture of the signal. You can conceptualize this as a spinning donut with the generator and receptor opposite to each other. The raw data of a CT is a [sinogram](learners/reference.md#sinogram). Only by processing this data do we get what most people would recognize as a CT. At this level of processing there are already choices effecting the data we get. Let's examine two ways to process our sinograms:
 
@@ -102,7 +102,7 @@ Tomosynthesis makes X-ray based images using a limited angle instead of going al
 
 ## Ultrasounds
 
-Ultrasounds can produce multiple complex types of images. Ultrasound use high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
+Ultrasounds can produce multiple complex types of images. Ultrasound uses high frequency sound waves, sent and captured from a piezoelectric probe (also known as a transducer) to get images. 
 
 Just as different tissues attenuate radiation differently, different tissues attenuate the sound waves differently. To be more precise different tissues reflect and absorb the waves differently and this can help us create images after some processing of the signal. 
 
