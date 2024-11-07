@@ -246,14 +246,23 @@ Pathology is currently undergoing a revolution of digitalization, and a typical 
 ::::::::::::::::::::::::::::::::::::: challenge
 Challenge: What does the shape of a pathology image mean?
 
-You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array and reduced the data to two channels, one for each stain. What shape do you expect the data to have? How is this shape different from typical CT data in shape? Check this with numpy. Which is part of this shape is the color part? Can you know how many channels the original image had? Visualize these images in terms of the middle slide from both the top and the side on the middle focal depth slice.
+You work with a pathologist who has developed a new technique for producing digital images with different focal planes at different depths of a pathology specimen. He wants images he can put on a poster. The images are stained with flouresence markers of two different colors, one for cell membranes and one for the cell nuclei. He tells you he already moved the image into a numpy array and reduced the data to two channels, one for each stain. Consider the following 5 questions:
 
-You can import the image from data as follows:
 
+1. What shape do you expect the data to have?
+2. How is this shape different from typical CT data?
+
+You can import/load the image from data as follows:
 
  ```python
 img1 = np.load('data/medical/proprietary_pathology.npy')
 ```
+
+3. Load in the data with numpy, and examine the shape. Which part of this shape is the color part?
+4. Can you know the original shape of the raw data in terms of channels?
+5. (optional) Visualize these images in terms of the middle slide from both the top and the side on the middle focal depth slice.
+
+
 
 ::::::::::::::: solution
 Solution
