@@ -8,6 +8,7 @@ exercises: 25
 
 - What are the common different types of diagnostic imaging?
 - What sorts of computational challenges do they present?
+- How is raw data from a machine transformed to make an image?
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -15,6 +16,7 @@ exercises: 25
 
 - Explain various common types of medical images
 - Explain at a high level how images' metadata is created and organized
+- Show potential reconstruction algorithms
 
 ::::::::::::::::::::::::::::::::::::::::::::::::
 
