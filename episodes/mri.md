@@ -27,7 +27,7 @@ exercises: 10
 
 ## Introduction
 
-This lesson is heavily based on existing lessons from Carpentries; namely:
+This lesson is heavily based on existing lessons from The Carpentries Incubator; namely:
 
  1. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
