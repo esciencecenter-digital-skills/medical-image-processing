@@ -14,7 +14,7 @@ exercises: 10
 
 ::::::::::::::::::::::::::::::::::::: objectives
 
-- Show common kinds of MRI imaging used in research
+- Mention common kinds of MRI imaging used in research
 - Show the most common file formats for MRI
 - Introduce MRI coordinate systems
 - Load an MRI scan into Python and explain how the data is stored
@@ -28,9 +28,20 @@ exercises: 10
 ## Introduction
 
 
-When some programmers open their IDE, they type `pwd` because this command allows you to see what directory you are in, and then often `git branch` to see which branch they are on. When many clinicians open an MRI they look at the anatomy, but also figure out which sequence and type of MRI they are looking at. As a digital researcher orienting yourself in terms of MRIs and related computation is also important. In terms of computation MRIs, particularly neuro MRIs, have some quircks that make it worthwhile to think of them as a seperate part of the universe than other medical imaging. Three critical differences between MRIs and other medical imaging are image orientation in terms of anatomy, typical file types and typical packages used for processing. In this lesson we will cover these three issues.
+When some programmers open their IDE, they type `pwd` because this command allows you to see what directory you are in, and then often they type `git branch` to see which branch they are on. When many clinicians open an MRI they look at the anatomy, but also figure out which sequence and type of MRI they are looking at. 
 
+We all need to begin with a vague idea of where in the world we are and which direction we are facing, so to speak.
+As a digital researcher orienting yourself in terms of MRIs and related computation is important. 
+In terms of computation MRIs, particularly neuro MRIs,
+ have some quircks that make it worthwhile to think of them as a seperate part of the universe than other medical imaging. 
+ Three critical differences between MRIs and other medical imaging are image orientation in terms of 
+ display conventions, typical file types and typical packages used for processing. In this lesson we will cover these three issues.
 
+As a researcher in general we reccomend familiarizing yourself with the various possible sequences of MRI. 
+Some sequences are much more suited to awnser certain questions than others. Generally we could divide MR techniques into structural e.g. T1, T2 and so on, 
+functional, diffusion, perfusion, angiographic techniques and spectroscopy. 
+If you work directly with a radiology department you will usually get DICOM files that contain whatever sequences were done.
+However if you obtain images from elsewhere they may come in other formats. 
 
 ## File formats
 
@@ -97,7 +108,7 @@ While you may harness sophisticated tools like Freesurfer or FSL to do complex t
 
 Next, we'll cover some details on working with NIfTI files with Nibabel.
 
-## Reading NIfTI Images
+### Reading NIfTI Images
 
 [NiBabel](https://nipy.org/nibabel/) is a Python package for reading and writing neuroimaging data.
 To learn more about how NiBabel handles NIfTIs, refer to the [NiBabel documentation on working with NIfTIs](https://nipy.org/nibabel/nifti_images.html), which this episode heavily references.
@@ -424,7 +435,7 @@ This command retrieves and prints the intensity value at the specified voxel. Th
 
 Next, we will explore how to extract and visualize larger regions of interest, such as slices or arrays of voxels, for more comprehensive analysis.
 
-## Working with Image Data
+#### Working with Image Data
 
 Slicing does exactly what it seems to imply. Given a 3D volume, slicing involves extracting a 2D **slice** from our data.
 
@@ -462,7 +473,7 @@ x_slice = t2_data[3, :, :]
 
 We've been slicing and dicing images but we have no idea what they look like. In the next section we'll show you one way you can visualize it all together.
 
-## Visualizing the Data
+#### Visualizing the Data
 
 We previously inspected the signal intensity of the voxel at coordinates (10,20,3). Let's see what out data looks like when we slice it at this location. We've already indexed the data at each x-, y-, and z-axis. Let's use `matplotlib`:
 
@@ -479,9 +490,11 @@ for i, slice in enumerate(slices):
 
 Now, we're shifting our focus away from discussing our data to address the final crucial attribute of a NIfTI.
 
-### 3. [Affine](https://nipy.org/nibabel/coordinate_systems.html)
+#### 3. Affine
 
-The final important piece of metadata associated with an image file is the **affine matrix**, which indicates the position of the image array data in a reference space.
+The final important piece of metadata associated with an image file is the **affine matrix**,
+ which indicates the position of the image array data in the reference space. 
+ By reference space we usually mean a predefined system mapping to real world space if we are talking about real patient data.
 
 Below is the affine matrix for our data:
 
@@ -522,13 +535,37 @@ For most of the the data we're dealing with we use a RAS coordinate system so it
 - Anterior
 - Superior
 
-
-## Anatomy
-
-When we describe imaging of any part of the body except the brain, as professionals we all agree on certain conventions. We rely on anatomical position as the basis of how we orient ourselves, and we expect the patient's right side to be on the left of our screen. 
+Increasing a coordinate value in the first dimension corresponds to moving to the right of the person being scanned, and so on. In the real world whatever orientation you put something in may make someone unhappy. Luckily you can quickly change arrays around in terms of direction by simply using an already efficient numpy functions. Two functions in numpy that can be generalized to make any orientation of an image are numpy.flip() and numpy.rot90(), however there are other functions which are quite convenient for 2D arrays, as displayed below.
 
 
-To get a better view of MRI processing explore lessons from Carpentries Incubators; namely:
+```python
+import numpy as np
+slices = [z_slice, np.fliplr(z_slice), np.flipud(z_slice)]
+fig, axes = plt.subplots(1, len(slices))
+for i, slice in enumerate(slices):
+    axes[i].imshow(slice, cmap="gray", origin="lower")
+```
+```output
+```
+<img src="fig/flipper.png" alt="flipped images" width="70%;"/>
+
+This brings us to a final difference we must account for when we discuss neuro-MRIs: anatomy and visualization conventions.
+
+## Display conventions
+
+When we describe imaging of any part of the body except the brain, as professionals we all agree on certain conventions. 
+We rely on anatomical position as the basis of how we orient ourselves,
+ and we expect the patient's right side to be on the left of our screen, and certain other convensions.
+  In terms of brain MRIs,
+ this is less true; there is a split. The issue is extremely well summarized in the [nibabel documentation 
+ on radiological versus neurological conventions](https://nipy.org/nibabel/neuro_radio_conventions.html).
+
+ #### add exercise where we take radiological, label, then remake for neuro conventions
+
+
+## MRI processing in Python
+
+To get a deeper view of MRI processing in Python you can explore lessons from Carpentries Incubators; namely:
 
  1. [Introduction to Working with MRI Data in Python](https://carpentries-incubator.github.io/SDC-BIDS-IntroMRI/)
  2. [Introduction to dMRI](https://carpentries-incubator.github.io/SDC-BIDS-dMRI/)
