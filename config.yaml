@@ -21,7 +21,7 @@ keywords: 'python, software, lesson, medical images, DICOMs' # FIXME
 
 # Life cycle stage of the lesson
 # possible values: pre-alpha, alpha, beta, stable
-life_cycle: 'pre-alpha' # FIXME
+life_cycle: 'alpha' # FIXME
 
 # License of the lesson
 license: 'CC-BY 4.0'
@@ -33,7 +33,7 @@ source: 'https://github.com/esciencecenter-digital-skills/medical-image-processi
 branch: 'main'
 
 # Who to contact if there are any issues
-contact: 'c.moore@esciencecenter.nl' # FIXME
+contact: 'doctormakeda@gmail.com' # FIXME
 
 # Navigation ------------------------------------------------
 #

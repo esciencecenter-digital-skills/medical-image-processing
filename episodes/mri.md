@@ -108,7 +108,7 @@ While you may harness sophisticated tools like Freesurfer or FSL to do complex t
 
 Next, we'll cover some details on working with NIfTI files with Nibabel.
 
-### Reading NIfTI Images
+#### Reading NIfTI Images
 
 [NiBabel](https://nipy.org/nibabel/) is a Python package for reading and writing neuroimaging data.
 To learn more about how NiBabel handles NIfTIs, refer to the [NiBabel documentation on working with NIfTIs](https://nipy.org/nibabel/nifti_images.html), which this episode heavily references.
@@ -126,9 +126,9 @@ t2_img = nib.load("data/mri//OBJECT_phantom_T2W_TSE_Cor_14_1.nii")
 When loading a NIfTI file with `NiBabel`, you get a specialized data object that includes all the information stored in the file. Each piece of information is referred to as an **attribute** in Python's terminology. To view all these attributes, simply type `t2_img.` followed by <kbd>Tab</kbd>.
 Today, we'll focus on discussing mainly two attributes (`header` and `affine`) and one method (`get_fdata`). 
 
-### 1. [Header](https://nipy.org/nibabel/nibabel_images.html#the-image-header)
+##### 1. Headers
 
-It contains metadata about the image, including image dimensions, data type, and more.
+ [The header](https://nipy.org/nibabel/nibabel_images.html#the-image-header) contains metadata about the image, including image dimensions, data type, and more.
 
 ```python
 t2_hdr = t2_img.header
@@ -275,7 +275,7 @@ array([1. , 0.9259259, 0.9259259, 5.7360578, 0. , 0. , 0. , 0. ], dtype=float32)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::
 
-### 2. Data
+##### 2. Data
 
 As you've seen above, the header contains useful information that gives us information about the properties (metadata) associated with the MR data we've loaded in. Now we'll move in to loading the actual *image data itself*. We can achieve this by using the method called `t2_img.get_fdata()`:
 
@@ -490,7 +490,7 @@ for i, slice in enumerate(slices):
 
 Now, we're shifting our focus away from discussing our data to address the final crucial attribute of a NIfTI.
 
-#### 3. Affine
+##### 3. Affine
 
 The final important piece of metadata associated with an image file is the **affine matrix**,
  which indicates the position of the image array data in the reference space. 
@@ -560,7 +560,7 @@ We rely on anatomical position as the basis of how we orient ourselves,
  this is less true; there is a split. The issue is extremely well summarized in the [nibabel documentation 
  on radiological versus neurological conventions](https://nipy.org/nibabel/neuro_radio_conventions.html).
 
- #### add exercise where we take radiological, label, then remake for neuro conventions
+
 
 
 ## MRI processing in Python
