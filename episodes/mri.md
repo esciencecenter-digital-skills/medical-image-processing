@@ -29,7 +29,6 @@ exercises: 10
 
 
 When some programmers open their IDE, they type `pwd` because this command allows you to see what directory you are in, and then often they type `git branch` to see which branch they are on. When many clinicians open an MRI they look at the anatomy, but also figure out which sequence and type of MRI they are looking at. 
-
 We all need to begin with a vague idea of where in the world we are and which direction we are facing, so to speak.
 As a digital researcher orienting yourself in terms of MRIs and related computation is important. 
 In terms of computation MRIs, particularly neuro MRIs,
@@ -47,7 +46,7 @@ However if you obtain images from elsewhere they may come in other formats.
 
 From the MRI scanner, MRI images are initially collected and put in the DICOM format but can be converted to other formats to make working with the data easier. Some file formats can be converted to others, for exaple NiFTIs or Analyze files can be converted to MINC, but not conversions can not be made from all file formats in all directions.
 
-### Common MRI File Formats
+#### Common MRI File Formats
 
 | Format Name | File Extension | Origin/Group                                  | More info|
 | ----------- | -------------- | --------------------------------------------- |-----------
