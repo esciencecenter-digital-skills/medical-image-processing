@@ -32,19 +32,19 @@ When some programmers open their IDE, they type `pwd` because this command allow
 We all need to begin with a vague idea of where in the world we are and which direction we are facing, so to speak.
 As a digital researcher orienting yourself in terms of MRIs and related computation is important. 
 In terms of computation MRIs, particularly neuro MRIs,
- have some quircks that make it worthwhile to think of them as a seperate part of the universe than other medical imaging. 
+ have some quirks that make it worthwhile to think of them as a separate part of the universe than other medical imaging. 
  Three critical differences between MRIs and other medical imaging are image orientation in terms of 
  display conventions, typical file types and typical packages used for processing. In this lesson we will cover these three issues.
 
 As a researcher in general we reccomend familiarizing yourself with the various possible sequences of MRI. 
-Some sequences are much more suited to awnser certain questions than others. Generally we could divide MR techniques into structural e.g. T1, T2 and so on, 
-functional, diffusion, perfusion, angiographic techniques and spectroscopy. The sequences you work with derterming the shape of files to expect. As an example of what you would expect for structural imaging a 3-D array is the norm, but for diffusion imaging you have a 4D tensor plus .bval and .bvec files.  
+Some sequences are much more suited to answer certain questions than others. Generally we could divide MR techniques into structural e.g. T1, T2 and so on, 
+functional, diffusion, perfusion, angiographic techniques and spectroscopy. The sequences you work with determining the shape of files to expect. As an example of what you would expect for structural imaging a 3-D array is the norm, but for diffusion imaging you have a 4D tensor plus .bval and .bvec files.  
 If you work directly with a radiology department you will usually get DICOM files that contain whatever sequences were done.
 However if you obtain images from elsewhere they may come in other formats. 
 
 ## File formats
 
-From the MRI scanner, MRI images are initially collected and put in the DICOM format but can be converted to other formats to make working with the data easier. Some file formats can be converted to others, for exaple NiFTIs or Analyze files can be converted to MINC, but not conversions can not be made from all file formats in all directions.
+From the MRI scanner, MRI images are initially collected and put in the DICOM format but can be converted to other formats to make working with the data easier. Some file formats can be converted to others, for example NiFTIs or Analyze files can be converted to MINC, but not conversions can not be made from all file formats in all directions.
 
 #### Common MRI File Formats
 
@@ -77,12 +77,12 @@ Some of the more popular examples are:
 - `SPM`
 - `MRtrix3_connectome`
 
-We recommend the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) for learning the basics of this standard.
-Working with BIDS or and much of the array of tools available for brain MRIs is often facilitated by some familiarity with writing command line. This could present bit of a problem in terms of scientific reproduciblity. One option is to leave bash scripts and good documentation in a repository. Another is to use a pythonic interface to such command line tools. One possibility for this will be discused in the next section.
+We reccomend the [BIDS starter-kit website](https://bids-standard.github.io/bids-starter-kit/#) for learning the basics of this standard.
+Working with BIDS or and much of the array of tools available for brain MRIs is often facilitated by some familiarity with writing command line. This could present bit of a problem in terms of scientific reproducibility. One option is to leave bash scripts and good documentation in a repository. Another is to use a pythonic interface to such command line tools. One possibility for this will be discused in the next section.
 
 ## Libraries
 
-If you look at python code for research on medical imaging of most of the body, a few libraries, such as SITK, will pop up again and again. The story with MRIs of the brain is entirely different. Most researchers will use libraries like nibabel and related libraries. These libraries are made to read, write, and manipulate neuroimaging file formats efficiently. There is lots of code developed in them for the specific tasks related to brain MRIs. They also tend to integrate better with existing pipelines for brain MRI. nipype is a popular tool which attempts to allow users to harness popular exisitng pipelines. If you are trying to compare outputs with an existing study, it is worth considering using the same pipeline and software version of the pipeline. Then you know differences between your outcomes are not artifacts of the softwares. 
+If you look at python code for research on medical imaging of most of the body, a few libraries, such as SITK, will pop up again and again. The story with MRIs of the brain is entirely different. Most researchers will use libraries like nibabel and related libraries. These libraries are made to read, write, and manipulate neuroimaging file formats efficiently. There is lots of code developed in them for the specific tasks related to brain MRIs. They also tend to integrate better with existing pipelines for brain MRI. nipype is a popular tool which attempts to allow users to harness popular existing pipelines. If you are trying to compare outputs with an existing study, it is worth considering using the same pipeline and software version of the pipeline. Then you know differences between your outcomes are not artifacts of the softwares. 
 
 
 <img src="fig/nipreps-chart.png" alt="Nipreps chart" width="70%;"/>
@@ -103,7 +103,7 @@ If you look at python code for research on medical imaging of most of the body, 
 ::::::::::::::
 
 
-While you may harness sophisticated tools like Freesurfer or FSL to do complex tasks like segmentation and registration in ways taht match exisitng research, you should not avoic checking your data by hand. At some point you should open images and examine them both in terms of the imaging (which could be done with a pre-buit viewer) and the computational aspects like metadata and shape. For these mundane tasks we reccomend nibabel. 
+While you may harness sophisticated tools like Freesurfer or FSL to do complex tasks like segmentation and registration in ways that match existing research, you should not avoid checking your data by hand. At some point you should open images and examine them both in terms of the imaging (which could be done with a pre-built viewer) and the computational aspects like metadata and shape. For these mundane tasks we recommend nibabel. 
 
 Next, we'll cover some details on working with NIfTI files with Nibabel.
 
